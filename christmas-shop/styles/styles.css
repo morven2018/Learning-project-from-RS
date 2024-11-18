@@ -14,6 +14,7 @@
     --hover-color: rgba(255, 70, 70, 0.1);
     font-family: "Montserrat", sans-serif;
     font-weight: 600;
+    box-sizing: content-box;
 }
 
 h1 {
@@ -85,9 +86,11 @@ button {
     color: var(--static-white-color);
     border-radius: 20px;
     padding: 20px 32px;
+    border: none;
 }
 
 button:hover {
     background-color: var(--static-white-color);
     color: var(--dark-color);
+
 }
