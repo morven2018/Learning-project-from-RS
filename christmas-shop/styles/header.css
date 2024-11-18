@@ -1,0 +1,51 @@
+header div {
+    display: flex;
+    max-width: 1440px;
+    justify-content: space-around;
+    margin: 0 auto;
+    padding: 12px 82px;
+
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.logo {
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    gap: 8px;
+}
+
+
+
+nav ul {
+    list-style-type: none;
+    gap: 8px;
+}
+
+nav li {
+    display: inline-block;
+}
+
+nav a {
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+
+}
+
+nav a:hover {
+    background-color: var(--primary-color-10);
+}
+
+.logo:active,
+.logo:focus,
+nav a:focus,
+nav a:active {
+    border: 1px dashed var(--tag-green-color);
+    background-color: var(--tag-green-color-10);
+}

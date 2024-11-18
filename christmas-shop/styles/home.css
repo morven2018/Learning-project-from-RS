@@ -1,0 +1,33 @@
+.hero {
+    background-color: var(--primary-color);
+    max-width: 1440px;
+    margin: 0 auto;
+    position: relative;
+
+}
+
+.hero img {
+    max-width: 1440px;
+}
+
+.ball {
+    position: absolute;
+    background-color: var(--primary-color);
+    border-radius: 20px 20px 0px 0px;
+    z-index: 1;
+}
+
+.flakes {
+    position: absolute;
+    z-index: 2;
+}
+
+.hero_container {
+    color: var(--static-white-color);
+    width: 426px;
+    text-align: center;
+    padding: 60px 0;
+    position: absolute;
+    transform: translate(120%, 20%);
+    z-index: 3;
+}
