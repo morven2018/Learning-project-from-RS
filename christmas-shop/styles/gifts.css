@@ -57,6 +57,12 @@
     border-radius: 20px;
     width: 310px;
     height: 342px;
+    display: block;
+}
+
+.cards .item:hover h3 {
+    color: var(--primary-color);
+    transition: 1s;
 }
 
 .card_info {

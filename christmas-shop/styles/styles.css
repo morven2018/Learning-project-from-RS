@@ -21,9 +21,16 @@ a {
     text-decoration: none;
 }
 
+html {
+    scroll-behavior: smooth;
+
+}
+
 body {
     overflow-x: hidden;
     margin: 0;
+
+
 }
 
 h1 {
@@ -107,6 +114,7 @@ button {
 button:hover {
     background-color: var(--static-white-color);
     color: var(--dark-color);
+    transition: 1s;
 
 }
 

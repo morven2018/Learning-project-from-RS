@@ -128,6 +128,7 @@
 .buttons .item:hover {
     background-color: var(--static-white-color);
     stroke: #FF4646;
+    transition: 1s;
 
 }
 
@@ -135,11 +136,13 @@
     padding-top: 30px;
 }
 
+
 .best_gifts .caption,
 .best_gifts h2 {
     color: var(--static-white-color);
     text-align: center;
 }
+
 
 .best_gifts h2 {
     margin: 0;
@@ -156,6 +159,12 @@
     border-radius: 20px;
     width: 310px;
     height: 342px;
+    display: block;
+}
+
+.card:hover h3 {
+    color: var(--primary-color);
+    transition: 1s;
 }
 
 .gift_items img {
