@@ -25,6 +25,7 @@
     padding: 60px 8px;
 }
 
+
 .hero_container {
     color: var(--static-white-color);
     max-width: 426px;
@@ -38,7 +39,8 @@
 
 .about,
 .slider,
-.best_gifts {
+.best_gifts,
+.CTA {
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
@@ -118,6 +120,10 @@
 
 }
 
+.best_gifts .caption,
+.best_gifts h2 {
+    color: var(--static-white-color);
+}
 
 .gift_items {
     display: grid;
@@ -143,6 +149,8 @@
 
 }
 
+
+
 #card1 h4,
 #card3 h4 {
     color: var(--tag-purple-color);
@@ -154,4 +162,36 @@
 
 #card4 h4 {
     color: var(--tag-pink-color);
+}
+
+
+.santa_deer {
+    background-image: url('../images/home/bg-forest.png');
+    background-size: cover;
+    background-repeat: repeat;
+}
+
+.CTA_content {
+    color: var(--static-white-color);
+    width: 426px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.timer {
+    background-color: var(--static-white-color-40);
+    display: flex;
+    justify-content: center;
+    height: 72px;
+    border-radius: 20px;
+}
+
+.timer div {
+    width: 80px;
+    padding: 12px;
+}
+
+.timer div h2,
+.timer div h4 {
+    margin: 0;
 }
