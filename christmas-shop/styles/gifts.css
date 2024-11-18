@@ -37,6 +37,7 @@
 .buttons a,
 .snowballs h1 {
     color: var(--static-white-color);
+    margin: 0;
 
 }
 

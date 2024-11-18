@@ -14,7 +14,7 @@
     --hover-color: rgba(255, 70, 70, 0.1);
     font-family: "Montserrat", sans-serif;
     font-weight: 600;
-    box-sizing: content-box;
+    box-sizing: border-box;
 }
 
 a {
@@ -47,21 +47,21 @@ h2 {
 h3 {
     font-size: 16px;
     line-height: 152%;
-    letter-spacing: 8%;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 h4 {
     font-size: 12px;
     line-height: 130%;
-    letter-spacing: 5%;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 
 .action_large {
     font-size: 24px;
     line-height: 152%;
-    letter-spacing: 5%;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
 }
 
@@ -76,6 +76,7 @@ p {
     font-weight: 400;
     font-weight: 16px;
     line-height: 148%;
+    margin: 8px 0;
 }
 
 .caption {
@@ -84,7 +85,7 @@ p {
     font-size: 24px;
     font-weight: 400;
     line-height: 100%;
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.05em;
     margin: 12px 0;
 }
 
