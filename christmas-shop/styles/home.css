@@ -132,14 +132,23 @@
 
 }
 
+.best_gifts .flakes {
+    padding-top: 30px;
+}
+
 .best_gifts .caption,
 .best_gifts h2 {
     color: var(--static-white-color);
+    text-align: center;
+}
+
+.best_gifts h2 {
+    margin: 0;
 }
 
 .gift_items {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    margin-top: 20px;
+    display: flex;
     gap: 12px;
 }
 
@@ -155,10 +164,20 @@
 }
 
 .card_info {
-    padding: 20px;
     background-color: var(--static-white-color);
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 8px;
 
+}
+
+.card_info h3,
+.card_info h4 {
+    padding: 0;
+    margin: 0;
 }
 
 

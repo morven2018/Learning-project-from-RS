@@ -43,7 +43,6 @@
 
 .cards {
     display: flex;
-    grid-template-columns: repeat(4, 310px);
     gap: 12px;
     flex-wrap: wrap;
     justify-content: space-between;
