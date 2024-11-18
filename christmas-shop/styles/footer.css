@@ -7,7 +7,7 @@ footer {
 
 .cards_contacts {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(339.67px, 1fr));
     gap: 12px;
 }
 
@@ -25,6 +25,12 @@ footer {
     color: var(--dark-color);
     text-decoration: none;
 }
+
+.cards_contacts .item:hover .action_large,
+.cards_contacts .item:hover h3 {
+    color: var(--primary-color);
+}
+
 
 .cards_contacts .item h3,
 .cards_contacts .item .action_large {

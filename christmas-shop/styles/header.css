@@ -38,14 +38,11 @@ nav a {
 
 }
 
-nav a:hover {
+nav .no-click_menu {
     background-color: var(--primary-color-10);
+    pointer-events: none;
 }
 
-.logo:active,
-.logo:focus,
-nav a:focus,
-nav a:active {
-    border: 1px dashed var(--tag-green-color);
-    background-color: var(--tag-green-color-10);
+nav a:hover {
+    background-color: var(--primary-color-10);
 }
