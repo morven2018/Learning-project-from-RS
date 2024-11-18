@@ -17,8 +17,13 @@
     box-sizing: content-box;
 }
 
+a {
+    text-decoration: none;
+}
+
 body {
     overflow-x: hidden;
+    margin: 0;
 }
 
 h1 {

@@ -46,3 +46,7 @@ footer {
     display: block;
     text-decoration: none;
 }
+
+.media_and_copy a {
+    color: var(--dark-color);
+}

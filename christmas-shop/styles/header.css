@@ -1,7 +1,7 @@
 header div {
     display: flex;
     max-width: 1440px;
-    justify-content: space-around;
+    justify-content: space-between;
     margin: 0 auto;
     padding: 12px 82px;
 
@@ -24,7 +24,7 @@ header div {
 
 nav ul {
     list-style-type: none;
-    gap: 8px;
+    gap: 6px;
 }
 
 nav li {
