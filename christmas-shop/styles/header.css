@@ -41,10 +41,10 @@ nav a {
 
 
 nav .no-click_menu {
-    background-color: var(--primary-color-10);
     pointer-events: none;
 }
 
 nav a:hover {
     background-color: var(--primary-color-10);
+    transition: 1s;
 }

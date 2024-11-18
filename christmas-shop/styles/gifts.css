@@ -1,4 +1,4 @@
-.gift_section {
+.gifts {
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
@@ -27,6 +27,11 @@
 .buttons .item {
     border-radius: 12px;
     padding: 12px 20px;
+
+}
+
+.buttons .item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 
 }
 

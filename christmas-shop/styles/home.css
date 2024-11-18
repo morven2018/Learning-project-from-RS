@@ -1,4 +1,4 @@
-.hero {
+.Hero {
     background-color: var(--primary-color);
     margin: 0 auto;
     border-radius: 20px 20px 0px 0px;
@@ -37,9 +37,9 @@
     padding: 48px 0;
 }
 
-.about,
-.best_gifts,
-.slider {
+.About,
+.Best_Gifts,
+.Slider {
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
@@ -69,18 +69,18 @@
     max-width: 638px;
 }
 
-.slider {
+.Slider {
     text-align: center;
     padding: 0;
     color: var(--static-white-color);
 
 }
 
-.slider .caption {
+.Slider .caption {
     margin: 0;
 }
 
-.slider h2 {
+.Slider h2 {
     margin: 12px 0;
 }
 
@@ -132,19 +132,19 @@
 
 }
 
-.best_gifts .flakes {
+.Best_Gifts .flakes {
     padding-top: 30px;
 }
 
 
-.best_gifts .caption,
-.best_gifts h2 {
+.Best_Gifts .caption,
+.Best_Gifts h2 {
     color: var(--static-white-color);
     text-align: center;
 }
 
 
-.best_gifts h2 {
+.Best_Gifts h2 {
     margin: 0;
 }
 
