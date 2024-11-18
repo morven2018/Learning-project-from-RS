@@ -17,6 +17,10 @@
     box-sizing: content-box;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 h1 {
     font-size: 32px;
     line-height: 150%;
@@ -78,6 +82,7 @@ p {
 .slider_text {
     font-size: 80px;
     text-transform: uppercase;
+    color: var(--content-background-color);
 }
 
 

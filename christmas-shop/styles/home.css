@@ -36,7 +36,9 @@
     padding: 48px 0;
 }
 
-.about {
+.about,
+.slider,
+.best_gifts {
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
@@ -63,4 +65,93 @@
 .about_content img {
     border-radius: 20px;
     max-width: 638px;
+}
+
+.slider {
+    text-align: center;
+    color: var(--static-white-color);
+    padding: 60px 0 60px 82px;
+}
+
+.slider_cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 20px
+}
+
+.slider_cards .item {
+    gap: 20px;
+}
+
+.slider_cards img {
+    width: 200px;
+    border-radius: 20px;
+
+}
+
+.buttons {
+    padding: 20px 82px;
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end
+}
+
+.buttons .item {
+    padding: 15px;
+    align-items: center;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid var(--static-white-color);
+
+}
+
+.no-click {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.buttons .item:hover {
+    background-color: var(--static-white-color);
+    stroke: #FF4646;
+
+}
+
+
+.gift_items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 12px;
+}
+
+.card {
+    background-color: var(--content-background-color);
+    border-radius: 20px;
+    width: 310px;
+    height: 342px;
+}
+
+.gift_items img {
+    height: 230px;
+}
+
+.card_info {
+    padding: 20px;
+    background-color: var(--static-white-color);
+    border-radius: 20px;
+
+}
+
+#card1 h4,
+#card3 h4 {
+    color: var(--tag-purple-color);
+}
+
+#card2 h4 {
+    color: var(--tag-green-color);
+}
+
+#card4 h4 {
+    color: var(--tag-pink-color);
 }
