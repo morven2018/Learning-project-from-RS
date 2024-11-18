@@ -24,7 +24,6 @@ header div {
 
 nav ul {
     list-style-type: none;
-    gap: 6px;
 }
 
 nav li {
@@ -33,10 +32,13 @@ nav li {
 
 nav a {
     text-decoration: none;
-    padding: 12px 20px;
+    padding: 24px 20px;
     border-radius: 12px;
+    color: var(--dark-color);
 
 }
+
+
 
 nav .no-click_menu {
     background-color: var(--primary-color-10);

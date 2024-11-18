@@ -38,13 +38,13 @@
 }
 
 .about,
-.slider,
 .best_gifts,
-.CTA {
+.CTA,
+.slider {
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
-    padding: 0px 82px 60px 82px;
+    padding: 0px 82px;
 }
 
 .about_content {
@@ -72,20 +72,31 @@
 
 .slider {
     text-align: center;
+    padding: 0;
     color: var(--static-white-color);
-    padding: 60px 0 60px 82px;
+
+}
+
+.slider .caption {
+    margin: 0;
+}
+
+.slider h2 {
+    margin: 12px 0;
 }
 
 .slider_cards {
+    transform: translate(41px, 0);
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    gap: 20px
+    gap: 20px;
 }
 
 .slider_cards .item {
     gap: 20px;
+    padding-top: 8px;
 }
 
 .slider_cards img {

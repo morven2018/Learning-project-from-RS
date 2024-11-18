@@ -109,3 +109,7 @@ button:hover {
     color: var(--dark-color);
 
 }
+
+a:visited {
+    color: inherit;
+}
