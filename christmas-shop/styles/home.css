@@ -21,7 +21,8 @@
     background-image: url('../images/home/bg-snow.png');
     background-size: cover;
     background-repeat: repeat;
-    padding: 60px 8px;
+    padding: 60px 0px;
+    border: none;
 }
 
 
@@ -43,7 +44,7 @@
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
-    padding: 60px 82px;
+    padding: 0px 82px 60px 82px;
 }
 
 .about_content {
@@ -57,6 +58,7 @@
 .about_text {
     max-width: 426px;
     margin: 100px 60px;
+    padding: 50px 0 40px;
 }
 
 .about_text .caption {
