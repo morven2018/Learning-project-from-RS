@@ -100,7 +100,7 @@ button {
     background-color: var(--dark-color);
     color: var(--static-white-color);
     border-radius: 20px;
-    padding: 20px 32px;
+    padding: 20px 28px;
     border: none;
 }
 

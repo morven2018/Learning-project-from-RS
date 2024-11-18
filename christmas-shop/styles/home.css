@@ -39,7 +39,6 @@
 
 .about,
 .best_gifts,
-.CTA,
 .slider {
     background-color: var(--primary-color);
     max-width: 1440px;
@@ -196,11 +195,21 @@
     color: var(--tag-pink-color);
 }
 
+.CTA {
+    background-color: var(--primary-color);
+    max-width: 1440px;
+    margin: 0 auto;
+    border-radius: 0px 0px 20px 20px;
+}
 
 .santa_deer {
     background-image: url('../images/home/bg-forest.png');
     background-size: cover;
-    background-repeat: repeat;
+    background-repeat: no-repeat;
+    max-width: 1440px;
+    height: 668px;
+    border: none;
+
 }
 
 .CTA_content {
@@ -208,6 +217,22 @@
     width: 426px;
     margin: 0 auto;
     text-align: center;
+    padding-top: 102px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.CTA_content .separator {
+    width: 0px;
+    height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 0;
+    margin-top: 20px;
+}
+
+.CTA_content .caption {
+    margin: 20px 0 8px 0;
 }
 
 .timer {
@@ -215,12 +240,13 @@
     display: flex;
     justify-content: center;
     height: 72px;
+    width: 344px;
     border-radius: 20px;
+    padding: 8px 12px 12px;
 }
 
 .timer div {
     width: 80px;
-    padding: 12px;
 }
 
 .timer div h2,
