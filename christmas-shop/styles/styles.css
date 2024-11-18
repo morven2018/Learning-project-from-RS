@@ -1,0 +1,127 @@
+* {
+    --primary-color: #FF4646;
+    --primary-color-10: rgba(255, 70, 70, 0.1);
+    --dark-color: #181C29;
+    --static-white-color: #FFFFFF;
+    --static-white-color-40: rgba(255, 255, 255, 0.4);
+    --static-white-color-20: rgba(255, 255, 255, 0.2);
+    --tag-purple-color: #4361FF;
+    --tag-pink-color: #FF43F7;
+    --tag-green-color: #06A44F;
+    --tag-green-color-10: rgba(6, 164, 79, 0.1);
+    --content-background-color: #ECF3F8;
+    --overlay-color: #ECF3F8;
+    --hover-color: rgba(255, 70, 70, 0.1);
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+html {
+    scroll-behavior: smooth;
+
+}
+
+body {
+    overflow-x: hidden;
+    margin: 0;
+
+
+}
+
+h1 {
+    font-size: 32px;
+    line-height: 150%;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 12px 0;
+    padding: 0;
+    max-width: 446px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 24px;
+    line-height: 152%;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 16px;
+    line-height: 152%;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+h4 {
+    font-size: 12px;
+    line-height: 130%;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.action_large {
+    font-size: 24px;
+    line-height: 152%;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.action_small {
+    font-size: 12px;
+    line-height: 130%;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+}
+
+p {
+    font-weight: 400;
+    font-weight: 16px;
+    line-height: 148%;
+    margin: 8px 0;
+}
+
+.caption {
+    font-family: "Allura",
+        cursive;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: 0.05em;
+    margin: 12px 0;
+}
+
+.slider_text {
+    font-size: 80px;
+    text-transform: uppercase;
+    color: var(--content-background-color);
+}
+
+
+button {
+    background-color: var(--dark-color);
+    color: var(--static-white-color);
+    border-radius: 20px;
+    padding: 20px 28px;
+    border: none;
+}
+
+button:hover {
+    background-color: var(--static-white-color);
+    color: var(--dark-color);
+    transition: 1s;
+
+}
+
+a:visited {
+    color: inherit;
+}
+
+.no-click_menu {
+    pointer-events: none;
+}

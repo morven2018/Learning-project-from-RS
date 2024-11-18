@@ -1,0 +1,50 @@
+header div {
+    display: flex;
+    max-width: 1440px;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 12px 82px;
+
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+}
+
+.logo {
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    gap: 8px;
+}
+
+
+
+nav ul {
+    list-style-type: none;
+}
+
+nav li {
+    display: inline-block;
+}
+
+nav a {
+    text-decoration: none;
+    padding: 24px 20px;
+    border-radius: 12px;
+    color: var(--dark-color);
+
+}
+
+
+
+nav .no-click_menu {
+    pointer-events: none;
+}
+
+nav a:hover {
+    background-color: var(--primary-color-10);
+    transition: 1s;
+}

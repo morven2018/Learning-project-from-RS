@@ -1,0 +1,99 @@
+.gifts {
+    background-color: var(--primary-color);
+    max-width: 1440px;
+    margin: 0 auto;
+    border-radius: 20px;
+}
+
+.snowballs {
+    background-image: url('../images/gifts/bg-garland.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 60px 82px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 20px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.buttons .item {
+    border-radius: 12px;
+    padding: 12px 20px;
+
+}
+
+.buttons .item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+
+}
+
+.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.buttons a,
+.snowballs h1 {
+    color: var(--static-white-color);
+    margin: 0;
+
+}
+
+.cards {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.cards img {
+    height: 230px;
+}
+
+.cards .item {
+    background-color: var(--content-background-color);
+    border-radius: 20px;
+    width: 310px;
+    height: 342px;
+    display: block;
+}
+
+.cards .item:hover h3 {
+    color: var(--primary-color);
+    transition: 1s;
+}
+
+.card_info {
+    background-color: var(--static-white-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 8px;
+}
+
+.card_info h3,
+.card_info h4 {
+    padding: 0;
+    margin: 0;
+}
+
+.work h4 {
+    color: var(--tag-purple-color);
+}
+
+.health h4 {
+    color: var(--tag-green-color);
+}
+
+.harmony h4 {
+    color: var(--tag-pink-color);
+}
