@@ -5,7 +5,6 @@
     max-width: 1440px;
     border: none;
 
-
 }
 
 .ball {
@@ -28,7 +27,7 @@
 
 .hero_container {
     color: var(--static-white-color);
-    max-width: 426px;
+    max-width: 446px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -44,7 +43,7 @@
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
-    padding: 82px 60px;
+    padding: 60px 82px;
 }
 
 .about_content {

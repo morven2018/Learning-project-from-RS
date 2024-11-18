@@ -29,8 +29,10 @@ body {
 h1 {
     font-size: 32px;
     line-height: 150%;
-    letter-spacing: 0.18rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
+    margin: 0 0 12px 0;
+    padding: 0;
 }
 
 h2 {
@@ -64,7 +66,7 @@ h4 {
 .action_small {
     font-size: 12px;
     line-height: 130%;
-    letter-spacing: 5%;
+    letter-spacing: 0.05rem;
     text-transform: uppercase;
 }
 
@@ -80,7 +82,7 @@ p {
     font-size: 24px;
     font-weight: 400;
     line-height: 100%;
-    letter-spacing: 5%;
+    letter-spacing: 0.05rem;
     margin: 12px 0;
 }
 
