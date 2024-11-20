@@ -73,6 +73,7 @@
     text-align: center;
     padding: 0;
     color: var(--static-white-color);
+    overflow-x: hidden;
 
 }
 
@@ -117,6 +118,7 @@
     text-align: center;
     border-radius: 20px;
     border: 1px solid var(--static-white-color);
+    stroke: var(--static-white-color);
 
 }
 
@@ -127,7 +129,7 @@
 
 .buttons .item:hover {
     background-color: var(--static-white-color);
-    stroke: #FF4646;
+    stroke: var(--primary-color);
     transition: 1s;
 
 }

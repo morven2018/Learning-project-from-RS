@@ -62,3 +62,16 @@ footer {
 .media_and_copy a {
     color: var(--dark-color);
 }
+
+.media_and_copy .caption:hover {
+    color: var(--primary-color);
+}
+
+.media .item path {
+    stroke: var(--dark-color);
+}
+
+.media .item:hover path {
+    stroke: var(--primary-color);
+    transition: all 0.3s ease;
+}
