@@ -151,17 +151,21 @@
 }
 
 .gift_items {
-    margin-top: 20px;
-    display: flex;
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 310px);
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 12px;
 }
 
 .card {
     background-color: var(--content-background-color);
     border-radius: 20px;
-    width: 310px;
+    width: 308px;
     height: 342px;
     display: block;
+
 }
 
 .card:hover h3 {
@@ -170,7 +174,7 @@
 }
 
 .gift_items img {
-    height: 230px;
+    height: 228px;
 }
 
 .card_info {
@@ -263,4 +267,13 @@
 .timer div h2,
 .timer div h4 {
     margin: 0;
+}
+
+@media screen and (max-width: 800px) {
+
+    .About,
+    .Best_Gifts,
+    .Slider {
+        padding: 0px 8px;
+    }
 }
