@@ -1,13 +1,13 @@
-.Hero {
+main {
     background-color: var(--primary-color);
+    border-radius: 20px;
     margin: 0 auto;
-    border-radius: 20px 20px 0px 0px;
     max-width: 1440px;
+    padding: 0;
     border: none;
-
 }
 
-.ball {
+.Hero {
     background-image: url('../images/home/bg-ball.png');
     background-position: center;
     background-size: cover;
@@ -154,7 +154,6 @@
     margin-top: 8px;
     display: grid;
     grid-template-columns: repeat(auto-fit, 310px);
-    flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
 }
@@ -211,16 +210,10 @@
 }
 
 .CTA {
-    background-color: var(--primary-color);
-    max-width: 1440px;
-    margin: 0 auto;
-    border-radius: 0px 0px 20px 20px;
-}
-
-.santa_deer {
     background-image: url('../images/home/bg-forest.png');
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     max-width: 1440px;
     height: 668px;
     border: none;
