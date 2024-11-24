@@ -53,7 +53,6 @@ main {
     border-radius: 20px;
     justify-content: space-between;
     overflow-y: hidden;
-    height: 528px;
     align-items: center;
 
 }
@@ -61,19 +60,20 @@ main {
 .about_text {
     max-width: 426px;
     margin: 0 60px;
-    padding: 50px 0 40px;
+    padding: 0;
 }
 
 .about_text .caption {
     color: var(--primary-color);
 }
 
-.about_image .image {
+.about_image {
     background-image: url('../images/home/santa.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 20px;
+    height: 528px;
 }
 
 .Slider {
@@ -283,6 +283,42 @@ main {
 
     .buttons {
         padding: 20px 0;
+    }
+
+}
+
+@media screen and (max-width: 1190px) {
+
+    .About,
+    .Best_Gifts,
+    .Slider {
+        padding: 0px 68px;
+    }
+
+    .slider_cards {
+        transform: translate(0, 0);
+    }
+
+}
+
+@media screen and (max-width: 900px) {
+
+    .About,
+    .Best_Gifts,
+    .Slider {
+        padding: 0px 8px;
+    }
+
+}
+
+@media screen and (max-width: 745px) {
+    .about_content {
+        grid-template-columns: 1fr;
+        grid-template-rows: 352px 528px;
+    }
+
+    .about_text {
+        margin: 0 20px;
     }
 
 }
