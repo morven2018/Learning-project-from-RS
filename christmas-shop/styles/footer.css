@@ -6,7 +6,7 @@ footer {
 footer>div {
     max-width: 1440px;
     margin: 0 auto;
-    padding: 12px 82px;
+    padding: 60px 82px;
 }
 
 .cards_contacts {
@@ -93,14 +93,14 @@ footer>div {
         gap: 12px;
     }
 
-    footer {
-        padding: 60px 68px;
+    footer>div {
+        padding: 60px 8px;
     }
 
 }
 
 @media screen and (max-width: 900px) {
-    footer {
+    footer>div {
         padding: 60px 8px;
     }
 
