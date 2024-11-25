@@ -57,13 +57,16 @@ nav a {
 }
 
 
-nav .no-click_menu {
+nav li .no-click_menu {
     pointer-events: none;
+    background-color: var(--primary-color-10);
+    color: var(--primary-color);
 }
 
 nav a:hover {
     background-color: var(--primary-color-10);
     transition: 1s;
+    color: var(--primary-color);
 }
 
 @media screen and (max-width:768px) {
