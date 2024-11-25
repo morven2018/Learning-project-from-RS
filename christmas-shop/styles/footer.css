@@ -99,7 +99,7 @@ footer>div {
 
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 800px) {
     footer>div {
         padding: 60px 8px;
     }

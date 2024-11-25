@@ -243,7 +243,7 @@ main {
 
 .CTA_content {
     color: var(--static-white-color);
-    width: 426px;
+    max-width: 426px;
     margin: 60px auto;
     padding: 60px 0;
     text-align: center;
@@ -283,7 +283,6 @@ main {
 
 
 @media screen and (max-width: 800px) {
-
 
     .buttons {
         padding: 20px 0;
@@ -329,6 +328,10 @@ main {
 
     .Hero {
         height: 572px;
+    }
+
+    .CTA .flakes {
+        padding: 60px 8px;
     }
 
 }

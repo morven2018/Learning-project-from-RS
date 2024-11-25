@@ -76,7 +76,15 @@ nav a:hover {
     .menu {
         display: none;
     }
+}
 
+@media screen and (max-width: 1190px) {
+    header div {
+        padding: 12px 68px;
+    }
+}
+
+@media screen and (max-width: 850px) {
     header div {
         padding: 12px 8px;
     }
