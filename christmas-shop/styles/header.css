@@ -1,6 +1,11 @@
+header {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
 header div {
     display: flex;
-    max-width: 1440px;
+
     justify-content: space-between;
     margin: 0 auto;
     padding: 12px 82px;
@@ -46,6 +51,7 @@ nav a {
     text-decoration: none;
     padding: 0 20px;
     border-radius: 12px;
+    padding: 12px 20px;
     color: var(--dark-color);
 
 }
