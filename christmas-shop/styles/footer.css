@@ -30,11 +30,7 @@ footer>div {
     text-decoration: none;
 }
 
-.cards_contacts .item:hover .action_large,
-.cards_contacts .item:hover h3 {
-    color: var(--primary-color);
-    transition: 1s;
-}
+
 
 
 .cards_contacts .item h3,
@@ -74,18 +70,13 @@ footer>div {
     margin-bottom: 0;
 }
 
-.media_and_copy .caption:hover {
-    color: var(--primary-color);
-}
+
 
 .media .item path {
     stroke: var(--dark-color);
 }
 
-.media .item:hover path {
-    stroke: var(--primary-color);
-    transition: all 0.3s ease;
-}
+
 
 @media screen and (max-width: 1190px) {
     .cards_contacts {
@@ -97,6 +88,8 @@ footer>div {
         padding: 60px 68px;
     }
 
+
+
 }
 
 @media screen and (max-width: 800px) {
@@ -105,4 +98,22 @@ footer>div {
     }
 
 
+}
+
+@media (hover:hover) {
+
+    .cards_contacts .item:hover .action_large,
+    .cards_contacts .item:hover h3 {
+        color: var(--primary-color);
+        transition: 1s;
+    }
+
+    .media_and_copy .caption:hover {
+        color: var(--primary-color);
+    }
+
+    .media .item:hover path {
+        stroke: var(--primary-color);
+        transition: all 0.3s ease;
+    }
 }

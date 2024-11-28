@@ -30,10 +30,6 @@
 
 }
 
-.buttons .item:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-
-}
 
 .active {
     background-color: rgba(255, 255, 255, 0.2);
@@ -65,10 +61,6 @@
     display: block;
 }
 
-.cards .item:hover h3 {
-    color: var(--primary-color);
-    transition: 1s;
-}
 
 .card_info {
     background-color: var(--static-white-color);
@@ -117,5 +109,17 @@
 
     .buttons .item {
         padding: 12px 8px;
+    }
+}
+
+@media (hover:hover) {
+    .buttons .item:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+
+    }
+
+    .cards .item:hover h3 {
+        color: var(--primary-color);
+        transition: 1s;
     }
 }
