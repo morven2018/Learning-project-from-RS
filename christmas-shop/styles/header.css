@@ -63,11 +63,7 @@ nav li .no-click_menu {
     color: var(--primary-color);
 }
 
-nav a:hover {
-    background-color: var(--primary-color-10);
-    transition: 1s;
-    color: var(--primary-color);
-}
+
 
 @media screen and (max-width:768px) {
     .hamburger-menu {
@@ -89,5 +85,13 @@ nav a:hover {
 @media screen and (max-width: 850px) {
     header div {
         padding: 12px 8px;
+    }
+}
+
+@media (hover:hover) {
+    nav a:hover {
+        background-color: var(--primary-color-10);
+        transition: 1s;
+        color: var(--primary-color);
     }
 }

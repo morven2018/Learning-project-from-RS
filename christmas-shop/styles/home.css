@@ -141,12 +141,7 @@ main {
     opacity: 0.4;
 }
 
-.buttons .item:hover {
-    background-color: var(--static-white-color);
-    stroke: var(--primary-color);
-    transition: 1s;
 
-}
 
 #right {
     height: 14px;
@@ -190,10 +185,6 @@ main {
 
 }
 
-.card:hover h3 {
-    color: var(--primary-color);
-    transition: 1s;
-}
 
 .gift_items img {
     height: 228px;
@@ -340,4 +331,20 @@ main {
         padding: 60px 8px;
     }
 
+}
+
+@media (hover:hover) {
+
+
+    .buttons .item:hover {
+        background-color: var(--static-white-color);
+        stroke: var(--primary-color);
+        transition: 1s;
+
+    }
+
+    .card:hover h3 {
+        color: var(--primary-color);
+        transition: 1s;
+    }
 }
