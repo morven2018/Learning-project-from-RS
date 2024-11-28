@@ -111,12 +111,7 @@ button {
     border: none;
 }
 
-button:hover {
-    background-color: var(--static-white-color);
-    color: var(--dark-color);
-    transition: 1s;
 
-}
 
 a:visited {
     color: inherit;
@@ -124,4 +119,13 @@ a:visited {
 
 .no-click_menu {
     pointer-events: none;
+}
+
+@media (hover:hover) {
+    button:hover {
+    background-color: var(--static-white-color);
+    color: var(--dark-color);
+    transition: 1s;
+
+    }
 }
