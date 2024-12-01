@@ -1,49 +1,56 @@
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    const dataJSON = require('../materials/gifts.json');
-
+const response = await fetch('./materials/gifts.json');
+const dataGifts = await response.json();
 
 
-    let dataGifts = JSON.parse(dataJSON);
-    const linkToWork = "./images/home/gift-for-work.png";
-    const linkToHealth = "./images/home/gift-for-health.png";
-    const linkToHarmony = "./images/home/gift-for-harmony.png";
 
-    function getClass(category) {
-        switch (category) {
-            case "For Work":
-                return 'work';
-            case "For Health":
-                return 'health';
-            case "For Harmony":
-                return 'harmony';
-        }
+
+const linkToWork = "./images/home/gift-for-work.png";
+const linkToHealth = "./images/home/gift-for-health.png";
+const linkToHarmony = "./images/home/gift-for-harmony.png";
+
+function getClass(category) {
+    switch (category) {
+        case "For Work":
+            return 'work';
+        case "For Health":
+            return 'health';
+        case "For Harmony":
+            return 'harmony';
     }
+}
 
-    function getURL(category) {
-        switch (category) {
-            case "For Work":
-                return linkToWork
-            case "For Health":
-                return linkToHealth
-            case "For Harmony":
-                return linkToHarmony
-        }
+function getURL(category) {
+    switch (category) {
+        case "For Work":
+            return linkToWork
+        case "For Health":
+            return linkToHealth
+        case "For Harmony":
+            return linkToHarmony
     }
+}
 
+function addCards(data) {
     let cardGifts = '';
-    let generatedcards = document.getElementById('giftsItems');
-    for (let i = 0; i < dataGifts.length; i += 1) {
+    for (let i = 0; i < data.length; i += 1) {
+        console.log(data[0]);
         cardGifts += `
-    <a class='item'>
-        <img src="${getURL(dataGifts[i].category)}" alt="picture of gift">
-        <div class="card_info ${getClass(dataGifts[i].category)}">
-            <h4>${dataGifts[i].category}</h4>
-            <h3>${dataGifts[i].name}</h3>
-        </div>
-    </a>`
+<a class='item'>
+    <img src="${getURL(data[i].category)}" alt="picture of gift">
+    <div class="card_info ${getClass(data[i].category)}">
+        <h4>${data[i].category}</h4>
+        <h3>${data[i].name}</h3>
+    </div>
+</a>`
     }
+    return cardGifts;
+}
 
-    generatedcards.insertAdjacentHTML('beforeend', cardGifts);
-});
+
+let generatedcards = document.getElementById('giftsItems');
+
+generatedcards.insertAdjacentHTML('beforeend', addCards(dataGifts));
+
+
+
