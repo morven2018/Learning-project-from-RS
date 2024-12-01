@@ -1,18 +1,18 @@
-.Hero {
+main {
     background-color: var(--primary-color);
     margin: 0 auto;
-    border-radius: 20px 20px 0px 0px;
+    border-radius: 20px;
     max-width: 1440px;
+    padding: 0;
     border: none;
-
+    padding: 0;
 }
 
-.ball {
+.Hero {
     background-image: url('../images/home/bg-ball.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    max-width: 1440px;
     height: 524px;
     border: none;
 }
@@ -20,9 +20,10 @@
 .flakes {
     background-image: url('../images/home/bg-snow.png');
     background-size: cover;
-    background-repeat: repeat;
-    padding: 60px 0px;
+    background-repeat: no-repeat;
+    padding: 0px;
     border: none;
+    background-position: center;
 }
 
 
@@ -34,39 +35,48 @@
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
-    padding: 48px 0;
+    padding: 108px 0;
 }
 
 .About,
 .Best_Gifts,
 .Slider {
     background-color: var(--primary-color);
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0px 82px;
+    padding: 0;
+    margin: auto;
+}
+
+.About .flakes {
+    padding: 60px 82px;
 }
 
 .about_content {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     background-color: var(--static-white-color);
     border-radius: 20px;
     justify-content: space-between;
-
+    overflow-y: hidden;
+    align-items: center;
 }
 
 .about_text {
     max-width: 426px;
-    margin: 100px 60px;
-    padding: 50px 0 40px;
+    margin: 0 60px;
+    padding: 0;
 }
 
 .about_text .caption {
     color: var(--primary-color);
 }
 
-.about_content img {
+.about_image {
+    background-image: url('../images/home/santa.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     border-radius: 20px;
-    max-width: 638px;
+    height: 528px;
 }
 
 .Slider {
@@ -77,16 +87,20 @@
 
 }
 
+.Slider .flakes {
+    padding: 30px 82px;
+}
+
 .Slider .caption {
-    margin: 0;
+    margin: 30px 0 0;
+    padding: 0;
 }
 
 .Slider h2 {
-    margin: 12px 0;
+    padding: 12px 0;
 }
 
 .slider_cards {
-    transform: translate(41px, 0);
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -106,7 +120,7 @@
 }
 
 .buttons {
-    padding: 20px 82px;
+    padding: 20px 0;
     display: flex;
     gap: 20px;
     justify-content: flex-end
@@ -127,17 +141,17 @@
     opacity: 0.4;
 }
 
-.buttons .item:hover {
-    background-color: var(--static-white-color);
-    stroke: var(--primary-color);
-    transition: 1s;
 
+
+#right {
+    height: 14px;
+    width: 14px;
+    padding: 5px;
 }
 
 .Best_Gifts .flakes {
-    padding-top: 30px;
+    padding: 60px 82px;
 }
-
 
 .Best_Gifts .caption,
 .Best_Gifts h2 {
@@ -146,15 +160,18 @@
 }
 
 
-.Best_Gifts h2 {
+.Best_Gifts h2,
+.Slider h2,
+.timer div h2,
+.timer div h4,
+.CTA h2 {
     margin: 0;
 }
 
 .gift_items {
-    margin-top: 8px;
+    margin-top: 16px;
     display: grid;
     grid-template-columns: repeat(auto-fit, 310px);
-    flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
 }
@@ -168,10 +185,6 @@
 
 }
 
-.card:hover h3 {
-    color: var(--primary-color);
-    transition: 1s;
-}
 
 .gift_items img {
     height: 228px;
@@ -211,31 +224,30 @@
 }
 
 .CTA {
-    background-color: var(--primary-color);
-    max-width: 1440px;
-    margin: 0 auto;
-    border-radius: 0px 0px 20px 20px;
-}
-
-.santa_deer {
     background-image: url('../images/home/bg-forest.png');
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
     max-width: 1440px;
-    height: 668px;
     border: none;
+    border-radius: 0 0 20px 20px;
 
+}
+
+.CTA .flakes {
+    padding: 60px 82px;
 }
 
 .CTA_content {
     color: var(--static-white-color);
-    width: 426px;
-    margin: 0 auto;
+    max-width: 426px;
+    margin: 60px auto;
+    padding: 60px 0;
     text-align: center;
-    padding-top: 102px;
-    display: flex;
     align-items: center;
+    display: flex;
     flex-direction: column;
+    gap: 20px;
 }
 
 .CTA_content .separator {
@@ -247,33 +259,92 @@
 }
 
 .CTA_content .caption {
-    margin: 20px 0 8px 0;
+    margin: 0;
 }
 
 .timer {
     background-color: var(--static-white-color-40);
     display: flex;
     justify-content: center;
-    height: 72px;
-    width: 344px;
+    height: 52px;
+    width: 320px;
     border-radius: 20px;
     padding: 8px 12px 12px;
+    margin-top: 8px;
 }
 
 .timer div {
     width: 80px;
 }
 
-.timer div h2,
-.timer div h4 {
-    margin: 0;
+
+
+@media screen and (max-width: 800px) {
+
+    .buttons {
+        padding: 20px 0;
+    }
+
+}
+
+@media screen and (max-width: 1190px) {
+
+    .About .flakes,
+    .Best_Gifts .flakes {
+        padding: 60px 68px;
+    }
+
+    .Slider .flakes {
+        padding: 60px 68px;
+    }
+
 }
 
 @media screen and (max-width: 800px) {
 
-    .About,
-    .Best_Gifts,
-    .Slider {
-        padding: 0px 8px;
+    .About .flakes,
+    .Best_Gifts .flakes {
+        padding: 60px 8px;
+    }
+
+    .Slider .flakes {
+        padding: 30px 8px;
+    }
+
+}
+
+@media screen and (max-width: 745px) {
+    .about_content {
+        grid-template-columns: 1fr;
+        grid-template-rows: 352px 528px;
+    }
+
+    .about_text {
+        margin: 0 20px;
+    }
+
+    .Hero {
+        height: 572px;
+    }
+
+    .CTA .flakes {
+        padding: 60px 8px;
+    }
+
+}
+
+@media (hover:hover) {
+
+
+    .buttons .item:hover {
+        background-color: var(--static-white-color);
+        stroke: var(--primary-color);
+        transition: 1s;
+
+    }
+
+    .card:hover h3 {
+        color: var(--primary-color);
+        transition: 1s;
     }
 }

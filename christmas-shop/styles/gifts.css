@@ -30,10 +30,6 @@
 
 }
 
-.buttons .item:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-
-}
 
 .active {
     background-color: rgba(255, 255, 255, 0.2);
@@ -50,11 +46,11 @@
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .cards img {
-    height: 230px;
+    height: 228px;
 }
 
 .cards .item {
@@ -65,10 +61,6 @@
     display: block;
 }
 
-.cards .item:hover h3 {
-    color: var(--primary-color);
-    transition: 1s;
-}
 
 .card_info {
     background-color: var(--static-white-color);
@@ -96,4 +88,38 @@
 
 .harmony h4 {
     color: var(--tag-pink-color);
+}
+
+@media screen and (max-width: 1190px) {
+    .snowballs {
+        padding: 60px 68px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .snowballs {
+        padding: 60px 8px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .buttons {
+        gap: 0;
+    }
+
+    .buttons .item {
+        padding: 12px 8px;
+    }
+}
+
+@media (hover:hover) {
+    .buttons .item:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+
+    }
+
+    .cards .item:hover h3 {
+        color: var(--primary-color);
+        transition: 1s;
+    }
 }
