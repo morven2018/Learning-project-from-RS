@@ -31,24 +31,28 @@
                 <span>THE&nbsp;GIFTS</span>
 
             </a>
-            <div class="hamburger-menu">
-                <div class="hamburger">
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 16H30" stroke="#181C29" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M10 24H30" stroke="#181C29" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-            </div>
-            <nav class="menu">
+            <nav class="menu list-menu">
                 <ul>
-                    <li><a href="./gifts.html">GIFTS</a></li>
-                    <li><a href="./home.html#about">ABOUT</a></li>
-                    <li><a href="./home.html#best_gifts">BEST</a></li>
-                    <li><a href="#contacts">CONTACTS</a></li>
+                    <li><a class="nav-link" href="./gifts.html">GIFTS</a></li>
+                    <li><a class="nav-link" href="./home.html#about">ABOUT</a></li>
+                    <li><a class="nav-link" href="./home.html#best_gifts">BEST</a></li>
+                    <li><a class="nav-link" href="#contacts">CONTACTS</a></li>
                 </ul>
             </nav>
-
-
+            <div class="hamburger-menu">
+                <div id="menu" title="hamburger icon">
+                    <span id="line1"></span>
+                    <span id="line2"></span>
+                </div>
+            </div>
+        </div>
+        <div id="drop-down-menu">
+            <ul>
+                <li><a class="nav-link" href="./gifts.html">GIFTS</a></li>
+                <li><a class="nav-link" href="./home.html#about">ABOUT</a></li>
+                <li><a class="nav-link" href="./home.html#best_gifts">BEST</a></li>
+                <li><a class="nav-link" href="#contacts">CONTACTS</a></li>
+            </ul>
         </div>
     </header>
 
@@ -97,15 +101,15 @@
                             <div class="slider_text">Live</div>
                             <img src="./images/home/snowman.png" alt="snowman">
                         </div>
-                        <div class="slider_cards item">
+                        <div class="slider_cards_item">
                             <div class="slider_text">create</div>
                             <img src="./images/home/christmas-trees.png" alt="christmas trees">
                         </div>
-                        <div class="slider_cards item">
+                        <div class="slider_cards_item">
                             <div class="slider_text">Love</div>
                             <img src="./images/home/christmas-tree-ball.png" alt="christmas ball">
                         </div>
-                        <div class="slider_cards item">
+                        <div class="slider_cards_item">
                             <div class="slider_text">dream</div>
                             <img src="./images/home/fairytale-house.png" alt="christmas house">
                         </div>
@@ -149,35 +153,7 @@
                 <div class="gift_content">
                     <div class="caption">Best Gifts</div>
                     <h2>especially for you</h2>
-                    <div class="gift_items">
-                        <a class="card">
-                            <img src="./images/home/gift-for-work.png" alt="ball">
-                            <div class="card_info" id="card1">
-                                <h4>For work</h4>
-                                <h3>Console.log Guru<br><br></h3>
-                            </div>
-                        </a>
-                        <a class="card">
-                            <img src="./images/home/gift-for-health.png" alt="ball">
-                            <div class="card_info" id="card2">
-                                <h4>For health</h4>
-                                <h3>Hydration Bot<br><br></h3>
-                            </div>
-                        </a>
-                        <a class="card">
-                            <img src="./images/home/gift-for-work.png" alt="ball">
-                            <div class="card_info" id="card3">
-                                <h4>For work</h4>
-                                <h3>Merge Master<br><br></h3>
-                            </div>
-                        </a>
-                        <a class="card">
-                            <img src="./images/home/gift-for-harmony.png" alt="ball">
-                            <div class="card_info" id="card4">
-                                <h4>For harmony</h4>
-                                <h3>Spontaneous Coding Philosopher</h3>
-                            </div>
-                        </a>
+                    <div id="cards_gifts">
                     </div>
                 </div>
             </div>
@@ -194,23 +170,23 @@
                     <div>
                         <div class="caption">The New Year is Coming Soon...</div>
                         <div class="timer">
-                            <div id="days">
-                                <h2>47</h2>
+                            <div>
+                                <h2 id="days"></h2>
                                 <h4>days</h4>
                             </div>
                             <div class="separator"></div>
-                            <div id="hours">
-                                <h2>5</h2>
+                            <div>
+                                <h2 id="hours"></h2>
                                 <h4>hours</h4>
                             </div>
                             <div class="separator"></div>
-                            <div id="minutes">
-                                <h2>34</h2>
+                            <div>
+                                <h2 id="minutes"></h2>
                                 <h4>minutes</h4>
                             </div>
                             <div class="separator"></div>
-                            <div id="seconds">
-                                <h2>12</h2>
+                            <div>
+                                <h2 id="seconds"></h2>
                                 <h4>seconds</h4>
                             </div>
                         </div>
@@ -250,7 +226,7 @@
             </div>
             <div class="media_and_copy">
                 <div class="media">
-                    <a href="#" class="media item">
+                    <a href="#" class="media_item">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M29 13L10 20.5L17 21.5M29 13L26.5 28L17 21.5M29 13L17 21.5M17 21.5V27L20.2488 23.7229"
@@ -259,7 +235,7 @@
 
 
                     </a>
-                    <a href="#" class="media item">
+                    <a href="#" class="media_item">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M25 10H22C20.6739 10 19.4021 10.5268 18.4645 11.4645C17.5268 12.4021 17 13.6739 17 15V18H14V22H17V30H21V22H24L25 18H21V15C21 14.7348 21.1054 14.4804 21.2929 14.2929C21.4804 14.1054 21.7348 14 22 14H25V10Z"
@@ -268,7 +244,7 @@
 
 
                     </a>
-                    <a href="#" class="media item">
+                    <a href="#" class="media_item">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M20 24C22.2091 24 24 22.2091 24 20C24 17.7909 22.2091 16 20 16C17.7909 16 16 17.7909 16 20C16 22.2091 17.7909 24 20 24Z"
@@ -283,7 +259,7 @@
 
 
                     </a>
-                    <a href="#" class="media item">
+                    <a href="#" class="media_item">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M24.8198 28.7684L11.7532 11.9684C11.4466 11.5742 11.7275 11 12.2268 11H14.7065C14.8917 11 15.0665 11.0855 15.1802 11.2316L28.2468 28.0316C28.5534 28.4258 28.2725 29 27.7732 29H25.2935C25.1083 29 24.9335 28.9145 24.8198 28.7684Z"
@@ -302,7 +278,9 @@
             </div>
         </div>
     </footer>
-
+    <script type="module" src="../christmas-shop/scripts/home.js"></script>
+    <script src="../christmas-shop/scripts/burger.js"></script>
+    <script type="module" src="../christmas-shop/scripts/best_gifts.js"></script>
 </body>
 
 </html>
