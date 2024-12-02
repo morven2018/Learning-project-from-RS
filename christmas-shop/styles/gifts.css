@@ -2,7 +2,12 @@
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
-    border-radius: 20px;
+
+
+}
+
+.no-display {
+    display: none;
 }
 
 .snowballs {
@@ -25,14 +30,14 @@
 }
 
 .buttons .item {
-    border-radius: 12px;
     padding: 12px 20px;
-
+    border-radius: 12px;
 }
 
 
 .active {
     background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
 }
 
 .buttons a,
