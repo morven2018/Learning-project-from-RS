@@ -9,9 +9,11 @@ const blankflakes = `<svg width="14" height="16" viewBox="0 0 14 16" fill="none"
 </svg>`;
 
 const itemCards = document.querySelectorAll('.item');
+const wrapper = document.querySelector('.modal-wrapper')
 if (!!itemCards) {
     itemCards.forEach(item => item.addEventListener('click', event => {
         let indexGifts = dataGifts.findIndex(elem => item.id === elem.name);
+        wrapper.classList.remove('closed');
         renderModal(dataGifts[indexGifts]);
     }));
 }
@@ -19,13 +21,13 @@ if (!!itemCards) {
 
 document.querySelector(".close_btn").addEventListener("click", function () {
     modalCard.innerHTML = '';
-    document.getElementsByTagName('body').classList.toggle('modal_hide');
+    wrapper.classList.add('closed');
 });
 
-document.querySelector(".modal").addEventListener("click", function (event) {
+document.querySelector(".overlay").addEventListener("click", function (event) {
     if (!document.querySelector(".modal_card").contains(event.target)) {
         modalCard.innerHTML = '';
-        document.getElementsByTagName('body').classList.toggle('modal_hide');
+        wrapper.classList.add('closed');
     }
 });
 
