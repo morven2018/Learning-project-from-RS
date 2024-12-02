@@ -111,15 +111,6 @@ button {
     border: none;
 }
 
-@media (hover:hover) {
-    button:hover {
-        background-color: var(--static-white-color);
-        color: var(--dark-color);
-        transition: 1s;
-
-    }
-}
-
 a:visited {
     color: inherit;
 }
@@ -128,6 +119,15 @@ a:visited {
     pointer-events: none;
 }
 
+
 .hide {
     display: none;
+}
+@media (hover:hover) {
+    button:hover {
+        background-color: var(--static-white-color);
+        color: var(--dark-color);
+        transition: 1s;
+
+    }
 }
