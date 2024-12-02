@@ -185,43 +185,65 @@ main {
 
 }
 
+#cards_gifts {
+    display: flex !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+}
+
+.element img {
+    height: 228px !important;
+}
+
+.element {
+    background-color: var(--content-background-color) !important;
+    border-radius: 20px !important;
+    width: 310px !important;
+    height: 342px !important;
+    display: block !important;
+}
+
 
 .gift_items img {
     height: 228px;
 }
 
 .card_info {
-    background-color: var(--static-white-color);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    gap: 8px;
-
+    background-color: var(--static-white-color) !important;
+    border-radius: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    height: 112px !important;
+    gap: 8px !important;
 }
 
-.card_info h3,
 .card_info h4 {
-    padding: 0;
-    margin: 0;
+    padding: 20px 0 0 20px !important;
+    margin: 0 !important;
+}
+
+.card_info h3 {
+    padding: 0 0 20px 20px !important;
+    margin: 0 !important;
+}
+
+.work h4 {
+    color: var(--tag-purple-color) !important;
+}
+
+.health h4 {
+    color: var(--tag-green-color) !important;
+}
+
+.harmony h4 {
+    color: var(--tag-pink-color) !important;
 }
 
 
 
-#card1 h4,
-#card3 h4 {
-    color: var(--tag-purple-color);
-}
 
-#card2 h4 {
-    color: var(--tag-green-color);
-}
-
-#card4 h4 {
-    color: var(--tag-pink-color);
-    color: var(--tag-pink-color);
-}
 
 .CTA {
     background-image: url('../images/home/bg-forest.png');
@@ -334,16 +356,7 @@ main {
 }
 
 @media (hover:hover) {
-
-
-    .buttons .item:hover {
-        background-color: var(--static-white-color);
-        stroke: var(--primary-color);
-        transition: 1s;
-
-    }
-
-    .card:hover h3 {
+    .element:hover h3 {
         color: var(--primary-color);
         transition: 1s;
     }

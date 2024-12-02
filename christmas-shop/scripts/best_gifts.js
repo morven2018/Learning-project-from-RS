@@ -34,7 +34,7 @@ export function addCards(data) {
     for (let i = 0; i < data.length; i += 1) {
         console.log(data[0]);
         cardGifts += `
-<a class='item' id='${data[i].name}'>
+<a class='element' id='${data[i].name}'>
     <img src="${getURL(data[i].category)}" alt="picture of gift">
     <div class="card_info ${getClass(data[i].category)}">
         <h4>${data[i].category}</h4>
@@ -46,18 +46,10 @@ export function addCards(data) {
 }
 
 let generatedcards = document.getElementById('cards_gifts');
-generatedcards.insertAdjacentHTML('beforeend', addCards(getRandomElements(4)));
+let randIndex = () => Math.floor(Math.random() * dataGifts.length);
 
 
-function getRandomElements(number = 4) {
-    if (number < dataGifts.length) {
-        const sheffledArray = [];
-        while (sheffledArray.length < number) {
-            let i = Math.floor(Math.random * dataGifts.length);
-            if (!sheffledArray.includes(dataGifts[i])) {
-                sheffledArray.push(dataGifts[i]);
-            }
-        }
-        return sheffledArray;
-    }
-}
+const indexes = new Set([randIndex(), randIndex(), randIndex(), randIndex(), randIndex(), randIndex()]);
+const cardsElements = Array.from(indexes).slice(0, 4).map(index => dataGifts[index]);
+generatedcards.insertAdjacentHTML('beforeend', addCards(cardsElements));
+
