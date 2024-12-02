@@ -100,16 +100,20 @@
 }
 
 @media screen and (max-width: 768px) {
-    #to-top {
+    .to-top {
         display: block;
         border-radius: 100px;
-        padding: 20px 28px;
+        padding: 10px 16px;
         height: 36px;
         bottom: 12px;
         right: 12px;
         position: fixed;
         background-color: white;
         border: 1px solid #FF4646;
+    }
+
+    .hide {
+        display: none;
     }
 
 }
