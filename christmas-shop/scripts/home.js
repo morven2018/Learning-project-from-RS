@@ -2,10 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', launchTimer);
 
-
-
 function launchTimer() {
-    const deadlineDate = new Date('Dec 31, 2024 23:59:59');
+    const deadlineDate = new Date('Jan 1, 2025 03:00:00');
     let timerId = setInterval(() => {
         const currentDate = new Date();
 
@@ -23,4 +21,7 @@ function launchTimer() {
         document.getElementById('minutes').innerText = Math.floor(((deadlineDate - currentDate) % toGetHours) / toGetMinutes);
         document.getElementById('seconds').innerText = Math.floor(((deadlineDate - currentDate) % toGetMinutes) / toGetSeconds);
     }, 1000);
+
+
+
 }

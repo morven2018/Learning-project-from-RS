@@ -57,7 +57,7 @@ footer>div {
     gap: 12px !important;
 }
 
-.media .item {
+.media_item {
     display: block !important;
     text-decoration: none !important;
 }
@@ -75,7 +75,7 @@ footer>div {
 
 
 
-.media .item path {
+.media_item path {
     stroke: var(--dark-color);
 }
 
