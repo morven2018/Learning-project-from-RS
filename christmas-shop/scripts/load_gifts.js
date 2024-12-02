@@ -47,74 +47,48 @@ function addCards(data) {
     return cardGifts;
 }
 
-
-let generatedcards = document.getElementById('giftsItemsAll');
+let generatedcards = document.getElementById('cards_gifts');
 generatedcards.insertAdjacentHTML('beforeend', addCards(dataGifts));
 
-let generatedcardsWork = document.getElementById('giftsItemsWork');
-generatedcardsWork.insertAdjacentHTML('beforeend', addCards(dataGifts.filter(item => item.category == 'For Work')));
 
-let generatedcardsHealth = document.getElementById('giftsItemsHealth');
-generatedcardsHealth.insertAdjacentHTML('beforeend', addCards(dataGifts.filter(item => item.category == 'For Health')));
-
-let generatedcardsHarmony = document.getElementById('giftsItemsHarmony');
-generatedcardsHarmony.insertAdjacentHTML('beforeend', addCards(dataGifts.filter(item => item.category == 'For Harmony')));
-
-const tabs = document.querySelectorAll('.tabs__btn');
-const tabsContent = document.querySelector('.cards');
-
-if (tabsContent.length > 0 || tabs.length > 0) {
-    function hideTabContent() {
-        for (let i = 0; i < tabsContent.length; i += 1) {
-            tabsContent[i].classList.remove('active');
-        }
-
-        tabs.forEach(item => {
-            item.classList.remove('active');
-        });
+const tabs = document.querySelectorAll('.tab');
+function hideTabContent() {
+    for (let i = 0; i < tabs.length; i += 1) {
+        tabs[i].classList.remove('active');
     }
-
-
-    const allTabs = document.getElementById('tab-all');
-    allTabs.addEventListener('click', () => {
-        hideTabContent();
-        const giftsItemsAll = getElementById('giftsItemsAll');
-        giftsItemsAll.classList.add('active');
-    });
-
-    const allWork = document.getElementById('tab-work');
-    allTabs.addEventListener('click', () => {
-        hideTabContent();
-        const giftsItemsWork = getElementById('giftsItemsWork');
-        giftsItemsWork.classList.add('active');
-    });
-
-    const allHealth = document.getElementById('tab-health');
-    allTabs.addEventListener('click', () => {
-        hideTabContent();
-        const giftsItemsHealth = getElementById('giftsItemsHealth');
-        giftsItemsHealth.classList.add('active');
-    });
-
-    const allHarmony = document.getElementById('tab-harmony');
-    allTabs.addEventListener('click', () => {
-        hideTabContent();
-        const giftsItemsHarmony = getElementById('giftsItemsHarmony');
-        giftsItemsHarmony.classList.add('active');
-    })
-
-
 }
 
-function allRandomCards(number = 4, dataGifts) {
-    const resArray = [];
-    if (dataGifts > number) {
-        while (resArray.length < number) {
-            let i = Math.floor(Math.random() * dataGifts.length);
-            if (!resArray.includes(dataGifts[i])) {
-                resArray.add(dataGifts[i])
-            };
-        }
-    }
-    return resArray;
-}
+
+
+const allTab = document.getElementById('all');
+allTab.addEventListener('click', () => {
+    generatedcards.innerHTML = '';
+    hideTabContent();
+    allTab.classList.add('active');
+    generatedcards.insertAdjacentHTML('beforeend', addCards(dataGifts));
+});
+
+
+const allWork = document.getElementById('work');
+allWork.addEventListener('click', () => {
+    generatedcards.innerHTML = '';
+    hideTabContent();
+    allWork.classList.add('active');
+    generatedcards.insertAdjacentHTML('beforeend', addCards(dataGifts.filter(item => item.category == 'For Work')));
+});
+
+const allHealth = document.getElementById('health');
+allHealth.addEventListener('click', () => {
+    generatedcards.innerHTML = '';
+    hideTabContent();
+    allHealth.classList.add('active');
+    generatedcards.insertAdjacentHTML('beforeend', addCards(dataGifts.filter(item => item.category == 'For Health')));
+});
+
+const allHarmony = document.getElementById('harmony');
+allHarmony.addEventListener('click', () => {
+    generatedcards.innerHTML = '';
+    hideTabContent();
+    allHarmony.classList.add('active');
+    generatedcards.insertAdjacentHTML('beforeend', addCards(dataGifts.filter(item => item.category == 'For Harmony')));
+})

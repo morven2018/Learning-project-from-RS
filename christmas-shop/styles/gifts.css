@@ -6,10 +6,6 @@
 
 }
 
-.no-display {
-    display: none;
-}
-
 .snowballs {
     background-image: url('../images/gifts/bg-garland.png');
     background-size: contain;
@@ -29,11 +25,16 @@
     gap: 8px;
 }
 
-.tabs__btn {
+.tab {
     padding: 12px 20px;
     border-radius: 12px;
+    color: var(--static-white-color);
 }
 
+.active {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    pointer-events: none !important;
+}
 
 .snowballs h1 {
     color: var(--static-white-color);
@@ -41,15 +42,12 @@
 
 }
 
-.cards {
-    display: none;
-}
 
-.cards img {
+.item img {
     height: 228px !important;
 }
 
-.cards .item {
+.item {
     background-color: var(--content-background-color) !important;
     border-radius: 20px !important;
     width: 310px !important;
@@ -90,7 +88,7 @@
     color: var(--tag-pink-color) !important;
 }
 
-.active {
+#cards_gifts {
     display: flex !important;
     gap: 12px !important;
     flex-wrap: wrap !important;
@@ -122,12 +120,12 @@
 }
 
 @media (hover:hover) {
-    .buttons .item:hover {
+    .tab:hover {
         background-color: rgba(255, 255, 255, 0.2);
 
     }
 
-    .cards .item:hover h3 {
+    .item:hover h3 {
         color: var(--primary-color);
         transition: 1s;
     }
