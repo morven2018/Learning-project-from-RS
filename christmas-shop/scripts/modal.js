@@ -17,8 +17,23 @@ if (!!itemCards) {
 }
 
 
+document.querySelector(".close_btn").addEventListener("click", function () {
+    modalCard.innerHTML = '';
+    document.getElementsByTagName('body').classList.toggle('modal_hide');
+});
+
+document.querySelector(".modal").addEventListener("click", function (event) {
+    if (!document.querySelector(".modal_card").contains(event.target)) {
+        modalCard.innerHTML = '';
+        document.getElementsByTagName('body').classList.toggle('modal_hide');
+    }
+});
+
+
+
 function renderModal(itemGifts) {
     const modalCard = document.getElementById('modal_item');
+
     const superRating = itemGifts.superpowers;
     generateRating('live');
 
@@ -76,7 +91,11 @@ function renderModal(itemGifts) {
         </div>
         </div>
     </div>`;
-
     modalCard.insertAdjacentHTML('beforeend', innerContent);
     modalCard.classList.add(`${getClass(itemGifts.category)}`);
+    document.getElementsByTagName('body').classList.toggle('modal_hide');
+
+
 }
+
+
