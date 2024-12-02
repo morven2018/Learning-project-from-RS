@@ -2,7 +2,8 @@
     background-color: var(--primary-color);
     max-width: 1440px;
     margin: 0 auto;
-    border-radius: 20px;
+
+
 }
 
 .snowballs {
@@ -24,70 +25,97 @@
     gap: 8px;
 }
 
-.buttons .item {
-    border-radius: 12px;
+.tab {
     padding: 12px 20px;
-
+    border-radius: 12px;
+    color: var(--static-white-color);
 }
-
 
 .active {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    pointer-events: none !important;
 }
 
-.buttons a,
 .snowballs h1 {
     color: var(--static-white-color);
     margin: 0;
 
 }
 
-.cards {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
+
+.item img {
+    height: 228px !important;
 }
 
-.cards img {
-    height: 228px;
-}
-
-.cards .item {
-    background-color: var(--content-background-color);
-    border-radius: 20px;
-    width: 310px;
-    height: 342px;
-    display: block;
+.item {
+    background-color: var(--content-background-color) !important;
+    border-radius: 20px !important;
+    width: 310px !important;
+    height: 342px !important;
+    display: block !important;
 }
 
 
 .card_info {
-    background-color: var(--static-white-color);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    gap: 8px;
+    background-color: var(--static-white-color) !important;
+    border-radius: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    height: 112px !important;
+    gap: 8px !important;
 }
 
-.card_info h3,
 .card_info h4 {
-    padding: 0;
-    margin: 0;
+    padding: 20px 0 0 20px !important;
+    margin: 0 !important;
+}
+
+.card_info h3 {
+    padding: 0 0 20px 20px !important;
+    margin: 0 !important;
 }
 
 .work h4 {
-    color: var(--tag-purple-color);
+    color: var(--tag-purple-color) !important;
 }
 
 .health h4 {
-    color: var(--tag-green-color);
+    color: var(--tag-green-color) !important;
 }
 
 .harmony h4 {
-    color: var(--tag-pink-color);
+    color: var(--tag-pink-color) !important;
+}
+
+#cards_gifts {
+    display: flex !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+}
+
+.to-top {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .to-top {
+        display: block;
+        border-radius: 100px;
+        padding: 10px 16px;
+        height: 36px;
+        bottom: 12px;
+        right: 12px;
+        position: fixed;
+        background-color: white;
+        border: 1px solid #FF4646;
+    }
+
+    .hide {
+        display: none;
+    }
+
 }
 
 @media screen and (max-width: 1190px) {
@@ -113,12 +141,12 @@
 }
 
 @media (hover:hover) {
-    .buttons .item:hover {
+    .tab:hover {
         background-color: rgba(255, 255, 255, 0.2);
 
     }
 
-    .cards .item:hover h3 {
+    .item:hover h3 {
         color: var(--primary-color);
         transition: 1s;
     }

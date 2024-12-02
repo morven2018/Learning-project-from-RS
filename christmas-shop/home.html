@@ -31,24 +31,28 @@
                 <span>THE&nbsp;GIFTS</span>
 
             </a>
-            <div class="hamburger-menu">
-                <div class="hamburger">
-                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 16H30" stroke="#181C29" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M10 24H30" stroke="#181C29" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-            </div>
-            <nav class="menu">
+            <nav class="menu list-menu">
                 <ul>
-                    <li><a href="./gifts.html">GIFTS</a></li>
-                    <li><a href="./home.html#about">ABOUT</a></li>
-                    <li><a href="./home.html#best_gifts">BEST</a></li>
-                    <li><a href="#contacts">CONTACTS</a></li>
+                    <li><a class="nav-link" href="./gifts.html">GIFTS</a></li>
+                    <li><a class="nav-link" href="./home.html#about">ABOUT</a></li>
+                    <li><a class="nav-link" href="./home.html#best_gifts">BEST</a></li>
+                    <li><a class="nav-link" href="#contacts">CONTACTS</a></li>
                 </ul>
             </nav>
-
-
+            <div class="hamburger-menu">
+                <div id="menu" title="hamburger icon">
+                    <span id="line1"></span>
+                    <span id="line2"></span>
+                </div>
+            </div>
+        </div>
+        <div id="drop-down-menu">
+            <ul>
+                <li><a class="nav-link" href="./gifts.html">GIFTS</a></li>
+                <li><a class="nav-link" href="./home.html#about">ABOUT</a></li>
+                <li><a class="nav-link" href="./home.html#best_gifts">BEST</a></li>
+                <li><a class="nav-link" href="#contacts">CONTACTS</a></li>
+            </ul>
         </div>
     </header>
 
@@ -97,15 +101,15 @@
                             <div class="slider_text">Live</div>
                             <img src="./images/home/snowman.png" alt="snowman">
                         </div>
-                        <div class="slider_cards item">
+                        <div class="slider_cards_item">
                             <div class="slider_text">create</div>
                             <img src="./images/home/christmas-trees.png" alt="christmas trees">
                         </div>
-                        <div class="slider_cards item">
+                        <div class="slider_cards_item">
                             <div class="slider_text">Love</div>
                             <img src="./images/home/christmas-tree-ball.png" alt="christmas ball">
                         </div>
-                        <div class="slider_cards item">
+                        <div class="slider_cards_item">
                             <div class="slider_text">dream</div>
                             <img src="./images/home/fairytale-house.png" alt="christmas house">
                         </div>
@@ -194,23 +198,23 @@
                     <div>
                         <div class="caption">The New Year is Coming Soon...</div>
                         <div class="timer">
-                            <div id="days">
-                                <h2>47</h2>
+                            <div>
+                                <h2 id="days"></h2>
                                 <h4>days</h4>
                             </div>
                             <div class="separator"></div>
-                            <div id="hours">
-                                <h2>5</h2>
+                            <div>
+                                <h2 id="hours"></h2>
                                 <h4>hours</h4>
                             </div>
                             <div class="separator"></div>
-                            <div id="minutes">
-                                <h2>34</h2>
+                            <div>
+                                <h2 id="minutes"></h2>
                                 <h4>minutes</h4>
                             </div>
                             <div class="separator"></div>
-                            <div id="seconds">
-                                <h2>12</h2>
+                            <div>
+                                <h2 id="seconds"></h2>
                                 <h4>seconds</h4>
                             </div>
                         </div>
@@ -302,7 +306,8 @@
             </div>
         </div>
     </footer>
-
+    <script src="../christmas-shop/scripts/home.js"></script>
+    <script src="../christmas-shop/scripts/burger.js"></script>
 </body>
 
 </html>
