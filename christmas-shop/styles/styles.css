@@ -127,3 +127,7 @@ a:visited {
 .no-click_menu {
     pointer-events: none;
 }
+
+.hide {
+    display: none;
+}

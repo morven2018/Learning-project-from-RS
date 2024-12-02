@@ -29,18 +29,12 @@
     gap: 8px;
 }
 
-.buttons .item {
+.tabs__btn {
     padding: 12px 20px;
     border-radius: 12px;
 }
 
 
-.active {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-}
-
-.buttons a,
 .snowballs h1 {
     color: var(--static-white-color);
     margin: 0;
@@ -48,10 +42,7 @@
 }
 
 .cards {
-    display: flex !important;
-    gap: 12px !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
+    display: none;
 }
 
 .cards img {
@@ -98,6 +89,15 @@
 .harmony h4 {
     color: var(--tag-pink-color) !important;
 }
+
+.active {
+    display: flex !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+}
+
+@media screen and (min-width: 768px) {}
 
 @media screen and (max-width: 1190px) {
     .snowballs {

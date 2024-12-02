@@ -31,6 +31,13 @@
                 <span>THE&nbsp;GIFTS</span>
 
             </a>
+
+            <div class="hamburger-menu">
+                <div id="menu" title="hamburger icon">
+                    <span id="line1"></span>
+                    <span id="line2"></span>
+                </div>
+            </div>
             <nav class="menu list-menu">
                 <ul>
                     <li><a class="nav-link" href="./gifts.html" class="no-click_menu">GIFTS</a></li>
@@ -39,12 +46,6 @@
                     <li><a class="nav-link" href="#contacts">CONTACTS</a></li>
                 </ul>
             </nav>
-            <div class="hamburger-menu">
-                <div id="menu" title="hamburger icon">
-                    <span id="line1"></span>
-                    <span id="line2"></span>
-                </div>
-            </div>
 
 
 
@@ -54,24 +55,34 @@
 
     <section class="gifts">
         <div class="snowballs">
+
             <h1>Achieve health, harmony, and inner strength</h1>
+
             <div class="buttons">
-                <a href="" class="no-click_menu">
-                    <div class="button item active action_small">All</div>
-                </a>
-                <a href="">
-                    <div class="button item action_small">for work</div>
-                </a>
-                <a href="">
-                    <div class="button item action_small">for health</div>
-                </a>
-                <a href="">
-                    <div class="button item action_small ">for harmony</div>
-                </a>
+                <button class="tabs__btn active" id="tab-all" type="button">All</button>
+                <button class="tabs__btn" id="tab-work" type="button">for work</button>
+                <button class="tabs__btn" id="tab-health" type="button">for health</button>
+                <button class="tabs__btn active" id="tab-harmony" type="button">for harmony</button>
             </div>
-            <div class="cards" id='giftsItems'>
+
+            <div class="cards active" id='giftsItemsAll'>
+            </div>
+            <div class="cards" id='giftsItemsWork'>
+            </div>
+            <div class="cards" id='giftsItemsHealth'>
+            </div>
+            <div class="cards" id='giftsItemsHarmony'>
             </div>
         </div>
+
+
+        <button id="to-top">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19" stroke="#FF4646" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M18 11L12 5" stroke="#FF4646" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M6 11L12 5" stroke="#FF4646" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
     </section>
 
 
@@ -156,8 +167,8 @@
                 </a>
             </div>
         </div>
-    </footer>
-    <script src="../christmas-shop/scripts/burger.js"></script>
+    </footer>>
+    <script src="../christmas-shop/scripts/burger.js"></script
 
 </body>
 

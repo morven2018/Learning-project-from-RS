@@ -43,6 +43,10 @@ nav ul {
     gap: 8px;
 }
 
+#drop-down-menu {
+    display: none;
+}
+
 nav li {
     display: block;
 }
@@ -63,7 +67,11 @@ nav li .no-click_menu {
     color: var(--primary-color);
 }
 
-
+@media screen and (max-width:400px) {
+    .open_nav {
+        max-height: 748px
+    }
+}
 
 @media screen and (max-width:768px) {
     header {
@@ -77,8 +85,8 @@ nav li .no-click_menu {
         height: 40px;
         justify-content: space-evenly;
         position: absolute;
-        top: 12px;
-        right: 12px;
+        top: 16px;
+        right: 10px;
     }
 
 
@@ -88,7 +96,8 @@ nav li .no-click_menu {
     }
 
 
-    .open_nav {
+    .drop-down-menu .open_nav {
+        padding-top: 336px;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -97,9 +106,7 @@ nav li .no-click_menu {
         transform: translateX(-152px) translateY(52px);
         background-color: white;
         min-width: 100%;
-        height: 94.5vh;
-        justify-content: center;
-
+        height: calc(100%-52px);
     }
 
     .open_nav ul {
@@ -121,18 +128,19 @@ nav li .no-click_menu {
 
     #line1,
     #line2 {
-        border: 1px solid var(--dark-color);
+        border: none;
         transition: 0.3s ease;
         width: 18px;
-        height: 0;
+        height: 1px;
+        background-color: var(--dark-color);
     }
 
     .open #line1 {
-        transform: rotate(45deg) translateY(3px) translateX(3px);
+        transform: rotate(45deg) translateY(2px) translateX(3px);
     }
 
     .open #line2 {
-        transform: rotate(-45deg) translateY(-3px) translateX(3px);
+        transform: rotate(-45deg) translateY(-2px) translateX(3px);
     }
 
 
