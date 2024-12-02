@@ -11,80 +11,72 @@ const blankflakes = `<svg width="14" height="16" viewBox="0 0 14 16" fill="none"
 const itemCards = document.querySelectorAll('.item');
 if (!!itemCards) {
     itemCards.forEach(item => item.addEventListener('click', event => {
-        const itemGifts = dataGifts.find(elem => item.id === elem.name);
-        console.log(itemGifts);
+        let indexGifts = dataGifts.findIndex(elem => item.id === elem.name);
+        renderModal(dataGifts[indexGifts]);
     }));
 }
 
 
 function renderModal(itemGifts) {
-    const modalCard = document.getElementsByClassName('modal_card');
+    const modalCard = document.getElementById('modal_item');
+    const superRating = itemGifts.superpowers;
+    generateRating('live');
 
-    console.log(itemGifts);
+    function generateRating(category) {
+        const rate = Number.parseInt(superRating[category]) / 100;
+        const flakesHTML = `<span>${redFlakes}/span>`.repeat(rate) + `<span>${blankflakes}/span>`.repeat(5 - rate);
+    }
+
 
     const innerContent = `
-    <div class="modal_image ${getClass(itemGifts.category)}">
-            <div class="close_btn"></div>
-        </div>
+    
+    <div class="modal_image">
+    <img src='${getURL(itemGifts.category)}'>         
+
+</div>
+<div class="close_btn"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30 10L10 30" stroke="#181C29" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10 10L30 30" stroke="#181C29" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+        
         <div class="modal_info">
         <h4>${itemGifts.category}</h4>
         <h3>${itemGifts.name}</h3>
         <p>${itemGifts.description}</p>
-        <h4>Adds superpowers to:</h4>
+        
+        <h4 id='rating'>Adds superpowers to:</h4>
+        <div class="flakes">
         <div class="chacteristic">
             <div class="chacteristic_name">Live</div>
-            <div class="rating"></div>
-            <div class="snow_rating">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="rating">${superRating['live']}</div>
+            <div class="snow_rating" id='live'>
+                ${generateRating('live')}
             </div>
         </div>
         <div class="chacteristic">
             <div class="chacteristic_name">Create</div>
-            <div class="rating"></div>
+            <div class="rating">${superRating['create']}</div>
             <div class="snow_rating">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        <div class="chacteristic">
-            <div class="chacteristic_name">Live</div>
-            <div class="rating"></div>
-            <div class="snow_rating">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+                ${generateRating('create')}
             </div>
         </div>
         <div class="chacteristic">
             <div class="chacteristic_name">Love</div>
-            <div class="rating"></div>
+            <div class="rating">${superRating['love']}</div>
             <div class="snow_rating">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+                ${generateRating('love')}
             </div>
         </div>
         <div class="chacteristic">
             <div class="chacteristic_name">Dream</div>
-            <div class="rating"></div>
+            <div class="rating">${superRating['dream']}</div>
             <div class="snow_rating">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+               ${generateRating('dream')}
             </div>
         </div>
+        </div>
     </div>`;
+
+    modalCard.insertAdjacentHTML('beforeend', innerContent);
+    modalCard.classList.add(`${getClass(itemGifts.category)}`);
 }
