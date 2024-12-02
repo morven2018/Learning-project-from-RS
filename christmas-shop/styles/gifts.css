@@ -95,7 +95,24 @@
     justify-content: center !important;
 }
 
-@media screen and (min-width: 768px) {}
+.to-top {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    #to-top {
+        display: block;
+        border-radius: 100px;
+        padding: 20px 28px;
+        height: 36px;
+        bottom: 12px;
+        right: 12px;
+        position: fixed;
+        background-color: white;
+        border: 1px solid #FF4646;
+    }
+
+}
 
 @media screen and (max-width: 1190px) {
     .snowballs {
