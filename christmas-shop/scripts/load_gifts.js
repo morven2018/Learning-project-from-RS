@@ -1,7 +1,5 @@
-
 const response = await fetch('./materials/gifts.json');
-const dataGifts = await response.json();
-
+export const dataGifts = await response.json();
 
 
 
@@ -9,7 +7,7 @@ const linkToWork = "./images/home/gift-for-work.png";
 const linkToHealth = "./images/home/gift-for-health.png";
 const linkToHarmony = "./images/home/gift-for-harmony.png";
 
-function getClass(category) {
+export function getClass(category) {
     switch (category) {
         case "For Work":
             return 'work';
@@ -20,7 +18,7 @@ function getClass(category) {
     }
 }
 
-function getURL(category) {
+export function getURL(category) {
     switch (category) {
         case "For Work":
             return linkToWork
@@ -31,12 +29,12 @@ function getURL(category) {
     }
 }
 
-function addCards(data) {
+export function addCards(data) {
     let cardGifts = '';
     for (let i = 0; i < data.length; i += 1) {
         console.log(data[0]);
         cardGifts += `
-<a class='item'>
+<a class='item' id='${data[i].name}'>
     <img src="${getURL(data[i].category)}" alt="picture of gift">
     <div class="card_info ${getClass(data[i].category)}">
         <h4>${data[i].category}</h4>
@@ -92,3 +90,5 @@ allHarmony.addEventListener('click', () => {
     allHarmony.classList.add('active');
     generatedcards.insertAdjacentHTML('beforeend', addCards(dataGifts.filter(item => item.category == 'For Harmony')));
 })
+
+
