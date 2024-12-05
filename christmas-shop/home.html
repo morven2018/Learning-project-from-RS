@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/modal.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -31,13 +32,14 @@
                 <span>THE&nbsp;GIFTS</span>
 
             </a>
-            <nav class="menu list-menu">
+            <nav class="menu" id="list-menu">
                 <ul>
-                    <li><a class="nav-link" href="./gifts.html">GIFTS</a></li>
-                    <li><a class="nav-link" href="./home.html#about">ABOUT</a></li>
-                    <li><a class="nav-link" href="./home.html#best_gifts">BEST</a></li>
-                    <li><a class="nav-link" href="#contacts">CONTACTS</a></li>
+                    <li><a id="nav-link1" href="./gifts.html">GIFTS</a></li>
+                    <li><a id="nav-link2" href="./home.html#about">ABOUT</a></li>
+                    <li><a id="nav-link3" href="./home.html#best_gifts">BEST</a></li>
+                    <li><a id="nav-link4" href="#contacts">CONTACTS</a></li>
                 </ul>
+
             </nav>
             <div class="hamburger-menu">
                 <div id="menu" title="hamburger icon">
@@ -45,16 +47,12 @@
                     <span id="line2"></span>
                 </div>
             </div>
+
         </div>
-        <div id="drop-down-menu">
-            <ul>
-                <li><a class="nav-link" href="./gifts.html">GIFTS</a></li>
-                <li><a class="nav-link" href="./home.html#about">ABOUT</a></li>
-                <li><a class="nav-link" href="./home.html#best_gifts">BEST</a></li>
-                <li><a class="nav-link" href="#contacts">CONTACTS</a></li>
-            </ul>
-        </div>
+
     </header>
+
+
 
     <main>
         <section class="Hero">
@@ -201,7 +199,7 @@
         <div>
             <div class="cards_contacts">
                 <a href="tel:+79095726013">
-                    <div class="cards_contacts item">
+                    <div class="cards_contacts_item">
                         <img src="./images/santa-claus.png" alt="santa-claus">
 
                         <div class="action_large">+375 (29) 111-22-33</div>
@@ -210,14 +208,14 @@
                 </a>
                 <a href="https://www.google.com/maps/place/%D0%93%D0%BE%D1%80%D0%B0+%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%B0%D1%8F+%D0%92%D0%B0%D0%B0%D1%80%D0%B0/@61.8477218,34.4160192,14.25z/data=!4m6!3m5!1s0x46a1ebb8fe93cc79:0x270837f2585c07e9!8m2!3d61.8436695!4d34.3958863!16s%2Fg%2F11f5_gc5ky?entry=ttu&g_ep=EgoyMDI0MTExMy4xIKXMDSoASAFQAw%3D%3D"
                     target="_blank">
-                    <div class="cards_contacts item">
+                    <div class="cards_contacts_item">
                         <img src="./images/christmas-tree.png" alt="christmas tree">
                         <div class="action_large">Magic forest</div>
                         <h3>meet us</h3>
                     </div>
                 </a>
                 <a href="mailto:gifts@magic.com">
-                    <div class="cards_contacts item">
+                    <div class="cards_contacts_item">
                         <img src="./images/snake.png" alt="snake">
                         <div class="action_large">gifts@magic.com</div>
                         <h3>write us</h3>
@@ -278,6 +276,10 @@
             </div>
         </div>
     </footer>
+
+    <div class='modal_card hide' id="modal_item">
+    </div>
+
     <script type="module" src="../christmas-shop/scripts/home.js"></script>
     <script src="../christmas-shop/scripts/burger.js"></script>
 
