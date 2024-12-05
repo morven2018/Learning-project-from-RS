@@ -112,8 +112,9 @@
         border: 1px solid #FF4646;
     }
 
-    .hide {
-        display: none;
+    #sec1 .hidden {
+        overflow: hidden;
+        position: fixed;
     }
 
 }

@@ -117,11 +117,14 @@ a:visited {
 
 .no-click_menu {
     pointer-events: none;
+    background-color: var(--primary-color-10);
+    color: var(--primary-color) !important;
 }
 
 
 .hidden {
-    display: none;
+    overflow: hidden;
+    position: fixed;
 }
 
 @media (hover:hover) {
