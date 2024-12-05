@@ -120,9 +120,10 @@ a:visited {
 }
 
 
-.hide {
+.hidden {
     display: none;
 }
+
 @media (hover:hover) {
     button:hover {
         background-color: var(--static-white-color);

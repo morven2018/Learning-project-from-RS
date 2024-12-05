@@ -30,6 +30,9 @@ header div {
     display: none;
     padding: 0;
     margin: 0;
+    position: absolute;
+    top: 12px;
+    right: 12px;
 }
 
 .hamburger {
@@ -61,21 +64,25 @@ nav a {
 }
 
 
-nav li .no-click_menu {
-    pointer-events: none;
-    background-color: var(--primary-color-10);
-    color: var(--primary-color);
+nav li .no-click-menu {
+    pointer-events: none !important;
+    background-color: var(--primary-color-10) !important;
+    color: var(--primary-color) !important;
 }
 
 @media screen and (max-width:400px) {
     .open_nav {
-        max-height: 748px
+        max-height: 100vh;
     }
 }
 
 @media screen and (max-width:768px) {
     header {
         height: 64px;
+    }
+
+    .hidden {
+        overflow-y: hidden;
     }
 
 
@@ -95,8 +102,7 @@ nav li .no-click_menu {
         padding: 16px 10px;
     }
 
-
-    .drop-down-menu .open_nav {
+    .open_nav {
         padding-top: 336px;
         display: flex;
         flex-direction: column;
@@ -105,8 +111,8 @@ nav li .no-click_menu {
         position: sticky;
         transform: translateX(-152px) translateY(52px);
         background-color: white;
-        min-width: 100%;
-        height: calc(100%-52px);
+        min-width: 100vw;
+        height: calc(100vh - 52px);
     }
 
     .open_nav ul {
