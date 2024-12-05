@@ -32,7 +32,7 @@ export function getURL(category) {
 export function addCards(data) {
     let cardGifts = '';
     for (let i = 0; i < data.length; i += 1) {
-        console.log(data[0]);
+        //console.log(data[0]);
         cardGifts += `
 <a class='item' id='${data[i].name}'>
     <img src="${getURL(data[i].category)}" alt="picture of gift">

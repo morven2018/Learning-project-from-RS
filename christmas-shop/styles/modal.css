@@ -1,14 +1,37 @@
 .modal_card {
     border-radius: 20px !important;
     background-color: var(--content-background-color) !important;
-    height: 514px !important;
-    max-width: 400px !important;
+    height: 520px !important;
+    width: 400px !important;
     margin: 0 auto;
     position: fixed;
-    z-index: 2;
-    top: calc(50vh - 257px);
-    left: calc(50vw - 200px);
+    z-index: 10;
 }
+
+
+
+.overlay {
+    position: fixed;
+    background-color: rgba(24, 28, 41, .8);
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 9;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.closed {
+    display: none;
+}
+
+.modal_hide {
+    overflow: hidden !important;
+}
+
+
 
 .modal_card .modal_image {
     border-radius: 20px 20px 0 0 !important;
@@ -43,10 +66,16 @@
 
 .harmony .modal_info h4 {
     color: var(--tag-pink-color) !important;
+    font-weight: 400;
 }
 
 #rating {
     color: black !important;
+}
+
+.snow_rating {
+    gap: 8px;
+    display: flex;
 }
 
 .modal_info {
@@ -56,13 +85,14 @@
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 8px !important;
-    padding: 20px;
+    padding: 20px 20px 0px 20px;
     height: 284px;
 }
 
-.flakes {
+.flake {
     display: flex;
     flex-direction: column;
+    gap: 4px;
 }
 
 .chacteristic {
@@ -75,27 +105,5 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    z-index: 4;
-}
-
-.modal-wrapper {
-    position: fixed;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, .7);
-    z-index: 100;
-}
-
-.overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-.closed {
-    display: none;
+    z-index: 14;
 }
