@@ -54,6 +54,13 @@ function renderStartPage(event, level = 'Easy'){
     
 }
 
+
+function clearStartPage(){
+    const startPageRootElement = document.querySelector(".start-page");
+    if (startPageRootElement) startPageRootElement.remove();
+}
+
+
 function getLevel(level){
     const checkedOption = document.querySelector('input:checked');
     console.log(checkedOption);
