@@ -1,6 +1,7 @@
-import {renderGamePage} from './game-page.js';
+import {renderGamePage, clearGamePage} from './game-page.js';
 import { clearStartPage } from './start-page.js';
 import { DIGITS, ALPHAS } from './keypad.js';
+import { renderStartPage } from './start-page.js';
 
 let sequence = null;
 
@@ -37,17 +38,17 @@ function startRound(level, round){
     console.log(guessSequence);
     //output.textContent = guessSequence;
 
-    //showSequence(guessSequence);
+    showSequence(guessSequence);
 
 }
 
-/*function showSequence(guessSequence){
+function showSequence(guessSequence){
     guessSequence.forEach( (item) => {
         const selectedButton = document.getElementById(item);
         selectedButton.classList.add("red");
         //setTimeout(selectedButton.classList.remove("red"), 1000);        
     });
-}*/
+}
 
 function getSequence(level, round){
     if (sequence !== null) {
@@ -62,6 +63,12 @@ function getSequence(level, round){
       map( () => symbolToGuess[Math.floor(Math.random() * symbolToGuess.length)]);
     console.log(sequence);
     return sequence;
+}
+
+export function newGame(){
+    let level = document.querySelector(".level-of-game").value;
+    clearGamePage();
+    renderStartPage(event, level);
 }
 
 

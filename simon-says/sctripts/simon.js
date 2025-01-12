@@ -1,7 +1,7 @@
 import { renderStartPage} from './start-page.js';
 
 import {DIGITS, ALPHAS, renderKeyPad, clearKeyPad} from './keypad.js';
-import { startGame, getNewKey, getLevel } from './game-logic.js';
+import { startGame, getNewKey, getLevel, newGame } from './game-logic.js';
 
 let level;
 
@@ -19,6 +19,10 @@ parentElement.addEventListener('click', (event) => {
     if (event.target.className === 'num-pad-element' || event.target.className === 'keyboard-element'){
         console.log(event.target.value);
         getNewKey(level, event.target.value);
+    }
+    if (event.target.className === 'game-page-btn__new-game'){
+        newGame();
+        //console.log("start-page__button");
     }
 });
 

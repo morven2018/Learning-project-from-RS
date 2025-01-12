@@ -3,13 +3,15 @@ export function renderGamePage(level, round){
 
     renderHeader(level, round); 
     //renderKeyPad(level);
-
-    const resultArea = document.createElement("div");
-    resultArea.className = "result-area";
-    document.querySelector('body').append(resultArea);
-
     const buttonsList = document.createElement("div");
     buttonsList.className = "game-page-btn";
+    document.querySelector('body').append(buttonsList);
+
+    /*const resultArea = document.createElement("div");
+    resultArea.className = "result-area";
+    document.querySelector('body').append(resultArea);*/
+
+    
     
     renderRepeatSequenceButton(buttonsList);
     renderNewGameButton(buttonsList);
@@ -56,11 +58,11 @@ function renderNewGameButton(buttonsList){
     buttonsList.append(newGameButton);
 }
 
-/*
-function clearGamePage(){
-    const gameHeader = document.querySelector(".game-header");
-    if (gameHeader) gameHeader.remove();
-    
-    // repeat button
-    // new game button
-}*/
+
+export function clearGamePage(){
+    const selectors = [".game-header", ".game-page-btn", "h1", ".keypad"];
+    selectors.forEach ( (item) => {
+        const elem =  document.querySelector(item);
+        if (elem) elem.remove();
+    });
+}
