@@ -51,10 +51,6 @@ function showSequence(guessSequence){
 }
 
 function getSequence(level, round){
-    if (sequence !== null) {
-        console.log(sequence);
-        return sequence;
-    }
     const symbolToGuess = level === 'Easy' ? 
       DIGITS : level === 'Medium' ? 
       ALPHAS : DIGITS+ALPHAS;
