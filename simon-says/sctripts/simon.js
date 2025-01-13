@@ -1,100 +1,109 @@
+import { renderGamePage, clearGamePage } from "./game-page.js";
+import { clearStartPage } from "./start-page.js";
+import { DIGITS, ALPHAS, enableKeys, disableKeys } from "./keypad.js";
 import { renderStartPage } from "./start-page.js";
-import { reRenderHeader, reRenderButtons } from "./game-page.js";
-import { DIGITS, ALPHAS, renderKeyPad, clearKeyPad, isEnable} from "./keypad.js";
-import {
-  startGame,
-  getNewKey,
-  getLevel,
-  newGame,
-  getSequence,
-  showSequence,
-  startRound,
-  clearSequence,
-  continueRound,
-  getAttempt,
-} from "./game-logic.js";
+import { renderErrorForm } from "./error-form.js";
+import { renderWinRoundForm, renderFinalWinForm } from "./win-round.js";
+import { renderNextRoundButton } from "./buttons.js";
 
-let level;
+let sequence = null;
+let guessed = 0;
+let attempt = 0;
+const classesHighlight = ["keyboard-element_highlight1", "keyboard-element_highlight2"]
 
-window.onload = renderStartPage;
+export const getSequence = () => sequence;
+export const getIndex = () => guessed;
+export const getAttempt = () => attempt;
 
-const parentElement = document.querySelector("body");
-console.log(parentElement);
+export function startGame(level) {
+  let currLevel = getLevel(level);
+  document.querySelector(".start-page").classList.add("start-page_no-display");
 
-parentElement.addEventListener("change", (event) => {
-  if (event.target.name === "level") {
-    console.log(event.target);
-    clearKeyPad();
-    renderKeyPad(event.target.value);
-  }
-});
+  clearStartPage();
+  renderGamePage(level, 1);
+  startRound(level, 1);
+}
 
-parentElement.addEventListener("click", (event) => {
-  if (event.target.className === "start-page__button") {
-    startGame(getLevel(level));
-  }
-  if (event.target.className === "game-page-btn__new-game") {
-    newGame();
-  }
-  if (event.target.className === "game-page-btn__repeat-sequence") {
-    if (document.querySelector(".overlay"))
-      document.querySelector(".overlay").remove();
-    const btn = document.querySelector(".game-page-btn__repeat-sequence");
-    btn.value = 0;
-    showSequence(getSequence());
-    continueRound();
-    btn.classList.add("game-page-btn__repeat-sequence_disabled");
-  }
+export function getLevel(level) {
+  const checkedOption = document.querySelector("input:checked");
+  if (!level) level = "Easy";
+  if (level !== checkedOption.value) level = checkedOption.value;
+  return level;
+}
 
-  if (event.target.className === "error-form__close-btn") {
-    if (document.querySelector(".overlay"))
-      document.querySelector(".overlay").remove();
-    if (getAttempt()) continueRound();
-    //else keypad disabled
-  }
+export function startRound(level, round) {
+  const guessSequence = generateSequence(level, round);
+  console.log(guessSequence);
+  showSequence(guessSequence);
+  attempt = 1;
+}
 
-  if (event.target.className === "game-page-btn__next-round") {
-    if (document.querySelector(".overlay"))
-      document.querySelector(".overlay").remove();
-    clearSequence();
-    reRenderHeader(Number(event.target.value) + 1);
-    reRenderButtons();
-    startRound(level, Number(event.target.value) + 1);
-  }
+export function continueRound(level, round, guessSequence) {
+  guessed = 0;
+}
 
-  if (
-    event.target.className === "num-pad-element" ||
-    event.target.className === "keyboard-element"
-  ) {
-    console.log(event.target.value);
-    getNewKey(level, event.target.value);
-  }
-});
+function generateSequence(level, round) {;
+  if (!level) level = document.querySelector(".level-of-game").value;
+  const symbolToGuess =
+    level === "Easy" ? DIGITS : level === "Medium" ? ALPHAS : DIGITS + ALPHAS;
+  sequence = Array(2 * round)
+    .fill(0)
+    .map(() => symbolToGuess[Math.floor(Math.random() * symbolToGuess.length)]);
+  console.log(sequence);
+  return sequence;
+}
 
-document.addEventListener("keyup", (event) => {
-  level = document.querySelector(".level-of-game").value;
-  console.log(event.key.toUpperCase());
-  if (isCorrectKey(level, event.key.toUpperCase()) && isEnable) {
-    getNewKey(level, event.key.toUpperCase());
-    document.getElementById(event.key.toUpperCase()).classList.add("keyboard-element_click");
-    setTimeout(
-      () =>
+export function showSequence(guessSequence) {
+  disableKeys();
+  console.log(sequence);
+  guessSequence.push(-1);
+  guessSequence.forEach((item, index) => {
+    setTimeout(() => {
+      if (item !== -1) document.getElementById(item).classList.add(classesHighlight[index % 2]);
+      if (index != 0)
         document
-          .getElementById(event.key.toUpperCase())
-          .classList.remove("keyboard-element_click"),
-      300
-    );
-  }
-});
+          .getElementById(guessSequence[index - 1])
+          .classList.remove(classesHighlight[(index - 1) % 2]);
+          console.log(item);
+    }, 500 * index);
+  });
+  guessSequence.pop();
+  setTimeout(enableKeys, 500 * generateSequence.length);
+}
 
-function isCorrectKey(level, key) {
-  switch (level) {
-    case "Easy":
-      return DIGITS.includes(key);
-    case "Medium":
-      return ALPHAS.includes(key);
-    case "Hard":
-      return DIGITS.includes(key) || ALPHAS.includes(key);
+export function newGame() {
+  let level = document.querySelector(".level-of-game").value;
+  clearSequence();
+  clearGamePage();
+  renderStartPage(event, level);
+}
+
+export function clearSequence() {
+  sequence = null;
+  attempt = 1;
+  guessed = 0;
+}
+
+export function getNewKey(level, value) {
+  if (value === sequence[guessed]) {
+    guessed += 1;
+    if (sequence.length === guessed) {
+      const round = document.querySelector(".round-of-game").value;
+      if (round !== 5) {
+        if (document.querySelector(".game-page-btn__new-game"))
+          document.querySelector(".game-page-btn__new-game").remove();
+        renderNextRoundButton(document.querySelector(".game-page-btn"), round);
+        renderWinRoundForm(level, round);
+      } else {
+        if (document.querySelector(".game-page-btn__new-game"))
+          document
+            .querySelector(".game-page-btn__new-game")
+            .classList.add("game-page-btn__repeat-sequence_disabled");
+        renderFinalWinForm(level);
+      }
+    }
+  } else {
+    renderErrorForm(level, attempt);
+    attempt = 0;
   }
 }
- 
