@@ -1,0 +1,22 @@
+.start-page{
+    height: 382px;
+}
+
+.choose-level-form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px auto;
+    max-width: 470px;
+}
+
+.choose-level-form__item{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 5px 10px;
+    font-weight: 600;
+}
+
+.choose-level-form__legend{
+    margin: 10px 20px;
+}

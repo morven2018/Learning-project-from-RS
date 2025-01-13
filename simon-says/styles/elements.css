@@ -1,0 +1,116 @@
+.start-page__button,
+.game-page-btn__repeat-sequence,
+.game-page-btn__new-game,
+.game-page-btn__next-round {
+  padding: 10px 40px;
+  border-radius: 15px;
+  border: none;
+  background-color: var(--color-btn);
+  color: var(--btn-text-color);
+  margin: 30px auto;
+  font-weight: 500;
+}
+
+@media (max-width: 520px) {
+  .game-page-btn__repeat-sequence,
+  .game-page-btn__new-game,
+  .game-page-btn__next-round {
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 430px) {
+  .game-page-btn__repeat-sequence,
+  .game-page-btn__new-game,
+  .game-page-btn__next-round {
+    border-radius: 10px;
+  }
+}
+
+.start-page__button:active,
+.game-page-btn__repeat-sequence:active,
+.game-page-btn__new-game:active,
+.game-page-btn__next-round:active {
+  background-color: var(--color-primary-a60);
+}
+
+.keypad {
+  justify-content: center;
+  padding: 0;
+}
+
+.full-pad {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  align-items: center;
+}
+
+.keyboard-element,
+.num-pad-element {
+  justify-content: center;
+  margin: 0;
+  font-weight: 700;
+  align-items: center;
+  border: none;
+  box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.5);
+  color: var(--btn-text-color);
+  background-color: var(--color-text);
+}
+
+
+.num-pad-element:active, 
+.keyboard-element:active {
+  background-color: var(--active);
+  box-shadow: none;
+}
+
+
+
+.num-pad,
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(10, 26px);
+  gap: 5px;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .num-pad,
+  .keyboard,
+  .full-pad {
+    gap: 2px;
+  }
+}
+
+#L {
+  max-width: 26px;
+  grid-column-start: 9;
+  grid-column-end: span 2;
+}
+
+.game-page-header,
+.start-page__header {
+  margin: 20px auto;
+  font-family: "Rubik Puddles", serif;
+  font-size: 48px;
+}
+
+@media (max-width: 480px) {
+  .start-page__header,
+  .game-page-header {
+    font-size: 36px;
+  }
+}
+
+.keyboard-element_highlight1{
+  background-color: var(--highlight-color);
+  box-shadow: none;
+}
+
+.keyboard-element_highlight2{
+  background-color: var(--highlight-color2);
+  box-shadow: none;
+}
