@@ -32,6 +32,7 @@ export function renderStartPage(event, level = 'Easy'){
         let optionLabel = document.createElement('label');
         optionLabel.setAttribute('for', item);
         optionLabel.textContent = item;
+        optionLabel.className = "choose-level-form__item";
 
         let option = document.createElement('input');
         option.setAttribute('type', 'radio');
@@ -40,9 +41,8 @@ export function renderStartPage(event, level = 'Easy'){
         option.setAttribute('value', item);
         if (item === level) option.setAttribute('checked', true);
 
-        chooseLevel.append(option); 
         chooseLevel.append(optionLabel);
-            
+        optionLabel.append(option);     
 
     });     
     

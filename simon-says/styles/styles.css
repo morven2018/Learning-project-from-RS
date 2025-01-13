@@ -8,8 +8,11 @@
     --color-primary-a60: #517253;
     --color-btn: #3d553f;
     --color-text: #2b392b;
-    --color-text2: #192019;
-    
+    --color-text2: #192019;   
+    margin: 0 20px;
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Indie Flower", serif;
 }
 
 .game-area{
