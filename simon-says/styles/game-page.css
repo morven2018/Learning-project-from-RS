@@ -6,3 +6,8 @@
 .game-page{
     height: 404px;    
 }
+
+.game-header{
+    text-align: right;
+    margin-right: 0;
+}
