@@ -4,6 +4,10 @@ import { DIGITS, ALPHAS } from './keypad.js';
 import { renderStartPage } from './start-page.js';
 
 let sequence = null;
+let copy;
+
+export const getSequence = () => sequence;
+export const getCopy = () => copy;
 
 
 export function startGame(level){    
@@ -22,43 +26,42 @@ export function startGame(level){
 
 export function getLevel(level){
     const checkedOption = document.querySelector('input:checked');
-    //console.log(checkedOption);
     if (!level) level = 'Easy';
     if (level !== checkedOption.value) level = checkedOption.value;
-    //console.log(level);
     return level;
 }
 
 
-
 function startRound(level, round){
-
-    const guessSequence = getSequence(level, round);   
-    //const result = document.querySelector(".result-area");
-    console.log(guessSequence);
-    //output.textContent = guessSequence;
-
-    showSequence(guessSequence);
-
+    const guessSequence = generateSequence(level, round);   
+    //console.log(guessSequence);
+    let copy = [...guessSequence];
+    //console.log(copy);
+    showSequence(copy);
 }
 
-function showSequence(guessSequence){
-    guessSequence.forEach( (item) => {
-        const selectedButton = document.getElementById(item);
-        selectedButton.classList.add("red");
-        //setTimeout(selectedButton.classList.remove("red"), 1000);        
-    });
-}
-
-function getSequence(level, round){
+function generateSequence(level, round){
     const symbolToGuess = level === 'Easy' ? 
       DIGITS : level === 'Medium' ? 
       ALPHAS : DIGITS+ALPHAS;
     console.log(symbolToGuess);
     sequence = Array(2 * round).fill(0).
       map( () => symbolToGuess[Math.floor(Math.random() * symbolToGuess.length)]);
-    console.log(sequence);
+    //console.log(sequence);
     return sequence;
+}
+
+
+
+function showSequence(guessSequence){
+    guessSequence.push(-1);
+    guessSequence.forEach((item, index) => {            
+        setTimeout(() => {
+            if (item !== -1) document.getElementById(item).classList.add("red"); 
+            if (index != 0) document.getElementById(guessSequence[index - 1]).classList.remove("red");         
+        }, 500*index);        
+    });
+    guessSequence.pop();
 }
 
 export function newGame(){
@@ -70,7 +73,8 @@ export function newGame(){
 
 
 export function getNewKey(level, value){
-    let inputResult = document.querySelector(".result"); 
+    console.log(getSequence());
+    /*let inputResult = document.querySelector(".result"); 
     if(!inputResult){
         inputResult = document.createElement("div");
         document.querySelector(".result-area").append(inputResult); 
@@ -79,7 +83,7 @@ export function getNewKey(level, value){
     } else {
         const temp = inputResult.textContent;
         inputResult.textContent = temp + value;
-    }
+    }*/
 }
 
 function isCorrectKey(level, key){
