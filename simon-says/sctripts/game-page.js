@@ -45,7 +45,7 @@ function renderHeader(level, round){
 
 
 export function clearGamePage(){
-    const selectors = [".game-header", ".game-page-btn", "h1", ".keypad"];
+    const selectors = [".game-header", ".game-page-btn", "h1", ".keypad", ".overlay"];
     selectors.forEach ( (item) => {
         const elem =  document.querySelector(item);
         if (elem) elem.remove();

@@ -1,7 +1,7 @@
 import {renderStartPage} from './start-page.js';
 
 import {DIGITS, ALPHAS, renderKeyPad, clearKeyPad} from './keypad.js';
-import { startGame, getNewKey, getLevel, newGame, getSequence, getCopy, showSequence } from './game-logic.js';
+import { startGame, getNewKey, getLevel, newGame, getSequence, showSequence } from './game-logic.js';
 
 let level;
 
@@ -46,5 +46,16 @@ parentElement.addEventListener('click', (event) => {
 
 document.addEventListener('keyup', (event) => {
   level = document.querySelector('.level-of-game').value;
-  if (isCorrectKey(level, event.key.toLocaleUpperCase())) getNewKey(level, event.key.toLocaleUpperCase());
+  if (isCorrectKey(level, event.key.toUpperCase())) getNewKey(level, event.key.toUpperCase());
 });
+
+function isCorrectKey(level, key){
+    switch(level){
+        case 'Easy':
+            return DIGITS.includes(key);
+        case 'Medium':
+            return ALPHAS.includes(key);
+        case 'Hard':
+            return DIGITS.includes(key) || ALPHAS.includes(key);
+    }
+}

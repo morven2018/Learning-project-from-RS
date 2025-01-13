@@ -5,10 +5,11 @@ import { renderStartPage } from './start-page.js';
 import { renderErrorForm } from './error-form.js';
 
 let sequence = null;
-let copy;
+let guessed = 0;
+let attempt = 0;
 
 export const getSequence = () => sequence;
-export const getCopy = () => copy;
+export const getIndex = () => guessed;
 
 
 export function startGame(level){    
@@ -35,14 +36,14 @@ export function getLevel(level){
 
 function startRound(level, round){
     const guessSequence = generateSequence(level, round);   
-    //console.log(guessSequence);
     let copy = [...guessSequence];
-    //console.log(copy);
     showSequence(copy);
+    attempt = 1;
 }
 
 function continueRound(level, round, guessSequence){
-
+    guessed = 0;
+    attempt = 0;
 }
 
 function generateSequence(level, round){
@@ -52,7 +53,7 @@ function generateSequence(level, round){
     console.log(symbolToGuess);
     sequence = Array(2 * round).fill(0).
       map( () => symbolToGuess[Math.floor(Math.random() * symbolToGuess.length)]);
-    //console.log(sequence);
+    console.log(sequence);
     return sequence;
 }
 
@@ -78,27 +79,16 @@ export function newGame(){
 
 
 export function getNewKey(level, value){
-    console.log(getSequence());
-    renderErrorForm(level, 1);
-    /*let inputResult = document.querySelector(".result"); 
-    if(!inputResult){
-        inputResult = document.createElement("div");
-        document.querySelector(".result-area").append(inputResult); 
-        inputResult.className = "result";
-        inputResult.textContent = value;
-    } else {
-        const temp = inputResult.textContent;
-        inputResult.textContent = temp + value;
-    }*/
+    if (value === sequence[guessed]) {
+        guessed += 1;
+        if (sequence.length === guessed){
+            console.log(win);
+            //обработчик перехода
+        }
+    } else{
+        renderErrorForm(level, attempt);
+        attempt = 0;
+    } 
 }
 
-function isCorrectKey(level, key){
-    switch(level){
-        case 'Easy':
-            return DIGITS.includes(key);
-        case 'Medium':
-            return ALPHAS.includes(key);
-        case 'Hard':
-            return DIGITS.includes(key) || ALPHAS.includes(key);
-    }
-}
+

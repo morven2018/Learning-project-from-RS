@@ -45,6 +45,7 @@ function renderNextTryForm(errorForm){
 }
 
 function renderFailForm(level, errorForm){ 
+    const messageBlock = document.createElement("div");
 
     errorForm.append(messageBlock);
     messageBlock.textContent = "You have made 2 mistakes. Will you start a new game?";
