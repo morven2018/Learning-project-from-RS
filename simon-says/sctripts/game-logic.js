@@ -4,6 +4,7 @@ import { DIGITS, ALPHAS } from './keypad.js';
 import { renderStartPage } from './start-page.js';
 import { renderErrorForm } from './error-form.js';
 import { renderWinRoundForm } from './win-round.js';
+import { renderNextRoundButton } from './buttons.js';
 
 let sequence = null;
 let guessed = 0;
@@ -92,6 +93,8 @@ export function getNewKey(level, value){
     if (value === sequence[guessed]) {
         guessed += 1;
         if (sequence.length === guessed){
+            if(document.querySelector(".game-page-btn__new-game")) document.querySelector(".game-page-btn__new-game").remove();
+            renderNextRoundButton(document.querySelector(".game-page-btn"), document.querySelector(".round-of-game").value);
             renderWinRoundForm(level, document.querySelector(".round-of-game").value);
         }
     } else{
