@@ -54,7 +54,20 @@
   margin: 0;
   font-weight: 700;
   align-items: center;
+  border: none;
+  box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.5);
+  color: var(--btn-text-color);
+  background-color: var(--color-text);
 }
+
+
+.num-pad-element:active, 
+.keyboard-element:active {
+  background-color: var(--active);
+  box-shadow: none;
+}
+
+
 
 .num-pad,
 .keyboard {
@@ -90,4 +103,14 @@
   .game-page-header {
     font-size: 36px;
   }
+}
+
+.keyboard-element_highlight1{
+  background-color: var(--highlight-color);
+  box-shadow: none;
+}
+
+.keyboard-element_highlight2{
+  background-color: var(--highlight-color2);
+  box-shadow: none;
 }

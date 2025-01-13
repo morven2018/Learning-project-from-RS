@@ -9,6 +9,7 @@ import { renderNextRoundButton } from "./buttons.js";
 let sequence = null;
 let guessed = 0;
 let attempt = 0;
+const classesHighlight = ["keyboard-element_highlight1", "keyboard-element_highlight2"]
 
 export const getSequence = () => sequence;
 export const getIndex = () => guessed;
@@ -58,11 +59,12 @@ export function showSequence(guessSequence) {
   guessSequence.push(-1);
   guessSequence.forEach((item, index) => {
     setTimeout(() => {
-      if (item !== -1) document.getElementById(item).classList.add("red");
+      console.log(item, index%2);
+      if (item !== -1) document.getElementById(item).classList.add(classesHighlight[index % 2]);
       if (index != 0)
         document
           .getElementById(guessSequence[index - 1])
-          .classList.remove("red");
+          .classList.remove(classesHighlight[(index - 1) % 2]);
     }, 500 * index);
   });
   guessSequence.pop();
