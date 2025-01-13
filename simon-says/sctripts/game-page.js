@@ -41,6 +41,16 @@ export function reRenderHeader(round){
     roundValue.value = round;
 }
 
+export function reRenderButtons(){
+    if (document.querySelector(".game-page-btn")) document.querySelector(".game-page-btn").remove();
+    const buttonsList = document.createElement("div");
+    buttonsList.className = "game-page-btn";
+    document.querySelector('body').append(buttonsList);
+    
+    renderRepeatSequenceButton(buttonsList);
+    renderNewGameButton(buttonsList);
+}
+
 export function clearGamePage(){
     const selectors = [".game-header", ".game-page-btn", "h1", ".keypad", ".overlay"];
     selectors.forEach ( (item) => {

@@ -93,9 +93,15 @@ export function getNewKey(level, value){
     if (value === sequence[guessed]) {
         guessed += 1;
         if (sequence.length === guessed){
-            if(document.querySelector(".game-page-btn__new-game")) document.querySelector(".game-page-btn__new-game").remove();
-            renderNextRoundButton(document.querySelector(".game-page-btn"), document.querySelector(".round-of-game").value);
-            renderWinRoundForm(level, document.querySelector(".round-of-game").value);
+            const round = document.querySelector(".round-of-game").value;
+            if (round !== '5'){
+                if(document.querySelector(".game-page-btn__new-game")) document.querySelector(".game-page-btn__new-game").remove();
+                renderNextRoundButton(document.querySelector(".game-page-btn"), round);
+                renderWinRoundForm(level, round);
+            }else{
+                if(document.querySelector(".game-page-btn__new-game")) document.querySelector(".game-page-btn__new-game").classList.add("game-page-btn__repeat-sequence_disabled");
+                renderFinalWinForm(level);
+            }
         }
     } else{
         renderErrorForm(level, attempt);

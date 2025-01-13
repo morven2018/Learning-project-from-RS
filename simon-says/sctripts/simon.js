@@ -1,5 +1,5 @@
 import {renderStartPage} from './start-page.js';
-import { reRenderHeader } from './game-page.js';
+import { reRenderHeader, reRenderButtons } from './game-page.js';
 import {DIGITS, ALPHAS, renderKeyPad, clearKeyPad} from './keypad.js';
 import { startGame, getNewKey, getLevel, newGame, getSequence, showSequence, startRound, clearSequence, continueRound, getAttempt } from './game-logic.js';
 
@@ -47,6 +47,7 @@ parentElement.addEventListener('click', (event) => {
         if (document.querySelector(".overlay")) document.querySelector(".overlay").remove();
         clearSequence();
         reRenderHeader(Number(event.target.value) + 1);
+        reRenderButtons();
         startRound(level, Number(event.target.value) + 1);
     }
 
