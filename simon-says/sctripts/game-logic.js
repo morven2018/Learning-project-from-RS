@@ -15,9 +15,6 @@ export const getIndex = () => guessed;
 
 export function startGame(level){    
     let currLevel = getLevel(level);
-    sequence = null;
-    attempt = 0;
-    guessed = 0;
     document.querySelector('.start-page').classList.add("start-page_no-display");
     const hederGame = document.createElement('h1');
     hederGame.textContent = "Simon Says";
@@ -38,10 +35,10 @@ export function getLevel(level){
 }
 
 
-function startRound(level, round){
+export function startRound(level, round){
     const guessSequence = generateSequence(level, round);   
-    let copy = [...guessSequence];
-    showSequence(copy);
+    console.log(guessSequence);
+    showSequence(guessSequence);
     attempt = 1;
 }
 
@@ -54,7 +51,7 @@ function generateSequence(level, round){
     const symbolToGuess = level === 'Easy' ? 
       DIGITS : level === 'Medium' ? 
       ALPHAS : DIGITS+ALPHAS;
-    //console.log(symbolToGuess);
+    console.log(symbolToGuess, round);
     sequence = Array(2 * round).fill(0).
       map( () => symbolToGuess[Math.floor(Math.random() * symbolToGuess.length)]);
     console.log(sequence);
@@ -64,6 +61,7 @@ function generateSequence(level, round){
 
 
 export function showSequence(guessSequence){
+    console.log(sequence);
     guessSequence.push(-1);
     guessSequence.forEach((item, index) => {            
         setTimeout(() => {
@@ -76,8 +74,15 @@ export function showSequence(guessSequence){
 
 export function newGame(){
     let level = document.querySelector(".level-of-game").value;
+    clearSequence();
     clearGamePage();
-    renderStartPage(event, level);
+    renderStartPage(event, level);    
+}
+
+export function clearSequence(){
+    sequence = null;
+    attempt = 1;
+    guessed = 0;
 }
 
 

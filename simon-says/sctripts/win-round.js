@@ -24,7 +24,7 @@ export function renderWinRoundForm(level, round){
     winForm.append(buttonBlock);
     buttonBlock.className = "win-form__buttons";
     
-    renderNextRoundButton(buttonBlock);        
+    renderNextRoundButton(buttonBlock, round);        
     renderNewGameButton(buttonBlock); 
 
 }

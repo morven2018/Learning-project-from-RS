@@ -14,9 +14,10 @@ export function renderNewGameButton(buttonsList){
     buttonsList.append(newGameButton);
 }
 
-export function renderNextRoundButton(buttonsList){
+export function renderNextRoundButton(buttonsList, round){
     const newGameButton = document.createElement("button");
     newGameButton.className = "game-page-btn__next-round";
     newGameButton.textContent = "Next";
+    newGameButton.value = round; 
     buttonsList.append(newGameButton);
 }

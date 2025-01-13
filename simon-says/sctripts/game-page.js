@@ -35,6 +35,11 @@ function renderHeader(level, round){
 
 }
 
+export function reRenderHeader(round){
+    const roundValue = document.querySelector('.round-of-game');
+    roundValue.textContent = `Round: ${round}`;
+    roundValue.value = round;
+}
 
 export function clearGamePage(){
     const selectors = [".game-header", ".game-page-btn", "h1", ".keypad", ".overlay"];
