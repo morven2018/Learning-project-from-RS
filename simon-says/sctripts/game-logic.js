@@ -40,7 +40,6 @@ export function startRound(level, round) {
 
 export function continueRound(level, round, guessSequence) {
   guessed = 0;
-  attempt = 0;
 }
 
 function generateSequence(level, round) {;
