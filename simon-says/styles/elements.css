@@ -1,8 +1,8 @@
-.start-page__button,
 .game-page-btn__repeat-sequence,
 .game-page-btn__new-game,
-.game-page-btn__next-round {
-  padding: 10px 40px;
+.game-page-btn__next-round, 
+.start-page__button{
+  padding: 10px 0;
   border-radius: 15px;
   border: none;
   background-color: var(--color-btn);
@@ -11,14 +11,15 @@
   font-weight: 500;
 }
 
-@media (max-width: 520px) {
-  .game-page-btn__repeat-sequence,
-  .game-page-btn__new-game,
-  .game-page-btn__next-round {
-    padding: 10px 20px;
-  }
+.game-page-btn__repeat-sequence,
+.game-page-btn__new-game,
+.game-page-btn__next-round {
+  width: 150px;
 }
 
+.start-page__button{
+  padding: 10px 40px;
+}
 @media (max-width: 430px) {
   .game-page-btn__repeat-sequence,
   .game-page-btn__new-game,
@@ -119,4 +120,8 @@
 .num-pad-element_disable,
 .game-page-btn__repeat-sequence_disabled{
   pointer-events: none;
+}
+
+.game-page-btn__repeat-sequence_disabled{
+  opacity: 0.7;
 }
