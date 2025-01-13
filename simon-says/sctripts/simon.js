@@ -52,8 +52,6 @@ parentElement.addEventListener('click', (event) => {
     }
 
 
-
-
     if (event.target.className === 'num-pad-element' || event.target.className === 'keyboard-element'){
         console.log(event.target.value);
         getNewKey(level, event.target.value);
@@ -64,7 +62,11 @@ parentElement.addEventListener('click', (event) => {
 document.addEventListener('keyup', (event) => {
   level = document.querySelector('.level-of-game').value;
   console.log(event.key.toUpperCase());
-  if (isCorrectKey(level, event.key.toUpperCase())) getNewKey(level, event.key.toUpperCase());
+  if (isCorrectKey(level, event.key.toUpperCase())) {
+    getNewKey(level, event.key.toUpperCase());
+    document.getElementById(event.key.toUpperCase()).classList.add("red");
+    setTimeout (() => document.getElementById(event.key.toUpperCase()).classList.remove("red"), 300);
+  }
 });
 
 function isCorrectKey(level, key){
