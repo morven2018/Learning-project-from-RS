@@ -18,9 +18,6 @@ export const getAttempt = () => attempt;
 export function startGame(level){    
     let currLevel = getLevel(level);
     document.querySelector('.start-page').classList.add("start-page_no-display");
-    const hederGame = document.createElement('h1');
-    hederGame.textContent = "Simon Says";
-    document.body.prepend(hederGame);
 
     clearStartPage();
     renderGamePage(level, 1);

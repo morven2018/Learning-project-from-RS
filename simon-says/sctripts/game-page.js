@@ -3,12 +3,16 @@ import { renderNewGameButton, renderRepeatSequenceButton } from "./buttons.js";
 
 export function renderGamePage(level, round){
 
-    renderHeader(level, round); 
     const buttonsList = document.createElement("div");
     buttonsList.className = "game-page-btn";
-    document.querySelector('body').append(buttonsList);
-    
-    
+    document.querySelector('body').prepend(buttonsList);
+
+    const hederGame = document.createElement('h1');
+    hederGame.textContent = "Simon Says";
+    document.body.prepend(hederGame);
+    hederGame.className = "game-page-header";
+
+    renderHeader(level, round); 
     renderRepeatSequenceButton(buttonsList);
     renderNewGameButton(buttonsList);
 }

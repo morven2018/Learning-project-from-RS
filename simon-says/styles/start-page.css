@@ -2,17 +2,6 @@
     height: 382px;
 }
 
-.start-page__header{
-    margin: 20px auto;
-    font-family: "Rubik Puddles", serif;
-    font-size: 48px;
-}
-@media (max-width: 480px) {
-    .start-page__header {
-        font-size: 36px;
-    }
-}
-
 .choose-level-form{
     display: flex;
     flex-direction: column;

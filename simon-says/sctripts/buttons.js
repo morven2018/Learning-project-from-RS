@@ -3,7 +3,7 @@ export function renderRepeatSequenceButton(buttonsList, value = 1){
     repeatSequenceButton.className = "game-page-btn__repeat-sequence";
     repeatSequenceButton.value = value;
     if (value === "0") repeatSequenceButton.classList.add("game-page-btn__repeat-sequence_disabled"); 
-    repeatSequenceButton.textContent = "Repeat the sequence";
+    repeatSequenceButton.textContent = `Repeat\u00A0the sequence`;
     buttonsList.append(repeatSequenceButton);
 }
 
