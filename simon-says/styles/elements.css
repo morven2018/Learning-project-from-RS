@@ -12,10 +12,49 @@
     background-color: var(--color-primary-a60);
 }
 
+
+.keypad{
+    justify-content: center;
+    padding: 0;
+}
+
+.full-pad{
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+    align-items: center
+}
+
 .keyboard-element,
 .num-pad-element{
+    justify-content: center;
     margin: 0;
     font-weight: 700;
+    align-items: center
 }
 
 
+.num-pad,
+.keyboard{
+    display: grid;
+    grid-template-columns: repeat(10, 26px);
+    gap: 5px;
+    margin: 0;
+
+}
+
+@media (max-width: 480px) {
+    .num-pad,
+    .keyboard, 
+    .full-pad{
+        gap: 2px;
+    }
+}
+
+#L{
+    max-width: 26px;
+    grid-column-start: 9;
+    grid-column-end: span 2;
+}

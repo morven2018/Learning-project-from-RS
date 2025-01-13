@@ -4,7 +4,6 @@ import { renderNewGameButton, renderRepeatSequenceButton } from "./buttons.js";
 export function renderGamePage(level, round){
 
     renderHeader(level, round); 
-    //renderKeyPad(level);
     const buttonsList = document.createElement("div");
     buttonsList.className = "game-page-btn";
     document.querySelector('body').append(buttonsList);

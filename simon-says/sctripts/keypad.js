@@ -29,6 +29,7 @@ function renderNumPad(keyPad){
         key.setAttribute('id', item);
         key.setAttribute('value', item);
         key.classList.add("num-pad-element");
+        //key.setAttribute("style", `grid-area: ${item}`);
         keyPad.append(key);
     });
 }
@@ -40,22 +41,23 @@ function renderKeyboard(keyPad){
         key.setAttribute('id', item);
         key.setAttribute('value', item);
         key.classList.add("keyboard-element");
+        //key.setAttribute("style", `grid-area: ${item}`);
         keyPad.append(key);
     });
 }
 
 function renderFullKeyboard(keyPad){
-    const keyboard = document.createElement('div');
-    keyPad.append(keyboard);
-    keyboard.classList = 'full-pad__keys';
-    keyboard.classList.add("keyboard");
-    renderKeyboard(keyboard);
-
     const numPad = document.createElement('div');
     keyPad.append(numPad);
     numPad.classList = 'full-pad__nums';
     numPad.classList.add("num-pad");
     renderNumPad(numPad);
+
+    const keyboard = document.createElement('div');
+    keyPad.append(keyboard);
+    keyboard.classList = 'full-pad__keys';
+    keyboard.classList.add("keyboard");
+    renderKeyboard(keyboard);    
 }
 
 export function clearKeyPad() {
