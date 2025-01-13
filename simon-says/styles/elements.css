@@ -1,0 +1,7 @@
+.start-page__button{
+    padding: 10px 20px;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--color-btn);
+    color: var(--btn-text-color);
+}

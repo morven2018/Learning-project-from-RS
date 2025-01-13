@@ -2,6 +2,8 @@
 import {renderKeyPad, DIGITS, ALPHAS} from './keypad.js';
 
 export function renderStartPage(event, level = 'Easy'){
+    document.querySelector('body').className = "game-area";
+
     const startSection = document.createElement('div');
     document.querySelector('body').append(startSection);
     startSection.className = 'start-page';
