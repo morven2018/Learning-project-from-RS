@@ -8,19 +8,11 @@ export function renderGamePage(level, round){
     const buttonsList = document.createElement("div");
     buttonsList.className = "game-page-btn";
     document.querySelector('body').append(buttonsList);
-
-    /*const resultArea = document.createElement("div");
-    resultArea.className = "result-area";
-    document.querySelector('body').append(resultArea);*/
-
     
     
     renderRepeatSequenceButton(buttonsList);
     renderNewGameButton(buttonsList);
 }
-
-
-
 
 
 function renderHeader(level, round){
@@ -36,12 +28,12 @@ function renderHeader(level, round){
     const roundValue = document.createElement("div");
     roundValue.classList.add('round-of-game');
     roundValue.textContent = `Round: ${round}`;
+    roundValue.value = round;
 
     header.append(levelValue);
     header.append(roundValue);
 
 }
-
 
 
 export function clearGamePage(){

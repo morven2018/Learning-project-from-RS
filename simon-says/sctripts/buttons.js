@@ -13,3 +13,10 @@ export function renderNewGameButton(buttonsList){
     newGameButton.textContent = "New Game";
     buttonsList.append(newGameButton);
 }
+
+export function renderNextRoundButton(buttonsList){
+    const newGameButton = document.createElement("button");
+    newGameButton.className = "game-page-btn__next-round";
+    newGameButton.textContent = "Next";
+    buttonsList.append(newGameButton);
+}

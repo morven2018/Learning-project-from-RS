@@ -3,6 +3,7 @@ import { clearStartPage } from './start-page.js';
 import { DIGITS, ALPHAS } from './keypad.js';
 import { renderStartPage } from './start-page.js';
 import { renderErrorForm } from './error-form.js';
+import { renderWinRoundForm } from './win-round.js';
 
 let sequence = null;
 let guessed = 0;
@@ -14,6 +15,9 @@ export const getIndex = () => guessed;
 
 export function startGame(level){    
     let currLevel = getLevel(level);
+    sequence = null;
+    attempt = 0;
+    guessed = 0;
     document.querySelector('.start-page').classList.add("start-page_no-display");
     const hederGame = document.createElement('h1');
     hederGame.textContent = "Simon Says";
@@ -50,7 +54,7 @@ function generateSequence(level, round){
     const symbolToGuess = level === 'Easy' ? 
       DIGITS : level === 'Medium' ? 
       ALPHAS : DIGITS+ALPHAS;
-    console.log(symbolToGuess);
+    //console.log(symbolToGuess);
     sequence = Array(2 * round).fill(0).
       map( () => symbolToGuess[Math.floor(Math.random() * symbolToGuess.length)]);
     console.log(sequence);
@@ -82,8 +86,7 @@ export function getNewKey(level, value){
     if (value === sequence[guessed]) {
         guessed += 1;
         if (sequence.length === guessed){
-            console.log(win);
-            //обработчик перехода
+            renderWinRoundForm(level, document.querySelector(".round-of-game").value);
         }
     } else{
         renderErrorForm(level, attempt);
