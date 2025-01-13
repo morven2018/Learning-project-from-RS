@@ -4,7 +4,6 @@ export const DIGITS = '0123456789';
 export const ALPHAS = 'QWERTYUIOPASDFGHJKLZXCVBNM';
 
 export function renderKeyPad(level){
-    //console.log(level);
     const keyPad = document.createElement('div');
     keyPad.className = "keypad";
     document.querySelector('body').append(keyPad);

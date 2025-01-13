@@ -18,4 +18,5 @@
     max-width: 1440px;
     text-align: center;
     color: var(--color-text);
+    padding: 30px;
 }
