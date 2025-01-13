@@ -11,6 +11,7 @@ let attempt = 0;
 
 export const getSequence = () => sequence;
 export const getIndex = () => guessed;
+export const getAttempt = () => attempt;
 
 
 export function startGame(level){    
@@ -42,16 +43,16 @@ export function startRound(level, round){
     attempt = 1;
 }
 
-function continueRound(level, round, guessSequence){
+export function continueRound(level, round, guessSequence){
     guessed = 0;
     attempt = 0;
 }
 
 function generateSequence(level, round){
+    if (!level) level = document.querySelector(".level-of-game").value;
     const symbolToGuess = level === 'Easy' ? 
       DIGITS : level === 'Medium' ? 
       ALPHAS : DIGITS+ALPHAS;
-    console.log(symbolToGuess, round);
     sequence = Array(2 * round).fill(0).
       map( () => symbolToGuess[Math.floor(Math.random() * symbolToGuess.length)]);
     console.log(sequence);

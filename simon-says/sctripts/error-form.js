@@ -17,9 +17,6 @@ export function renderErrorForm(level, attempt = 1){
     if (attempt) renderNextTryForm(errorForm);
     else renderFailForm(level, errorForm);
     
-
-
-
 }
 
 function renderNextTryForm(errorForm){

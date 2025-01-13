@@ -1,7 +1,7 @@
 import {renderStartPage} from './start-page.js';
 import { reRenderHeader } from './game-page.js';
 import {DIGITS, ALPHAS, renderKeyPad, clearKeyPad} from './keypad.js';
-import { startGame, getNewKey, getLevel, newGame, getSequence, showSequence, startRound, clearSequence } from './game-logic.js';
+import { startGame, getNewKey, getLevel, newGame, getSequence, showSequence, startRound, clearSequence, continueRound, getAttempt } from './game-logic.js';
 
 let level;
 
@@ -36,12 +36,21 @@ parentElement.addEventListener('click', (event) => {
         btn.classList.add("game-page-btn__repeat-sequence_disabled");
     }
 
+    if (event.target.className === 'error-form__close-btn'){
+        if (document.querySelector(".overlay")) document.querySelector(".overlay").remove();
+        if (getAttempt()) continueRound();
+        //else keypad disabled
+    }
+
+
     if(event.target.className === 'game-page-btn__next-round'){
         if (document.querySelector(".overlay")) document.querySelector(".overlay").remove();
         clearSequence();
         reRenderHeader(Number(event.target.value) + 1);
         startRound(level, Number(event.target.value) + 1);
     }
+
+
 
 
     if (event.target.className === 'num-pad-element' || event.target.className === 'keyboard-element'){
