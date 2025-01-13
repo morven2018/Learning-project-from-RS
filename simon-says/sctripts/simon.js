@@ -1,7 +1,7 @@
-import { renderStartPage} from './start-page.js';
+import {renderStartPage} from './start-page.js';
 
 import {DIGITS, ALPHAS, renderKeyPad, clearKeyPad} from './keypad.js';
-import { startGame, getNewKey, getLevel, newGame, getSequence, getCopy } from './game-logic.js';
+import { startGame, getNewKey, getLevel, newGame, getSequence, getCopy, showSequence } from './game-logic.js';
 
 let level;
 
@@ -24,22 +24,27 @@ parentElement.addEventListener('change', (event) => {
 parentElement.addEventListener('click', (event) => {
     if (event.target.className === 'start-page__button'){
         startGame(getLevel(level));
-        //console.log("start-page__button");
     }
     if (event.target.className === 'game-page-btn__new-game'){
         newGame();
-        //console.log("start-page__button");
+    }
+    if (event.target.className === 'game-page-btn__repeat-sequence'){
+        if (document.querySelector(".overlay")) document.querySelector(".overlay").remove();
+        const btn = document.querySelector(".game-page-btn__repeat-sequence")
+        btn.value = 0;
+        showSequence(getSequence());
+        btn.classList.add("game-page-btn__repeat-sequence_disabled");
     }
 
 
     if (event.target.className === 'num-pad-element' || event.target.className === 'keyboard-element'){
         console.log(event.target.value);
-        //getNewKey(level, event.target.value);
+        getNewKey(level, event.target.value);
     }
     
 });
 
 document.addEventListener('keyup', (event) => {
   level = document.querySelector('.level-of-game').value;
-  if (isCorrectKey(level, event.key.toLocaleUpperCase())) //getNewKey(level, event.key.toLocaleUpperCase());
+  if (isCorrectKey(level, event.key.toLocaleUpperCase())) getNewKey(level, event.key.toLocaleUpperCase());
 });

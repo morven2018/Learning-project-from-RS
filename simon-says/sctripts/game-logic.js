@@ -2,6 +2,7 @@ import {renderGamePage, clearGamePage} from './game-page.js';
 import { clearStartPage } from './start-page.js';
 import { DIGITS, ALPHAS } from './keypad.js';
 import { renderStartPage } from './start-page.js';
+import { renderErrorForm } from './error-form.js';
 
 let sequence = null;
 let copy;
@@ -40,6 +41,10 @@ function startRound(level, round){
     showSequence(copy);
 }
 
+function continueRound(level, round, guessSequence){
+
+}
+
 function generateSequence(level, round){
     const symbolToGuess = level === 'Easy' ? 
       DIGITS : level === 'Medium' ? 
@@ -53,7 +58,7 @@ function generateSequence(level, round){
 
 
 
-function showSequence(guessSequence){
+export function showSequence(guessSequence){
     guessSequence.push(-1);
     guessSequence.forEach((item, index) => {            
         setTimeout(() => {
@@ -74,6 +79,7 @@ export function newGame(){
 
 export function getNewKey(level, value){
     console.log(getSequence());
+    renderErrorForm(level, 1);
     /*let inputResult = document.querySelector(".result"); 
     if(!inputResult){
         inputResult = document.createElement("div");

@@ -1,3 +1,5 @@
+import { renderNewGameButton, renderRepeatSequenceButton } from "./buttons.js";
+
 
 export function renderGamePage(level, round){
 
@@ -40,23 +42,6 @@ function renderHeader(level, round){
 
 }
 
-
-
-
-function renderRepeatSequenceButton(buttonsList){
-    const repeatSequenceButton = document.createElement("button");
-    repeatSequenceButton.className = "game-page-btn__repeat-sequence";
-    repeatSequenceButton.value = 1;
-    repeatSequenceButton.textContent = "Repeat the sequence";
-    buttonsList.append(repeatSequenceButton);
-}
-
-function renderNewGameButton(buttonsList){
-    const newGameButton = document.createElement("button");
-    newGameButton.className = "game-page-btn__new-game";
-    newGameButton.textContent = "New Game";
-    buttonsList.append(newGameButton);
-}
 
 
 export function clearGamePage(){
