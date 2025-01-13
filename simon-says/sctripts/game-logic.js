@@ -1,6 +1,6 @@
 import { renderGamePage, clearGamePage } from "./game-page.js";
 import { clearStartPage } from "./start-page.js";
-import { DIGITS, ALPHAS } from "./keypad.js";
+import { DIGITS, ALPHAS, enableKeys, disableKeys } from "./keypad.js";
 import { renderStartPage } from "./start-page.js";
 import { renderErrorForm } from "./error-form.js";
 import { renderWinRoundForm, renderFinalWinForm } from "./win-round.js";
@@ -55,19 +55,21 @@ function generateSequence(level, round) {;
 }
 
 export function showSequence(guessSequence) {
+  disableKeys();
   console.log(sequence);
   guessSequence.push(-1);
   guessSequence.forEach((item, index) => {
     setTimeout(() => {
-      console.log(item, index%2);
       if (item !== -1) document.getElementById(item).classList.add(classesHighlight[index % 2]);
       if (index != 0)
         document
           .getElementById(guessSequence[index - 1])
           .classList.remove(classesHighlight[(index - 1) % 2]);
+          console.log(item);
     }, 500 * index);
   });
   guessSequence.pop();
+  setTimeout(enableKeys, 500 * generateSequence.length);
 }
 
 export function newGame() {
