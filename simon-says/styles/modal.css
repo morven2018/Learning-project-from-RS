@@ -11,3 +11,22 @@
     display: flex;
     margin: 0;
 }
+
+.error-form,
+.win-form {
+    background-color: var(--background-color);
+    width: 50%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.error-form__close-btn,
+.win-form__close-btn{
+    margin: 10px;
+    align-self: flex-end;
+    width: 24px;
+    height: 24px;
+}
+

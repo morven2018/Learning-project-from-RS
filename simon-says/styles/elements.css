@@ -62,11 +62,11 @@
 
 
 .num-pad-element:active, 
-.keyboard-element:active {
+.keyboard-element:active,
+.keyboard-element_click {
   background-color: var(--active);
   box-shadow: none;
 }
-
 
 
 .num-pad,
@@ -113,4 +113,10 @@
 .keyboard-element_highlight2{
   background-color: var(--highlight-color2);
   box-shadow: none;
+}
+
+.keyboard-element_disable,
+.num-pad-element_disable,
+.game-page-btn__repeat-sequence_disabled{
+  pointer-events: none;
 }

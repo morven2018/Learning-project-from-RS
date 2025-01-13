@@ -1,6 +1,6 @@
 import { renderStartPage } from "./start-page.js";
 import { reRenderHeader, reRenderButtons } from "./game-page.js";
-import { DIGITS, ALPHAS, renderKeyPad, clearKeyPad } from "./keypad.js";
+import { DIGITS, ALPHAS, renderKeyPad, clearKeyPad, isEnable} from "./keypad.js";
 import {
   startGame,
   getNewKey,
@@ -42,6 +42,7 @@ parentElement.addEventListener("click", (event) => {
     const btn = document.querySelector(".game-page-btn__repeat-sequence");
     btn.value = 0;
     showSequence(getSequence());
+    continueRound();
     btn.classList.add("game-page-btn__repeat-sequence_disabled");
   }
 
@@ -73,14 +74,14 @@ parentElement.addEventListener("click", (event) => {
 document.addEventListener("keyup", (event) => {
   level = document.querySelector(".level-of-game").value;
   console.log(event.key.toUpperCase());
-  if (isCorrectKey(level, event.key.toUpperCase())) {
+  if (isCorrectKey(level, event.key.toUpperCase()) && isEnable) {
     getNewKey(level, event.key.toUpperCase());
-    document.getElementById(event.key.toUpperCase()).classList.add("red");
+    document.getElementById(event.key.toUpperCase()).classList.add("keyboard-element_click");
     setTimeout(
       () =>
         document
           .getElementById(event.key.toUpperCase())
-          .classList.remove("red"),
+          .classList.remove("keyboard-element_click"),
       300
     );
   }

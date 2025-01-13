@@ -29,6 +29,7 @@ function renderNumPad(keyPad) {
     key.classList.add("num-pad-element");
     //key.setAttribute("style", `grid-area: ${item}`);
     keyPad.append(key);
+    disableKeys();
   });
 }
 
@@ -41,6 +42,7 @@ function renderKeyboard(keyPad) {
     key.classList.add("keyboard-element");
     //key.setAttribute("style", `grid-area: ${item}`);
     keyPad.append(key);
+    disableKeys();
   });
 }
 
@@ -61,4 +63,38 @@ function renderFullKeyboard(keyPad) {
 export function clearKeyPad() {
   const keyPadElement = document.querySelector(".keypad");
   if (keyPadElement) keyPadElement.remove();
+}
+
+
+export function disableKeys(){
+  console.log("disable");
+  Array.from(DIGITS).forEach(item =>{
+    const elem = document.getElementById(item);
+    if (elem) elem.classList.add("num-pad-element_disable");
+  });
+  Array.from(ALPHAS).forEach(item =>{
+    const elem = document.getElementById(item);
+    if (elem) elem.classList.add("keyboard-element_disable");
+  });
+}
+
+export function enableKeys(){
+  console.log("enable");
+  Array.from(DIGITS).forEach(item =>{
+    const elem = document.getElementById(item);
+    if (elem) {
+      if (elem.classList.contains("num-pad-element_disable")) elem.classList.remove("num-pad-element_disable");
+    }
+  });
+  Array.from(ALPHAS).forEach(item =>{
+    const elem = document.getElementById(item);
+    if (elem) {
+      if (elem.classList.contains("keyboard-element_disable")) elem.classList.remove("keyboard-element_disable");
+    }
+  });
+}
+
+
+export function isEnable(){
+  return !(document.querySelector("keyboard-element_disable") || document.querySelector("num-pad-element_disable"));
 }

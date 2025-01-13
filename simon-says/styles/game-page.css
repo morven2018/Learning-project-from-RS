@@ -1,4 +1,8 @@
-.game-page-btn{
+.game-page__btn{
     display: flex;
     gap: 30px;
+}
+
+.game-page{
+    height: 404px;    
 }

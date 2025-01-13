@@ -1,13 +1,17 @@
 import { renderNewGameButton, renderRepeatSequenceButton } from "./buttons.js";
 
 export function renderGamePage(level, round) {
+  const gamePage = document.createElement("div");
+  document.querySelector("body").prepend(gamePage);
+  gamePage.className = "game-page";
+
   const buttonsList = document.createElement("div");
   buttonsList.className = "game-page-btn";
-  document.querySelector("body").prepend(buttonsList);
+  gamePage.prepend(buttonsList)
 
   const hederGame = document.createElement("h1");
   hederGame.textContent = "Simon Says";
-  document.body.prepend(hederGame);
+  gamePage.prepend(hederGame);
   hederGame.className = "game-page-header";
 
   renderHeader(level, round);
@@ -17,7 +21,7 @@ export function renderGamePage(level, round) {
 
 function renderHeader(level, round) {
   const header = document.createElement("header");
-  document.querySelector("body").prepend(header);
+  document.querySelector(".game-page").prepend(header);
   header.classList.add("game-header");
 
   const levelValue = document.createElement("div");
@@ -45,7 +49,7 @@ export function reRenderButtons() {
     document.querySelector(".game-page-btn").remove();
   const buttonsList = document.createElement("div");
   buttonsList.className = "game-page-btn";
-  document.querySelector("body").append(buttonsList);
+  document.querySelector(".game-page").append(buttonsList);
 
   renderRepeatSequenceButton(buttonsList);
   renderNewGameButton(buttonsList);
@@ -58,6 +62,7 @@ export function clearGamePage() {
     "h1",
     ".keypad",
     ".overlay",
+    ".game-page"
   ];
   selectors.forEach((item) => {
     const elem = document.querySelector(item);
