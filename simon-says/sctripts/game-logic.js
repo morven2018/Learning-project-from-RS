@@ -86,8 +86,7 @@ export function getNewKey(level, value) {
     guessed += 1;
     if (sequence.length === guessed) {
       const round = document.querySelector(".round-of-game").value;
-      console.log(round);
-      if (round !== '5') {
+      if (round !== 5) {
         if (document.querySelector(".game-page-btn__new-game"))
           document.querySelector(".game-page-btn__new-game").remove();
         renderNextRoundButton(document.querySelector(".game-page-btn"), round);
