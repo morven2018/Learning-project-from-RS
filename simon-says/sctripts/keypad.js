@@ -94,5 +94,5 @@ export function enableKeys(){
 
 
 export function isEnable(){
-  return !(document.querySelector("keyboard-element_disable") || document.querySelector("num-pad-element_disable"));
+  return !(document.querySelector(".keyboard-element_disable") || document.querySelector(".num-pad-element_disable"));
 }

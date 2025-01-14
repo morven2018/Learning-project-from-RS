@@ -73,8 +73,8 @@ parentElement.addEventListener("click", (event) => {
 
 document.addEventListener("keyup", (event) => {
   level = document.querySelector(".level-of-game").value;
-  console.log(event.key.toUpperCase());
-  if (isCorrectKey(level, event.key.toUpperCase()) && isEnable) {
+  
+  if (isCorrectKey(level, event.key.toUpperCase()) && isEnable()) {
     getNewKey(level, event.key.toUpperCase());
     document.getElementById(event.key.toUpperCase()).classList.add("keyboard-element_click");
     setTimeout(
