@@ -10,7 +10,7 @@ export function renderErrorForm(level, attempt = 1) {
   errorForm.className = "error-form";
 
   const outCross = document.createElement("div");
-  outCross.className = "close-btn";
+  outCross.className = "error-form__close-btn";
   outCross.textContent = "X";
   errorForm.append(outCross);
 
@@ -52,6 +52,6 @@ function renderFailForm(level, errorForm) {
 
   errorForm.append(buttonBlock);
   buttonBlock.className = "error-form__buttons";
-  renderRepeatSequenceButton(buttonBlock, 0);
+  //renderRepeatSequenceButton(buttonBlock, 0);
   renderNewGameButton(buttonBlock);
 }

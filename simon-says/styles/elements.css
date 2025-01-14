@@ -29,6 +29,15 @@
   }
 }
 
+@media (max-width: 355px) {
+  .game-page-btn__repeat-sequence,
+  .game-page-btn__new-game,
+  .game-page-btn__next-round {
+    margin:  10px auto;
+  }
+}
+
+
 .start-page__button:active,
 .game-page-btn__repeat-sequence:active,
 .game-page-btn__new-game:active,

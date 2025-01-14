@@ -22,7 +22,8 @@
 }
 
 
-.close-btn{
+.error-form__close-btn,
+.win-form__close-btn{
     margin: 10px;
     align-self: flex-end;
     width: 24px;

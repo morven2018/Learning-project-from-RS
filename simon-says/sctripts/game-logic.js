@@ -63,10 +63,10 @@ export function showSequence(guessSequence) {
           .getElementById(guessSequence[index - 1])
           .classList.remove(classesHighlight[(index - 1) % 2]);
 
-    }, 500 * index);
+    }, 600 * index);
   });
   guessSequence.pop();
-  setTimeout(enableKeys, 500 * generateSequence.length);
+  setTimeout(enableKeys, 600 * generateSequence.length);
 }
 
 export function newGame() {
@@ -85,11 +85,16 @@ export function clearSequence() {
 export function getNewKey(level, value) {
   if (value === sequence[guessed]) {
     guessed += 1;
+
+    const resultAnswer = document.querySelector(".answer-block__output");
+    resultAnswer.textContent += value;
+
     if (sequence.length === guessed) {
       const round = document.querySelector(".round-of-game").value;
       document
           .querySelector(".game-page-btn__repeat-sequence")
           .classList.add("game-page-btn__repeat-sequence_disabled");
+
       if (round !== 5) {
         if (document.querySelector(".game-page-btn__new-game")) 
           document.querySelector(".game-page-btn__new-game").remove();
@@ -98,6 +103,7 @@ export function getNewKey(level, value) {
         renderWinRoundForm(level, round);
       } else renderFinalWinForm(level);
     }
+    
   } else {
     renderErrorForm(level, attempt);
     attempt = 0;

@@ -10,13 +10,13 @@ export function renderWinRoundForm(level, round) {
   winForm.className = "win-form";
 
   const outCross = document.createElement("div");
-  outCross.className = "close-btn";
+  outCross.className = "win-form__close-btn";
   outCross.textContent = "X";
   winForm.append(outCross);
 
   const messageBlock = document.createElement("div");
   winForm.append(messageBlock);
-  messageBlock.textContent = `You win ${round} round`;
+  messageBlock.textContent = `You win ${round} round. The answer was ${document.querySelector(".answer-block__output").textContent}`;
   messageBlock.className = "win-form__msg";
 
   const buttonBlock = document.createElement("div");
@@ -37,7 +37,7 @@ export function renderFinalWinForm(level) {
   winForm.className = "win-form";
 
   const outCross = document.createElement("div");
-  outCross.className = "close-btn";
+  outCross.className = "win-form__close-btn";
   outCross.textContent = "X";
   winForm.append(outCross);
 
