@@ -4,7 +4,7 @@ import { DIGITS, ALPHAS, enableKeys, disableKeys } from "./keypad.js";
 import { renderStartPage } from "./start-page.js";
 import { renderErrorForm } from "./error-form.js";
 import { renderWinRoundForm, renderFinalWinForm } from "./win-round.js";
-import { renderNextRoundButton } from "./buttons.js";
+import { renderNextRoundButton, disableButtons, enableButtons } from "./buttons.js";
 
 let sequence = null;
 let guessed = 0;
@@ -53,6 +53,7 @@ function generateSequence(level, round) {;
 
 export function showSequence(guessSequence) {
   disableKeys();
+  disableButtons();
   console.log(sequence);
   guessSequence.push(-1);
   guessSequence.forEach((item, index) => {
@@ -66,8 +67,12 @@ export function showSequence(guessSequence) {
     }, 600 * index);
   });
   guessSequence.pop();
-  setTimeout(enableKeys, 600 * generateSequence.length);
+  setTimeout(() => {
+    enableKeys();
+    enableButtons();
+  }, 600 * generateSequence.length);
 }
+
 
 export function newGame() {
   let level = document.querySelector(".level-of-game").value;
@@ -106,6 +111,9 @@ export function getNewKey(level, value) {
 
   } else {
     renderErrorForm(level, attempt);
+    if (attempt === 0) document
+          .querySelector(".game-page-btn__repeat-sequence")
+          .classList.add("game-page-btn__repeat-sequence_disabled");
     attempt = 0;
   }
 }

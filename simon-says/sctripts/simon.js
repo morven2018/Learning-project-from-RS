@@ -47,7 +47,7 @@ parentElement.addEventListener("click", (event) => {
     reRenderAnswer();
   }
 
-  if (event.target.className === "win-form__close-btn") {
+  if (event.target.className === "win-form_close-btn") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
     if (getAttempt()) continueRound();
@@ -73,10 +73,7 @@ parentElement.addEventListener("click", (event) => {
   if (
     event.target.className === "num-pad-element" ||
     event.target.className === "keyboard-element"
-  ) {
-    console.log(event.target.value);
-    getNewKey(level, event.target.value);
-  }
+  ) getNewKey(level, event.target.value);
 });
 
 document.addEventListener("keyup", (event) => {

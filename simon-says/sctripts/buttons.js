@@ -24,3 +24,13 @@ export function renderNextRoundButton(buttonsList, round) {
   newGameButton.value = round;
   buttonsList.append(newGameButton);
 }
+
+export function disableButtons(){
+  document.querySelector(".game-page-btn__new-game").classList.add("game-page-btn__new-game__disable");
+  document.querySelector(".game-page-btn__repeat-sequence").classList.add("game-page-btn__repeat-sequence__inactive");
+}
+
+export function enableButtons(){
+  document.querySelector(".game-page-btn__new-game").classList.remove("game-page-btn__new-game__disable");
+  document.querySelector(".game-page-btn__repeat-sequence").classList.remove("game-page-btn__repeat-sequence__inactive");
+}
