@@ -1,60 +1,100 @@
+import { renderStartPage } from "./start-page.js";
+import { reRenderHeader, reRenderButtons } from "./game-page.js";
+import { DIGITS, ALPHAS, renderKeyPad, clearKeyPad, isEnable} from "./keypad.js";
+import {
+  startGame,
+  getNewKey,
+  getLevel,
+  newGame,
+  getSequence,
+  showSequence,
+  startRound,
+  clearSequence,
+  continueRound,
+  getAttempt,
+} from "./game-logic.js";
 
-import {renderKeyPad, DIGITS, ALPHAS} from './keypad.js';
+let level;
 
-export function renderStartPage(event, level = 'Easy'){
-    document.querySelector('body').className = "game-area";
+window.onload = renderStartPage;
 
-    const startSection = document.createElement('div');
-    document.querySelector('body').append(startSection);
-    startSection.className = 'start-page';
+const parentElement = document.querySelector("body");
+console.log(parentElement);
 
-    const startHeader = document.createElement('h1');
-    startHeader.textContent = 'Simon says';
-    startHeader.className = 'start-page__header';
+parentElement.addEventListener("change", (event) => {
+  if (event.target.name === "level") {
+    console.log(event.target);
+    clearKeyPad();
+    renderKeyPad(event.target.value);
+  }
+});
 
-    const startButton = document.createElement('button');
-    startButton.textContent = 'Start';
-    startButton.className = 'start-page__button';
+parentElement.addEventListener("click", (event) => {
+  if (event.target.className === "start-page__button") {
+    startGame(getLevel(level));
+  }
+  if (event.target.className === "game-page-btn__new-game") {
+    newGame();
+  }
+  if (event.target.className === "game-page-btn__repeat-sequence") {
+    if (document.querySelector(".overlay"))
+      document.querySelector(".overlay").remove();
+    const btn = document.querySelector(".game-page-btn__repeat-sequence");
+    btn.value = 0;
+    showSequence(getSequence());
+    continueRound();
+    btn.classList.add("game-page-btn__repeat-sequence_disabled");
+  }
 
-    const chooseLevel = document.createElement('form');
-    chooseLevel.className = 'choose-level-form';
-    chooseLevel.setAttribute("id", "level");
+  if (event.target.className === "error-form__close-btn") {
+    if (document.querySelector(".overlay"))
+      document.querySelector(".overlay").remove();
+    if (getAttempt()) continueRound();
+    //else keypad disabled
+  }
 
-    const headerLegend = document.createElement('legend');
-    headerLegend.className = 'choose-level-form__legend';
-    headerLegend.textContent = 'Please. Choose level of the game';
-    chooseLevel.append(headerLegend);
+  if (event.target.className === "game-page-btn__next-round") {
+    if (document.querySelector(".overlay"))
+      document.querySelector(".overlay").remove();
+    clearSequence();
+    reRenderHeader(Number(event.target.value) + 1);
+    reRenderButtons();
+    startRound(level, Number(event.target.value) + 1);
+  }
 
+  if (
+    event.target.className === "num-pad-element" ||
+    event.target.className === "keyboard-element"
+  ) {
+    console.log(event.target.value);
+    getNewKey(level, event.target.value);
+  }
+});
 
-    const inputValue = ['Easy', 'Medium', 'Hard'];
+document.addEventListener("keyup", (event) => {
+  level = document.querySelector(".level-of-game").value;
+  console.log(event.key.toUpperCase());
+  if (isCorrectKey(level, event.key.toUpperCase()) && isEnable) {
+    getNewKey(level, event.key.toUpperCase());
+    document.getElementById(event.key.toUpperCase()).classList.add("keyboard-element_click");
+    setTimeout(
+      () =>
+        document
+          .getElementById(event.key.toUpperCase())
+          .classList.remove("keyboard-element_click"),
+      300
+    );
+  }
+});
 
-    inputValue.forEach((item) => {
-        let optionLabel = document.createElement('label');
-        optionLabel.setAttribute('for', item);
-        optionLabel.textContent = item;
-        optionLabel.className = "choose-level-form__item";
-
-        let option = document.createElement('input');
-        option.setAttribute('type', 'radio');
-        option.setAttribute('id', item);
-        option.setAttribute('name', 'level');
-        option.setAttribute('value', item);
-        if (item === level) option.setAttribute('checked', true);
-
-        chooseLevel.append(optionLabel);
-        optionLabel.append(option);     
-
-    });     
-    
-    startSection.append(startHeader);
-    startSection.append(startButton);
-    startSection.append(chooseLevel);
-    renderKeyPad(level);
-    
+function isCorrectKey(level, key) {
+  switch (level) {
+    case "Easy":
+      return DIGITS.includes(key);
+    case "Medium":
+      return ALPHAS.includes(key);
+    case "Hard":
+      return DIGITS.includes(key) || ALPHAS.includes(key);
+  }
 }
-
-
-export function clearStartPage(){
-    const startPageRootElement = document.querySelector(".start-page");
-    if (startPageRootElement) startPageRootElement.remove();
-}
+ 
