@@ -61,7 +61,7 @@ parentElement.addEventListener("click", (event) => {
     reRenderAnswer();
   }
 
-  if (event.target.className === "win-form_close-btn") {
+  if (event.target.className === "win-form__close-btn") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
 
