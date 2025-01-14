@@ -6,6 +6,7 @@ import { renderErrorForm } from "./error-form.js";
 import { renderWinRoundForm, renderFinalWinForm } from "./win-round.js";
 import { renderNextRoundButton } from "./buttons.js";
 
+
 let sequence = null;
 let guessed = 0;
 let attempt = 0;
