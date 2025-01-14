@@ -10,7 +10,7 @@ export function renderWinRoundForm(level, round) {
   winForm.className = "win-form";
 
   const outCross = document.createElement("div");
-  outCross.className = "win-form__close-btn";
+  outCross.className = "close-btn";
   outCross.textContent = "X";
   winForm.append(outCross);
 
@@ -37,7 +37,7 @@ export function renderFinalWinForm(level) {
   winForm.className = "win-form";
 
   const outCross = document.createElement("div");
-  outCross.className = "win-form__close-btn";
+  outCross.className = "close-btn";
   outCross.textContent = "X";
   winForm.append(outCross);
 

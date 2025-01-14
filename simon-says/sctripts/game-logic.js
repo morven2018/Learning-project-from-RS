@@ -33,7 +33,6 @@ export function getLevel(level) {
 
 export function startRound(level, round) {
   const guessSequence = generateSequence(level, round);
-  console.log(guessSequence);
   showSequence(guessSequence);
   attempt = 1;
 }
@@ -49,7 +48,6 @@ function generateSequence(level, round) {;
   sequence = Array(2 * round)
     .fill(0)
     .map(() => symbolToGuess[Math.floor(Math.random() * symbolToGuess.length)]);
-  console.log(sequence);
   return sequence;
 }
 
@@ -64,7 +62,7 @@ export function showSequence(guessSequence) {
         document
           .getElementById(guessSequence[index - 1])
           .classList.remove(classesHighlight[(index - 1) % 2]);
-          console.log(item);
+
     }, 500 * index);
   });
   guessSequence.pop();
@@ -89,18 +87,16 @@ export function getNewKey(level, value) {
     guessed += 1;
     if (sequence.length === guessed) {
       const round = document.querySelector(".round-of-game").value;
+      document
+          .querySelector(".game-page-btn__repeat-sequence")
+          .classList.add("game-page-btn__repeat-sequence_disabled");
       if (round !== 5) {
-        if (document.querySelector(".game-page-btn__new-game"))
+        if (document.querySelector(".game-page-btn__new-game")) 
           document.querySelector(".game-page-btn__new-game").remove();
+        disableKeys();
         renderNextRoundButton(document.querySelector(".game-page-btn"), round);
         renderWinRoundForm(level, round);
-      } else {
-        if (document.querySelector(".game-page-btn__new-game"))
-          document
-            .querySelector(".game-page-btn__new-game")
-            .classList.add("game-page-btn__repeat-sequence_disabled");
-        renderFinalWinForm(level);
-      }
+      } else renderFinalWinForm(level);
     }
   } else {
     renderErrorForm(level, attempt);

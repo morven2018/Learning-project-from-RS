@@ -10,7 +10,7 @@ export function renderErrorForm(level, attempt = 1) {
   errorForm.className = "error-form";
 
   const outCross = document.createElement("div");
-  outCross.className = "error-form__close-btn";
+  outCross.className = "close-btn";
   outCross.textContent = "X";
   errorForm.append(outCross);
 

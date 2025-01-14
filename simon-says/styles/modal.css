@@ -22,8 +22,7 @@
 }
 
 
-.error-form__close-btn,
-.win-form__close-btn{
+.close-btn{
     margin: 10px;
     align-self: flex-end;
     width: 24px;
@@ -35,10 +34,12 @@
 .win-form__buttons {
     display: flex;
     flex-direction: row;
+    margin-top: 20px;
+    
 }
 
 
-@media (max-width: 440px) {
+@media (max-width: 700px) {
     .error-form__buttons, 
     .win-form__buttons{
         flex-direction: column;
@@ -51,8 +52,6 @@
     .win-form__buttons .game-page-btn__next-round {
         margin: 10px;        
     }
-
-
 
 }
 

@@ -1,6 +1,6 @@
-.game-page__btn{
+.game-page-btn{
     display: flex;
-    gap: 30px;
+    flex-direction: column;
 }
 
 .game-page{

@@ -46,7 +46,7 @@ parentElement.addEventListener("click", (event) => {
     btn.classList.add("game-page-btn__repeat-sequence_disabled");
   }
 
-  if (event.target.className === "error-form__close-btn") {
+  if (event.target.className === "close-btn") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
     if (getAttempt()) continueRound();

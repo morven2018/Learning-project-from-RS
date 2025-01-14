@@ -20,6 +20,7 @@
 .start-page__button{
   padding: 10px 40px;
 }
+
 @media (max-width: 430px) {
   .game-page-btn__repeat-sequence,
   .game-page-btn__new-game,
