@@ -56,7 +56,7 @@ parentElement.addEventListener("click", (event) => {
   if (event.target.className === "error-form__close-btn") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
-    if (getAttempt()) continueRound();
+    if (getAttempt() === 1) continueRound();
     reRenderAnswer();
   }
 

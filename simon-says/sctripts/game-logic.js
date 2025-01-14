@@ -37,8 +37,9 @@ export function startRound(level, round) {
   attempt = 1;
 }
 
-export function continueRound(level, round, guessSequence) {
+export function continueRound() {
   guessed = 0;
+  console.log(guessed);
 }
 
 function generateSequence(level, round) {;
@@ -115,5 +116,6 @@ export function getNewKey(level, value) {
           .querySelector(".game-page-btn__repeat-sequence")
           .classList.add("game-page-btn__repeat-sequence_disabled");
     attempt = 0;
+    guessed = 0;
   }
 }
