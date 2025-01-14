@@ -19,7 +19,7 @@ export function renderGamePage(level, round) {
   answer.classList = "answer-block";
   answer.textContent = "Answer: ";
 
-  const result = document.createElement("span");
+  const result = document.createElement("input");
   answer.append(result);
   result.className = "answer-block__output";
 
@@ -35,10 +35,11 @@ function renderAnswer(gamePage){
   answer.classList = "answer-block";
   answer.textContent = "Answer: ";
 
-  const result = document.createElement("span");
+  const result = document.createElement("input");
+  result.readOnly = true;
+  result.type = "text";
   answer.append(result);
   result.className = "answer-block__output";
-
 }
 
 function renderHeader(level, round) {

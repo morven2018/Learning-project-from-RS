@@ -87,7 +87,7 @@ export function getNewKey(level, value) {
     guessed += 1;
 
     const resultAnswer = document.querySelector(".answer-block__output");
-    resultAnswer.textContent += value;
+    resultAnswer.value += value;
 
     if (sequence.length === guessed) {
       const round = document.querySelector(".round-of-game").value;
@@ -103,7 +103,7 @@ export function getNewKey(level, value) {
         renderWinRoundForm(level, round);
       } else renderFinalWinForm(level);
     }
-    
+
   } else {
     renderErrorForm(level, attempt);
     attempt = 0;
