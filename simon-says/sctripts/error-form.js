@@ -26,7 +26,6 @@ function renderNextTryForm(errorForm) {
     "You have made 1 mistake. You can try again to complete the round 1 more time.";
   messageBlock.className = "error-form__msg";
 
-  //+1 attempt?
   const buttonBlock = document.createElement("div");
 
   errorForm.append(buttonBlock);
@@ -34,7 +33,6 @@ function renderNextTryForm(errorForm) {
 
   const seq = document.querySelector(".game-page-btn__repeat-sequence").value;
   document.querySelector(".game-page-btn__repeat-sequence").value = 0;
-  console.log(seq);
   renderRepeatSequenceButton(buttonBlock, seq);
 
   renderNewGameButton(buttonBlock);

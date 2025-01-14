@@ -7,7 +7,7 @@ export function renderGamePage(level, round) {
 
   const buttonsList = document.createElement("div");
   buttonsList.className = "game-page-btn";
-  gamePage.prepend(buttonsList)
+  gamePage.prepend(buttonsList);
 
   const hederGame = document.createElement("h1");
   hederGame.textContent = "Simon Says";
@@ -26,20 +26,25 @@ export function renderGamePage(level, round) {
   renderHeader(level, round);
   renderRepeatSequenceButton(buttonsList);
   renderNewGameButton(buttonsList);
-  
 }
 
-function renderAnswer(gamePage){
+function renderAnswer(gamePage) {
   const answer = document.createElement("div");
   gamePage.append(answer);
   answer.classList = "answer-block";
-  answer.textContent = "Answer: ";
+
+  const answerChild = document.createElement("div");
+  answerChild.textContent = "Answer: ";
+  answer.append(answerChild);
 
   const result = document.createElement("input");
-  result.readOnly = true;
-  result.type = "text";
-  answer.append(result);
   result.className = "answer-block__output";
+  result.type = "text";
+  result.readOnly = "readOnly";
+  answer.append(result);
+  document
+    .querySelector(".answer-block__output")
+    .setAttribute("readonly", true);
 }
 
 function renderHeader(level, round) {
@@ -67,8 +72,9 @@ export function reRenderHeader(round) {
   roundValue.value = round;
 }
 
-export function reRenderAnswer(){
-  if (document.querySelector(".answer-block")) document.querySelector(".answer-block").remove();
+export function reRenderAnswer() {
+  if (document.querySelector(".answer-block"))
+    document.querySelector(".answer-block").remove();
   renderAnswer(document.querySelector(".game-page"));
 }
 
@@ -91,7 +97,7 @@ export function clearGamePage() {
     ".keypad",
     ".overlay",
     ".answer-block",
-    ".game-page"
+    ".game-page",
   ];
   selectors.forEach((item) => {
     const elem = document.querySelector(item);

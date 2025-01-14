@@ -1,6 +1,16 @@
 import { renderStartPage } from "./start-page.js";
-import { reRenderHeader, reRenderButtons, reRenderAnswer } from "./game-page.js";
-import { DIGITS, ALPHAS, renderKeyPad, clearKeyPad, isEnable} from "./keypad.js";
+import {
+  reRenderHeader,
+  reRenderButtons,
+  reRenderAnswer,
+} from "./game-page.js";
+import {
+  DIGITS,
+  ALPHAS,
+  renderKeyPad,
+  clearKeyPad,
+  isEnable,
+} from "./keypad.js";
 import {
   startGame,
   getNewKey,
@@ -19,7 +29,7 @@ let level;
 window.onload = renderStartPage;
 
 const parentElement = document.querySelector("body");
-console.log(parentElement);
+//console.log(parentElement);
 
 parentElement.addEventListener("change", (event) => {
   if (event.target.name === "level") {
@@ -33,50 +43,58 @@ parentElement.addEventListener("click", (event) => {
   if (event.target.className === "start-page__button") {
     startGame(getLevel(level));
   }
+
   if (event.target.className === "game-page-btn__new-game") {
     newGame();
   }
+
   if (event.target.className === "game-page-btn__repeat-sequence") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
+
     const btn = document.querySelector(".game-page-btn__repeat-sequence");
     btn.value = 0;
     showSequence(getSequence());
     continueRound();
     btn.classList.add("game-page-btn__repeat-sequence_disabled");
+
     reRenderAnswer();
   }
 
-  if (event.target.className === "win-form__close-btn") {
+  if (event.target.className === "win-form_close-btn") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
+
     if (getAttempt()) continueRound();
   }
 
   if (event.target.className === "error-form__close-btn") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
-    if (getAttempt()) continueRound();
+
+    if (getAttempt() === 1) continueRound();
+
     reRenderAnswer();
   }
 
   if (event.target.className === "game-page-btn__next-round") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
+
     clearSequence();
+
     reRenderHeader(Number(event.target.value) + 1);
     reRenderButtons();
     reRenderAnswer();
+
     startRound(level, Number(event.target.value) + 1);
   }
 
   if (
     event.target.className === "num-pad-element" ||
     event.target.className === "keyboard-element"
-  ) {
-    console.log(event.target.value);
+  )
     getNewKey(level, event.target.value);
-  }
 });
 
 document.addEventListener("keyup", (event) => {
@@ -84,7 +102,9 @@ document.addEventListener("keyup", (event) => {
 
   if (isCorrectKey(level, event.key.toUpperCase()) && isEnable()) {
     getNewKey(level, event.key.toUpperCase());
-    document.getElementById(event.key.toUpperCase()).classList.add("keyboard-element_click");
+    document
+      .getElementById(event.key.toUpperCase())
+      .classList.add("keyboard-element_click");
     setTimeout(
       () =>
         document
@@ -105,4 +125,3 @@ function isCorrectKey(level, key) {
       return DIGITS.includes(key) || ALPHAS.includes(key);
   }
 }
- 
