@@ -67,7 +67,6 @@ export function clearKeyPad() {
 
 
 export function disableKeys(){
-  console.log("disable");
   Array.from(DIGITS).forEach(item =>{
     const elem = document.getElementById(item);
     if (elem) elem.classList.add("num-pad-element_disable");
@@ -79,7 +78,6 @@ export function disableKeys(){
 }
 
 export function enableKeys(){
-  console.log("enable");
   Array.from(DIGITS).forEach(item =>{
     const elem = document.getElementById(item);
     if (elem) {
@@ -96,5 +94,5 @@ export function enableKeys(){
 
 
 export function isEnable(){
-  return !(document.querySelector("keyboard-element_disable") || document.querySelector("num-pad-element_disable"));
+  return !(document.querySelector(".keyboard-element_disable") || document.querySelector(".num-pad-element_disable"));
 }

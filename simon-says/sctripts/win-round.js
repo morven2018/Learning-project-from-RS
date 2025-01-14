@@ -16,7 +16,7 @@ export function renderWinRoundForm(level, round) {
 
   const messageBlock = document.createElement("div");
   winForm.append(messageBlock);
-  messageBlock.textContent = `You win ${round} round`;
+  messageBlock.textContent = `You win ${round} round. The answer was ${document.querySelector(".answer-block__output").textContent}`;
   messageBlock.className = "win-form__msg";
 
   const buttonBlock = document.createElement("div");

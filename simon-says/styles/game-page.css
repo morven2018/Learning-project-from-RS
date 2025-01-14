@@ -1,6 +1,6 @@
-.game-page__btn{
+.game-page-btn{
     display: flex;
-    gap: 30px;
+    flex-direction: column;
 }
 
 .game-page{
@@ -10,4 +10,23 @@
 .game-header{
     text-align: right;
     margin-right: 0;
+}
+
+.answer-block{
+    text-align: left;
+    max-width: 160px;
+    margin: 0 auto;
+    font-weight: 700;
+    display: flex;
+    align-items: flex-end
+}
+
+.answer-block__output{
+    width: 100px;
+    display: inline-block;
+    border: none;
+    background-color: var(--input-color);
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 500;
 }

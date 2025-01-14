@@ -52,6 +52,6 @@ function renderFailForm(level, errorForm) {
 
   errorForm.append(buttonBlock);
   buttonBlock.className = "error-form__buttons";
-  renderRepeatSequenceButton(buttonBlock, 0);
+  //renderRepeatSequenceButton(buttonBlock, 0);
   renderNewGameButton(buttonBlock);
 }

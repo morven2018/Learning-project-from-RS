@@ -1,5 +1,5 @@
 import { renderStartPage } from "./start-page.js";
-import { reRenderHeader, reRenderButtons } from "./game-page.js";
+import { reRenderHeader, reRenderButtons, reRenderAnswer } from "./game-page.js";
 import { DIGITS, ALPHAS, renderKeyPad, clearKeyPad, isEnable} from "./keypad.js";
 import {
   startGame,
@@ -44,13 +44,20 @@ parentElement.addEventListener("click", (event) => {
     showSequence(getSequence());
     continueRound();
     btn.classList.add("game-page-btn__repeat-sequence_disabled");
+    reRenderAnswer();
+  }
+
+  if (event.target.className === "win-form__close-btn") {
+    if (document.querySelector(".overlay"))
+      document.querySelector(".overlay").remove();
+    if (getAttempt()) continueRound();
   }
 
   if (event.target.className === "error-form__close-btn") {
     if (document.querySelector(".overlay"))
       document.querySelector(".overlay").remove();
     if (getAttempt()) continueRound();
-    //else keypad disabled
+    reRenderAnswer();
   }
 
   if (event.target.className === "game-page-btn__next-round") {
@@ -59,6 +66,7 @@ parentElement.addEventListener("click", (event) => {
     clearSequence();
     reRenderHeader(Number(event.target.value) + 1);
     reRenderButtons();
+    reRenderAnswer();
     startRound(level, Number(event.target.value) + 1);
   }
 
@@ -73,8 +81,8 @@ parentElement.addEventListener("click", (event) => {
 
 document.addEventListener("keyup", (event) => {
   level = document.querySelector(".level-of-game").value;
-  console.log(event.key.toUpperCase());
-  if (isCorrectKey(level, event.key.toUpperCase()) && isEnable) {
+
+  if (isCorrectKey(level, event.key.toUpperCase()) && isEnable()) {
     getNewKey(level, event.key.toUpperCase());
     document.getElementById(event.key.toUpperCase()).classList.add("keyboard-element_click");
     setTimeout(
