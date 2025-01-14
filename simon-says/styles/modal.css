@@ -1,59 +1,52 @@
 .overlay {
-    position: fixed;
-    background-color: rgba(24, 28, 41, .8);
-    width: 100vw;
-    height: 100vh;
-    left: 0;
-    top: 0;
-    z-index: 9;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    margin: 0;
+  position: fixed;
+  background-color: rgba(24, 28, 41, 0.8);
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin: 0;
 }
 
 .error-form,
 .win-form {
-    background-color: var(--background-color);
-    width: 50%;
-    min-width: 300px;
-    display: flex;
-    flex-direction: column;
+  background-color: var(--background-color);
+  width: 50%;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
 }
-
 
 .error-form__close-btn,
-.win-form__close-btn{
-    margin: 10px;
-    align-self: flex-end;
-    width: 24px;
-    height: 24px;
+.win-form__close-btn {
+  margin: 10px;
+  align-self: flex-end;
+  width: 24px;
+  height: 24px;
 }
-
 
 .error-form__buttons,
 .win-form__buttons {
-    display: flex;
-    flex-direction: row;
-    margin-top: 20px;
-    
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
 }
-
 
 @media (max-width: 700px) {
-    .error-form__buttons, 
-    .win-form__buttons{
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-    .error-form__buttons .game-page-btn__repeat-sequence,
-    .error-form__buttons .game-page-btn__new-game,
-    .win-form__buttons .game-page-btn__new-game,
-    .win-form__buttons .game-page-btn__next-round {
-        margin: 10px;        
-    }
-
+  .error-form__buttons,
+  .win-form__buttons {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .error-form__buttons .game-page-btn__repeat-sequence,
+  .error-form__buttons .game-page-btn__new-game,
+  .win-form__buttons .game-page-btn__new-game,
+  .win-form__buttons .game-page-btn__next-round {
+    margin: 10px;
+  }
 }
-
-
