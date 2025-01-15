@@ -88,7 +88,10 @@ export function showSequence(guessSequence) {
 }
 
 export function newGame() {
-  let level = document.querySelector(".level-of-game").value;
+  let level = "Easy";
+  if (document.querySelector(".level-of-game").value)
+    level = document.querySelector(".level-of-game").value;
+
   clearSequence();
   clearGamePage();
   renderStartPage(event, level);
