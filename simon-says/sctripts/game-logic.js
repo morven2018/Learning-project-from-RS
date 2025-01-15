@@ -104,9 +104,6 @@ export function getNewKey(level, value) {
   if (value === sequence[guessed]) {
     guessed += 1;
 
-    const resultAnswer = document.querySelector(".answer-block__output");
-    resultAnswer.value += value;
-
     if (sequence.length === guessed) {
       const round = document.querySelector(".round-of-game").value;
       document

@@ -104,10 +104,13 @@ document.addEventListener("keyup", (event) => {
     document
       .getElementById(event.key.toUpperCase())
       .classList.add("keyboard-element_click");
+    const resultAnswer = document.querySelector(".answer-block__output");
+    resultAnswer.value += event.key.toUpperCase();
     setTimeout(() => {
       document
         .getElementById(event.key.toUpperCase())
         .classList.remove("keyboard-element_click");
+      getNewKey(level, event.key.toUpperCase());
     }, 300);
   }
 });
