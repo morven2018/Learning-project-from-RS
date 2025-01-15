@@ -114,8 +114,8 @@ export function getNewKey(level, value) {
         .classList.add("game-page-btn__repeat-sequence_disabled");
 
       if (round !== 5) {
-        if (document.querySelector(".game-page-btn__new-game"))
-          document.querySelector(".game-page-btn__new-game").remove();
+        if (document.querySelector(".game-page-btn__repeat-sequence"))
+          document.querySelector(".game-page-btn__repeat-sequence").remove();
         disableKeys();
         renderNextRoundButton(document.querySelector(".game-page-btn"), round);
         renderWinRoundForm(level, round);
