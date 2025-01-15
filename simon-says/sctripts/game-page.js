@@ -14,14 +14,7 @@ export function renderGamePage(level, round) {
   gamePage.prepend(hederGame);
   hederGame.className = "game-page-header";
 
-  const answer = document.createElement("div");
-  gamePage.append(answer);
-  answer.classList = "answer-block";
-  answer.textContent = "Answer: ";
-
-  const result = document.createElement("input");
-  answer.append(result);
-  result.className = "answer-block__output";
+  reRenderAnswer(gamePage);
 
   renderHeader(level, round);
   renderRepeatSequenceButton(buttonsList);
@@ -29,16 +22,16 @@ export function renderGamePage(level, round) {
 }
 
 function renderAnswer(gamePage) {
-  const answer = document.createElement("div");
+  const answer = document.createElement("label");
   gamePage.append(answer);
   answer.classList = "answer-block";
+  answer.setAttribute("for", "answer-block__output");
 
-  const answerChild = document.createElement("div");
-  answerChild.textContent = "Answer: ";
-  answer.append(answerChild);
+  answer.textContent = "Answer: ";
 
   const result = document.createElement("input");
   result.className = "answer-block__output";
+  result.id = "answer-block__output";
   result.type = "text";
   result.readOnly = "readOnly";
   answer.append(result);
