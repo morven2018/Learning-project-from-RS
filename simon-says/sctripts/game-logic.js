@@ -88,7 +88,10 @@ export function showSequence(guessSequence) {
 }
 
 export function newGame() {
-  let level = document.querySelector(".level-of-game").value;
+  let level = "Easy";
+  if (document.querySelector(".level-of-game").value)
+    level = document.querySelector(".level-of-game").value;
+
   clearSequence();
   clearGamePage();
   renderStartPage(event, level);
@@ -120,10 +123,12 @@ export function getNewKey(level, value) {
     }
   } else {
     renderErrorForm(level, attempt);
-    if (attempt === 0)
+    if (attempt === 0) {
       document
         .querySelector(".game-page-btn__repeat-sequence")
         .classList.add("game-page-btn__repeat-sequence_disabled");
+      disableKeys();
+    }
     attempt = 0;
     guessed = 0;
   }

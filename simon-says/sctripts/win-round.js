@@ -53,5 +53,4 @@ export function renderFinalWinForm(level) {
   buttonBlock.className = "win-form__buttons";
 
   renderNewGameButton(buttonBlock);
-  document.querySelector(".game-page-btn__next-round").textContent = "Yes";
 }
