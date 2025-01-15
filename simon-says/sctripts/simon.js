@@ -10,6 +10,8 @@ import {
   renderKeyPad,
   clearKeyPad,
   isEnable,
+  enableKeys,
+  disableKeys,
 } from "./keypad.js";
 import {
   startGame,

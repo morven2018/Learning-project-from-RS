@@ -120,10 +120,12 @@ export function getNewKey(level, value) {
     }
   } else {
     renderErrorForm(level, attempt);
-    if (attempt === 0)
+    if (attempt === 0) {
       document
         .querySelector(".game-page-btn__repeat-sequence")
         .classList.add("game-page-btn__repeat-sequence_disabled");
+      disableKeys();
+    }
     attempt = 0;
     guessed = 0;
   }
