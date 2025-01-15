@@ -22,7 +22,7 @@ export function renderNextRoundButton(buttonsList, round) {
   newGameButton.className = "game-page-btn__next-round";
   newGameButton.textContent = "Next";
   newGameButton.value = round;
-  buttonsList.append(newGameButton);
+  buttonsList.prepend(newGameButton);
 }
 
 export function disableButtons() {

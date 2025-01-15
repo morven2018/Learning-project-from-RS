@@ -101,17 +101,17 @@ document.addEventListener("keyup", (event) => {
   level = document.querySelector(".level-of-game").value;
 
   if (isCorrectKey(level, event.key.toUpperCase()) && isEnable()) {
-    getNewKey(level, event.key.toUpperCase());
     document
       .getElementById(event.key.toUpperCase())
       .classList.add("keyboard-element_click");
-    setTimeout(
-      () =>
-        document
-          .getElementById(event.key.toUpperCase())
-          .classList.remove("keyboard-element_click"),
-      300
-    );
+    const resultAnswer = document.querySelector(".answer-block__output");
+    resultAnswer.value += event.key.toUpperCase();
+    setTimeout(() => {
+      document
+        .getElementById(event.key.toUpperCase())
+        .classList.remove("keyboard-element_click");
+      getNewKey(level, event.key.toUpperCase());
+    }, 300);
   }
 });
 
