@@ -35,7 +35,7 @@ const parentElement = document.querySelector("body");
 
 parentElement.addEventListener("change", (event) => {
   if (event.target.name === "level") {
-    console.log(event.target);
+    //console.log(event.target);
     clearKeyPad();
     renderKeyPad(event.target.value);
   }
@@ -95,8 +95,11 @@ parentElement.addEventListener("click", (event) => {
   if (
     event.target.className === "num-pad-element" ||
     event.target.className === "keyboard-element"
-  )
+  ) {
+    const resultAnswer = document.querySelector(".answer-block__output");
+    resultAnswer.value += event.target.value;
     getNewKey(level, event.target.value);
+  }
 });
 
 document.addEventListener("keydown", (event) => {
