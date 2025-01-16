@@ -1,6 +1,7 @@
 import { renderNewGameButton, renderRepeatSequenceButton } from "./buttons.js";
 
 export function renderErrorForm(level, attempt = 1) {
+  if (document.querySelector(".overlay")) return;
   const overlay = document.createElement("div");
   document.querySelector("body").append(overlay);
   overlay.className = "overlay";
