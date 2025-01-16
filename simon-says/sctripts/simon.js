@@ -103,7 +103,7 @@ parentElement.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.repeat) preventDefault();
+  if (event.repeat) event.preventDefault();
 
   level = document.querySelector(".level-of-game").value;
 
