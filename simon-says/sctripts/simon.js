@@ -101,12 +101,19 @@ parentElement.addEventListener("click", (event) => {
     getNewKey(level, event.target.value);
   }
 });
+let lock = -1;
+
+document.addEventListener("keyup", (event) => {
+  if (event.key.toUpperCase() === lock) lock = -1;
+});
 
 document.addEventListener("keydown", (event) => {
   if (event.repeat) event.preventDefault();
 
-  level = document.querySelector(".level-of-game").value;
+  if (lock !== -1) return;
 
+  level = document.querySelector(".level-of-game").value;
+  lock = event.key.toUpperCase();
   if (
     isCorrectKey(level, event.key.toUpperCase()) &&
     isEnable() &&
