@@ -99,10 +99,16 @@ parentElement.addEventListener("click", (event) => {
     getNewKey(level, event.target.value);
 });
 
-document.addEventListener("keyup", (event) => {
+document.addEventListener("keydown", (event) => {
+  if (event.repeat) preventDefault();
+
   level = document.querySelector(".level-of-game").value;
 
-  if (isCorrectKey(level, event.key.toUpperCase()) && isEnable()) {
+  if (
+    isCorrectKey(level, event.key.toUpperCase()) &&
+    isEnable() &&
+    !document.querySelector(".overlay")
+  ) {
     document
       .getElementById(event.key.toUpperCase())
       .classList.add("keyboard-element_click");

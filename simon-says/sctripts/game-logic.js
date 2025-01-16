@@ -104,6 +104,7 @@ export function clearSequence() {
 }
 
 export function getNewKey(level, value) {
+  if (document.querySelector(".overlay")) return;
   if (value === sequence[guessed]) {
     guessed += 1;
 
