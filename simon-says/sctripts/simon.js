@@ -41,6 +41,10 @@ parentElement.addEventListener("change", (event) => {
   }
 });
 
+let lock = -1;
+let lockMouse = -1;
+let lockKey = -1;
+
 parentElement.addEventListener("click", (event) => {
   if (event.target.className === "start-page__button") {
     startGame(getLevel(level));
@@ -94,23 +98,41 @@ parentElement.addEventListener("click", (event) => {
 
   if (
     event.target.className === "num-pad-element" ||
-    event.target.className === "keyboard-element"
+    (event.target.className === "keyboard-element" && lockKey === -1)
   ) {
     const resultAnswer = document.querySelector(".answer-block__output");
     resultAnswer.value += event.target.value;
     getNewKey(level, event.target.value);
   }
 });
-let lock = -1;
+
+parentElement.addEventListener("mousedown", (event) => {
+  if (
+    event.target.className === "num-pad-element" ||
+    (event.target.className === "keyboard-element" && lockKey === -1)
+  )
+    lockMouse = 1;
+});
+
+parentElement.addEventListener("mouseup", (event) => {
+  if (
+    event.target.className === "num-pad-element" ||
+    event.target.className === "keyboard-element"
+  )
+    lockMouse = -1;
+});
 
 document.addEventListener("keyup", (event) => {
   if (event.key.toUpperCase() === lock) lock = -1;
+  lockKey = 1;
 });
 
 document.addEventListener("keydown", (event) => {
   if (event.repeat) event.preventDefault();
 
-  if (lock !== -1) return;
+  if (lock !== -1 || lockMouse === 1) return;
+
+  lockKey = -1;
 
   level = document.querySelector(".level-of-game").value;
   lock = event.key.toUpperCase();
