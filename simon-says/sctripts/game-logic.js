@@ -46,7 +46,7 @@ export function startRound(level, round) {
 
 export function continueRound() {
   guessed = 0;
-  console.log(guessed);
+  // console.log(guessed);
 }
 
 function generateSequence(level, round) {
