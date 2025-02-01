@@ -1,0 +1,95 @@
+@use "sass:color";
+
+$black-field: rgb(106, 15, 15);
+$white-field: bisque;
+$cell-unknown-color: cornflowerblue;
+
+body {
+  max-width: 1440px;
+}
+
+/*%base-shared {
+  height: 15px;
+  width: 15px;
+  border: none;
+}*/
+
+.field {
+  max-width: 100px;
+}
+
+.game-field {
+  display: grid;
+  gap: 3px;
+  grid-template-columns: repeat(5, 15px);
+}
+
+.field__attempt {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+
+  &__top-attempt {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    &__cell {
+      width: 15px;
+      text-align: center;
+    }
+  }
+
+  &__left-attempt {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    &__cell {
+      height: 15px;
+    }
+  }
+}
+
+.game-field__cell {
+  /*@extend %base-shared;*/
+
+  height: 15px;
+  width: 15px;
+  border: none;
+
+  &_unknown {
+    background-color: $cell-unknown-color;
+
+    &:hover {
+      background-color: lighten(cornflowerblue, 20%);
+    }
+  }
+
+  &_checked {
+    background-color: blue;
+  }
+  &_crossed {
+    background-color: crimson;
+  }
+
+  &_black {
+    background-color: $black-field;
+  }
+
+  &_white {
+    background-color: $white-field;
+  }
+}
+
+/*
+.gameField__cell_black {
+  @extend %base-shared;
+  background-color: $black-field;
+}
+
+.gameField__cell_white {
+  @extend %base-shared;
+  background-color: $white-field;
+}*/
