@@ -1,12 +1,13 @@
 import "../styles/gameField.scss";
 import { renderField } from "./field";
+import { hasNoMistake, isReady } from "./logic";
 
 const levelSize = {
   Easy: 5,
   Medium: 10,
   Hard: 15,
 };
-
+let level = "Easy";
 const parentElement = document.querySelector("body");
 
 window.onload = renderStartPage;
@@ -39,19 +40,37 @@ parentElement.addEventListener("mousemove", (event) => {
 
 parentElement.addEventListener("click", (event) => {
   if (event.target.classList[0] === "game-field__cell") {
-    clearClassCell(event.target);
-    event.target.classList.toggle("game-field__cell_checked");
+    if (event.target.classList.contains("game-field__cell_checked")) {
+      clearClassCell(event.target);
+      event.target.classList.add("game-field__cell_unknown");
+    } else {
+      clearClassCell(event.target);
+      event.target.classList.add("game-field__cell_checked");
+    }
+
+    if (hasNoMistake(levelSize[level]) && isReady(levelSize[level]))
+      console.log("You win!");
+    else if (!hasNoMistake(levelSize[level])) console.log("Make error");
   }
 });
 
 parentElement.addEventListener("contextmenu", (event) => {
   if (event.target.classList[0] === "game-field__cell") {
-    clearClassCell(event.target);
-    event.target.classList.toggle("game-field__cell_crossed");
+    if (event.target.classList.contains("game-field__cell_crossed")) {
+      clearClassCell(event.target);
+      event.target.classList.add("game-field__cell_unknown");
+    } else {
+      clearClassCell(event.target);
+      event.target.classList.add("game-field__cell_crossed");
+    }
+
+    if (!hasNoMistake(levelSize[level])) console.log("Make error cross");
+    event.preventDefault();
   }
 });
 
 function clearClassCell(elem) {
+  console.log("clear");
   const classes = [
     "game-field__cell_unknown",
     "game-field__cell_checked",

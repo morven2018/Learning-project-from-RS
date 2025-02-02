@@ -6,48 +6,70 @@ $cell-unknown-color: cornflowerblue;
 
 body {
   max-width: 1440px;
+  box-sizing: content-box;
+  font-size: 14px;
 }
 
-/*%base-shared {
-  height: 15px;
-  width: 15px;
-  border: none;
-}*/
-
 .field {
-  max-width: 100px;
+  max-width: 40%;
+
+  &__additional {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    border: none;
+
+    & .field__attempt {
+      display: grid;
+      grid-template-columns: auto;
+      grid-template-rows: repeat(5, 21px);
+      align-items: start;
+    }
+  }
 }
 
 .game-field {
   display: grid;
-  gap: 3px;
-  grid-template-columns: repeat(5, 15px);
+  grid-template-columns: repeat(5, 20px);
+  //border: 2px solid blue;
 }
 
 .field__attempt {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(5, 20px);
+  //align-items: stretch;
+  justify-content: end;
 
   &__top-attempt {
+    //height: 50px;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
+    border-left: 1px solid black;
+    justify-content: flex-end;
+    width: 19px;
 
     &__cell {
-      width: 15px;
       text-align: center;
+      border: none;
     }
   }
 
   &__left-attempt {
+    //width: 50px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    flex-grow: 1;
+    gap: 10px;
+    border-top: 1px solid black;
+    justify-content: flex-end;
 
     &__cell {
-      height: 15px;
+      height: 20px;
+      text-align: center;
+      border: none;
     }
   }
 }
@@ -55,9 +77,11 @@ body {
 .game-field__cell {
   /*@extend %base-shared;*/
 
-  height: 15px;
-  width: 15px;
+  height: 20px;
+  width: 20px;
   border: none;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
 
   &_unknown {
     background-color: $cell-unknown-color;

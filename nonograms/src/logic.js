@@ -1,0 +1,50 @@
+import { templateField, getValues } from "./field";
+
+export function hasNoMistake(n) {
+  const solution = getSolution(n);
+  const templateSolution = getValues(templateField, n);
+  return solution.every((item, index) =>
+    item.every(
+      (elem, iter) => elem === "-1" || elem === templateSolution[index][iter]
+    )
+  );
+}
+
+export function isReady(n) {
+  const solution = getSolution(n);
+  const templateSolution = getValues(templateField, n);
+  return solution.every((item, index) =>
+    item.every(
+      (elem, iter) =>
+        (elem === "-1" && templateSolution[index][iter]) === "0" ||
+        elem === templateSolution[index][iter]
+    )
+  );
+}
+
+function getSolution(n) {
+  const fieldSolution = document.querySelectorAll(".game-field__cell");
+  const solution = Array(n);
+  for (let i = 0; i < n; i += 1) {
+    solution[i] = [];
+    for (let j = 0; j < n; j += 1) {
+      if (
+        fieldSolution[i * n + j].classList.contains("game-field__cell_checked")
+      )
+        solution[i].push("1");
+      if (
+        fieldSolution[i * n + j].classList.contains("game-field__cell_crossed")
+      )
+        solution[i].push("0");
+      if (
+        fieldSolution[i * n + j].classList.contains("game-field__cell_unknown")
+      )
+        solution[i].push("-1");
+    }
+  }
+  return solution;
+}
+
+export function isMistake() {
+  return false;
+}
