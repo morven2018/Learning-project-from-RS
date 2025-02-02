@@ -22,8 +22,7 @@ body {
 
     & .field__attempt {
       display: grid;
-      grid-template-columns: auto;
-      grid-template-rows: repeat(5, 21px);
+      grid-auto-flow: column;
       align-items: start;
     }
   }
@@ -31,14 +30,12 @@ body {
 
 .game-field {
   display: grid;
-  grid-template-columns: repeat(5, 20px);
+  //grid-template-columns: repeat(5, 20px);
   //border: 2px solid blue;
 }
 
 .field__attempt {
   display: grid;
-  grid-template-columns: repeat(5, 20px);
-  //align-items: stretch;
   justify-content: end;
 
   &__top-attempt {
@@ -67,7 +64,7 @@ body {
     justify-content: flex-end;
 
     &__cell {
-      height: 20px;
+      height: 19px;
       text-align: center;
       border: none;
     }

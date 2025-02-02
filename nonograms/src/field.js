@@ -1,4 +1,3 @@
-export const templateField = ["10101", "11000", "01101", "00111", "10010"];
 const startBody = document.querySelector("body");
 
 export function getValues(templateField, n) {
@@ -9,43 +8,63 @@ export function getValues(templateField, n) {
   return cellValues;
 }
 
-export function renderField(n) {
-  const cellValues = getValues(templateField, n);
-  console.log(1, cellValues);
-  const field = document.createElement("div");
-  field.className = "field";
-  startBody.append(field);
+export function renderField(templates) {
+  console.log("render");
+  templates.forEach((item) => {
+    const n = item.size;
+    const templateField = item.template;
 
-  const extraDiv = document.createElement("div");
-  extraDiv.className = "field-extra";
-  field.append(extraDiv);
+    startBody.append(document.createElement("p"));
 
-  const topAttempt = document.createElement("div");
-  topAttempt.className = "field__attempt";
-  extraDiv.append(topAttempt);
+    const cellValues = getValues(templateField, n);
+    console.log(1, cellValues);
+    const field = document.createElement("div");
+    field.className = "field";
+    startBody.append(field);
 
-  const additionalField = document.createElement("div");
-  additionalField.className = "field__additional";
-  field.append(additionalField);
+    const extraDiv = document.createElement("div");
+    extraDiv.className = "field-extra";
+    field.append(extraDiv);
 
-  const leftAttempt = document.createElement("div");
-  leftAttempt.className = "field__attempt";
-  additionalField.append(leftAttempt);
+    const topAttempt = document.createElement("div");
+    topAttempt.className = "field__attempt";
+    extraDiv.append(topAttempt);
+    topAttempt.setAttribute(
+      "style",
+      `grid-template-columns: repeat(${n}, 20px);`
+    );
 
-  const gameField = document.createElement("div");
-  gameField.className = "game-field";
-  additionalField.append(gameField);
+    const additionalField = document.createElement("div");
+    additionalField.className = "field__additional";
+    field.append(additionalField);
 
-  const topAttempts = generateAttempts(cellValues, n, true);
-  const leftAttempts = generateAttempts(cellValues, n, false);
+    const leftAttempt = document.createElement("div");
+    leftAttempt.className = "field__attempt";
+    additionalField.append(leftAttempt);
+    leftAttempt.setAttribute(
+      "style",
+      `grid-template-rows: repeat(${n}, 21px);`
+    );
 
-  renderAttempt(topAttempts, topAttempt, true);
-  renderAttempt(leftAttempts, leftAttempt, false);
+    const gameField = document.createElement("div");
+    gameField.className = "game-field";
+    additionalField.append(gameField);
+    gameField.setAttribute(
+      "style",
+      `grid-template-columns: repeat(${n}, 20px);`
+    );
 
-  console.log(2, topAttempts);
-  console.log(3, leftAttempts);
+    const topAttempts = generateAttempts(cellValues, n, true);
+    const leftAttempts = generateAttempts(cellValues, n, false);
 
-  renderCellsField(cellValues, n, gameField);
+    renderAttempt(topAttempts, topAttempt, true);
+    renderAttempt(leftAttempts, leftAttempt, false);
+
+    console.log(2, topAttempts);
+    console.log(3, leftAttempts);
+
+    renderCellsField(cellValues, n, gameField);
+  });
 }
 
 function generateAttempts(cellValues, n, top = true) {
@@ -88,17 +107,32 @@ function renderCellsField(cellValues, n, field) {
   for (let i = 0; i < n; i += 1) {
     for (let j = 0; j < n; j += 1) {
       const cell = document.createElement("div");
-      /*const name =
+      const name =
         cellValues[i][j] === "1"
-          ? "gameField__cell_black"
-          : "gameField__cell_white";*/
+          ? "game-field__cell_black"
+          : "game-field__cell_white";
+      //cell.classList.add(name);
       cell.classList.add("game-field__cell");
-      cell.classList.add("game-field__cell_unknown");
+      //cell.classList.add("game-field__cell_unknown");
       field.append(cell);
 
-      if (i === n - 1 || i % 5 === 4)
+      if (i % 5 === 4)
+        cell.setAttribute("style", "border-bottom: 1px solid black");
+      if (i === n - 1)
         cell.setAttribute("style", "border-bottom: 2px solid black");
-      if (j === n - 1 || i % 5 === 4) {
+
+      if (j % 5 === 4) {
+        cell.setAttribute("style", "border-right: 1px solid black");
+        if (i === n - 1) {
+          cell.setAttribute(
+            "style",
+            "border-bottom: 2px solid black;  border-right: 1px solid black"
+          );
+        }
+      }
+
+      if (j === n - 1) {
+        //|| i % 5 === 4
         cell.setAttribute("style", "border-right: 2px solid black");
         if (i === n - 1) {
           cell.setAttribute(
@@ -106,15 +140,25 @@ function renderCellsField(cellValues, n, field) {
             "border-bottom: 2px solid black;  border-right: 2px solid black"
           );
         }
+        if (i % 5 === 4 && i != n - 1)
+          cell.setAttribute(
+            "style",
+            "border-bottom: 1px solid black;  border-right: 2px solid black"
+          );
       }
       if (j === 0) {
         cell.setAttribute("style", "border-left: 2px solid black");
         if (i === n - 1) {
           cell.setAttribute(
             "style",
-            "border-bottom: 2px solid black;  border-right: 2px solid black; border-left: 2px solid black"
+            "border-bottom: 2px solid black;  border-left: 2px solid black;"
           );
         }
+        if (i % 5 === 4 && i != n - 1)
+          cell.setAttribute(
+            "style",
+            "border-bottom: 1px solid black;  border-left: 2px solid black"
+          );
       }
       if (i === 0) {
         cell.setAttribute("style", "border-top: 2px solid black");
@@ -128,6 +172,17 @@ function renderCellsField(cellValues, n, field) {
             "style",
             "border-top: 2px solid black; border-right: 2px solid black; "
           );
+        if (j !== n - 1 && j % 5 === 4)
+          cell.setAttribute(
+            "style",
+            "border-top: 2px solid black;  border-right: 1px solid black"
+          );
+      }
+      if (i % 5 === 4 && j % 5 === 4 && i !== n - 1 && j !== n - 1) {
+        cell.setAttribute(
+          "style",
+          "border-bottom: 1px solid black;  border-right: 1px solid black"
+        );
       }
     }
   }
@@ -151,8 +206,8 @@ function renderAttempt(attempts, field, top = true) {
   const size = getSizeOfAttemptField(attempts);
 
   const sizeToRender = top
-    ? `height: ${size * 20 + (size - 1) * 10}px`
-    : `width: ${size * 20 + (size - 1) * 10}px`;
+    ? `height: ${size * 20 + (size - 1) * 5}px`
+    : `width: ${size * 20 + (size - 1) * 5}px`;
 
   attempts.forEach((element, index) => {
     const attempt = document.createElement("div");
@@ -164,19 +219,28 @@ function renderAttempt(attempts, field, top = true) {
       attempt.setAttribute("style", "border-left: 2px solid black");
     if (index === 0 && !top)
       attempt.setAttribute("style", "border-top: 2px solid black");
-    if ((index + 1 === attempts.length || index % 5 === 4) && !top)
+
+    if (top && index % 5 === 4) {
       attempt.setAttribute(
         "style",
-        " border-bottom: 2px solid black; height:21px"
+        `border-right: 1px solid black; width:20px`
       );
-    if (top && (index + 1 === attempts.length || index % 5 === 4))
+    }
+
+    if (top && index + 1 === attempts.length)
       attempt.setAttribute(
         "style",
         `border-right: 2px solid black; width:20px`
       );
-    /*if (!top && index === 2) {
-      attempt.setAttribute("style", `height:17px`);
-    }*/
+
+    if (!top && index % 5 === 4) {
+      attempt.setAttribute("style", `border-bottom: 1px solid black;`);
+    }
+    if (index + 1 === attempts.length && !top)
+      attempt.setAttribute(
+        "style",
+        " border-bottom: 2px solid black; height:21px"
+      );
 
     if (!!element.length)
       element.forEach((item) => {

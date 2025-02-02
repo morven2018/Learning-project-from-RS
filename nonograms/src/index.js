@@ -9,13 +9,27 @@ const levelSize = {
 };
 let level = "Easy";
 const parentElement = document.querySelector("body");
+let templates;
 
 window.onload = renderStartPage;
 
 function renderStartPage(event, level = "Easy") {
   parentElement.classList.add("start-page");
-  //console.log(startBody.classList);
-  renderField(levelSize[level]);
+  console.log("1");
+
+  fetch("../dist/materials/data/nonogramm.json")
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      templates = data;
+      renderField(templates);
+      console.log("3");
+      console.log(templates);
+    });
+
+  console.log("2");
+  console.log(templates);
 }
 
 /*let checked = false;

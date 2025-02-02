@@ -1,6 +1,7 @@
-import { templateField, getValues } from "./field";
+import { getTemplates, getValues } from "./field";
 
 export function hasNoMistake(n) {
+  const templateField = getTemplates()[2].template;
   const solution = getSolution(n);
   const templateSolution = getValues(templateField, n);
   return solution.every((item, index) =>
@@ -11,6 +12,7 @@ export function hasNoMistake(n) {
 }
 
 export function isReady(n) {
+  const templateField = getTemplates()[2].template;
   const solution = getSolution(n);
   const templateSolution = getValues(templateField, n);
   return solution.every((item, index) =>
@@ -43,8 +45,4 @@ function getSolution(n) {
     }
   }
   return solution;
-}
-
-export function isMistake() {
-  return false;
 }
