@@ -43,7 +43,7 @@ export function renderField(templates) {
     additionalField.append(leftAttempt);
     leftAttempt.setAttribute(
       "style",
-      `grid-template-rows: repeat(${n}, 21px);`
+      `grid-template-rows: repeat(${n},  21px);`
     );
 
     const gameField = document.createElement("div");
@@ -51,7 +51,7 @@ export function renderField(templates) {
     additionalField.append(gameField);
     gameField.setAttribute(
       "style",
-      `grid-template-columns: repeat(${n}, 20px);`
+      `grid-template-columns: repeat(${n},  20px);`
     );
 
     const topAttempts = generateAttempts(cellValues, n, true);
@@ -111,81 +111,131 @@ function renderCellsField(cellValues, n, field) {
         cellValues[i][j] === "1"
           ? "game-field__cell_black"
           : "game-field__cell_white";
-      //cell.classList.add(name);
       cell.classList.add("game-field__cell");
-      //cell.classList.add("game-field__cell_unknown");
+      cell.classList.add("game-field__cell_unknown");
+      //cell.classList.add(name);
       field.append(cell);
 
-      if (i % 5 === 4)
-        cell.setAttribute("style", "border-bottom: 1px solid black");
-      if (i === n - 1)
-        cell.setAttribute("style", "border-bottom: 2px solid black");
-
-      if (j % 5 === 4) {
-        cell.setAttribute("style", "border-right: 1px solid black");
-        if (i === n - 1) {
-          cell.setAttribute(
-            "style",
-            "border-bottom: 2px solid black;  border-right: 1px solid black"
-          );
-        }
-      }
-
-      if (j === n - 1) {
-        //|| i % 5 === 4
-        cell.setAttribute("style", "border-right: 2px solid black");
-        if (i === n - 1) {
-          cell.setAttribute(
-            "style",
-            "border-bottom: 2px solid black;  border-right: 2px solid black"
-          );
-        }
-        if (i % 5 === 4 && i != n - 1)
-          cell.setAttribute(
-            "style",
-            "border-bottom: 1px solid black;  border-right: 2px solid black"
-          );
-      }
-      if (j === 0) {
-        cell.setAttribute("style", "border-left: 2px solid black");
-        if (i === n - 1) {
-          cell.setAttribute(
-            "style",
-            "border-bottom: 2px solid black;  border-left: 2px solid black;"
-          );
-        }
-        if (i % 5 === 4 && i != n - 1)
-          cell.setAttribute(
-            "style",
-            "border-bottom: 1px solid black;  border-left: 2px solid black"
-          );
-      }
-      if (i === 0) {
-        cell.setAttribute("style", "border-top: 2px solid black");
-        if (j === 0)
-          cell.setAttribute(
-            "style",
-            "border-top: 2px solid black; border-left: 2px solid black; "
-          );
-        if (j === n - 1)
-          cell.setAttribute(
-            "style",
-            "border-top: 2px solid black; border-right: 2px solid black; "
-          );
-        if (j !== n - 1 && j % 5 === 4)
-          cell.setAttribute(
-            "style",
-            "border-top: 2px solid black;  border-right: 1px solid black"
-          );
-      }
-      if (i % 5 === 4 && j % 5 === 4 && i !== n - 1 && j !== n - 1) {
-        cell.setAttribute(
-          "style",
-          "border-bottom: 1px solid black;  border-right: 1px solid black"
-        );
-      }
+      renderHighlightBorder(i, j, cell, n);
     }
   }
+}
+
+function renderHighlightBorder(i, j, cell, n) {
+  if (j % 5 === 0 && j != 0) cell.setAttribute("style", "border-left: none");
+  if (i % 5 === 0 && i != 0) cell.setAttribute("style", "border-top: none");
+
+  if (i % 5 === 4 || i === n - 1)
+    cell.setAttribute("style", "border-bottom: 2px solid black");
+
+  if (j % 5 === 4) {
+    cell.setAttribute("style", "border-right: 2px solid black");
+    if (i === n - 1) {
+      cell.setAttribute(
+        "style",
+        "border-bottom: 2px solid black;  border-right: 2px solid black"
+      );
+    }
+  }
+
+  if (j === n - 1) {
+    cell.setAttribute("style", "border-right: 2px solid black");
+
+    if (i === n - 1) {
+      cell.setAttribute(
+        "style",
+        "border-bottom: 2px solid black;  border-right: 2px solid black"
+      );
+    }
+
+    if (i % 5 === 4 && i != n - 1)
+      cell.setAttribute(
+        "style",
+        "border-bottom: 2px solid black;  border-right: 2px solid black"
+      );
+
+    if (i % 5 === 0 && i != 0)
+      cell.setAttribute(
+        "style",
+        "border-top: none;  border-right: 2px solid black"
+      );
+  }
+
+  if (j === 0) {
+    cell.setAttribute("style", "border-left: 2px solid black");
+
+    if (i % 5 === 0 && i !== 0)
+      cell.setAttribute(
+        "style",
+        "border-top: none; border-left: 2px solid black"
+      );
+    if (i % 5 === 4 && i != 0)
+      cell.setAttribute(
+        "style",
+        "border-bottom: 2px solid black; border-left: 2px solid black "
+      );
+    if (i === n - 1) {
+      cell.setAttribute(
+        "style",
+        "border-bottom: 2px solid black;  border-left: 2px solid black;"
+      );
+    }
+  }
+
+  if (i === 0) {
+    cell.setAttribute("style", "border-top: 2px solid black");
+
+    if (j === 0)
+      cell.setAttribute(
+        "style",
+        "border-top: 2px solid black; border-left: 2px solid black; "
+      );
+
+    if (j === n - 1)
+      cell.setAttribute(
+        "style",
+        "border-top: 2px solid black; border-right: 2px solid black; "
+      );
+
+    if (j !== 0 && j % 5 === 0)
+      cell.setAttribute(
+        "style",
+        "border-top: 2px solid black;  border-left: none"
+      );
+    if (j !== n - 1 && j % 5 === 4)
+      cell.setAttribute(
+        "style",
+        "border-top: 2px solid black;  border-right: 2px solid black"
+      );
+  }
+
+  if (i === n - 1) {
+    if (j % 5 === 0 && j != 0)
+      cell.setAttribute(
+        "style",
+        "border-left: none;  border-bottom: 2px solid black"
+      );
+  }
+  if (i % 5 === 4 && j % 5 === 4 && i !== n - 1 && j !== n - 1) {
+    cell.setAttribute(
+      "style",
+      "border-bottom: 2px solid black;  border-right: 2px solid black"
+    );
+  }
+  if (j % 5 === 0 && i % 5 === 0 && i !== 0 && j !== 0)
+    cell.setAttribute("style", "border-left: none; border-top:none");
+
+  if (j % 5 === 0 && i % 5 === 4 && i != n - 1 && j != 0)
+    cell.setAttribute(
+      "style",
+      "border-left: none;  border-bottom: 2px solid black"
+    );
+
+  if (j % 5 === 4 && i % 5 === 0 && i !== 0 && j !== n - 1)
+    cell.setAttribute(
+      "style",
+      "border-top: none; border-right: 2px solid black"
+    );
 }
 
 function getSizeOfAttemptField(attempts) {
@@ -216,31 +266,30 @@ function renderAttempt(attempts, field, top = true) {
 
     attempt.setAttribute("style", sizeToRender);
     if (index === 0 && top)
-      attempt.setAttribute("style", "border-left: 2px solid black");
+      attempt.setAttribute("style", "border-left: 2px solid black;");
     if (index === 0 && !top)
       attempt.setAttribute("style", "border-top: 2px solid black");
 
     if (top && index % 5 === 4) {
-      attempt.setAttribute(
-        "style",
-        `border-right: 1px solid black; width:20px`
-      );
+      attempt.setAttribute("style", `border-right: 2px solid black;`);
+    }
+
+    if (top && index % 5 === 0 && index != 0) {
+      attempt.setAttribute("style", `border-left: none`);
+    }
+
+    if (!top && index % 5 === 0 && index != 0) {
+      attempt.setAttribute("style", `border-top: none; padding-top: 4px;`);
     }
 
     if (top && index + 1 === attempts.length)
-      attempt.setAttribute(
-        "style",
-        `border-right: 2px solid black; width:20px`
-      );
+      attempt.setAttribute("style", `border-right: 2px solid black;`);
 
     if (!top && index % 5 === 4) {
-      attempt.setAttribute("style", `border-bottom: 1px solid black;`);
+      attempt.setAttribute("style", `border-bottom: 2px solid black;`);
     }
     if (index + 1 === attempts.length && !top)
-      attempt.setAttribute(
-        "style",
-        " border-bottom: 2px solid black; height:21px"
-      );
+      attempt.setAttribute("style", " border-bottom: 2px solid black;");
 
     if (!!element.length)
       element.forEach((item) => {
