@@ -8,8 +8,8 @@ import {
   reRenderCards,
 } from "./start-page";
 import { renderGamePage, clearGamePage } from "./game-page";
-import { launchTimer, renderButton, winForm } from "./components";
-import { saveResult } from "./save-solution";
+import { launchTimer, renderButton, winForm, changeBtn } from "./components";
+import { saveResult, saveSolution } from "./save-solution";
 
 let level = "Easy";
 const parentElement = document.querySelector("body");
@@ -148,7 +148,7 @@ parentElement.addEventListener("click", (event) => {
     const id = document.querySelector(".game-area").value;
     clearTimeout(timerId);
     renderSolution(templates[id - 1]);
-    offTimer = false;
+    offTimer = true;
   }
 
   if (event.target.classList[0] === "nonograms-list__tabs__easy") {
@@ -203,6 +203,26 @@ parentElement.addEventListener("click", (event) => {
     setLevel(l);
     clearStartPage();
     renderGamePage(templates[id]);
+  }
+
+  if (event.target.classList[0] === "start-page-buttons__save-game") {
+    const id = document.querySelector(".game-area").value;
+    const nTimer = new Date();
+    saveSolution(templates[id - 1], nTimer - start);
+    clearTimeout(timerId);
+    offTimer = true;
+    changeBtn(event.target, id);
+  }
+
+  if (event.target.classList[0] === "start-page-buttons__continue-game") {
+    const id = event.target.value;
+    changeBtn(event.target, id);
+
+    /*const nTimer = new Date();
+    saveSolution(templates[id - 1], nTimer - start);
+    clearTimeout(timerId);
+    offTimer = true;
+    changeBtn(event.target, id);*/
   }
 });
 

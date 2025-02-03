@@ -21,19 +21,29 @@ function prepareJSONResult(timeResult, temp, time, id) {
 
 //templates[id - 1], nTimer - start, nTimer);
 
-export function saveResult(temp, timeResult, time) {
+export function saveSolution(temp, timeResult) {
   let stored = localStorage.savings ? JSON.parse(localStorage.savings) : [];
+  let exist = -1;
 
-  const res = prepareJSONResultSaving(timeResult, temp, time, stored.length);
-  stored.push(res);
-  localStorage.result = JSON.stringify(stored);
+  stored.forEach((elem, index) => {
+    if (elem.id === temp.id) exist = index;
+  });
+
+  const res = prepareJSONResultSaving(temp, timeResult);
+  if (exist === -1) {
+    stored.push(res);
+  } else {
+    stored[exist] = res;
+  }
+  localStorage.savings = JSON.stringify(stored);
+  localStorage.last = temp.id;
+  //console.log(localStorage.savings);
 }
 
-function prepareJSONResultSaving(timeResult, temp, time, id) {
-  const solution = getSolution(template.size);
+function prepareJSONResultSaving(temp, timeResult) {
+  const solution = getSolution(temp.size);
   return {
-    id: id,
-    date: time,
+    id: temp.id,
     timeOfSolution: timeResult,
     template: temp.template,
     size: temp.size,

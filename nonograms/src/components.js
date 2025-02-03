@@ -73,3 +73,19 @@ export function winForm(time) {
     id
   );
 }
+
+export function changeBtn(btn, id) {
+  const lst = document.querySelector(".bth-list");
+  if (btn.classList.contains("start-page-buttons__save-game"))
+    renderButton(
+      lst,
+      "start-page-buttons__continue-game",
+      "Continue the game",
+      true,
+      id
+    );
+  else
+    renderButton(lst, "start-page-buttons__save-game", "Save game", true, id);
+
+  btn.remove();
+}
