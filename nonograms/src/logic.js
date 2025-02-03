@@ -2,7 +2,7 @@ import { getValues } from "./field";
 
 export function hasNoMistake(n, templateField) {
   const solution = getSolution(n);
-  console.log("mst", templateField);
+  //console.log("mst", templateField);
   const templateSolution = getValues(templateField.template, n);
   return solution.every((item, index) =>
     item.every(
@@ -13,7 +13,7 @@ export function hasNoMistake(n, templateField) {
 
 export function isReady(n, templateField) {
   const solution = getSolution(n);
-  console.log("read");
+  //console.log("read");
   const templateSolution = getValues(templateField.template, n);
   return solution.every((item, index) =>
     item.every(
