@@ -100,8 +100,7 @@ parentElement.addEventListener("click", (event) => {
     } else if (
       !hasNoMistake(levelSize[localStorage.level], templates[id - 1])
     ) {
-      console.log("Make error");
-      //audio_mistake.play();
+      console.log("You make a mistake");
     }
   }
 
@@ -226,7 +225,7 @@ parentElement.addEventListener("contextmenu", (event) => {
 
     const id = document.querySelector(".game-area").value;
     if (!hasNoMistake(levelSize[localStorage.level], templates[id - 1]))
-      console.log("Make error cross");
+      console.log("You make a mistake");
 
     event.preventDefault();
   }
