@@ -10,7 +10,7 @@ export function renderField(temp, startBody = document.querySelector("body")) {
   const n = temp.size;
   const templateField = temp.template;
 
-  startBody.append(document.createElement("p"));
+  //startBody.append(document.createElement("p"));
 
   const cellValues = getValues(templateField, n);
   console.log(1, cellValues);
@@ -21,6 +21,9 @@ export function renderField(temp, startBody = document.querySelector("body")) {
   const extraDiv = document.createElement("div");
   extraDiv.className = "field-extra";
   field.append(extraDiv);
+
+  const blankSpace = document.createElement("div");
+  extraDiv.append(blankSpace);
 
   const topAttempt = document.createElement("div");
   topAttempt.className = "field__attempt";
@@ -49,6 +52,12 @@ export function renderField(temp, startBody = document.querySelector("body")) {
 
   const topAttempts = generateAttempts(cellValues, n, true);
   const leftAttempts = generateAttempts(cellValues, n, false);
+
+  const wdth = getSizeOfAttemptField(leftAttempts);
+  blankSpace.setAttribute(
+    "style",
+    `min-width: ${wdth * 20 + (wdth - 1) * 5}px`
+  );
 
   renderAttempt(topAttempts, topAttempt, true);
   renderAttempt(leftAttempts, leftAttempt, false);

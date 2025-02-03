@@ -46,3 +46,11 @@ function getSolution(n) {
   }
   return solution;
 }
+
+export function setLevel(value = null) {
+  if (value) localStorage.setItem("level", value);
+  else {
+    const tab = document.querySelector(".nonograms-list__tabs__active");
+    localStorage.setItem("level", tab.value);
+  }
+}

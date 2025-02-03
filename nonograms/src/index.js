@@ -1,7 +1,7 @@
 import "../styles/gameField.scss";
 import { renderField } from "./field";
-import { hasNoMistake, isReady } from "./logic";
-import { renderStartPage, levelSize } from "./start-page";
+import { hasNoMistake, isReady, setLevel } from "./logic";
+import { renderStartPage, levelSize, clearStartPage } from "./start-page";
 import { renderGamePage } from "./game-page";
 
 let level = "Easy";
@@ -19,13 +19,12 @@ function startGame(event, level = "Easy") {
       return response.json();
     })
     .then((data) => {
-      console.log(localStorage);
       templates = data;
+      if (localStorage.level === undefined) console.log("wtf");
+      else setLevel("Easy");
       renderStartPage(templates);
-      renderGamePage(templates[2]);
-      templates.forEach((item) => renderField(item));
-      console.log("3");
-      console.log(templates);
+      //renderGamePage(templates[2]);
+      //templates.forEach((item) => renderField(item));
     });
 }
 
@@ -62,6 +61,20 @@ parentElement.addEventListener("click", (event) => {
     if (hasNoMistake(levelSize[level]) && isReady(levelSize[level]))
       console.log("You win!");
     else if (!hasNoMistake(levelSize[level])) console.log("Make error");
+  }
+
+  if (
+    event.target.classList[0] === "start-page-buttons__another-try" ||
+    event.target.classList[0] === "start-page-buttons__new-game"
+  ) {
+    console.log(
+      templates,
+      event.target.value,
+      templates[event.target.value - 1]
+    );
+    setLevel();
+    clearStartPage();
+    renderGamePage(templates[event.target.value - 1]);
   }
 });
 

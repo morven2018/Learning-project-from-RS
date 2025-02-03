@@ -55,13 +55,14 @@ export function renderStartPage(templates) {
 
   renderRecords(records);
 }
+
 function renderTabs(parentElement, level = "Easy") {
   Object.keys(levelSize).forEach((key) => {
     const tab = document.createElement("div");
     tab.textContent = `${key} (${levelSize[key]}x${levelSize[key]})`;
     let str = `nonograms-list__tabs__${key.toLowerCase()}`;
     tab.classList.add(str);
-    tab.value = key.toLowerCase();
+    tab.value = key;
     parentElement.append(tab);
     if (level === key) {
       tab.classList.add("nonograms-list__tabs__active");
@@ -106,8 +107,23 @@ function renderCard(parentElement, elementInfo) {
   cardInfo.append(cardTime);
 
   if (isDone(elementInfo.id))
-    renderButton(cardInfo, "start-page-buttons__another-try", "Play again?");
-  else renderButton(cardInfo, "start-page-buttons__new-game", "Play");
+    renderButton(
+      cardInfo,
+      "start-page-buttons__another-try",
+      "Play again?",
+      false,
+      elementInfo.id
+    );
+  else
+    renderButton(
+      cardInfo,
+      "start-page-buttons__new-game",
+      "Play",
+      false,
+      elementInfo.id
+    );
+
+  console.log(elementInfo.id);
 
   renderButton(cardInfo, "start-page-buttons__continue-game", "Continue");
   if (!isInProcess(elementInfo.id))
@@ -117,7 +133,7 @@ function renderCard(parentElement, elementInfo) {
 }
 
 function renderRecords(parentElement) {
-  const info = localStorage.getItem("done-nonograms");
+  const info = localStorage.getItem("nonograms");
 
   const recordHeader = document.createElement("h2");
   recordHeader.classList = "nonograms-list__records__header";
@@ -180,4 +196,12 @@ function isInProcess(id) {
 
 function getTime(id) {
   return "00:00";
+}
+
+export function clearStartPage() {
+  const mainField = document.querySelector(".main");
+  if (mainField) mainField.remove();
+
+  const btns = document.querySelector(".start-page-buttons");
+  if (btns) btns.remove();
 }

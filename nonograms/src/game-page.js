@@ -4,10 +4,10 @@ import { renderField } from "./field";
 export function renderGamePage(template) {
   const parentElement = document.querySelector("body");
 
-  const header = document.createElement("h1");
+  /*const header = document.createElement("h1");
   header.className = "game-header";
   header.textContent = "Nonograms";
-  parentElement.append(header);
+  parentElement.append(header);*/
 
   const headerOFGame = document.createElement("h1");
   headerOFGame.className = "game-header__name";

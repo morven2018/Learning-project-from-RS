@@ -1,0 +1,25 @@
+.card__preview {
+  min-width: 60px;
+  min-height: 60px;
+  opacity: 70%;
+
+  &__cell_white {
+    background-color: bisque;
+  }
+
+  &__cell_white {
+    background-color: black;
+  }
+
+  &_inactive {
+    background-color: gray;
+
+    &__image {
+      stroke: cadetblue;
+    }
+
+    &__text {
+      color: darkgrey;
+    }
+  }
+}

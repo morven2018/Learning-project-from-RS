@@ -1,6 +1,14 @@
-export function renderButton(parenElement, clsName, text, toChange = null) {
+export function renderButton(
+  parenElement,
+  clsName,
+  text,
+  toChange = false,
+  value = null
+) {
   const btn = document.createElement("button");
   btn.className = clsName;
   btn.textContent = text;
-  if (toChange === null) parenElement.append(btn);
+  if (!toChange) parenElement.append(btn);
+  else parenElement.prepend(btn);
+  if (value) btn.value = value;
 }
