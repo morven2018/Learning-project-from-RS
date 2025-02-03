@@ -12,6 +12,8 @@ import { renderGamePage, clearGamePage } from "./game-page";
 let level = "Easy";
 const parentElement = document.querySelector("body");
 let templates;
+let offTimer = true;
+let start;
 
 window.onload = startGame;
 
@@ -63,9 +65,15 @@ parentElement.addEventListener("click", (event) => {
       event.target.classList.add("game-field__cell_checked");
     }
 
-    if (hasNoMistake(levelSize[level]) && isReady(levelSize[level]))
+    const id = document.querySelector(".game-area").value;
+
+    if (
+      hasNoMistake(levelSize[localStorage.level], templates[id - 1]) &&
+      isReady(levelSize[localStorage.level], templates[id - 1])
+    )
       console.log("You win!");
-    else if (!hasNoMistake(levelSize[level])) console.log("Make error");
+    else if (!hasNoMistake(levelSize[localStorage.level], templates[id - 1]))
+      console.log("Make error");
   }
 
   if (
@@ -123,6 +131,10 @@ parentElement.addEventListener("click", (event) => {
 
 parentElement.addEventListener("contextmenu", (event) => {
   if (event.target.classList[0] === "game-field__cell") {
+    if (offTimer) {
+      offTimer = false;
+      start = new Date();
+    }
     if (event.target.classList.contains("game-field__cell_crossed")) {
       clearClassCell(event.target);
       event.target.classList.add("game-field__cell_unknown");
@@ -131,7 +143,11 @@ parentElement.addEventListener("contextmenu", (event) => {
       event.target.classList.add("game-field__cell_crossed");
     }
 
-    if (!hasNoMistake(levelSize[level])) console.log("Make error cross");
+    const id = document.querySelector(".game-area").value;
+    if (!hasNoMistake(levelSize[localStorage.level], templates[id - 1]))
+      console.log("Make error cross");
+    /*if ((isReady(levelSize[localStorage.level]), templates[id - 1]))
+      console.log("You win");*/
     event.preventDefault();
   }
 });

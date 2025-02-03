@@ -17,6 +17,7 @@ export function renderGamePage(template) {
 
   const gameArea = document.createElement("div");
   gameArea.className = "game-area";
+  gameArea.value = template.id;
   parentElement.append(gameArea);
 
   renderField(template, gameArea);
