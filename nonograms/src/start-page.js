@@ -71,7 +71,7 @@ function renderTabs(parentElement, level = "Easy") {
 }
 
 export function reRenderCards(level, templates) {
-  console.log(level);
+  //console.log(level);
   const cards = document.querySelector(".nonograms-list__cards");
   cards.innerHTML = "";
   templates
@@ -132,7 +132,7 @@ function renderCard(parentElement, elementInfo) {
       elementInfo.id
     );
 
-  console.log(elementInfo.id);
+  //console.log(elementInfo.id);
 
   renderButton(cardInfo, "start-page-buttons__continue-game", "Continue");
   if (!isInProcess(elementInfo.id))

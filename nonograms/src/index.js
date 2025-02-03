@@ -23,9 +23,9 @@ const audio_cross = new Audio("../dist/materials/sounds/blank.mp3");
 
 window.onload = startGame;
 
-function startGame(event, level = "Easy") {
+function startGame() {
   parentElement.classList.add("start-page");
-  console.log("1");
+  //console.log("1");
 
   fetch("../dist/materials/data/nonogramm.json")
     .then((response) => {
@@ -33,8 +33,8 @@ function startGame(event, level = "Easy") {
     })
     .then((data) => {
       templates = data;
-      if (localStorage.level === undefined) console.log("wtf");
-      else setLevel("Easy");
+      if (localStorage.level === undefined) {
+      } else setLevel("Easy");
       renderStartPage(templates);
       //renderGamePage(templates[2]);
       //templates.forEach((item) => renderField(item));
@@ -103,12 +103,7 @@ parentElement.addEventListener("click", (event) => {
     event.target.classList[0] === "start-page-buttons__another-try" ||
     event.target.classList[0] === "start-page-buttons__new-game"
   ) {
-    console.log(
-      templates,
-      event.target.value,
-      templates[event.target.value - 1]
-    );
-    setLevel();
+    setLevel(localStorage.level);
     clearStartPage();
     renderGamePage(templates[event.target.value - 1]);
   }
@@ -178,7 +173,7 @@ parentElement.addEventListener("contextmenu", (event) => {
 });
 
 function clearClassCell(elem) {
-  console.log("clear");
+  //console.log("clear");
   const classes = [
     "game-field__cell_unknown",
     "game-field__cell_checked",

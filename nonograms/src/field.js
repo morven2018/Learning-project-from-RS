@@ -13,7 +13,7 @@ export function renderField(temp, startBody = document.querySelector("body")) {
   //startBody.append(document.createElement("p"));
 
   const cellValues = getValues(templateField, n);
-  console.log(1, cellValues);
+  console.log(temp.size, cellValues);
   const field = document.createElement("div");
   field.className = "field";
   startBody.append(field);
@@ -62,8 +62,8 @@ export function renderField(temp, startBody = document.querySelector("body")) {
   renderAttempt(topAttempts, topAttempt, true);
   renderAttempt(leftAttempts, leftAttempt, false);
 
-  console.log(2, topAttempts);
-  console.log(3, leftAttempts);
+  //console.log(2, topAttempts);
+  //console.log(3, leftAttempts);
 
   renderCellsField(cellValues, n, gameField);
 }
