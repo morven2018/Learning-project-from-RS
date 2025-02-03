@@ -18,5 +18,6 @@ export function renderReturnButton(parentElement) {
   btn.className = "btn-return-to-start-page";
   btn.textContent = "<";
   btn.setAttribute("aria-label", "Return to chose the nonogram");
+  btn.setAttribute("title", "Return to chose the nonogram");
   parentElement.append(btn);
 }
