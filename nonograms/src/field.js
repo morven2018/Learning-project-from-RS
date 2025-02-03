@@ -122,6 +122,17 @@ function renderCellsField(cellValues, n, field) {
   }
 }
 
+export function reRenderField(temp) {
+  console.log(temp);
+  const n = temp.size;
+  const templateField = temp.template;
+  const cellValues = getValues(templateField, n);
+
+  const cellsArea = document.querySelector(".game-field");
+  cellsArea.innerHTML = "";
+  renderCellsField(cellValues, n, cellsArea);
+}
+
 function renderHighlightBorder(i, j, cell, n) {
   if (j % 5 === 0 && j != 0) cell.setAttribute("style", "border-left: none");
   if (i % 5 === 0 && i != 0) cell.setAttribute("style", "border-top: none");

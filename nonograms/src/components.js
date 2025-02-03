@@ -31,7 +31,8 @@ export function launchTimer(start) {
       2,
       "0"
     )}:${String(time % 60).padStart(2, "0")}`;
-  }, 1000);
+  }, 100);
+  return timerId;
 }
 
 export function winForm(time) {
@@ -58,7 +59,7 @@ export function winForm(time) {
 
   renderButton(
     buttonBlock,
-    "start-page-buttons__another-try",
+    "start-page-buttons__reset-game",
     "Play again?",
     false,
     id

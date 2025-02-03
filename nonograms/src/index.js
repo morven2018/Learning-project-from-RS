@@ -1,5 +1,5 @@
 import "../styles/gameField.scss";
-import { renderField } from "./field";
+import { reRenderField } from "./field";
 import { hasNoMistake, isReady, setLevel } from "./logic";
 import {
   renderStartPage,
@@ -15,6 +15,7 @@ const parentElement = document.querySelector("body");
 let templates;
 let offTimer = true;
 let start;
+let timerId;
 
 const audio_win = new Audio("../dist/materials/sounds/win.mp3");
 const audio_blank = new Audio("../dist/materials/sounds/error.mp3");
@@ -66,8 +67,8 @@ parentElement.addEventListener("click", (event) => {
     if (offTimer) {
       offTimer = false;
       start = new Date();
-      launchTimer(start);
-      const timer = document.createElement("div");
+      timerId = launchTimer(start);
+      const timer = document.querySelector(".game-timer");
       if (timer) timer.classList.remove("game-timer__inactive");
     }
 
@@ -91,6 +92,7 @@ parentElement.addEventListener("click", (event) => {
       console.log("You win!", `${start} ${nTimer} ${nTimer - start}`);
       winForm(nTimer - start);
       audio_win.play();
+      clearTimeout(timerId);
       offTimer = true;
     } else if (
       !hasNoMistake(levelSize[localStorage.level], templates[id - 1])
@@ -107,6 +109,21 @@ parentElement.addEventListener("click", (event) => {
     setLevel(localStorage.level);
     clearStartPage();
     renderGamePage(templates[event.target.value - 1]);
+  }
+
+  if (event.target.classList[0] === "start-page-buttons__reset-game") {
+    const id = document.querySelector(".game-area").value;
+
+    const form = document.querySelector(".overlay");
+    if (form) form.remove();
+    else clearTimeout(timerId);
+
+    reRenderField(templates[id - 1]);
+
+    offTimer = false;
+    start = new Date();
+
+    timerId = launchTimer(start);
   }
 
   if (event.target.classList[0] === "nonograms-list__tabs__easy") {
@@ -144,6 +161,7 @@ parentElement.addEventListener("click", (event) => {
 
   if (event.target.classList[0] === "btn-return-to-start-page") {
     clearGamePage();
+    clearTimeout(timerId);
     renderStartPage(templates);
   }
 });
