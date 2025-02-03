@@ -1,3 +1,5 @@
+import { renderButton } from "./components";
+
 export function getValues(templateField, n) {
   const cellValues = Array(n).fill([]);
   for (let i = 0; i < n; i += 1) {
@@ -13,7 +15,7 @@ export function renderField(temp, startBody = document.querySelector("body")) {
   //startBody.append(document.createElement("p"));
 
   const cellValues = getValues(templateField, n);
-  console.log(1, cellValues);
+  console.log(temp.size, cellValues);
   const field = document.createElement("div");
   field.className = "field";
   startBody.append(field);
@@ -62,8 +64,8 @@ export function renderField(temp, startBody = document.querySelector("body")) {
   renderAttempt(topAttempts, topAttempt, true);
   renderAttempt(leftAttempts, leftAttempt, false);
 
-  console.log(2, topAttempts);
-  console.log(3, leftAttempts);
+  //console.log(2, topAttempts);
+  //console.log(3, leftAttempts);
 
   renderCellsField(cellValues, n, gameField);
 }
@@ -120,6 +122,60 @@ function renderCellsField(cellValues, n, field) {
       renderHighlightBorder(i, j, cell, n);
     }
   }
+}
+
+export function renderSolution(temp) {
+  console.log(temp);
+  const n = temp.size;
+  const templateField = temp.template;
+  const cellValues = getValues(templateField, n);
+
+  const cellsArea = document.querySelector(".game-field");
+  cellsArea.innerHTML = "";
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = 0; j < n; j += 1) {
+      const cell = document.createElement("div");
+      const name =
+        cellValues[i][j] === "1"
+          ? "game-field__cell_black"
+          : "game-field__cell_white";
+      cell.classList.add("game-field__cell");
+      cell.classList.add("game-field__cell_inactive");
+      cell.classList.add(name);
+      cellsArea.append(cell);
+
+      renderHighlightBorder(i, j, cell, n);
+    }
+  }
+
+  const btn = document.querySelector(".start-page-buttons__game-solution");
+  btn.classList.add("start-page-buttons__game-solution_inactive");
+}
+
+export function renderSavedSolution(n, solution) {
+  const cells = document.querySelectorAll(".game-field__cell");
+  solution.forEach((line, i) =>
+    line.forEach((elem, j) => {
+      if (elem === -1)
+        cells[i * n + j].classList.add("game-field__cell_unknown");
+      if (elem === 0)
+        cells[i * n + j].classList.add("game-field__cell_crossed");
+      if (elem === 1)
+        cells[i * n + j].classList.add("game-field__cell_checked");
+    })
+  );
+}
+
+export function reRenderField(temp) {
+  console.log(temp);
+  const n = temp.size;
+  const templateField = temp.template;
+  const cellValues = getValues(templateField, n);
+
+  const cellsArea = document.querySelector(".game-field");
+  cellsArea.innerHTML = "";
+  renderCellsField(cellValues, n, cellsArea);
 }
 
 function renderHighlightBorder(i, j, cell, n) {
@@ -307,4 +363,14 @@ function renderAttempt(attempts, field, top = true) {
       attempt.append(cell);
     }
   });
+}
+
+export function pauseGame() {
+  const cells = document.querySelectorAll(".game-field__cell");
+  cells.forEach((item) => item.classList.add("game-field__cell_inactive"));
+}
+
+export function continueGame() {
+  const cells = document.querySelectorAll(".game-field__cell");
+  cells.forEach((item) => item.classList.remove("game-field__cell_inactive"));
 }
