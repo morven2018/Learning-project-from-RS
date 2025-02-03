@@ -15,6 +15,11 @@ let templates;
 let offTimer = true;
 let start;
 
+const audio_win = new Audio("../dist/materials/sounds/win.mp3");
+const audio_blank = new Audio("../dist/materials/sounds/error.mp3");
+const audio_checked = new Audio("../dist/materials/sounds/checked.mp3");
+const audio_cross = new Audio("../dist/materials/sounds/blank.mp3");
+
 window.onload = startGame;
 
 function startGame(event, level = "Easy") {
@@ -65,9 +70,11 @@ parentElement.addEventListener("click", (event) => {
     if (event.target.classList.contains("game-field__cell_checked")) {
       clearClassCell(event.target);
       event.target.classList.add("game-field__cell_unknown");
+      audio_blank.play();
     } else {
       clearClassCell(event.target);
       event.target.classList.add("game-field__cell_checked");
+      audio_checked.play();
     }
 
     const id = document.querySelector(".game-area").value;
@@ -78,9 +85,14 @@ parentElement.addEventListener("click", (event) => {
     ) {
       const nTimer = new Date();
       console.log("You win!", `${start} ${nTimer} ${nTimer - start}`);
+      audio_win.play();
       offTimer = true;
-    } else if (!hasNoMistake(levelSize[localStorage.level], templates[id - 1]))
+    } else if (
+      !hasNoMistake(levelSize[localStorage.level], templates[id - 1])
+    ) {
       console.log("Make error");
+      //audio_mistake.play();
+    }
   }
 
   if (
@@ -146,9 +158,11 @@ parentElement.addEventListener("contextmenu", (event) => {
     if (event.target.classList.contains("game-field__cell_crossed")) {
       clearClassCell(event.target);
       event.target.classList.add("game-field__cell_unknown");
+      audio_blank.play();
     } else {
       clearClassCell(event.target);
       event.target.classList.add("game-field__cell_crossed");
+      audio_cross.play();
     }
 
     const id = document.querySelector(".game-area").value;
