@@ -13,6 +13,7 @@ export function hasNoMistake(n, templateField) {
 
 export function isReady(n, templateField) {
   const solution = getSolution(n);
+  console.log(solution);
   //console.log("read");
   const templateSolution = getValues(templateField.template, n);
   return solution.every((item, index) =>
@@ -24,9 +25,9 @@ export function isReady(n, templateField) {
   );
 }
 
-function getSolution(n) {
+export function getSolution(n) {
   const fieldSolution = document.querySelectorAll(".game-field__cell");
-  const solution = Array(n);
+  //const solution = Array(n);
   for (let i = 0; i < n; i += 1) {
     solution[i] = [];
     for (let j = 0; j < n; j += 1) {
@@ -44,6 +45,7 @@ function getSolution(n) {
         solution[i].push("-1");
     }
   }
+  //console.log(solution);
   return solution;
 }
 
