@@ -1,19 +1,15 @@
 import "../styles/gameField.scss";
 import { renderField } from "./field";
 import { hasNoMistake, isReady } from "./logic";
+import { renderStartPage, levelSize } from "./start-page";
 
-const levelSize = {
-  Easy: 5,
-  Medium: 10,
-  Hard: 15,
-};
 let level = "Easy";
 const parentElement = document.querySelector("body");
 let templates;
 
-window.onload = renderStartPage;
+window.onload = startGame;
 
-function renderStartPage(event, level = "Easy") {
+function startGame(event, level = "Easy") {
   parentElement.classList.add("start-page");
   console.log("1");
 
@@ -22,14 +18,13 @@ function renderStartPage(event, level = "Easy") {
       return response.json();
     })
     .then((data) => {
+      console.log(localStorage);
       templates = data;
+      renderStartPage(templates);
       renderField(templates);
       console.log("3");
       console.log(templates);
     });
-
-  console.log("2");
-  console.log(templates);
 }
 
 /*let checked = false;
