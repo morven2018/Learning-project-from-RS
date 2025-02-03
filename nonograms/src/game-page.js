@@ -1,4 +1,4 @@
-import { renderButton, renderReturnButton } from "./btns";
+import { renderButton, renderReturnButton } from "./components";
 import { renderField } from "./field";
 
 export function renderGamePage(template) {
@@ -29,9 +29,12 @@ export function renderGamePage(template) {
   const timer = document.createElement("div");
   timer.className = "game-timer";
   timer.classList.add("game-timer__inactive");
-  let t = "00:00:00";
-  timer.textContent = `Timer: ${t}`;
+  timer.textContent = `Timer:`;
   info.append(timer);
+
+  const passTime = document.createElement("span");
+  passTime.className = "game-timer__value";
+  timer.append(passTime);
 
   const btns = document.createElement("div");
   btns.className = "bth-list";

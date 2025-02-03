@@ -8,6 +8,7 @@ import {
   reRenderCards,
 } from "./start-page";
 import { renderGamePage, clearGamePage } from "./game-page";
+import { launchTimer } from "./components";
 
 let level = "Easy";
 const parentElement = document.querySelector("body");
@@ -65,6 +66,9 @@ parentElement.addEventListener("click", (event) => {
     if (offTimer) {
       offTimer = false;
       start = new Date();
+      launchTimer(start);
+      const timer = document.createElement("div");
+      if (timer) timer.classList.remove("game-timer__inactive");
     }
 
     if (event.target.classList.contains("game-field__cell_checked")) {

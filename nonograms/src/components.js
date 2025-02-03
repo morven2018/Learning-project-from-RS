@@ -21,3 +21,15 @@ export function renderReturnButton(parentElement) {
   btn.setAttribute("title", "Return to chose the nonogram");
   parentElement.append(btn);
 }
+
+export function launchTimer(start) {
+  let timerId = setInterval(() => {
+    const currTime = new Date();
+    const timer = document.querySelector(".game-timer__value");
+    let time = Math.floor((currTime - start) / 1000);
+    timer.textContent = `${String(Math.floor(time / 60)).padStart(
+      2,
+      "0"
+    )}:${String(time % 60).padStart(2, "0")}`;
+  }, 1000);
+}

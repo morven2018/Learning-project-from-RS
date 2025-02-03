@@ -1,4 +1,4 @@
-import { renderButton } from "./btns";
+import { renderButton } from "./components";
 
 export const levelSize = {
   Easy: 5,
