@@ -9,6 +9,7 @@ import {
 } from "./start-page";
 import { renderGamePage, clearGamePage } from "./game-page";
 import { launchTimer, renderButton, winForm } from "./components";
+import { saveResult } from "./save-solution";
 
 let level = "Easy";
 const parentElement = document.querySelector("body");
@@ -34,11 +35,13 @@ function startGame() {
     })
     .then((data) => {
       templates = data;
+      localStorage.setItem("savings", JSON.stringify([]));
+      localStorage.setItem("results", JSON.stringify([]));
+      //localStorage.savings = JSON.stringify([]);
+      //localStorage.results = JSON.stringify([]);
       if (localStorage.level === undefined) {
       } else setLevel("Easy");
       renderStartPage(templates);
-      //renderGamePage(templates[2]);
-      //templates.forEach((item) => renderField(item));
     });
 }
 
@@ -92,7 +95,8 @@ parentElement.addEventListener("click", (event) => {
       isReady(levelSize[localStorage.level], templates[id - 1])
     ) {
       const nTimer = new Date();
-      console.log("You win!", `${start} ${nTimer} ${nTimer - start}`);
+      console.log("You win!");
+      saveResult(templates[id - 1], nTimer - start, nTimer);
       winForm(nTimer - start);
       audio_win.play();
       clearTimeout(timerId);
@@ -114,7 +118,6 @@ parentElement.addEventListener("click", (event) => {
   }
 
   if (event.target.classList.contains("start-page-buttons__reset-game")) {
-    //if (event.target.classList.value === -1) {
     const activateButton = document.querySelector(
       ".start-page-buttons__game-solution"
     );
@@ -232,7 +235,6 @@ parentElement.addEventListener("contextmenu", (event) => {
 });
 
 function clearClassCell(elem) {
-  //console.log("clear");
   const classes = [
     "game-field__cell_unknown",
     "game-field__cell_checked",
