@@ -115,10 +115,10 @@ parentElement.addEventListener("click", (event) => {
     reRenderCards(localStorage.level, templates);
   }
 
-  /*if (event.target.classList[0] === "btn-return-to-start-page") {
+  if (event.target.classList[0] === "btn-return-to-start-page") {
     clearGamePage();
     renderStartPage(templates);
-  }*/
+  }
 });
 
 parentElement.addEventListener("contextmenu", (event) => {
