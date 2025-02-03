@@ -1,5 +1,11 @@
 import "../styles/gameField.scss";
-import { reRenderField, renderSolution } from "./field";
+import {
+  reRenderField,
+  renderSolution,
+  pauseGame,
+  continueGame,
+  renderSavedSolution,
+} from "./field";
 import { hasNoMistake, isReady, setLevel } from "./logic";
 import {
   renderStartPage,
@@ -212,11 +218,22 @@ parentElement.addEventListener("click", (event) => {
     clearTimeout(timerId);
     offTimer = true;
     changeBtn(event.target, id);
+    pauseGame();
   }
 
   if (event.target.classList[0] === "start-page-buttons__continue-game") {
     const id = event.target.value;
     changeBtn(event.target, id);
+    continueGame();
+    const solutions = JSON.parse(localStorage.savings);
+    let i = -1;
+    solutions.forEach((elem, index) => {
+      if (id === elem.id) i = index;
+    });
+    start = new Date() - solutions[i].timeOfSolution;
+    timerId = launchTimer(start);
+
+    renderSavedSolution(solutions[i].size, solutions[i].solution);
 
     /*const nTimer = new Date();
     saveSolution(templates[id - 1], nTimer - start);

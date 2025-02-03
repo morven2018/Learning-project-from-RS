@@ -153,6 +153,20 @@ export function renderSolution(temp) {
   btn.classList.add("start-page-buttons__game-solution_inactive");
 }
 
+export function renderSavedSolution(n, solution) {
+  const cells = document.querySelectorAll(".game-field__cell");
+  solution.forEach((line, i) =>
+    line.forEach((elem, j) => {
+      if (elem === -1)
+        cells[i * n + j].classList.add("game-field__cell_unknown");
+      if (elem === 0)
+        cells[i * n + j].classList.add("game-field__cell_crossed");
+      if (elem === 1)
+        cells[i * n + j].classList.add("game-field__cell_checked");
+    })
+  );
+}
+
 export function reRenderField(temp) {
   console.log(temp);
   const n = temp.size;
@@ -349,4 +363,14 @@ function renderAttempt(attempts, field, top = true) {
       attempt.append(cell);
     }
   });
+}
+
+export function pauseGame() {
+  const cells = document.querySelectorAll(".game-field__cell");
+  cells.forEach((item) => item.classList.add("game-field__cell_inactive"));
+}
+
+export function continueGame() {
+  const cells = document.querySelectorAll(".game-field__cell");
+  cells.forEach((item) => item.classList.remove("game-field__cell_inactive"));
 }

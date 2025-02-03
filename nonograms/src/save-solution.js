@@ -45,7 +45,6 @@ function prepareJSONResultSaving(temp, timeResult) {
   return {
     id: temp.id,
     timeOfSolution: timeResult,
-    template: temp.template,
     size: temp.size,
     name: temp.name,
     solution: solution,
