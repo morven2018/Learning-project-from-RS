@@ -164,6 +164,21 @@ parentElement.addEventListener("click", (event) => {
     clearTimeout(timerId);
     renderStartPage(templates);
   }
+
+  if (event.target.classList[0] === "start-page-buttons__random-game") {
+    const maxIndex = templates.length;
+    const id = Math.floor(Math.random() * maxIndex);
+    console.log(id);
+    let l =
+      templates[id].size === 5
+        ? "Easy"
+        : templates[id].size === 10
+        ? "Medium"
+        : "Hard";
+    setLevel(l);
+    clearStartPage();
+    renderGamePage(templates[id]);
+  }
 });
 
 parentElement.addEventListener("contextmenu", (event) => {
