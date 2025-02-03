@@ -70,6 +70,15 @@ function renderTabs(parentElement, level = "Easy") {
   });
 }
 
+export function reRenderCards(level, templates) {
+  console.log(level);
+  const cards = document.querySelector(".nonograms-list__cards");
+  cards.innerHTML = "";
+  templates
+    .filter((item) => item.size === levelSize[level])
+    .forEach((elem) => renderCard(cards, elem));
+}
+
 function renderCard(parentElement, elementInfo) {
   const card = document.createElement("div");
   card.className = "card";

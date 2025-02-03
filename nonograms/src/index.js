@@ -1,8 +1,13 @@
 import "../styles/gameField.scss";
 import { renderField } from "./field";
 import { hasNoMistake, isReady, setLevel } from "./logic";
-import { renderStartPage, levelSize, clearStartPage } from "./start-page";
-import { renderGamePage } from "./game-page";
+import {
+  renderStartPage,
+  levelSize,
+  clearStartPage,
+  reRenderCards,
+} from "./start-page";
+import { renderGamePage, clearGamePage } from "./game-page";
 
 let level = "Easy";
 const parentElement = document.querySelector("body");
@@ -76,6 +81,44 @@ parentElement.addEventListener("click", (event) => {
     clearStartPage();
     renderGamePage(templates[event.target.value - 1]);
   }
+
+  if (event.target.classList[0] === "nonograms-list__tabs__easy") {
+    const elem = document.querySelector(".nonograms-list__tabs__easy");
+    elem.classList.add("nonograms-list__tabs__active");
+    const lastElem = document.querySelector(
+      `.nonograms-list__tabs__${localStorage.level.toLowerCase()}`
+    );
+    lastElem.classList.remove("nonograms-list__tabs__active");
+    localStorage.level = elem.value;
+    reRenderCards(localStorage.level, templates);
+  }
+
+  if (event.target.classList[0] === "nonograms-list__tabs__medium") {
+    const elem = document.querySelector(".nonograms-list__tabs__medium");
+    elem.classList.add("nonograms-list__tabs__active");
+    const lastElem = document.querySelector(
+      `.nonograms-list__tabs__${localStorage.level.toLowerCase()}`
+    );
+    lastElem.classList.remove("nonograms-list__tabs__active");
+    localStorage.level = elem.value;
+    reRenderCards(localStorage.level, templates);
+  }
+
+  if (event.target.classList[0] === "nonograms-list__tabs__hard") {
+    const elem = document.querySelector(".nonograms-list__tabs__hard");
+    elem.classList.add("nonograms-list__tabs__active");
+    const lastElem = document.querySelector(
+      `.nonograms-list__tabs__${localStorage.level.toLowerCase()}`
+    );
+    lastElem.classList.remove("nonograms-list__tabs__active");
+    localStorage.level = elem.value;
+    reRenderCards(localStorage.level, templates);
+  }
+
+  /*if (event.target.classList[0] === "btn-return-to-start-page") {
+    clearGamePage();
+    renderStartPage(templates);
+  }*/
 });
 
 parentElement.addEventListener("contextmenu", (event) => {

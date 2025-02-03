@@ -1,18 +1,19 @@
-import { renderButton } from "./btns";
+import { renderButton, renderReturnButton } from "./btns";
 import { renderField } from "./field";
 
 export function renderGamePage(template) {
   const parentElement = document.querySelector("body");
 
-  /*const header = document.createElement("h1");
-  header.className = "game-header";
-  header.textContent = "Nonograms";
-  parentElement.append(header);*/
+  const header = document.createElement("div");
+  header.className = "header-of-game";
+  parentElement.append(header);
 
-  const headerOFGame = document.createElement("h1");
+  renderReturnButton(header);
+
+  const headerOFGame = document.createElement("h2");
   headerOFGame.className = "game-header__name";
   headerOFGame.textContent = template.name;
-  parentElement.append(headerOFGame);
+  header.append(headerOFGame);
 
   const gameArea = document.createElement("div");
   gameArea.className = "game-area";
@@ -40,4 +41,15 @@ export function renderGamePage(template) {
   renderButton(btns, "start-page-buttons__reset-game", "Reset");
 
   renderButton(btns, "start-page-buttons__game-solution", "Solution");
+}
+
+export function clearGamePage() {
+  const header = document.querySelector(".header-of-game");
+  if (header) header.remove();
+
+  const area = document.querySelector(".game-area");
+  if (area) area.remove();
+
+  const h = document.querySelector(".game-header");
+  if (h) h.remove();
 }
