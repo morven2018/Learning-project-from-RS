@@ -8,7 +8,7 @@ import {
   reRenderCards,
 } from "./start-page";
 import { renderGamePage, clearGamePage } from "./game-page";
-import { launchTimer } from "./components";
+import { launchTimer, winForm } from "./components";
 
 let level = "Easy";
 const parentElement = document.querySelector("body");
@@ -89,6 +89,7 @@ parentElement.addEventListener("click", (event) => {
     ) {
       const nTimer = new Date();
       console.log("You win!", `${start} ${nTimer} ${nTimer - start}`);
+      winForm(nTimer - start);
       audio_win.play();
       offTimer = true;
     } else if (

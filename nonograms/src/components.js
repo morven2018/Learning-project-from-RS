@@ -33,3 +33,42 @@ export function launchTimer(start) {
     )}:${String(time % 60).padStart(2, "0")}`;
   }, 1000);
 }
+
+export function winForm(time) {
+  const overlay = document.createElement("div");
+  document.querySelector("body").append(overlay);
+  overlay.className = "overlay";
+
+  const winForm = document.createElement("div");
+  overlay.append(winForm);
+  winForm.className = "win-form";
+
+  const messageBlock = document.createElement("div");
+  winForm.append(messageBlock);
+  messageBlock.textContent = `Great! You have solved the nonogram in ${Math.floor(
+    time / 60
+  )} seconds!`;
+  messageBlock.className = "win-form__msg";
+
+  const buttonBlock = document.createElement("div");
+  winForm.append(buttonBlock);
+  buttonBlock.className = "win-form__buttons";
+
+  const id = document.querySelector(".game-area").value;
+
+  renderButton(
+    buttonBlock,
+    "start-page-buttons__another-try",
+    "Play again?",
+    false,
+    id
+  );
+
+  renderButton(
+    buttonBlock,
+    "btn-return-to-start-page",
+    "Choose another",
+    false,
+    id
+  );
+}

@@ -56,4 +56,7 @@ export function clearGamePage() {
 
   const h = document.querySelector(".game-header");
   if (h) h.remove();
+
+  const form = document.querySelector(".overlay");
+  if (form) form.remove();
 }
