@@ -1,0 +1,116 @@
+@use "sass:color";
+
+$black-field: rgb(106, 15, 15);
+$white-field: bisque;
+$cell-unknown-color: cornflowerblue;
+
+body {
+  max-width: 1440px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.field {
+  max-width: 40%;
+  align-self: center;
+
+  &-extra {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__additional {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    border: none;
+    justify-content: center;
+
+    & .field__attempt {
+      display: grid;
+      align-items: start;
+      grid-auto-flow: column;
+      justify-items: stretch;
+    }
+  }
+}
+
+.game-field {
+  display: grid;
+  gap: 0;
+}
+
+.field__attempt {
+  display: grid;
+  justify-content: end;
+  justify-items: center;
+
+  &__top-attempt {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border-left: 1px solid black;
+    justify-content: flex-end;
+
+    &__cell {
+      width: 20px;
+      text-align: center;
+      border: none;
+    }
+  }
+
+  &__left-attempt {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+    gap: 10px;
+    border-top: 1px solid black;
+    justify-content: flex-end;
+    padding-top: 2px;
+
+    &__cell {
+      height: 20px;
+      text-align: center;
+      border: none;
+    }
+  }
+}
+
+.game-field__cell {
+  height: 20px;
+  width: 20px;
+  border: none;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+
+  &_unknown {
+    background-color: $cell-unknown-color;
+    opacity: 0.7;
+
+    &:hover {
+      background-color: lighten(cornflowerblue, 20%);
+    }
+  }
+
+  &_checked {
+    background-color: blue;
+  }
+  &_crossed {
+    background-color: crimson;
+  }
+
+  &_black {
+    background-color: $black-field;
+  }
+
+  &_white {
+    background-color: $white-field;
+  }
+}
