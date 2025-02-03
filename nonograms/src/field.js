@@ -1,3 +1,5 @@
+import { renderButton } from "./components";
+
 export function getValues(templateField, n) {
   const cellValues = Array(n).fill([]);
   for (let i = 0; i < n; i += 1) {
@@ -120,6 +122,35 @@ function renderCellsField(cellValues, n, field) {
       renderHighlightBorder(i, j, cell, n);
     }
   }
+}
+
+export function renderSolution(temp) {
+  console.log(temp);
+  const n = temp.size;
+  const templateField = temp.template;
+  const cellValues = getValues(templateField, n);
+
+  const cellsArea = document.querySelector(".game-field");
+  cellsArea.innerHTML = "";
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = 0; j < n; j += 1) {
+      const cell = document.createElement("div");
+      const name =
+        cellValues[i][j] === "1"
+          ? "game-field__cell_black"
+          : "game-field__cell_white";
+      cell.classList.add("game-field__cell");
+      cell.classList.add("game-field__cell_inactive");
+      cell.classList.add(name);
+      cellsArea.append(cell);
+
+      renderHighlightBorder(i, j, cell, n);
+    }
+  }
+
+  const btn = document.querySelector(".start-page-buttons__game-solution");
+  btn.classList.add("start-page-buttons__game-solution_inactive");
 }
 
 export function reRenderField(temp) {

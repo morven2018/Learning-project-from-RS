@@ -1,5 +1,5 @@
 import "../styles/gameField.scss";
-import { reRenderField } from "./field";
+import { reRenderField, renderSolution } from "./field";
 import { hasNoMistake, isReady, setLevel } from "./logic";
 import {
   renderStartPage,
@@ -8,7 +8,7 @@ import {
   reRenderCards,
 } from "./start-page";
 import { renderGamePage, clearGamePage } from "./game-page";
-import { launchTimer, winForm } from "./components";
+import { launchTimer, renderButton, winForm } from "./components";
 
 let level = "Easy";
 const parentElement = document.querySelector("body");
@@ -63,7 +63,10 @@ parentElement.addEventListener("mousemove", (event) => {
 */
 
 parentElement.addEventListener("click", (event) => {
-  if (event.target.classList[0] === "game-field__cell") {
+  if (
+    event.target.classList[0] === "game-field__cell" &&
+    !event.target.classList.contains("game-field__cell_inactive")
+  ) {
     if (offTimer) {
       offTimer = false;
       start = new Date();
@@ -111,7 +114,20 @@ parentElement.addEventListener("click", (event) => {
     renderGamePage(templates[event.target.value - 1]);
   }
 
-  if (event.target.classList[0] === "start-page-buttons__reset-game") {
+  if (event.target.classList.contains("start-page-buttons__reset-game")) {
+    //if (event.target.classList.value === -1) {
+    const activateButton = document.querySelector(
+      ".start-page-buttons__game-solution"
+    );
+    if (
+      activateButton.classList.contains(
+        "start-page-buttons__game-solution_inactive"
+      )
+    )
+      activateButton.classList.remove(
+        "start-page-buttons__game-solution_inactive"
+      );
+
     const id = document.querySelector(".game-area").value;
 
     const form = document.querySelector(".overlay");
@@ -124,6 +140,13 @@ parentElement.addEventListener("click", (event) => {
     start = new Date();
 
     timerId = launchTimer(start);
+  }
+
+  if (event.target.classList[0] === "start-page-buttons__game-solution") {
+    const id = document.querySelector(".game-area").value;
+    clearTimeout(timerId);
+    renderSolution(templates[id - 1]);
+    offTimer = false;
   }
 
   if (event.target.classList[0] === "nonograms-list__tabs__easy") {
@@ -182,7 +205,10 @@ parentElement.addEventListener("click", (event) => {
 });
 
 parentElement.addEventListener("contextmenu", (event) => {
-  if (event.target.classList[0] === "game-field__cell") {
+  if (
+    event.target.classList[0] === "game-field__cell" &&
+    !event.target.classList.contains("game-field__cell_inactive")
+  ) {
     if (offTimer) {
       offTimer = false;
       start = new Date();
