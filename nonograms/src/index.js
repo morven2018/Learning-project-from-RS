@@ -2,6 +2,7 @@ import "../styles/gameField.scss";
 import { renderField } from "./field";
 import { hasNoMistake, isReady } from "./logic";
 import { renderStartPage, levelSize } from "./start-page";
+import { renderGamePage } from "./game-page";
 
 let level = "Easy";
 const parentElement = document.querySelector("body");
@@ -21,7 +22,8 @@ function startGame(event, level = "Easy") {
       console.log(localStorage);
       templates = data;
       renderStartPage(templates);
-      renderField(templates);
+      renderGamePage(templates[2]);
+      templates.forEach((item) => renderField(item));
       console.log("3");
       console.log(templates);
     });

@@ -1,5 +1,3 @@
-const startBody = document.querySelector("body");
-
 export function getValues(templateField, n) {
   const cellValues = Array(n).fill([]);
   for (let i = 0; i < n; i += 1) {
@@ -8,63 +6,57 @@ export function getValues(templateField, n) {
   return cellValues;
 }
 
-export function renderField(templates) {
-  console.log("render");
-  templates.forEach((item) => {
-    const n = item.size;
-    const templateField = item.template;
+export function renderField(temp, startBody = document.querySelector("body")) {
+  const n = temp.size;
+  const templateField = temp.template;
 
-    startBody.append(document.createElement("p"));
+  startBody.append(document.createElement("p"));
 
-    const cellValues = getValues(templateField, n);
-    console.log(1, cellValues);
-    const field = document.createElement("div");
-    field.className = "field";
-    startBody.append(field);
+  const cellValues = getValues(templateField, n);
+  console.log(1, cellValues);
+  const field = document.createElement("div");
+  field.className = "field";
+  startBody.append(field);
 
-    const extraDiv = document.createElement("div");
-    extraDiv.className = "field-extra";
-    field.append(extraDiv);
+  const extraDiv = document.createElement("div");
+  extraDiv.className = "field-extra";
+  field.append(extraDiv);
 
-    const topAttempt = document.createElement("div");
-    topAttempt.className = "field__attempt";
-    extraDiv.append(topAttempt);
-    topAttempt.setAttribute(
-      "style",
-      `grid-template-columns: repeat(${n}, 20px);`
-    );
+  const topAttempt = document.createElement("div");
+  topAttempt.className = "field__attempt";
+  extraDiv.append(topAttempt);
+  topAttempt.setAttribute(
+    "style",
+    `grid-template-columns: repeat(${n}, 20px);`
+  );
 
-    const additionalField = document.createElement("div");
-    additionalField.className = "field__additional";
-    field.append(additionalField);
+  const additionalField = document.createElement("div");
+  additionalField.className = "field__additional";
+  field.append(additionalField);
 
-    const leftAttempt = document.createElement("div");
-    leftAttempt.className = "field__attempt";
-    additionalField.append(leftAttempt);
-    leftAttempt.setAttribute(
-      "style",
-      `grid-template-rows: repeat(${n},  21px);`
-    );
+  const leftAttempt = document.createElement("div");
+  leftAttempt.className = "field__attempt";
+  additionalField.append(leftAttempt);
+  leftAttempt.setAttribute("style", `grid-template-rows: repeat(${n},  21px);`);
 
-    const gameField = document.createElement("div");
-    gameField.className = "game-field";
-    additionalField.append(gameField);
-    gameField.setAttribute(
-      "style",
-      `grid-template-columns: repeat(${n},  20px);`
-    );
+  const gameField = document.createElement("div");
+  gameField.className = "game-field";
+  additionalField.append(gameField);
+  gameField.setAttribute(
+    "style",
+    `grid-template-columns: repeat(${n},  20px);`
+  );
 
-    const topAttempts = generateAttempts(cellValues, n, true);
-    const leftAttempts = generateAttempts(cellValues, n, false);
+  const topAttempts = generateAttempts(cellValues, n, true);
+  const leftAttempts = generateAttempts(cellValues, n, false);
 
-    renderAttempt(topAttempts, topAttempt, true);
-    renderAttempt(leftAttempts, leftAttempt, false);
+  renderAttempt(topAttempts, topAttempt, true);
+  renderAttempt(leftAttempts, leftAttempt, false);
 
-    console.log(2, topAttempts);
-    console.log(3, leftAttempts);
+  console.log(2, topAttempts);
+  console.log(3, leftAttempts);
 
-    renderCellsField(cellValues, n, gameField);
-  });
+  renderCellsField(cellValues, n, gameField);
 }
 
 function generateAttempts(cellValues, n, top = true) {
