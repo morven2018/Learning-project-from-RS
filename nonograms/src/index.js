@@ -216,7 +216,6 @@ parentElement.addEventListener("click", (event) => {
     const nTimer = new Date();
     saveSolution(templates[id - 1], nTimer - start);
     clearTimeout(timerId);
-    offTimer = true;
     changeBtn(event.target, id);
     pauseGame();
   }
@@ -228,8 +227,9 @@ parentElement.addEventListener("click", (event) => {
     const solutions = JSON.parse(localStorage.savings);
     let i = -1;
     solutions.forEach((elem, index) => {
-      if (id === elem.id) i = index;
+      if (id == elem.id) i = index;
     });
+    console.log(solutions[i], i);
     start = new Date() - solutions[i].timeOfSolution;
     timerId = launchTimer(start);
 
