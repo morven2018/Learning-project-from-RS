@@ -15,7 +15,7 @@ export function renderField(temp, startBody = document.querySelector("body")) {
   //startBody.append(document.createElement("p"));
 
   const cellValues = getValues(templateField, n);
-  console.log(temp.size, cellValues);
+  console.log("Solution:", cellValues);
   const field = document.createElement("div");
   field.className = "field";
   startBody.append(field);
@@ -122,7 +122,7 @@ function renderCellsField(cellValues, n, field) {
 }
 
 export function renderSolution(temp) {
-  console.log(temp);
+  //console.log(temp);
   const n = temp.size;
   const templateField = temp.template;
   const cellValues = getValues(templateField, n);
@@ -165,7 +165,7 @@ export function renderSavedSolution(n, solution) {
 }
 
 export function reRenderField(temp) {
-  console.log(temp);
+  //console.log(temp);
   const n = temp.size;
   const templateField = temp.template;
   const cellValues = getValues(templateField, n);

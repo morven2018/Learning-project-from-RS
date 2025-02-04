@@ -40,7 +40,7 @@
       background-repeat: no-repeat;
       background-position: 50% 50%;
       background-size: auto;
-      background-image: url(../dist/materials/icons/cross_dark.png);
+      background-image: url(../dist/materials/icons/cross_ligth.png);
     }
 
     &_black {
@@ -89,7 +89,7 @@
   }
 
   .card__preview {
-    background-color: color.grayscale($cards-color);
+    background-color: color.grayscale($checked-color);
   }
 
   .nonograms-list__records__item {

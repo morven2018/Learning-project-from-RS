@@ -21,6 +21,7 @@ export function renderStartPage(templates) {
 
   const modeElem = document.createElement("div");
   modeElem.classList.add(`${ldMode}-mode-btn`);
+  modeElem.textContent = " ";
   ctrlBth.append(modeElem);
 
   let sounds = localStorage.sound ? localStorage.sound : "on";

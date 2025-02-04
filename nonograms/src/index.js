@@ -1,7 +1,7 @@
 import "../styles/gameField.scss";
 import "../styles/components.scss";
 import "../styles/light-mode.scss";
-//import "../styles/dark-mode.scss";
+import "../styles/dark-mode.scss";
 
 import {
   reRenderField,
@@ -32,13 +32,11 @@ const audio_win = new Audio("../dist/materials/sounds/win.mp3");
 const audio_blank = new Audio("../dist/materials/sounds/error.mp3");
 const audio_checked = new Audio("../dist/materials/sounds/checked.mp3");
 const audio_cross = new Audio("../dist/materials/sounds/blank.mp3");
+const basicVolume = 1;
 
 window.onload = startGame;
 
 function startGame() {
-  parentElement.classList.add("start-page");
-  //console.log("1");
-
   fetch("../dist/materials/data/nonogramm.json")
     .then((response) => {
       return response.json();
@@ -47,8 +45,6 @@ function startGame() {
       templates = data;
       localStorage.setItem("savings", JSON.stringify([]));
       localStorage.setItem("result", JSON.stringify([]));
-      //localStorage.savings = JSON.stringify([]);
-      //localStorage.results = JSON.stringify([]);
       if (localStorage.level === undefined) {
       } else setLevel("Easy");
       renderStartPage(templates);
@@ -56,28 +52,16 @@ function startGame() {
         document
           .querySelector(".start-page-buttons__continue-last-game")
           .classList.add("start-page-buttons__continue-last-game_inactive");
+
+      parentElement.classList.add("start-page");
+      if (localStorage.volumeLevel === "") localStorage.volumeLevel = 1;
+
+      audio_blank.volume = localStorage.volumeLevel;
+      audio_checked.volume = localStorage.volumeLevel;
+      audio_cross.volume = localStorage.volumeLevel;
+      audio_win.volume = localStorage.volumeLevel;
     });
 }
-
-/*let checked = false;
-
-parentElement.addEventListener("mousedown", (event) => {
-  //console.log(event.target.classList[0]);
-  checked = true;
-});
-
-parentElement.addEventListener("mouseup", (event) => {
-  //console.log(event.target.classList[0]);
-  checked = false;
-});
-
-parentElement.addEventListener("mousemove", (event) => {
-  if (checked && event.target.classList[0] === "gameField__cell") {
-    event.target.classList.toggle("gameField__cell_unknown");
-    event.target.classList.toggle("gameField__cell_checked");
-  }
-});
-*/
 
 parentElement.addEventListener("click", (event) => {
   if (
@@ -109,17 +93,17 @@ parentElement.addEventListener("click", (event) => {
       isReady(levelSize[localStorage.level], templates[id - 1])
     ) {
       const nTimer = new Date();
-      console.log("You win!");
+      //console.log("You win!");
       saveResult(templates[id - 1], nTimer - start, nTimer);
       winForm(nTimer - start);
       audio_win.play();
       clearTimeout(timerId);
       offTimer = true;
-    } else if (
+    } /* else if (
       !hasNoMistake(levelSize[localStorage.level], templates[id - 1])
     ) {
       console.log("You make a mistake");
-    }
+    }*/
   }
 
   if (
@@ -136,7 +120,6 @@ parentElement.addEventListener("click", (event) => {
     const save = document.querySelector(
       ".start-page-buttons__save-game__inactive"
     );
-
     if (save) save.classList.remove("start-page-buttons__save-game__inactive");
 
     const save2 = document.querySelector(
@@ -146,7 +129,7 @@ parentElement.addEventListener("click", (event) => {
       save2.classList.remove("start-page-buttons__game-solution__inactive");
 
     const ids = event.target.value;
-    changeBtn(event.target, ids);
+    //changeBtn(event.target, ids);
 
     const activateButton = document.querySelector(
       ".start-page-buttons__game-solution"
@@ -168,10 +151,12 @@ parentElement.addEventListener("click", (event) => {
 
     reRenderField(templates[id - 1]);
 
-    offTimer = false;
-    start = new Date();
+    offTimer = true;
+    const timer = document.querySelector(".game-timer__value");
+    timer.textContent = "00:00";
+    //start = new Date();
 
-    timerId = launchTimer(start);
+    //timerId = launchTimer(start);
   }
 
   if (event.target.classList[0] === "start-page-buttons__game-solution") {
@@ -226,7 +211,7 @@ parentElement.addEventListener("click", (event) => {
   if (event.target.classList[0] === "start-page-buttons__random-game") {
     const maxIndex = templates.length;
     const id = Math.floor(Math.random() * maxIndex);
-    console.log(id);
+    //console.log(id);
     let l =
       templates[id].size === 5
         ? "Easy"
@@ -272,7 +257,7 @@ parentElement.addEventListener("click", (event) => {
     solutions.forEach((elem, index) => {
       if (id == elem.id) i = index;
     });
-    console.log(solutions[i], i);
+    //console.log(solutions[i], i);
     start = new Date() - solutions[i].timeOfSolution;
     timerId = launchTimer(start);
 
@@ -301,12 +286,101 @@ parentElement.addEventListener("click", (event) => {
       solutions[localStorage.index].size,
       solutions[localStorage.index].solution
     );
+  }
 
-    /*const nTimer = new Date();
-    saveSolution(templates[id - 1], nTimer - start);
-    clearTimeout(timerId);
-    offTimer = true;
-    changeBtn(event.target, id);*/
+  if (event.target.classList[0] === "light-mode-btn") {
+    const soundOn = document.querySelector(".sound-mode-on-light-btn");
+    if (soundOn) {
+      soundOn.classList.remove("sound-mode-on-light-btn");
+      soundOn.classList.add("sound-mode-on-dark-btn");
+    }
+
+    const soundOff = document.querySelector(".sound-mode-off-light-btn");
+    if (soundOff) {
+      soundOff.classList.remove("sound-mode-off-light-btn");
+      soundOff.classList.add("sound-mode-off-dark-btn");
+    }
+
+    const parentElem = document.querySelector(".light-mode");
+    if (parentElem) {
+      parentElem.classList.remove("light-mode");
+      parentElem.classList.add("dark-mode");
+    }
+    const elem = document.querySelector(".light-mode-btn");
+    if (elem) {
+      elem.classList.remove("light-mode-btn");
+      elem.classList.add("dark-mode-btn");
+    }
+    localStorage.mode = "dark";
+  } else if (event.target.classList.contains("dark-mode-btn")) {
+    const soundOn = document.querySelector(".sound-mode-on-dark-btn");
+    if (soundOn) {
+      soundOn.classList.remove("sound-mode-on-dark-btn");
+      soundOn.classList.add("sound-mode-on-light-btn");
+    }
+
+    const soundOff = document.querySelector(".sound-mode-off-dark-btn");
+    if (soundOff) {
+      soundOff.classList.remove("sound-mode-off-dark-btn");
+      soundOff.classList.add("sound-mode-off-light-btn");
+    }
+
+    const parentElem = document.querySelector(".dark-mode");
+    if (parentElem) {
+      parentElem.classList.remove("dark-mode");
+      parentElem.classList.add("light-mode");
+    }
+
+    const elem = document.querySelector(".dark-mode-btn");
+    if (elem) {
+      elem.classList.remove("dark-mode-btn");
+      elem.classList.add("light-mode-btn");
+    }
+    localStorage.mode = "light";
+  }
+
+  if (event.target.classList[0] === "sound-mode-on-light-btn") {
+    localStorage.volumeLevel = 0;
+
+    audio_blank.volume = 0;
+    audio_checked.volume = 0;
+    audio_cross.volume = 0;
+    audio_win.volume = 0;
+
+    event.target.classList.remove("sound-mode-on-light-btn");
+    event.target.classList.add("sound-mode-off-light-btn");
+  } else if (event.target.classList[0] === "sound-mode-off-light-btn") {
+    localStorage.volumeLevel = 1;
+
+    audio_blank.volume = 1;
+    audio_checked.volume = 1;
+    audio_cross.volume = 1;
+    audio_win.volume = 1;
+
+    event.target.classList.remove("sound-mode-off-light-btn");
+    event.target.classList.add("sound-mode-on-light-btn");
+  }
+
+  if (event.target.classList[0] === "sound-mode-on-dark-btn") {
+    localStorage.volumeLevel = 0;
+
+    audio_blank.volume = 0;
+    audio_checked.volume = 0;
+    audio_cross.volume = 0;
+    audio_win.volume = 0;
+
+    event.target.classList.remove("sound-mode-on-dark-btn");
+    event.target.classList.add("sound-mode-off-dark-btn");
+  } else if (event.target.classList[0] === "sound-mode-off-dark-btn") {
+    localStorage.volumeLevel = 1;
+
+    audio_blank.volume = 1;
+    audio_checked.volume = 1;
+    audio_cross.volume = 1;
+    audio_win.volume = 1;
+
+    event.target.classList.remove("sound-mode-off-dark-btn");
+    event.target.classList.add("sound-mode-on-dark-btn");
   }
 });
 
@@ -331,8 +405,8 @@ parentElement.addEventListener("contextmenu", (event) => {
     }
 
     const id = document.querySelector(".game-area").value;
-    if (!hasNoMistake(levelSize[localStorage.level], templates[id - 1]))
-      console.log("You make a mistake");
+    //if (!hasNoMistake(levelSize[localStorage.level], templates[id - 1]))
+    //console.log("You make a mistake");
 
     event.preventDefault();
   }
