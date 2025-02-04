@@ -52,6 +52,10 @@ function startGame() {
       if (localStorage.level === undefined) {
       } else setLevel("Easy");
       renderStartPage(templates);
+      if (localStorage.savings === "[]")
+        document
+          .querySelector(".start-page-buttons__continue-last-game")
+          .classList.add("start-page-buttons__continue-last-game_inactive");
     });
 }
 
@@ -125,6 +129,7 @@ parentElement.addEventListener("click", (event) => {
     setLevel(localStorage.level);
     clearStartPage();
     renderGamePage(templates[event.target.value - 1]);
+    offTimer = true;
   }
 
   if (event.target.classList.contains("start-page-buttons__reset-game")) {
@@ -237,6 +242,13 @@ parentElement.addEventListener("click", (event) => {
     document
       .querySelector(".start-page-buttons__game-solution")
       .classList.add("start-page-buttons__game-solution__inactive");
+
+    const h = document.querySelector(
+      ".start-page-buttons__continue-last-game_inactive"
+    );
+    if (h)
+      h.classList.remove("start-page-buttons__continue-last-game_inactive");
+
     const id = document.querySelector(".game-area").value;
     const nTimer = new Date();
     saveSolution(templates[id - 1], nTimer - start);
@@ -273,19 +285,22 @@ parentElement.addEventListener("click", (event) => {
     changeBtn(event.target, id);*/
   }
   if (event.target.classList[0] === "start-page-buttons__continue-last-game") {
-    const id = event.target.value;
-    changeBtn(event.target, id);
-    continueGame();
     const solutions = JSON.parse(localStorage.savings);
-    let i = -1;
-    solutions.forEach((elem, index) => {
-      if (id == elem.id) i = index;
-    });
-    console.log(solutions[i], i);
-    start = new Date() - solutions[i].timeOfSolution;
+
+    clearStartPage();
+    renderGamePage(templates[solutions[localStorage.index].id - 1]);
+    const id = solutions[localStorage.index].id;
+    //changeBtn(event.target, id);
+    continueGame();
+
+    start = new Date() - solutions[localStorage.index].timeOfSolution;
+
     timerId = launchTimer(start);
 
-    renderSavedSolution(solutions[i].size, solutions[i].solution);
+    renderSavedSolution(
+      solutions[localStorage.index].size,
+      solutions[localStorage.index].solution
+    );
 
     /*const nTimer = new Date();
     saveSolution(templates[id - 1], nTimer - start);

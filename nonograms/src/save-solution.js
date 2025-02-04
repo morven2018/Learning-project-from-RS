@@ -1,7 +1,7 @@
 import { getSolution } from "./logic";
 
 export function saveResult(temp, timeResult, time) {
-  let stored = localStorage.results ? JSON.parse(localStorage.results) : [];
+  let stored = localStorage.result ? JSON.parse(localStorage.result) : [];
 
   const res = prepareJSONResult(timeResult, temp, time, stored.length);
   stored.push(res);
@@ -16,6 +16,7 @@ function prepareJSONResult(timeResult, temp, time, id) {
     template: temp.template,
     size: temp.size,
     name: temp.name,
+    idTemp: temp.id,
   };
 }
 
@@ -32,11 +33,14 @@ export function saveSolution(temp, timeResult) {
   const res = prepareJSONResultSaving(temp, timeResult);
   if (exist === -1) {
     stored.push(res);
+    localStorage.index = stored.length - 1;
   } else {
     stored[exist] = res;
+    localStorage.index = exist;
   }
   localStorage.savings = JSON.stringify(stored);
-  localStorage.last = temp.id;
+  //localStorage.last = temp.id;
+
   //console.log(localStorage.savings);
 }
 

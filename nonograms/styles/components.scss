@@ -91,6 +91,12 @@ button {
   @media only screen and (min-width: 550px) {
     width: 80%;
   }
+  /*.start-page-buttons__new-game,
+  .start-page-buttons__continue-game,
+  .start-page-buttons__another-try*/
+  /*card__info {
+    width: 80%;
+  }*/
 }
 
 .card__header {
@@ -113,6 +119,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 80%;
 }
 .card__timer {
   margin-left: 10px;
@@ -120,6 +127,7 @@ button {
 
 .start-page-buttons__another-try {
   display: flex;
+  justify-content: center;
 }
 
 .header-of-game {
@@ -138,6 +146,34 @@ button {
   width: 30px;
 }
 .start-page-buttons__save-game__inactive,
-.start-page-buttons__game-solution__inactive {
+.start-page-buttons__game-solution__inactive,
+.start-page-buttons__continue-last-game_inactive {
   pointer-events: none;
+  opacity: 0.7;
+}
+
+.nonograms-list__records {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nonograms-list__records__item {
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.records__item__position {
+  font-size: 24px;
+}
+.records__item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.records__item__size {
+  text-align: center;
 }

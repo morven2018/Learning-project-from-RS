@@ -72,6 +72,11 @@ export function renderStartPage(templates) {
   mainField.append(records);
 
   renderRecords(records);
+
+  if (!localStorage.last)
+    document
+      .querySelector(".start-page-buttons__continue-last-game")
+      .classList.add("start-page-buttons__continue-last-game__inactive");
 }
 
 function renderTabs(parentElement, level = "Easy") {
@@ -150,13 +155,15 @@ function renderCard(parentElement, elementInfo) {
       elementInfo.id
     );
 
-  //console.log(elementInfo.id);
-
   renderButton(cardInfo, "start-page-buttons__continue-game", "Continue");
-  if (!isInProcess(elementInfo.id))
+  document
+    .querySelector(".start-page-buttons__continue-game")
+    .classList.add("start-page-buttons__continue-game_list");
+
+  if (!isInProcess(elementInfo.id) || localStorage.savings === "[]")
     document
       .querySelector(".start-page-buttons__continue-game")
-      .classList.add("start-page-buttons__continue-game_disable");
+      .classList.add("start-page-buttons__continue-game_inactive");
 }
 
 function renderRecords(parentElement) {
@@ -167,9 +174,9 @@ function renderRecords(parentElement) {
   parentElement.append(recordHeader);
   recordHeader.textContent = "Records:";
 
-  if (info) {
-    const games = JSON.parse(info);
-    const lastFive = games.length > 5 ? games.slice(-5, -1) : games;
+  if (localStorage.result !== "[]") {
+    ///const games = JSON.parse(info);
+    const lastFive = getRating();
     lastFive.forEach((elem, index) => {
       const record = document.createElement("div");
       record.className = "nonograms-list__records__item";
@@ -177,24 +184,29 @@ function renderRecords(parentElement) {
 
       const position = document.createElement("div");
       position.className = "records__item__position";
-      parentElement.append(position);
-      position.textContent = index;
+      record.append(position);
+      position.textContent = index + 1;
 
       const recordInfo = document.createElement("div");
       recordInfo.className = "records__item__info";
-      parentElement.append(recordInfo);
+      record.append(recordInfo);
 
       const recordName = document.createElement("h3");
       recordName.className = "records__item__name";
       recordInfo.append(recordName);
       recordName.textContent = elem.name;
 
-      const recordTime = document.createElement("h3");
+      const recordTime = document.createElement("p");
       recordTime.className = "records__item__time";
       recordInfo.append(recordTime);
-      recordTime.textContent = elem.time;
 
-      const recordSize = document.createElement("h3");
+      let timeElem = Math.floor(elem.timeOfSolution / 1000);
+      recordTime.textContent = `${String(Math.floor(timeElem / 60)).padStart(
+        2,
+        "0"
+      )}:${String(timeElem % 60).padStart(2, "0")}`;
+
+      const recordSize = document.createElement("p");
       recordSize.className = "records__item__size";
       recordInfo.append(recordSize);
       recordSize.textContent = `${elem.size}x${elem.size}`;
@@ -202,6 +214,7 @@ function renderRecords(parentElement) {
   } else {
     const noRecords = document.createElement("div");
     noRecords.className = "nonograms-list__records__none";
+    //noRecords.textContent = "No nonogram has been solved yet";
     parentElement.append(noRecords);
 
     noRecords.textContent = "There is no records at time.";
@@ -214,15 +227,34 @@ function renderRecords(parentElement) {
 }
 
 function isDone(id) {
-  return true;
+  const solutions = JSON.parse(localStorage.result);
+  return solutions.some((item) => item.idTemp === id);
 }
 
 function isInProcess(id) {
-  return true;
+  const res = JSON.parse(localStorage.savings);
+  return res.some((item) => item.id === id);
 }
 
 function getTime(id) {
-  return "00:00";
+  const solutions = JSON.parse(localStorage.result);
+  console.log(solutions);
+  let time = null;
+  solutions.forEach((elem) => {
+    console.log(elem);
+    if (elem.idTemp === id && (time === null || elem.timeOfSolution < time))
+      time = elem.timeOfSolution;
+  });
+  time = Math.floor(time / 1000);
+  return `${String(Math.floor(time / 60)).padStart(2, "0")}:${String(
+    time % 60
+  ).padStart(2, "0")}`;
+}
+
+function getRating() {
+  const solutions = JSON.parse(localStorage.result);
+  const res = solutions.length > 5 ? solutions.splice(-5) : solutions;
+  return res.sort((a, b) => a.timeOfSolution - b.timeOfSolution);
 }
 
 export function clearStartPage() {
