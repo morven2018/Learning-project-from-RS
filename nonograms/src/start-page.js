@@ -229,11 +229,13 @@ function renderRecords(parentElement) {
 }
 
 function isDone(id) {
+  if (localStorage.result === "[]") return false;
   const solutions = JSON.parse(localStorage.result);
   return solutions.some((item) => item.idTemp === id);
 }
 
 function isInProcess(id) {
+  if (localStorage.savings === "[]") return false;
   const res = JSON.parse(localStorage.savings);
   return res.some((item) => item.id === id);
 }
