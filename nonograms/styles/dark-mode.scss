@@ -10,6 +10,7 @@
   $button-color: #333333;
   $button-text: #be9dcc;
   $cards-color: #2b0731;
+  $record-color: #6e0357;
 
   background-color: $background-color;
   color: $text-color;
@@ -89,5 +90,12 @@
 
   .card__preview {
     background-color: color.grayscale($cards-color);
+  }
+
+  .nonograms-list__records__item {
+    border-top: 1px solid $color-lines;
+  }
+  .nonograms-list__records:nth-child(2) {
+    border-top: none;
   }
 }

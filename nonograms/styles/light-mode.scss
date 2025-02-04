@@ -91,4 +91,12 @@
   .card__preview {
     background-color: color.grayscale($cards-color);
   }
+  .nonograms-list__records:first-child {
+  }
+  .nonograms-list__records__item {
+    border-top: 1px solid $color-lines;
+  }
+  .nonograms-list__records:nth-child(2) {
+    border-top: none;
+  }
 }
