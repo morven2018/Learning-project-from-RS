@@ -78,6 +78,18 @@ export function renderStartPage(templates) {
     document
       .querySelector(".start-page-buttons__continue-last-game")
       .classList.add("start-page-buttons__continue-last-game__inactive");
+
+  if (localStorage.savings !== "[]") {
+    const btnContinue = document.querySelectorAll(
+      ".start-page-buttons__continue-game"
+    );
+    btnContinue.forEach((elem) => {
+      if (isInProcess(elem.value)) {
+        console.log(elem.value);
+        elem.classList.remove("start-page-buttons__continue-game_inactive");
+      }
+    });
+  }
 }
 
 function renderTabs(parentElement, level = "Easy") {
@@ -158,19 +170,14 @@ function renderCard(parentElement, elementInfo) {
 
   renderButton(
     cardInfo,
-    "start-page-buttons__continue-game",
+    "start-page-buttons__continue-game start-page-buttons__continue-game_inactive",
     "Continue",
     false,
     elementInfo.id
   );
-  document
+  /*document
     .querySelector(".start-page-buttons__continue-game")
-    .classList.add("start-page-buttons__continue-game_list");
-
-  if (!isInProcess(elementInfo.id) || localStorage.savings === "[]")
-    document
-      .querySelector(".start-page-buttons__continue-game")
-      .classList.add("start-page-buttons__continue-game_inactive");
+    .classList.add("start-page-buttons__continue-game_list");*/
 }
 
 function renderRecords(parentElement) {
@@ -244,7 +251,7 @@ function isDone(id) {
 function isInProcess(id) {
   if (localStorage.savings === "[]") return false;
   const res = JSON.parse(localStorage.savings);
-  return res.some((item) => item.id === id);
+  return res.some((item) => item.id == id);
 }
 
 function getTime(id) {
