@@ -1,7 +1,7 @@
 import "../styles/gameField.scss";
 import "../styles/components.scss";
 import "../styles/light-mode.scss";
-//import "../styles/dark-mode.scss";
+import "../styles/dark-mode.scss";
 
 import {
   reRenderField,
@@ -109,7 +109,7 @@ parentElement.addEventListener("click", (event) => {
       isReady(levelSize[localStorage.level], templates[id - 1])
     ) {
       const nTimer = new Date();
-      console.log("You win!");
+      //console.log("You win!");
       saveResult(templates[id - 1], nTimer - start, nTimer);
       winForm(nTimer - start);
       audio_win.play();
@@ -136,7 +136,6 @@ parentElement.addEventListener("click", (event) => {
     const save = document.querySelector(
       ".start-page-buttons__save-game__inactive"
     );
-
     if (save) save.classList.remove("start-page-buttons__save-game__inactive");
 
     const save2 = document.querySelector(
@@ -146,7 +145,7 @@ parentElement.addEventListener("click", (event) => {
       save2.classList.remove("start-page-buttons__game-solution__inactive");
 
     const ids = event.target.value;
-    changeBtn(event.target, ids);
+    //changeBtn(event.target, ids);
 
     const activateButton = document.querySelector(
       ".start-page-buttons__game-solution"
@@ -168,10 +167,12 @@ parentElement.addEventListener("click", (event) => {
 
     reRenderField(templates[id - 1]);
 
-    offTimer = false;
-    start = new Date();
+    offTimer = true;
+    const timer = document.querySelector(".game-timer__value");
+    timer.textContent = "00:00";
+    //start = new Date();
 
-    timerId = launchTimer(start);
+    //timerId = launchTimer(start);
   }
 
   if (event.target.classList[0] === "start-page-buttons__game-solution") {
@@ -226,7 +227,7 @@ parentElement.addEventListener("click", (event) => {
   if (event.target.classList[0] === "start-page-buttons__random-game") {
     const maxIndex = templates.length;
     const id = Math.floor(Math.random() * maxIndex);
-    console.log(id);
+    //console.log(id);
     let l =
       templates[id].size === 5
         ? "Easy"
@@ -272,7 +273,7 @@ parentElement.addEventListener("click", (event) => {
     solutions.forEach((elem, index) => {
       if (id == elem.id) i = index;
     });
-    console.log(solutions[i], i);
+    //console.log(solutions[i], i);
     start = new Date() - solutions[i].timeOfSolution;
     timerId = launchTimer(start);
 
@@ -301,12 +302,57 @@ parentElement.addEventListener("click", (event) => {
       solutions[localStorage.index].size,
       solutions[localStorage.index].solution
     );
+  }
 
-    /*const nTimer = new Date();
-    saveSolution(templates[id - 1], nTimer - start);
-    clearTimeout(timerId);
-    offTimer = true;
-    changeBtn(event.target, id);*/
+  if (event.target.classList[0] === "light-mode-btn") {
+    const soundOn = document.querySelector(".sound-mode-on-light-btn");
+    if (soundOn) {
+      soundOn.classList.remove("sound-mode-on-light-btn");
+      soundOn.classList.add("sound-mode-on-dark-btn");
+    }
+
+    const soundOff = document.querySelector(".sound-mode-off-light-btn");
+    if (soundOff) {
+      soundOff.classList.remove("sound-mode-off-light-btn");
+      soundOff.classList.add("sound-mode-off-dark-btn");
+    }
+
+    const parentElem = document.querySelector(".light-mode");
+    if (parentElem) {
+      parentElem.classList.remove("light-mode");
+      parentElem.classList.add("dark-mode");
+    }
+    const elem = document.querySelector(".light-mode-btn");
+    if (elem) {
+      elem.classList.remove("light-mode-btn");
+      elem.classList.add("dark-mode-btn");
+    }
+    localStorage.mode = "dark";
+  } else if (event.target.classList.contains("dark-mode-btn")) {
+    const soundOn = document.querySelector(".sound-mode-on-dark-btn");
+    if (soundOn) {
+      soundOn.classList.remove("sound-mode-on-dark-btn");
+      soundOn.classList.add("sound-mode-on-light-btn");
+    }
+
+    const soundOff = document.querySelector(".sound-mode-off-dark-btn");
+    if (soundOff) {
+      soundOff.classList.remove("sound-mode-off-dark-btn");
+      soundOff.classList.add("sound-mode-off-light-btn");
+    }
+
+    const parentElem = document.querySelector(".dark-mode");
+    if (parentElem) {
+      parentElem.classList.remove("dark-mode");
+      parentElem.classList.add("light-mode");
+    }
+
+    const elem = document.querySelector(".dark-mode-btn");
+    if (elem) {
+      elem.classList.remove("dark-mode-btn");
+      elem.classList.add("light-mode-btn");
+    }
+    localStorage.mode = "light";
   }
 });
 
