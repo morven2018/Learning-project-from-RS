@@ -91,6 +91,12 @@ button {
   @media only screen and (min-width: 550px) {
     width: 80%;
   }
+  /*.start-page-buttons__new-game,
+  .start-page-buttons__continue-game,
+  .start-page-buttons__another-try*/
+  /*card__info {
+    width: 80%;
+  }*/
 }
 
 .card__header {
@@ -113,6 +119,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 80%;
 }
 .card__timer {
   margin-left: 10px;
@@ -120,6 +127,7 @@ button {
 
 .start-page-buttons__another-try {
   display: flex;
+  justify-content: center;
 }
 
 .header-of-game {

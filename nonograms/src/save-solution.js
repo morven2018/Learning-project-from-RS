@@ -16,6 +16,7 @@ function prepareJSONResult(timeResult, temp, time, id) {
     template: temp.template,
     size: temp.size,
     name: temp.name,
+    idTemp: temp.id,
   };
 }
 

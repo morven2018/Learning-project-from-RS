@@ -158,10 +158,14 @@ function renderCard(parentElement, elementInfo) {
   //console.log(elementInfo.id);
 
   renderButton(cardInfo, "start-page-buttons__continue-game", "Continue");
-  if (!isInProcess(elementInfo.id))
+  document
+    .querySelector(".start-page-buttons__continue-game")
+    .classList.add("start-page-buttons__continue-game_list");
+
+  if (!isInProcess(elementInfo.id) || localStorage.savings === "[]")
     document
       .querySelector(".start-page-buttons__continue-game")
-      .classList.add("start-page-buttons__continue-game_disable");
+      .classList.add("start-page-buttons__continue-game_inactive");
 }
 
 function renderRecords(parentElement) {
@@ -219,11 +223,13 @@ function renderRecords(parentElement) {
 }
 
 function isDone(id) {
-  return true;
+  const solutions = JSON.parse(localStorage.result);
+  return solutions.some((item) => item.idTemp === id);
 }
 
 function isInProcess(id) {
-  return true;
+  const res = JSON.parse(localStorage.savings);
+  return res.some((item) => item.id === id);
 }
 
 function getTime(id) {
