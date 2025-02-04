@@ -156,7 +156,13 @@ function renderCard(parentElement, elementInfo) {
       elementInfo.id
     );
 
-  renderButton(cardInfo, "start-page-buttons__continue-game", "Continue");
+  renderButton(
+    cardInfo,
+    "start-page-buttons__continue-game",
+    "Continue",
+    false,
+    elementInfo.id
+  );
   document
     .querySelector(".start-page-buttons__continue-game")
     .classList.add("start-page-buttons__continue-game_list");
