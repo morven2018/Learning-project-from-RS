@@ -234,6 +234,11 @@ parentElement.addEventListener("click", (event) => {
     if (h)
       h.classList.remove("start-page-buttons__continue-last-game_inactive");
 
+    /*const g = document.querySelector(
+      ".start-page-buttons__continue-game_inactive"
+    );
+    if (g) g.classList.remove("start-page-buttons__continue-game_inactive");*/
+
     const id = document.querySelector(".game-area").value;
     const nTimer = new Date();
     saveSolution(templates[id - 1], nTimer - start);
@@ -249,25 +254,38 @@ parentElement.addEventListener("click", (event) => {
     if (save)
       save.classList.remove("start-page-buttons__game-solution__inactive");
 
-    const id = event.target.value;
-    changeBtn(event.target, id);
-    continueGame();
-    const solutions = JSON.parse(localStorage.savings);
-    let i = -1;
-    solutions.forEach((elem, index) => {
-      if (id == elem.id) i = index;
-    });
-    //console.log(solutions[i], i);
-    start = new Date() - solutions[i].timeOfSolution;
-    timerId = launchTimer(start);
+    if (document.querySelector("main")) {
+      const solutions = JSON.parse(localStorage.savings);
+      const id = event.target.value;
 
-    renderSavedSolution(solutions[i].size, solutions[i].solution);
+      let solution = solutions.filter((elem) => id == elem.id);
+      console.log("G", solution[0].id);
 
-    /*const nTimer = new Date();
-    saveSolution(templates[id - 1], nTimer - start);
-    clearTimeout(timerId);
-    offTimer = true;
-    changeBtn(event.target, id);*/
+      clearStartPage();
+
+      renderGamePage(templates.filter((elem) => elem.id === solution[0].id)[0]);
+      continueGame();
+
+      start = new Date() - solution[0].timeOfSolution;
+
+      timerId = launchTimer(start);
+
+      renderSavedSolution(solution[0].size, solution[0].solution);
+    } else {
+      const id = event.target.value;
+      changeBtn(event.target, id);
+      continueGame();
+      const solutions = JSON.parse(localStorage.savings);
+      let i = -1;
+      solutions.forEach((elem, index) => {
+        if (id == elem.id) i = index;
+      });
+      //console.log(solutions[i], i);
+      start = new Date() - solutions[i].timeOfSolution;
+      timerId = launchTimer(start);
+
+      renderSavedSolution(solutions[i].size, solutions[i].solution);
+    }
   }
   if (event.target.classList[0] === "start-page-buttons__continue-last-game") {
     const solutions = JSON.parse(localStorage.savings);
