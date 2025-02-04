@@ -115,11 +115,11 @@ parentElement.addEventListener("click", (event) => {
       audio_win.play();
       clearTimeout(timerId);
       offTimer = true;
-    } else if (
+    } /* else if (
       !hasNoMistake(levelSize[localStorage.level], templates[id - 1])
     ) {
       console.log("You make a mistake");
-    }
+    }*/
   }
 
   if (
@@ -377,8 +377,8 @@ parentElement.addEventListener("contextmenu", (event) => {
     }
 
     const id = document.querySelector(".game-area").value;
-    if (!hasNoMistake(levelSize[localStorage.level], templates[id - 1]))
-      console.log("You make a mistake");
+    //if (!hasNoMistake(levelSize[localStorage.level], templates[id - 1]))
+    //console.log("You make a mistake");
 
     event.preventDefault();
   }

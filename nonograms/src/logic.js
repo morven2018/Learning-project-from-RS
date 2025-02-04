@@ -13,7 +13,7 @@ export function hasNoMistake(n, templateField) {
 
 export function isReady(n, templateField) {
   const solution = getSolution(n);
-  console.log(solution);
+  //console.log(solution);
   //console.log("read");
   const templateSolution = getValues(templateField.template, n);
   return solution.every((item, index) =>
