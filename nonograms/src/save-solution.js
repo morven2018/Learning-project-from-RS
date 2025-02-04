@@ -1,7 +1,7 @@
 import { getSolution } from "./logic";
 
 export function saveResult(temp, timeResult, time) {
-  let stored = localStorage.results ? JSON.parse(localStorage.results) : [];
+  let stored = localStorage.result ? JSON.parse(localStorage.result) : [];
 
   const res = prepareJSONResult(timeResult, temp, time, stored.length);
   stored.push(res);

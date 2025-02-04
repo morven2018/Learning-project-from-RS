@@ -151,3 +151,29 @@ button {
   pointer-events: none;
   opacity: 0.7;
 }
+
+.nonograms-list__records {
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nonograms-list__records__item {
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.records__item__position {
+  font-size: 24px;
+}
+.records__item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.records__item__size {
+  text-align: center;
+}
