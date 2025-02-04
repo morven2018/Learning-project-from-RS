@@ -138,6 +138,8 @@ button {
   width: 30px;
 }
 .start-page-buttons__save-game__inactive,
-.start-page-buttons__game-solution__inactive {
+.start-page-buttons__game-solution__inactive,
+.start-page-buttons__continue-last-game_inactive {
   pointer-events: none;
+  opacity: 0.7;
 }

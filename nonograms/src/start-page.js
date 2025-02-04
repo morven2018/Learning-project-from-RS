@@ -72,6 +72,11 @@ export function renderStartPage(templates) {
   mainField.append(records);
 
   renderRecords(records);
+
+  if (!localStorage.last)
+    document
+      .querySelector(".start-page-buttons__continue-last-game")
+      .classList.add("start-page-buttons__continue-last-game__inactive");
 }
 
 function renderTabs(parentElement, level = "Easy") {
