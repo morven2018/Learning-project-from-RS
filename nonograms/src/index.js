@@ -46,7 +46,7 @@ function startGame() {
     .then((data) => {
       templates = data;
       localStorage.setItem("savings", JSON.stringify([]));
-      localStorage.setItem("results", JSON.stringify([]));
+      localStorage.setItem("result", JSON.stringify([]));
       //localStorage.savings = JSON.stringify([]);
       //localStorage.results = JSON.stringify([]);
       if (localStorage.level === undefined) {

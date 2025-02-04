@@ -209,7 +209,9 @@ function renderRecords(parentElement) {
       const recordSize = document.createElement("p");
       recordSize.className = "records__item__size";
       recordInfo.append(recordSize);
-      recordSize.textContent = `${elem.size}x${elem.size}`;
+      recordSize.textContent = `${
+        elem.size === 5 ? "Easy" : elem.size === 10 ? "Medium" : "Hard"
+      } (${elem.size}x${elem.size})`;
     });
   } else {
     const noRecords = document.createElement("div");
