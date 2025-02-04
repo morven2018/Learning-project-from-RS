@@ -32,13 +32,11 @@ const audio_win = new Audio("../dist/materials/sounds/win.mp3");
 const audio_blank = new Audio("../dist/materials/sounds/error.mp3");
 const audio_checked = new Audio("../dist/materials/sounds/checked.mp3");
 const audio_cross = new Audio("../dist/materials/sounds/blank.mp3");
+const basicVolume = 1;
 
 window.onload = startGame;
 
 function startGame() {
-  parentElement.classList.add("start-page");
-  //console.log("1");
-
   fetch("../dist/materials/data/nonogramm.json")
     .then((response) => {
       return response.json();
@@ -47,8 +45,6 @@ function startGame() {
       templates = data;
       localStorage.setItem("savings", JSON.stringify([]));
       localStorage.setItem("result", JSON.stringify([]));
-      //localStorage.savings = JSON.stringify([]);
-      //localStorage.results = JSON.stringify([]);
       if (localStorage.level === undefined) {
       } else setLevel("Easy");
       renderStartPage(templates);
@@ -56,28 +52,16 @@ function startGame() {
         document
           .querySelector(".start-page-buttons__continue-last-game")
           .classList.add("start-page-buttons__continue-last-game_inactive");
+
+      parentElement.classList.add("start-page");
+      if (localStorage.volumeLevel === "") localStorage.volumeLevel = 1;
+
+      audio_blank.volume = localStorage.volumeLevel;
+      audio_checked.volume = localStorage.volumeLevel;
+      audio_cross.volume = localStorage.volumeLevel;
+      audio_win.volume = localStorage.volumeLevel;
     });
 }
-
-/*let checked = false;
-
-parentElement.addEventListener("mousedown", (event) => {
-  //console.log(event.target.classList[0]);
-  checked = true;
-});
-
-parentElement.addEventListener("mouseup", (event) => {
-  //console.log(event.target.classList[0]);
-  checked = false;
-});
-
-parentElement.addEventListener("mousemove", (event) => {
-  if (checked && event.target.classList[0] === "gameField__cell") {
-    event.target.classList.toggle("gameField__cell_unknown");
-    event.target.classList.toggle("gameField__cell_checked");
-  }
-});
-*/
 
 parentElement.addEventListener("click", (event) => {
   if (
@@ -353,6 +337,50 @@ parentElement.addEventListener("click", (event) => {
       elem.classList.add("light-mode-btn");
     }
     localStorage.mode = "light";
+  }
+
+  if (event.target.classList[0] === "sound-mode-on-light-btn") {
+    localStorage.volumeLevel = 0;
+
+    audio_blank.volume = 0;
+    audio_checked.volume = 0;
+    audio_cross.volume = 0;
+    audio_win.volume = 0;
+
+    event.target.classList.remove("sound-mode-on-light-btn");
+    event.target.classList.add("sound-mode-off-light-btn");
+  } else if (event.target.classList[0] === "sound-mode-off-light-btn") {
+    localStorage.volumeLevel = 1;
+
+    audio_blank.volume = 1;
+    audio_checked.volume = 1;
+    audio_cross.volume = 1;
+    audio_win.volume = 1;
+
+    event.target.classList.remove("sound-mode-off-light-btn");
+    event.target.classList.add("sound-mode-on-light-btn");
+  }
+
+  if (event.target.classList[0] === "sound-mode-on-dark-btn") {
+    localStorage.volumeLevel = 0;
+
+    audio_blank.volume = 0;
+    audio_checked.volume = 0;
+    audio_cross.volume = 0;
+    audio_win.volume = 0;
+
+    event.target.classList.remove("sound-mode-on-dark-btn");
+    event.target.classList.add("sound-mode-off-dark-btn");
+  } else if (event.target.classList[0] === "sound-mode-off-dark-btn") {
+    localStorage.volumeLevel = 1;
+
+    audio_blank.volume = 1;
+    audio_checked.volume = 1;
+    audio_cross.volume = 1;
+    audio_win.volume = 1;
+
+    event.target.classList.remove("sound-mode-off-dark-btn");
+    event.target.classList.add("sound-mode-on-dark-btn");
   }
 });
 
