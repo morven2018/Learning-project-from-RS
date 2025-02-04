@@ -137,3 +137,7 @@ button {
   height: 30px;
   width: 30px;
 }
+.start-page-buttons__save-game__inactive,
+.start-page-buttons__game-solution__inactive {
+  pointer-events: none;
+}
