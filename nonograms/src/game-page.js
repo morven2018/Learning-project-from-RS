@@ -57,6 +57,9 @@ export function clearGamePage() {
   const h = document.querySelector(".game-header");
   if (h) h.remove();
 
+  const b = document.querySelector(".control-buttons-list");
+  if (b) b.remove();
+
   const form = document.querySelector(".overlay");
   if (form) form.remove();
 }

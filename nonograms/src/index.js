@@ -1,4 +1,8 @@
 import "../styles/gameField.scss";
+import "../styles/components.scss";
+import "../styles/light-mode.scss";
+//import "../styles/dark-mode.scss";
+
 import {
   reRenderField,
   renderSolution,

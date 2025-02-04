@@ -1,0 +1,139 @@
+.control-buttons-list {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+%cbtn {
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
+}
+
+.light-mode-btn {
+  @extend %cbtn;
+  background-image: url(../dist/materials/icons/dark-mode.png);
+}
+
+.dark-mode-btn {
+  @extend %cbtn;
+  background-image: url(../dist/materials/icons/ligth-mode.png);
+}
+
+.sound-mode-on {
+  &-light-btn {
+    @extend %cbtn;
+    background-image: url(../dist/materials/icons/sound_off_dark.png);
+  }
+
+  &-dark-btn {
+    @extend %cbtn;
+    background-image: url(../dist/materials/icons/sound_off_light.png);
+  }
+}
+
+.sound-mode-off {
+  &-light-btn {
+    @extend %cbtn;
+    background-image: url(../dist/materials/icons/sound_on_dark.png);
+  }
+
+  &-dark-btn {
+    @extend %cbtn;
+    background-image: url(../dist/materials/icons/sound_on_light.png);
+  }
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  font-weight: 700;
+  border-radius: 10px;
+}
+.nonograms-list__tabs__ {
+  &easy {
+    padding: 10px 20px;
+    border: none;
+    //margin: 10px 0;
+    //font-weight: 700;
+    border-radius: 10px;
+  }
+  &medium {
+    padding: 10px 20px;
+    border: none;
+    //font-weight: 700;
+    border-radius: 10px;
+  }
+  &hard {
+    padding: 10px 20px;
+    border: none;
+    //font-weight: 700;
+    border-radius: 10px;
+  }
+}
+
+.nonograms-list__records {
+  margin-top: 10px;
+  border-radius: 10px;
+}
+.nonograms-list__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  //display: flex;
+  align-self: center;
+  border-radius: 10px;
+  padding: 20px;
+
+  @media only screen and (min-width: 550px) {
+    width: 80%;
+  }
+}
+
+.card__header {
+  text-align: center;
+  margin-top: 0;
+}
+
+.cards__content {
+  display: flex;
+  gap: 40px;
+  //justify-content: space-evenly;
+}
+
+.card__preview {
+  width: 45px;
+  height: 45px;
+}
+
+.card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card__timer {
+  margin-left: 10px;
+}
+
+.start-page-buttons__another-try {
+  display: flex;
+}
+
+.header-of-game {
+  display: flex;
+  gap: 40%;
+}
+
+.game-header__name {
+  font-family: "Grenze Gotisch", serif;
+}
+
+.btn-return-to-start-page {
+  padding: 0;
+  font-size: 24px;
+  height: 30px;
+  width: 30px;
+}
