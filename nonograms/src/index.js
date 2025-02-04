@@ -1,4 +1,8 @@
 import "../styles/gameField.scss";
+import "../styles/components.scss";
+import "../styles/light-mode.scss";
+//import "../styles/dark-mode.scss";
+
 import {
   reRenderField,
   renderSolution,
@@ -124,6 +128,21 @@ parentElement.addEventListener("click", (event) => {
   }
 
   if (event.target.classList.contains("start-page-buttons__reset-game")) {
+    const save = document.querySelector(
+      ".start-page-buttons__save-game__inactive"
+    );
+
+    if (save) save.classList.remove("start-page-buttons__save-game__inactive");
+
+    const save2 = document.querySelector(
+      ".start-page-buttons__game-solution__inactive"
+    );
+    if (save2)
+      save2.classList.remove("start-page-buttons__game-solution__inactive");
+
+    const ids = event.target.value;
+    changeBtn(event.target, ids);
+
     const activateButton = document.querySelector(
       ".start-page-buttons__game-solution"
     );
@@ -151,6 +170,9 @@ parentElement.addEventListener("click", (event) => {
   }
 
   if (event.target.classList[0] === "start-page-buttons__game-solution") {
+    document
+      .querySelector(".start-page-buttons__save-game")
+      .classList.add("start-page-buttons__save-game__inactive");
     const id = document.querySelector(".game-area").value;
     clearTimeout(timerId);
     renderSolution(templates[id - 1]);
@@ -212,24 +234,54 @@ parentElement.addEventListener("click", (event) => {
   }
 
   if (event.target.classList[0] === "start-page-buttons__save-game") {
+    document
+      .querySelector(".start-page-buttons__game-solution")
+      .classList.add("start-page-buttons__game-solution__inactive");
     const id = document.querySelector(".game-area").value;
     const nTimer = new Date();
     saveSolution(templates[id - 1], nTimer - start);
     clearTimeout(timerId);
-    offTimer = true;
     changeBtn(event.target, id);
     pauseGame();
   }
 
   if (event.target.classList[0] === "start-page-buttons__continue-game") {
+    const save = document.querySelector(
+      ".start-page-buttons__game-solution__inactive"
+    );
+    if (save)
+      save.classList.remove("start-page-buttons__game-solution__inactive");
+
     const id = event.target.value;
     changeBtn(event.target, id);
     continueGame();
     const solutions = JSON.parse(localStorage.savings);
     let i = -1;
     solutions.forEach((elem, index) => {
-      if (id === elem.id) i = index;
+      if (id == elem.id) i = index;
     });
+    console.log(solutions[i], i);
+    start = new Date() - solutions[i].timeOfSolution;
+    timerId = launchTimer(start);
+
+    renderSavedSolution(solutions[i].size, solutions[i].solution);
+
+    /*const nTimer = new Date();
+    saveSolution(templates[id - 1], nTimer - start);
+    clearTimeout(timerId);
+    offTimer = true;
+    changeBtn(event.target, id);*/
+  }
+  if (event.target.classList[0] === "start-page-buttons__continue-last-game") {
+    const id = event.target.value;
+    changeBtn(event.target, id);
+    continueGame();
+    const solutions = JSON.parse(localStorage.savings);
+    let i = -1;
+    solutions.forEach((elem, index) => {
+      if (id == elem.id) i = index;
+    });
+    console.log(solutions[i], i);
     start = new Date() - solutions[i].timeOfSolution;
     timerId = launchTimer(start);
 

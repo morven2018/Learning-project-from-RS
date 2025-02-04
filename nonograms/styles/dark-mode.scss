@@ -1,0 +1,53 @@
+@use "sass:color";
+
+.dark-mode {
+  $background-color: #121212;
+  $color-lines: #952da8;
+  $text-color: #e0e0e0;
+  $checked-color: #ab47bc;
+  $hover-cells: #f3e5f5;
+  $empty-cells: rgba(255, 114, 7, 0.3);
+  $button-color: #333333;
+  $button-text: #be9dcc;
+  $cards-color: #2b0731;
+
+  .field__attempt {
+    &__top-attempt {
+      border-color: $color-lines;
+    }
+    &__left-attempt {
+      border-color: $color-lines;
+    }
+  }
+
+  .game-field__cell {
+    border-color: $color-lines;
+    .game-field__cell {
+      border-color: $color-lines;
+      &_unknown {
+        background-color: $empty-cells;
+        opacity: 0.7;
+
+        &:hover {
+          background-color: $hover-cells;
+        }
+      }
+
+      &_checked {
+        background-color: $checked-color;
+      }
+      &_crossed {
+        background-color: $hover-cells;
+        background-image: url(../dist/materials/icons/cross_ligth.png);
+      }
+
+      &_black {
+        background-color: $checked-color;
+      }
+
+      &_white {
+        background-color: $empty-cells;
+      }
+    }
+  }
+}

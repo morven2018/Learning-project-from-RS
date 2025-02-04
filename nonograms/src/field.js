@@ -58,14 +58,11 @@ export function renderField(temp, startBody = document.querySelector("body")) {
   const wdth = getSizeOfAttemptField(leftAttempts);
   blankSpace.setAttribute(
     "style",
-    `min-width: ${wdth * 20 + (wdth - 1) * 5}px`
+    `min-width: ${wdth * 20 + (wdth - 1) * 5 + 10}px`
   );
 
   renderAttempt(topAttempts, topAttempt, true);
   renderAttempt(leftAttempts, leftAttempt, false);
-
-  //console.log(2, topAttempts);
-  //console.log(3, leftAttempts);
 
   renderCellsField(cellValues, n, gameField);
 }
@@ -183,86 +180,86 @@ function renderHighlightBorder(i, j, cell, n) {
   if (i % 5 === 0 && i != 0) cell.setAttribute("style", "border-top: none");
 
   if (i % 5 === 4 || i === n - 1)
-    cell.setAttribute("style", "border-bottom: 2px solid black");
+    cell.setAttribute("style", "border-bottom: 3px solid #b01bca;");
 
   if (j % 5 === 4) {
-    cell.setAttribute("style", "border-right: 2px solid black");
+    cell.setAttribute("style", "border-right: 3px solid #b01bca;");
     if (i === n - 1) {
       cell.setAttribute(
         "style",
-        "border-bottom: 2px solid black;  border-right: 2px solid black"
+        "border-bottom: 3px solid #b01bca;;  border-right: 3px solid #b01bca;"
       );
     }
   }
 
   if (j === n - 1) {
-    cell.setAttribute("style", "border-right: 2px solid black");
+    cell.setAttribute("style", "border-right: 3px solid #b01bca;");
 
     if (i === n - 1) {
       cell.setAttribute(
         "style",
-        "border-bottom: 2px solid black;  border-right: 2px solid black"
+        "border-bottom: 3px solid #b01bca;;  border-right: 3px solid #b01bca;"
       );
     }
 
     if (i % 5 === 4 && i != n - 1)
       cell.setAttribute(
         "style",
-        "border-bottom: 2px solid black;  border-right: 2px solid black"
+        "border-bottom: 3px solid #b01bca;;  border-right: 3px solid #b01bca;"
       );
 
     if (i % 5 === 0 && i != 0)
       cell.setAttribute(
         "style",
-        "border-top: none;  border-right: 2px solid black"
+        "border-top: none;  border-right: 3px solid #b01bca;"
       );
   }
 
   if (j === 0) {
-    cell.setAttribute("style", "border-left: 2px solid black");
+    cell.setAttribute("style", "border-left: 3px solid #b01bca;");
 
     if (i % 5 === 0 && i !== 0)
       cell.setAttribute(
         "style",
-        "border-top: none; border-left: 2px solid black"
+        "border-top: none; border-left: 3px solid #b01bca;"
       );
     if (i % 5 === 4 && i != 0)
       cell.setAttribute(
         "style",
-        "border-bottom: 2px solid black; border-left: 2px solid black "
+        "border-bottom: 3px solid #b01bca;; border-left: 3px solid #b01bca; "
       );
     if (i === n - 1) {
       cell.setAttribute(
         "style",
-        "border-bottom: 2px solid black;  border-left: 2px solid black;"
+        "border-bottom: 3px solid #b01bca;;  border-left: 3px solid #b01bca;;"
       );
     }
   }
 
   if (i === 0) {
-    cell.setAttribute("style", "border-top: 2px solid black");
+    cell.setAttribute("style", "border-top: 3px solid #b01bca;");
 
     if (j === 0)
       cell.setAttribute(
         "style",
-        "border-top: 2px solid black; border-left: 2px solid black; "
+        "border-top: 3px solid #b01bca;; border-left: 3px solid #b01bca;; "
       );
 
     if (j === n - 1)
       cell.setAttribute(
         "style",
-        "border-top: 2px solid black; border-right: 2px solid black; "
+        "border-top: 3px solid #b01bca;; border-right: 3px solid #b01bca;; "
       );
 
     if (j !== 0 && j % 5 === 0)
       cell.setAttribute(
         "style",
-        "border-top: 2px solid black;  border-left: none"
+        "border-top: 3px solid #b01bca;;  border-left: none"
       );
     if (j !== n - 1 && j % 5 === 4)
       cell.setAttribute(
         "style",
-        "border-top: 2px solid black;  border-right: 2px solid black"
+        "border-top: 3px solid #b01bca;;  border-right: 3px solid #b01bca;"
       );
   }
 
@@ -270,13 +267,13 @@ function renderHighlightBorder(i, j, cell, n) {
     if (j % 5 === 0 && j != 0)
       cell.setAttribute(
         "style",
-        "border-left: none;  border-bottom: 2px solid black"
+        "border-left: none;  border-bottom: 3px solid #b01bca;"
       );
   }
   if (i % 5 === 4 && j % 5 === 4 && i !== n - 1 && j !== n - 1) {
     cell.setAttribute(
       "style",
-      "border-bottom: 2px solid black;  border-right: 2px solid black"
+      "border-bottom: 3px solid #b01bca;;  border-right: 3px solid #b01bca;"
     );
   }
   if (j % 5 === 0 && i % 5 === 0 && i !== 0 && j !== 0)
@@ -285,13 +282,13 @@ function renderHighlightBorder(i, j, cell, n) {
   if (j % 5 === 0 && i % 5 === 4 && i != n - 1 && j != 0)
     cell.setAttribute(
       "style",
-      "border-left: none;  border-bottom: 2px solid black"
+      "border-left: none;  border-bottom: 3px solid #b01bca;"
     );
 
   if (j % 5 === 4 && i % 5 === 0 && i !== 0 && j !== n - 1)
     cell.setAttribute(
       "style",
-      "border-top: none; border-right: 2px solid black"
+      "border-top: none; border-right: 3px solid #b01bca;"
     );
 }
 
@@ -323,12 +320,12 @@ function renderAttempt(attempts, field, top = true) {
 
     attempt.setAttribute("style", sizeToRender);
     if (index === 0 && top)
-      attempt.setAttribute("style", "border-left: 2px solid black;");
+      attempt.setAttribute("style", "border-left: 3px solid #b01bca;;");
     if (index === 0 && !top)
-      attempt.setAttribute("style", "border-top: 2px solid black");
+      attempt.setAttribute("style", "border-top: 3px solid #b01bca;");
 
     if (top && index % 5 === 4) {
-      attempt.setAttribute("style", `border-right: 2px solid black;`);
+      attempt.setAttribute("style", `border-right: 3px solid #b01bca;;`);
     }
 
     if (top && index % 5 === 0 && index != 0) {
@@ -336,17 +333,17 @@ function renderAttempt(attempts, field, top = true) {
     }
 
     if (!top && index % 5 === 0 && index != 0) {
-      attempt.setAttribute("style", `border-top: none; padding-top: 4px;`);
+      attempt.setAttribute("style", `border-top: none; padding-top: 3px;`);
     }
 
     if (top && index + 1 === attempts.length)
-      attempt.setAttribute("style", `border-right: 2px solid black;`);
+      attempt.setAttribute("style", `border-right: 3px solid #b01bca;;`);
 
     if (!top && index % 5 === 4) {
-      attempt.setAttribute("style", `border-bottom: 2px solid black;`);
+      attempt.setAttribute("style", `border-bottom: 3px solid #b01bca;;`);
     }
     if (index + 1 === attempts.length && !top)
-      attempt.setAttribute("style", " border-bottom: 2px solid black;");
+      attempt.setAttribute("style", " border-bottom: 3px solid #b01bca;;");
 
     if (!!element.length)
       element.forEach((item) => {

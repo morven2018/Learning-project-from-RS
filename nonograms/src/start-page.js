@@ -11,6 +11,24 @@ export function renderStartPage(templates) {
   let keys = Object.keys(localStorage);
   let level = keys.includes("level") ? localStorage.getItem("level") : "Easy";
 
+  const ctrlBth = document.createElement("div");
+  parentElement.append(ctrlBth);
+  ctrlBth.classList.add("control-buttons-list");
+
+  let ldMode = localStorage.mode ? localStorage.mode : "light";
+
+  parentElement.classList.add(`${ldMode}-mode`);
+
+  const modeElem = document.createElement("div");
+  modeElem.classList.add(`${ldMode}-mode-btn`);
+  ctrlBth.append(modeElem);
+
+  let sounds = localStorage.sound ? localStorage.sound : "on";
+
+  const soundMode = document.createElement("div");
+  soundMode.className = `sound-mode-${sounds}-${ldMode}-btn`;
+  ctrlBth.append(soundMode);
+
   const header = document.createElement("h1");
   header.className = "game-header";
   header.textContent = "Nonograms";
@@ -101,7 +119,7 @@ function renderCard(parentElement, elementInfo) {
 
   const cardPreview = document.createElement("div");
   cardPreview.className = "card__preview";
-  cardName.append(cardPreview);
+  cardContent.append(cardPreview);
 
   const cardInfo = document.createElement("div");
   cardInfo.className = "card__info";
