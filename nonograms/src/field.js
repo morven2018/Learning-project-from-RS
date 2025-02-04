@@ -152,16 +152,19 @@ export function renderSolution(temp) {
 
 export function renderSavedSolution(n, solution) {
   const cells = document.querySelectorAll(".game-field__cell");
-  solution.forEach((line, i) =>
+  //console.log(cells, solution);
+  solution.forEach((line, i) => {
+    //console.log(line);
     line.forEach((elem, j) => {
-      if (elem === -1)
+      cells[i * n + j].classList.remove("game-field__cell_unknown");
+      if (elem === "-1")
         cells[i * n + j].classList.add("game-field__cell_unknown");
-      if (elem === 0)
+      if (elem === "0")
         cells[i * n + j].classList.add("game-field__cell_crossed");
-      if (elem === 1)
+      if (elem === "1")
         cells[i * n + j].classList.add("game-field__cell_checked");
-    })
-  );
+    });
+  });
 }
 
 export function reRenderField(temp) {
