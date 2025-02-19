@@ -1,9 +1,12 @@
-const path = require('path');
-const { merge } = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const DotenvWebpackPlugin = require('dotenv-webpack');
-const EslingPlugin = require('eslint-webpack-plugin');
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+import { path } from 'path';
+import { merge } from 'webpack-merge';
+import { HtmlWebpackPlugin } from 'html-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import { DotenvWebpackPlugin } from 'dotenv-webpack';
+import { EslingPlugin } from 'eslint-webpack-plugin';
 
 const baseConfig = {
     entry: path.resolve(__dirname, './src/index'),
