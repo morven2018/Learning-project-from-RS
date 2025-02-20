@@ -8,6 +8,35 @@ type optionsType = {
     pageSize?: number;
     page?: number;
 };
+/*
+type dataSourcesType = {
+    status: 'ok' | 'error';
+    sources: Array<sourcesType>;
+};
+type sourcesType = {
+    id: string;
+    name: string;
+    description: string;
+    url: string;
+    category: string;
+    language: string;
+    country: string;
+};*/
+
+type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
+type articleType = {
+    source: {
+        id: string;
+        name: string;
+    };
+    author: string;
+    title: string;
+    description: string;
+    url: string;
+    urlToImage: string;
+    publishedAt: string;
+    content: string;
+};
 
 /*interface ILoader {
     getResp: ( { endpoint: string; options: optionsType | null }, ): any;
@@ -15,6 +44,12 @@ type optionsType = {
 
     //get ok(): bool;
 }*/
+
+type emptyType = '';
+
+type getRespDataType = dataType | emptyType;
+
+// type getRespType = ({ endpoint: string; options?: any }, callback: callbackType ) => void;
 
 class Loader {
     private baseLink: string | undefined;
@@ -26,15 +61,15 @@ class Loader {
     }
 
     getResp(
-        { endpoint, options = {} },
-        callback = (data: any) => {
+        { endpoint, options = {} }: { endpoint: string; options?: optionsType },
+        callback: (data: getRespDataType) => void = () => {
             console.error('No callback for GET response');
         }
-    ) {
+    ): void {
         this.load('GET', endpoint, callback, options);
     }
 
-    errorHandler(res: responseType) {
+    errorHandler(res: Response) {
         if (!res.ok) {
             if (res.status === 401 || res.status === 404)
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
@@ -55,7 +90,7 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load(method: any, endpoint: string, callback: any, options = {}) {
+    load(method: methodType, endpoint: string, callback: any, options = {}) {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())
