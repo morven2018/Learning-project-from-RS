@@ -1,7 +1,36 @@
 import AppLoader from './appLoader';
 
+type dataSourcesType = {
+    status: 'ok' | 'error';
+    sources: Array<sourcesType>;
+};
+type sourcesType = {
+    id: string;
+    name: string;
+    description: string;
+    url: string;
+    category: string;
+    language: string;
+    country: string;
+};
+
+type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
+type articleType = {
+    source: {
+        id: string;
+        name: string;
+    };
+    author: string;
+    title: string;
+    description: string;
+    url: string;
+    urlToImage: string;
+    publishedAt: string;
+    content: string;
+};
+
 class AppController extends AppLoader {
-    getSources(callback: any) {
+    getSources(callback: (data: dataSourcesType) => void) {
         super.getResp(
             {
                 endpoint: 'sources',
@@ -10,13 +39,13 @@ class AppController extends AppLoader {
         );
     }
 
-    getNews(e: MouseEvent, callback: any) {
+    getNews(e: MouseEvent, callback: (data: dataType) => void) {
         let target = e.target! as HTMLElement;
         const newsContainer = e.currentTarget! as HTMLElement;
 
         while (target !== newsContainer) {
             if (target.classList.contains('source__item')) {
-                const sourceId = target.getAttribute('data-source-id');
+                const sourceId = target.getAttribute('data-source-id')!;
                 if (newsContainer.getAttribute('data-source') !== sourceId) {
                     newsContainer.setAttribute('data-source', sourceId);
                     super.getResp(
