@@ -11,8 +11,8 @@ class AppController extends AppLoader {
     }
 
     getNews(e: MouseEvent, callback: any) {
-        let target = e.target;
-        const newsContainer = e.currentTarget;
+        let target = e.target! as HTMLElement;
+        const newsContainer = e.currentTarget! as HTMLElement;
 
         while (target !== newsContainer) {
             if (target.classList.contains('source__item')) {
@@ -31,7 +31,7 @@ class AppController extends AppLoader {
                 }
                 return;
             }
-            target = target.parentNode;
+            target = target.parentNode as HTMLElement;
         }
     }
 }
