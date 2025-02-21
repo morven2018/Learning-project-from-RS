@@ -14,6 +14,10 @@ type optionsType =
           [key: string]: string | number | undefined;
           sources: string;
       }
+    | {
+          [key: string]: string | number | undefined;
+          apiKey: string;
+      }
     | Record<string, never>;
 type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 /*
@@ -65,7 +69,7 @@ class Loader {
     private baseLink: string | undefined;
     private options: optionsType;
 
-    constructor(baseLink: string | undefined, options: optionsType) {
+    constructor(baseLink: string, options: optionsType) {
         this.baseLink = baseLink;
         this.options = options;
     }
