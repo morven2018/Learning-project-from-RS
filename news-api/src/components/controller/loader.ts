@@ -20,7 +20,7 @@ type optionsType =
       }
     | Record<string, never>;
 type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
-/*
+
 type dataSourcesType = {
     status: 'ok' | 'error';
     sources: Array<sourcesType>;
@@ -33,7 +33,7 @@ type sourcesType = {
     category: string;
     language: string;
     country: string;
-};*/
+};
 
 type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
 type articleType = {
@@ -50,16 +50,10 @@ type articleType = {
     content: string;
 };
 
-/*interface ILoader {
-    getResp: ( { endpoint: string; options: optionsType | null }, ): any;
-    //status: 'ok' | 'error';
-
-    //get ok(): bool;
-}*/
 
 type emptyType = '';
 
-type getRespDataType = dataType | emptyType;
+type getRespDataType = dataType | emptyType | dataSourcesType;
 
 type funcType = (data: getRespDataType) => void;
 

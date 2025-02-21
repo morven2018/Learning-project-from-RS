@@ -29,7 +29,8 @@ type articleType = {
     publishedAt: string;
     content: string;
 };
-
+type emptyType = '';
+type getRespDataType = dataType | emptyType | dataSourcesType;
 class App {
     private controller;
     private view;
@@ -41,9 +42,13 @@ class App {
     start() {
         document.querySelector('.sources')!.addEventListener('click', (e: Event) => {
             const mEvent = e as MouseEvent;
-            this.controller.getNews(mEvent, (data: dataType): void => this.view.drawNews(data));
+            this.controller.getNews(mEvent, (data: getRespDataType): void => {
+                if (typeof data !== 'string' && 'articles' in data) this.view.drawNews(data as dataType);
+            });
         });
-        this.controller.getSources((data: dataSourcesType): void => this.view.drawSources(data));
+        this.controller.getSources((data: getRespDataType): void => {
+            if (typeof data !== 'string' && 'sources' in data) this.view.drawSources(data);
+        });
     }
 }
 

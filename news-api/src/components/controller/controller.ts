@@ -1,5 +1,5 @@
 import AppLoader from './appLoader';
-/*
+
 type dataSourcesType = {
     status: 'ok' | 'error';
     sources: Array<sourcesType>;
@@ -12,7 +12,7 @@ type sourcesType = {
     category: string;
     language: string;
     country: string;
-};*/
+};
 
 type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
 type articleType = {
@@ -31,7 +31,7 @@ type articleType = {
 
 type emptyType = '';
 
-type getRespDataType = dataType | emptyType;
+type getRespDataType = dataType | emptyType | dataSourcesType;
 
 class AppController extends AppLoader {
     getSources(callback: (data: getRespDataType) => void) {
