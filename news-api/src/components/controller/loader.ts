@@ -1,13 +1,21 @@
-type categoryType = 'business' | 'entertainment' | 'general' | 'health' | 'science' | 'sports' | 'technology';
-type optionsType = {
-    apiKey?: string;
-    country?: string;
-    category?: categoryType;
-    sources?: string;
-    q?: string;
-    pageSize?: number;
-    page?: number;
-};
+// type categoryType = 'business' | 'entertainment' | 'general' | 'health' | 'science' | 'sports' | 'technology';
+type optionsType =
+    | {
+          [key: string]: string | number | undefined;
+          apiKey: string;
+          // country: string;
+          // category: categoryType;
+          sources: string;
+          // q: string;
+          // pageSize: number;
+          // page: number;
+      }
+    | {
+          [key: string]: string | number | undefined;
+          sources: string;
+      }
+    | Record<string, never>;
+type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 /*
 type dataSourcesType = {
     status: 'ok' | 'error';
@@ -49,6 +57,8 @@ type emptyType = '';
 
 type getRespDataType = dataType | emptyType;
 
+type funcType = (data: getRespDataType) => void;
+
 // type getRespType = ({ endpoint: string; options?: any }, callback: callbackType ) => void;
 
 class Loader {
@@ -62,7 +72,7 @@ class Loader {
 
     getResp(
         { endpoint, options = {} }: { endpoint: string; options?: optionsType },
-        callback: (data: getRespDataType) => void = () => {
+        callback: funcType = () => {
             console.error('No callback for GET response');
         }
     ): void {
@@ -79,7 +89,7 @@ class Loader {
         return res;
     }
 
-    makeUrl(options: any, endpoint: string): string {
+    makeUrl(options: optionsType, endpoint: string): string {
         const urlOptions = { ...this.options, ...options };
         let url = `${this.baseLink}${endpoint}?`;
 
@@ -90,7 +100,7 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load(method: methodType, endpoint: string, callback: any, options = {}) {
+    load(method: methodType, endpoint: string, callback: funcType, options = {}) {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())

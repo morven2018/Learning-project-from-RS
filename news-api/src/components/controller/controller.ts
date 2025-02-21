@@ -1,5 +1,5 @@
 import AppLoader from './appLoader';
-
+/*
 type dataSourcesType = {
     status: 'ok' | 'error';
     sources: Array<sourcesType>;
@@ -12,7 +12,7 @@ type sourcesType = {
     category: string;
     language: string;
     country: string;
-};
+};*/
 
 type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
 type articleType = {
@@ -29,8 +29,12 @@ type articleType = {
     content: string;
 };
 
+type emptyType = '';
+
+type getRespDataType = dataType | emptyType;
+
 class AppController extends AppLoader {
-    getSources(callback: (data: dataSourcesType) => void) {
+    getSources(callback: (data: getRespDataType) => void) {
         super.getResp(
             {
                 endpoint: 'sources',
@@ -39,7 +43,7 @@ class AppController extends AppLoader {
         );
     }
 
-    getNews(e: MouseEvent, callback: (data: dataType) => void) {
+    getNews(e: MouseEvent, callback: (data: getRespDataType) => void) {
         let target = e.target! as HTMLElement;
         const newsContainer = e.currentTarget! as HTMLElement;
 
