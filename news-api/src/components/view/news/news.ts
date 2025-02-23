@@ -15,7 +15,7 @@ type articleType = {
 };
 
 class News {
-    draw(data: articleType[]) {
+    draw(data: articleType[]): void {
         const news: articleType[] =
             data.length >= 10 ? data.filter((_item: articleType, idx: number) => idx < 10) : data;
 

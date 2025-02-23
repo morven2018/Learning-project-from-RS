@@ -50,7 +50,6 @@ type articleType = {
     content: string;
 };
 
-
 type emptyType = '';
 
 type getRespDataType = dataType | emptyType | dataSourcesType;
@@ -77,7 +76,7 @@ class Loader {
         this.load('GET', endpoint, callback, options);
     }
 
-    errorHandler(res: Response) {
+    errorHandler(res: Response): Response {
         if (!res.ok) {
             if (res.status === 401 || res.status === 404)
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
@@ -98,7 +97,7 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load(method: methodType, endpoint: string, callback: funcType, options = {}) {
+    load(method: methodType, endpoint: string, callback: funcType, options = {}): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())

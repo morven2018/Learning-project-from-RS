@@ -34,7 +34,7 @@ type emptyType = '';
 type getRespDataType = dataType | emptyType | dataSourcesType;
 
 class AppController extends AppLoader {
-    getSources(callback: (data: getRespDataType) => void) {
+    getSources(callback: (data: getRespDataType) => void): void {
         super.getResp(
             {
                 endpoint: 'sources',
@@ -43,7 +43,7 @@ class AppController extends AppLoader {
         );
     }
 
-    getNews(e: MouseEvent, callback: (data: getRespDataType) => void) {
+    getNews(e: MouseEvent, callback: (data: getRespDataType) => void): void {
         let target = e.target! as HTMLElement;
         const newsContainer = e.currentTarget! as HTMLElement;
 

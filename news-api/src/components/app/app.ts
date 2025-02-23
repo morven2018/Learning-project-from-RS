@@ -39,7 +39,7 @@ class App {
         this.view = new AppView();
     }
 
-    start() {
+    start(): void {
         document.querySelector('.sources')!.addEventListener('click', (e: Event) => {
             const mEvent = e as MouseEvent;
             this.controller.getNews(mEvent, (data: getRespDataType): void => {
