@@ -1,9 +1,26 @@
-// export interface <имя интерфейса> { ... }
+import { categoryType, languageType, countryType, statusType } from './literals';
+
+export interface RequestOptions {
+    [key: string]: string | number | undefined;
+    apiKey?: string;
+    category?: categoryType;
+    language?: languageType;
+    country?: countryType;
+    sources?: string;
+}
+
+export interface Response {
+    status: statusType;
+    sources: Array<sourcesType>;
+    code?: number;
+    message?: string;
+}
 
 export type dataSourcesType = {
-    status: 'ok' | 'error';
+    status: statusType;
     sources: Array<sourcesType>;
 };
+
 export type sourcesType = {
     id: string;
     name: string;
@@ -14,7 +31,14 @@ export type sourcesType = {
     country: string;
 };
 
-export type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
+export type groupedCategoryType = { [key: string]: sourcesType[] };
+
+export interface Articles {
+    articles: Array<articleType>;
+    status: 'ok' | 'error';
+    totalResults: number;
+}
+
 export type articleType = {
     source: {
         id: string;
@@ -29,9 +53,8 @@ export type articleType = {
     content: string;
 };
 export type emptyType = '';
-export type getRespDataType = dataType | emptyType | dataSourcesType;
+export type getDataType = Articles | emptyType | Response;
 
-type categoryType = 'business' | 'entertainment' | 'general' | 'health' | 'science' | 'sports' | 'technology';
 export type optionsType =
     | {
           [key: string]: string | number | undefined;
@@ -53,8 +76,8 @@ export type optionsType =
           apiKey: string;
       }
     | Record<string, never>;
-export type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export type funcType = (data: getRespDataType) => void;
+export type funcType = (data: getDataType) => void;
+export type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 // type getRespType = ({ endpoint: string; options?: any }, callback: callbackType ) => void;

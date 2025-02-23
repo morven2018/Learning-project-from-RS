@@ -1,5 +1,7 @@
-import { optionsType, methodType, funcType } from '../../types';
-class Loader {
+import { optionsType, methodType, funcType, RequestOptions } from '../../types';
+import { ILoader } from '../../types/classes';
+
+class Loader implements ILoader {
     private baseLink: string | undefined;
     private options: optionsType;
 
@@ -9,7 +11,7 @@ class Loader {
     }
 
     getResp(
-        { endpoint, options = {} }: { endpoint: string; options?: optionsType },
+        { endpoint, options = {} }: { endpoint: string; options?: RequestOptions },
         callback: funcType = () => {
             console.error('No callback for GET response');
         }
@@ -27,10 +29,9 @@ class Loader {
         return res;
     }
 
-    makeUrl(options: optionsType, endpoint: string): string {
+    makeUrl(options: RequestOptions, endpoint: string): string {
         const urlOptions = { ...this.options, ...options };
         let url = `${this.baseLink}${endpoint}?`;
-
         Object.keys(urlOptions).forEach((key) => {
             url += `${key}=${urlOptions[key]}&`;
         });
@@ -38,7 +39,7 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load(method: methodType, endpoint: string, callback: funcType, options = {}): void {
+    load(method: methodType, endpoint: string, callback: funcType, options: RequestOptions = {}): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())
