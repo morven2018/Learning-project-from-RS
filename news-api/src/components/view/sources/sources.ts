@@ -12,7 +12,7 @@ type sourcesType = {
 };
 
 class Sources {
-    draw(data: sourcesType[]) {
+    draw(data: sourcesType[]): void {
         const fragment = document.createDocumentFragment();
         const sourceItemTemp = document.querySelector('#sourceItemTemp')! as HTMLTemplateElement;
 
