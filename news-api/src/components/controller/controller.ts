@@ -1,37 +1,5 @@
 import AppLoader from './appLoader';
-
-type dataSourcesType = {
-    status: 'ok' | 'error';
-    sources: Array<sourcesType>;
-};
-type sourcesType = {
-    id: string;
-    name: string;
-    description: string;
-    url: string;
-    category: string;
-    language: string;
-    country: string;
-};
-
-type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
-type articleType = {
-    source: {
-        id: string;
-        name: string;
-    };
-    author: string;
-    title: string;
-    description: string;
-    url: string;
-    urlToImage: string;
-    publishedAt: string;
-    content: string;
-};
-
-type emptyType = '';
-
-type getRespDataType = dataType | emptyType | dataSourcesType;
+import { getRespDataType } from '../../types';
 
 class AppController extends AppLoader {
     getSources(callback: (data: getRespDataType) => void): void {

@@ -1,18 +1,5 @@
 import './news.css';
-
-type articleType = {
-    source: {
-        id: string;
-        name: string;
-    };
-    author: string;
-    title: string;
-    description: string;
-    url: string;
-    urlToImage: string;
-    publishedAt: string;
-    content: string;
-};
+import { articleType } from '../../../types';
 
 class News {
     draw(data: articleType[]): void {

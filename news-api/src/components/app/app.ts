@@ -1,36 +1,7 @@
 import AppController from '../controller/controller';
 import { AppView } from '../view/appView';
+import { getRespDataType, dataType } from '../../types';
 
-type dataSourcesType = {
-    status: 'ok' | 'error';
-    sources: Array<sourcesType>;
-};
-type sourcesType = {
-    id: string;
-    name: string;
-    description: string;
-    url: string;
-    category: string;
-    language: string;
-    country: string;
-};
-
-type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
-type articleType = {
-    source: {
-        id: string;
-        name: string;
-    };
-    author: string;
-    title: string;
-    description: string;
-    url: string;
-    urlToImage: string;
-    publishedAt: string;
-    content: string;
-};
-type emptyType = '';
-type getRespDataType = dataType | emptyType | dataSourcesType;
 class App {
     private controller;
     private view;
