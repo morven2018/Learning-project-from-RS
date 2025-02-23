@@ -33,3 +33,9 @@ footer .copyright a:hover {
 footer .copyright:before {
     content: '©';
 }
+
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

@@ -1,31 +1,150 @@
 import './sources.css';
+import { groupedCategoryType, sourcesType } from '../../../types';
+import { categoryType } from '../../../types/literals';
 
-//type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
-type sourcesType = {
-    id: string;
-    name: string;
-    description: string;
-    url: string;
-    category: string;
-    language: string;
-    country: string;
-};
-
+//добавить кнопку с сортировкой
 class Sources {
+    private currIndex: number = 0;
+
     draw(data: sourcesType[]): void {
         const fragment = document.createDocumentFragment();
         const sourceItemTemp = document.querySelector('#sourceItemTemp')! as HTMLTemplateElement;
 
-        data.forEach((item) => {
-            const sourceClone = sourceItemTemp.content.cloneNode(true) as HTMLElement;
+        const sourcesWrapper = document.querySelector('.sources')!;
 
-            sourceClone.querySelector('.source__item-name')!.textContent = item.name;
-            sourceClone.querySelector('.source__item')!.setAttribute('data-source-id', item.id);
+        const groupedSources = this.groupByCategory(data);
 
-            fragment.append(sourceClone);
+        Object.keys(groupedSources).forEach((category: categoryType) => {
+            const container = document.createElement('div');
+            container.className = 'source-category';
+
+            const header = document.createElement('div');
+            header.textContent = category.toUpperCase();
+            header.className = 'source-category__header';
+
+            container.addEventListener('click', () => {
+                const closedElement = document.querySelector('.open');
+                closedElement?.classList.toggle('open');
+                container.classList.toggle('open');
+            });
+
+            const content = document.createElement('div');
+            content.className = 'source-category__content';
+            const wrapperCarousel = document.createElement('div');
+            wrapperCarousel.className = 'carousel';
+            if (category === 'general') {
+                const carousel = document.createElement('div');
+                carousel.className = 'carousel_content';
+                wrapperCarousel.append(carousel);
+
+                content.append(wrapperCarousel);
+                this.addElements(carousel, groupedSources, sourceItemTemp, category);
+
+                const btns = document.createElement('div');
+                content.append(btns);
+                btns.className = 'button-list';
+
+                const leftBth = document.createElement('button');
+                leftBth.classList.add('left-button', 'inactive');
+                leftBth.textContent = '<';
+                btns.append(leftBth);
+
+                const rightBth = document.createElement('button');
+                rightBth.classList.add('right-button');
+                rightBth.textContent = '>';
+                btns.append(rightBth);
+
+                this.setupCarouselNavigation(carousel, leftBth, rightBth, groupedSources[category]);
+            } else this.addElements(content, groupedSources, sourceItemTemp, category);
+
+            container.append(header, content);
+            fragment.append(container);
         });
 
-        document.querySelector('.sources')!.append(fragment);
+        sourcesWrapper.append(fragment);
+    }
+
+    private addElements(
+        parentElement: HTMLElement,
+        groupedSources: groupedCategoryType,
+        sourceItemTemp: HTMLTemplateElement,
+        category: categoryType
+    ): void {
+        parentElement.innerHTML = '';
+        groupedSources[category].forEach((item, index) => {
+            if (category === 'general') {
+                if (this.currIndex * 15 <= index && index < (this.currIndex + 1) * 15) {
+                    const sourceClone = sourceItemTemp.content.cloneNode(true) as HTMLElement;
+
+                    sourceClone.querySelector('.source__item-name')!.textContent = item.name;
+                    sourceClone.querySelector('.source__item')!.setAttribute('data-source-id', item.id);
+                    sourceClone.querySelector('.source__item')!.setAttribute('data-source-category', item.category);
+                    parentElement.append(sourceClone);
+                }
+            } else {
+                const sourceClone = sourceItemTemp.content.cloneNode(true) as HTMLElement;
+
+                sourceClone.querySelector('.source__item-name')!.textContent = item.name;
+                sourceClone.querySelector('.source__item')!.setAttribute('data-source-id', item.id);
+                sourceClone.querySelector('.source__item')!.setAttribute('data-source-category', item.category);
+                parentElement.append(sourceClone);
+            }
+        });
+    }
+
+    private groupByCategory(data: sourcesType[]): groupedCategoryType {
+        const res = data.reduce((acc: groupedCategoryType, item: sourcesType): groupedCategoryType => {
+            if (!acc[item.category]) {
+                acc[item.category] = [];
+            }
+            acc[item.category].push(item);
+            return acc;
+        }, {} as groupedCategoryType);
+        return res;
+    }
+
+    private setupCarouselNavigation(
+        carousel: HTMLElement,
+        leftButton: HTMLElement,
+        rightButton: HTMLElement,
+        items: sourcesType[]
+    ): void {
+        const updateButtons = () => {
+            leftButton.classList.toggle('inactive', this.currIndex === 0);
+            rightButton.classList.toggle('inactive', this.currIndex >= Math.ceil(items.length / 15) - 1);
+        };
+
+        const updateCarousel = () => {
+            carousel.innerHTML = '';
+            items.slice(this.currIndex * 15, (this.currIndex + 1) * 15).forEach((item) => {
+                const srcClone = document.querySelector('#sourceItemTemp')! as HTMLTemplateElement;
+                const sourceClone = srcClone.content.cloneNode(true) as HTMLElement;
+
+                sourceClone.querySelector('.source__item-name')!.textContent = item.name;
+                sourceClone.querySelector('.source__item')!.setAttribute('data-source-id', item.id);
+                sourceClone.querySelector('.source__item')!.setAttribute('data-source-category', item.category);
+                carousel.append(sourceClone);
+            });
+        };
+
+        leftButton.addEventListener('click', () => {
+            if (this.currIndex > 0) {
+                this.currIndex -= 1;
+                updateButtons();
+                updateCarousel();
+            }
+        });
+
+        rightButton.addEventListener('click', () => {
+            if (this.currIndex < Math.ceil(items.length / 15) - 1) {
+                this.currIndex += 1;
+                updateButtons();
+                updateCarousel();
+            }
+        });
+
+        updateButtons();
+        updateCarousel();
     }
 }
 
