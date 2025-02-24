@@ -1,0 +1,32 @@
+.game-page-btn {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-page {
+  height: 404px;
+}
+
+.game-header {
+  text-align: right;
+  margin-right: 0;
+}
+
+.answer-block {
+  text-align: left;
+  max-width: 160px;
+  margin: 0 auto;
+  font-weight: 700;
+  display: flex;
+  align-items: flex-end;
+}
+
+.answer-block__output {
+  width: 100px;
+  display: inline-block;
+  border: none;
+  background-color: var(--input-color);
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 500;
+}

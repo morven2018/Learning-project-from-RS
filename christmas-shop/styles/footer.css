@@ -1,0 +1,122 @@
+footer {
+    margin: 0 auto !important;
+    max-width: 1440px !important;
+}
+
+footer>div {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 60px 82px;
+}
+
+.cards_contacts {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 12px !important;
+}
+
+.cards_contacts_item {
+    border-radius: 20px;
+    background-color: var(--overlay-color);
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 20px !important;
+    gap: 12px !important;
+}
+
+.cards_contacts a {
+    color: var(--dark-color);
+    text-decoration: none;
+}
+
+
+
+
+.cards_contacts .item h3,
+.cards_contacts .item .action_large {
+    margin: 0 !important;
+
+}
+
+.cards_contacts .item img {
+    width: 80px !important;
+    height: 80px !important;
+}
+
+.media_and_copy {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.media {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 12px !important;
+}
+
+.media_item {
+    display: block !important;
+    text-decoration: none !important;
+}
+
+.media a {
+    color: var(--dark-color);
+    width: 40px !important;
+    height: 44px !important;
+    background: none !important;
+}
+
+.media_and_copy p {
+    margin-bottom: 0;
+}
+
+
+
+.media_item path {
+    stroke: var(--dark-color);
+}
+
+
+
+@media screen and (max-width: 1190px) {
+    .cards_contacts {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    footer>div {
+        padding: 60px 68px;
+    }
+
+
+
+}
+
+@media screen and (max-width: 800px) {
+    footer>div {
+        padding: 60px 8px;
+    }
+
+
+}
+
+@media (hover:hover) {
+
+    .cards_contacts_item:hover .action_large,
+    .cards_contacts_item:hover h3 {
+        color: var(--primary-color);
+        transition: 1s;
+    }
+
+    .media_and_copy .caption:hover {
+        color: var(--primary-color);
+    }
+
+    .media .item:hover path {
+        stroke: var(--primary-color);
+        transition: all 0.3s ease;
+    }
+}
