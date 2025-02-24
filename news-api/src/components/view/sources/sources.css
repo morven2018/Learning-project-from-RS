@@ -3,6 +3,7 @@
 }
 
 .open .source-category__content {
+    margin-top: 10px;
     overflow: hidden;
     max-height: 400px;
     padding: 10px;
@@ -91,4 +92,46 @@
 .right-button {
     padding: 5px 10px;
     cursor: pointer;
+}
+.hidden-sources {
+    display: none;
+}
+
+.sources.buttons {
+    flex-direction: row;
+}
+
+@media (max-width: 650px) {
+    .hidden-sources {
+        display: block;
+    }
+    .hidden {
+        display: none;
+    }
+}
+.button-hide {
+    background-color: transparent;
+    color: #18aec8;
+    border-color: #18aec8;
+    margin-top: 10px;
+    border-radius: 25%;
+    font-size: 16px;
+    padding: 5px 10px;
+}
+
+.left-button,
+.right-button {
+    background-color: transparent;
+    color: #2592eb;
+    border-color: #2592eb;
+    margin: 10px;
+    border-radius: 25%;
+    font-size: 16px;
+}
+
+.left-button:hover,
+.right-button:hover,
+.button-hide:hover {
+    border-color: #3fcc59;
+    color: #69db7e;
 }

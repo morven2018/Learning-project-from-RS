@@ -2,15 +2,28 @@ import './sources.css';
 import { groupedCategoryType, sourcesType } from '../../../types';
 import { categoryType } from '../../../types/literals';
 
-//добавить кнопку с сортировкой
 class Sources {
     private currIndex: number = 0;
 
     draw(data: sourcesType[]): void {
         const fragment = document.createDocumentFragment();
+
         const sourceItemTemp = document.querySelector('#sourceItemTemp')! as HTMLTemplateElement;
 
+        const menu = document.createElement('div');
+        menu.className = 'hidden-sources';
+
+        const btnMenu = document.createElement('button');
+        btnMenu.className = 'button-hide';
+        btnMenu.classList.add('closed');
+        btnMenu.textContent = '<';
+
         const sourcesWrapper = document.querySelector('.sources')!;
+        sourcesWrapper.append(menu);
+        menu.append(btnMenu);
+
+        const wrapper = document.createElement('div');
+        sourcesWrapper.append(wrapper);
 
         const groupedSources = this.groupByCategory(data);
 
@@ -58,10 +71,19 @@ class Sources {
             } else this.addElements(content, groupedSources, sourceItemTemp, category);
 
             container.append(header, content);
-            fragment.append(container);
+            wrapper.append(container);
+            fragment.append(wrapper);
         });
 
         sourcesWrapper.append(fragment);
+        btnMenu.addEventListener('click', () => {
+            if (!btnMenu.classList.contains('closed')) btnMenu.textContent = '<';
+            else btnMenu.textContent = '>';
+
+            btnMenu.classList.toggle('closed');
+            const menuElements = document.querySelectorAll('.source-category');
+            menuElements.forEach((element) => element.classList.toggle('hidden'));
+        });
     }
 
     private addElements(
@@ -145,6 +167,20 @@ class Sources {
 
         updateButtons();
         updateCarousel();
+    }
+
+    private setupCloseMenuOnItemClick(menu: HTMLElement): void {
+        menu.addEventListener('click', (event) => {
+            console.log('fwersf');
+            const target = event.target as HTMLElement;
+            if (target.classList.contains('source__item-name')) {
+                const menuElements = document.querySelectorAll('.source-category');
+                menuElements.forEach((element) => element.classList.add('hidden'));
+                menu.classList.add('closed');
+                const bth = document.querySelector('.button-hide')!;
+                bth.textContent = '>';
+            }
+        });
     }
 }
 
