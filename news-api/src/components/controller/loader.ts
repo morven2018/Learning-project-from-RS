@@ -1,95 +1,36 @@
-// type categoryType = 'business' | 'entertainment' | 'general' | 'health' | 'science' | 'sports' | 'technology';
-type optionsType =
-    | {
-          [key: string]: string | number | undefined;
-          apiKey: string;
-          // country: string;
-          // category: categoryType;
-          sources: string;
-          // q: string;
-          // pageSize: number;
-          // page: number;
-      }
-    | {
-          [key: string]: string | number | undefined;
-          sources: string;
-      }
-    | {
-          [key: string]: string | number | undefined;
-          apiKey: string;
-      }
-    | Record<string, never>;
-type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
+import { OptionsType, MethodType, FuncType, RequestOptions, IResponse, GetDataType } from '../../types';
+import { ILoader } from '../../types/classes';
 
-type dataSourcesType = {
-    status: 'ok' | 'error';
-    sources: Array<sourcesType>;
-};
-type sourcesType = {
-    id: string;
-    name: string;
-    description: string;
-    url: string;
-    category: string;
-    language: string;
-    country: string;
-};
-
-type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
-type articleType = {
-    source: {
-        id: string;
-        name: string;
-    };
-    author: string;
-    title: string;
-    description: string;
-    url: string;
-    urlToImage: string;
-    publishedAt: string;
-    content: string;
-};
-
-type emptyType = '';
-
-type getRespDataType = dataType | emptyType | dataSourcesType;
-
-type funcType = (data: getRespDataType) => void;
-
-// type getRespType = ({ endpoint: string; options?: any }, callback: callbackType ) => void;
-
-class Loader {
+class Loader implements ILoader {
     private baseLink: string | undefined;
-    private options: optionsType;
+    private options: OptionsType;
 
-    constructor(baseLink: string, options: optionsType) {
+    constructor(baseLink: string, options: OptionsType) {
         this.baseLink = baseLink;
         this.options = options;
     }
 
     getResp(
-        { endpoint, options = {} }: { endpoint: string; options?: optionsType },
-        callback: funcType = () => {
+        { endpoint, options = {} }: { endpoint: string; options?: RequestOptions },
+        callback: FuncType = () => {
             console.error('No callback for GET response');
         }
     ): void {
         this.load('GET', endpoint, callback, options);
     }
 
-    errorHandler(res: Response): Response {
+    errorHandler(res: IResponse): IResponse {
         if (!res.ok) {
             if (res.status === 401 || res.status === 404)
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
             throw Error(res.statusText);
         }
-
         return res;
     }
 
-    makeUrl(options: optionsType, endpoint: string): string {
-        const urlOptions = { ...this.options, ...options };
+    makeUrl(options: RequestOptions, endpoint: string): string {
+        const urlOptions = { ...this.options, ...options } as RequestOptions;
         let url = `${this.baseLink}${endpoint}?`;
-
         Object.keys(urlOptions).forEach((key) => {
             url += `${key}=${urlOptions[key]}&`;
         });
@@ -97,12 +38,12 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load(method: methodType, endpoint: string, callback: funcType, options = {}): void {
+    load(method: MethodType, endpoint: string, callback: FuncType, options: RequestOptions = {}): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
-            .then((res) => res.json())
-            .then((data) => callback(data))
-            .catch((err) => console.error(err));
+            .then((res: IResponse): Promise<GetDataType> => res.json())
+            .then((data: Awaited<GetDataType>): void => callback(data))
+            .catch((err: Error): void => console.error(err));
     }
 }
 

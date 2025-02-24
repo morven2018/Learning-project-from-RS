@@ -1,40 +1,9 @@
 import AppLoader from './appLoader';
+import { FuncType } from '../../types';
+import { IAppController } from '../../types/classes';
 
-type dataSourcesType = {
-    status: 'ok' | 'error';
-    sources: Array<sourcesType>;
-};
-type sourcesType = {
-    id: string;
-    name: string;
-    description: string;
-    url: string;
-    category: string;
-    language: string;
-    country: string;
-};
-
-type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
-type articleType = {
-    source: {
-        id: string;
-        name: string;
-    };
-    author: string;
-    title: string;
-    description: string;
-    url: string;
-    urlToImage: string;
-    publishedAt: string;
-    content: string;
-};
-
-type emptyType = '';
-
-type getRespDataType = dataType | emptyType | dataSourcesType;
-
-class AppController extends AppLoader {
-    getSources(callback: (data: getRespDataType) => void): void {
+class AppController extends AppLoader implements IAppController {
+    getSources(callback: FuncType): void {
         super.getResp(
             {
                 endpoint: 'sources',
@@ -43,12 +12,21 @@ class AppController extends AppLoader {
         );
     }
 
-    getNews(e: MouseEvent, callback: (data: getRespDataType) => void): void {
+    getNews(e: MouseEvent, callback: FuncType): void {
         let target = e.target! as HTMLElement;
         const newsContainer = e.currentTarget! as HTMLElement;
 
         while (target !== newsContainer) {
             if (target.classList.contains('source__item')) {
+                const btnMenu = document.querySelector('.button-hide')!;
+
+                if (!btnMenu.classList.contains('closed')) btnMenu.textContent = '<';
+                else btnMenu.textContent = '>';
+
+                btnMenu.classList.toggle('closed');
+                const menuElements = document.querySelectorAll('.source-category');
+                menuElements.forEach((element): boolean => element.classList.toggle('hidden'));
+
                 const sourceId = target.getAttribute('data-source-id')!;
                 if (newsContainer.getAttribute('data-source') !== sourceId) {
                     newsContainer.setAttribute('data-source', sourceId);

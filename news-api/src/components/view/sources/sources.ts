@@ -1,31 +1,189 @@
 import './sources.css';
+import { GroupedType, SourcesType } from '../../../types';
+import { CategoryType } from '../../../types/literalsEnums';
+import { ISources } from '../../../types/classes';
 
-//type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
-type sourcesType = {
-    id: string;
-    name: string;
-    description: string;
-    url: string;
-    category: string;
-    language: string;
-    country: string;
-};
+class Sources implements ISources {
+    private currIndex: number = 0;
 
-class Sources {
-    draw(data: sourcesType[]): void {
+    draw(data: SourcesType[]): void {
         const fragment = document.createDocumentFragment();
+
         const sourceItemTemp = document.querySelector('#sourceItemTemp')! as HTMLTemplateElement;
 
-        data.forEach((item) => {
-            const sourceClone = sourceItemTemp.content.cloneNode(true) as HTMLElement;
+        const menu = document.createElement('div');
+        menu.className = 'hidden-sources';
+        // this.closeMenuOnItemClick(menu);
 
-            sourceClone.querySelector('.source__item-name')!.textContent = item.name;
-            sourceClone.querySelector('.source__item')!.setAttribute('data-source-id', item.id);
+        const btnMenu = document.createElement('button');
+        btnMenu.className = 'button-hide';
+        btnMenu.classList.add('closed');
+        btnMenu.textContent = '<';
 
-            fragment.append(sourceClone);
+        const sourcesWrapper = document.querySelector('.sources')!;
+        sourcesWrapper.append(menu);
+        menu.append(btnMenu);
+
+        const wrapper = document.createElement('div');
+        sourcesWrapper.append(wrapper);
+
+        const groupedSources = this.groupByCategory(data);
+
+        Object.keys(groupedSources).forEach((category: CategoryType): void => {
+            const container = document.createElement('div');
+            container.className = 'source-category';
+
+            const header = document.createElement('div');
+            header.textContent = category.toUpperCase();
+            header.className = 'source-category__header';
+
+            container.addEventListener('click', (): void => {
+                const closedElement = document.querySelector('.open');
+                closedElement?.classList.toggle('open');
+                container.classList.toggle('open');
+            });
+
+            const content = document.createElement('div');
+            content.className = 'source-category__content';
+
+            const wrapperCarousel = document.createElement('div');
+            wrapperCarousel.className = 'carousel';
+
+            if (category === 'general') {
+                const carousel = document.createElement('div');
+                carousel.className = 'carousel_content';
+                wrapperCarousel.append(carousel);
+
+                content.append(wrapperCarousel);
+                this.addElements(carousel, groupedSources, sourceItemTemp, category);
+
+                const btns = document.createElement('div');
+                content.append(btns);
+                btns.className = 'button-list';
+
+                const leftBth = document.createElement('button');
+                leftBth.classList.add('left-button', 'inactive');
+                leftBth.textContent = '<';
+                btns.append(leftBth);
+
+                const rightBth = document.createElement('button');
+                rightBth.classList.add('right-button');
+                rightBth.textContent = '>';
+                btns.append(rightBth);
+
+                this.setupCarouselNavigation(carousel, leftBth, rightBth, groupedSources[category]);
+            } else this.addElements(content, groupedSources, sourceItemTemp, category);
+
+            container.append(header, content);
+            wrapper.append(container);
+            fragment.append(wrapper);
         });
 
-        document.querySelector('.sources')!.append(fragment);
+        sourcesWrapper.append(fragment);
+        btnMenu.addEventListener('click', (): void => {
+            if (!btnMenu.classList.contains('closed')) btnMenu.textContent = '<';
+            else btnMenu.textContent = '>';
+
+            btnMenu.classList.toggle('closed');
+            const menuElements = document.querySelectorAll('.source-category');
+            menuElements.forEach((element): boolean => element.classList.toggle('hidden'));
+        });
+    }
+
+    private addElements(
+        parentElement: HTMLElement,
+        groupedSources: GroupedType<SourcesType>,
+        sourceItemTemp: HTMLTemplateElement,
+        category: CategoryType
+    ): void {
+        parentElement.innerHTML = '';
+        groupedSources[category].forEach((item, index): void => {
+            if (category === 'general') {
+                if (this.currIndex * 15 <= index && index < (this.currIndex + 1) * 15) {
+                    const sourceClone = sourceItemTemp.content.cloneNode(true) as HTMLElement;
+
+                    sourceClone.querySelector('.source__item-name')!.textContent = item.name;
+                    sourceClone.querySelector('.source__item')!.setAttribute('data-source-id', item.id);
+                    sourceClone.querySelector('.source__item')!.setAttribute('data-source-category', item.category);
+                    parentElement.append(sourceClone);
+                }
+            } else {
+                const sourceClone = sourceItemTemp.content.cloneNode(true) as HTMLElement;
+
+                sourceClone.querySelector('.source__item-name')!.textContent = item.name;
+                sourceClone.querySelector('.source__item')!.setAttribute('data-source-id', item.id);
+                sourceClone.querySelector('.source__item')!.setAttribute('data-source-category', item.category);
+                parentElement.append(sourceClone);
+            }
+        });
+    }
+
+    private groupByCategory(data: SourcesType[]): GroupedType<SourcesType> {
+        const res = data.reduce((acc: GroupedType<SourcesType>, item: SourcesType): GroupedType<SourcesType> => {
+            if (!acc[item.category]) {
+                acc[item.category] = [];
+            }
+            acc[item.category].push(item);
+            return acc;
+        }, {} as GroupedType<SourcesType>);
+        return res;
+    }
+
+    private setupCarouselNavigation(
+        carousel: HTMLElement,
+        leftButton: HTMLElement,
+        rightButton: HTMLElement,
+        items: SourcesType[]
+    ): void {
+        const updateButtons = (): void => {
+            leftButton.classList.toggle('inactive', this.currIndex === 0);
+            rightButton.classList.toggle('inactive', this.currIndex >= Math.ceil(items.length / 15) - 1);
+        };
+
+        const updateCarousel = (): void => {
+            carousel.innerHTML = '';
+            items.slice(this.currIndex * 15, (this.currIndex + 1) * 15).forEach((item): void => {
+                const srcClone = document.querySelector('#sourceItemTemp')! as HTMLTemplateElement;
+                const sourceClone = srcClone.content.cloneNode(true) as HTMLElement;
+
+                sourceClone.querySelector('.source__item-name')!.textContent = item.name;
+                sourceClone.querySelector('.source__item')!.setAttribute('data-source-id', item.id);
+                sourceClone.querySelector('.source__item')!.setAttribute('data-source-category', item.category);
+                carousel.append(sourceClone);
+            });
+        };
+
+        leftButton.addEventListener('click', (): void => {
+            if (this.currIndex > 0) {
+                this.currIndex -= 1;
+                updateButtons();
+                updateCarousel();
+            }
+        });
+
+        rightButton.addEventListener('click', (): void => {
+            if (this.currIndex < Math.ceil(items.length / 15) - 1) {
+                this.currIndex += 1;
+                updateButtons();
+                updateCarousel();
+            }
+        });
+
+        updateButtons();
+        updateCarousel();
+    }
+
+    private closeMenuOnItemClick(menu: HTMLElement): void {
+        menu.addEventListener('click', (event): void => {
+            const target = event.target as HTMLElement;
+            if (target.classList.contains('source__item-name')) {
+                const menuElements = document.querySelectorAll('.source-category');
+                menuElements.forEach((element) => element.classList.add('hidden'));
+                menu.classList.add('closed');
+                const bth = document.querySelector('.button-hide')!;
+                bth.textContent = '>';
+            }
+        });
     }
 }
 

@@ -1,53 +1,28 @@
 import AppController from '../controller/controller';
 import { AppView } from '../view/appView';
+import { GetDataType, Articles } from '../../types';
+import { IApp } from '../../types/classes';
 
-type dataSourcesType = {
-    status: 'ok' | 'error';
-    sources: Array<sourcesType>;
-};
-type sourcesType = {
-    id: string;
-    name: string;
-    description: string;
-    url: string;
-    category: string;
-    language: string;
-    country: string;
-};
-
-type dataType = { articles: Array<articleType>; status: 'ok' | 'error'; totalResults: number };
-type articleType = {
-    source: {
-        id: string;
-        name: string;
-    };
-    author: string;
-    title: string;
-    description: string;
-    url: string;
-    urlToImage: string;
-    publishedAt: string;
-    content: string;
-};
-type emptyType = '';
-type getRespDataType = dataType | emptyType | dataSourcesType;
-class App {
+class App implements IApp {
     private controller;
     private view;
+
     constructor() {
         this.controller = new AppController();
         this.view = new AppView();
     }
 
     start(): void {
-        document.querySelector('.sources')!.addEventListener('click', (e: Event) => {
+        document.querySelector('.sources')!.addEventListener('click', (e: Event): void => {
             const mEvent = e as MouseEvent;
-            this.controller.getNews(mEvent, (data: getRespDataType): void => {
-                if (typeof data !== 'string' && 'articles' in data) this.view.drawNews(data as dataType);
+            this.controller.getNews(mEvent, (data: GetDataType): void => {
+                if (typeof data !== 'string' && 'articles' in data) this.view.drawNews(data as Articles);
             });
         });
-        this.controller.getSources((data: getRespDataType): void => {
-            if (typeof data !== 'string' && 'sources' in data) this.view.drawSources(data);
+        this.controller.getSources((data: GetDataType): void => {
+            if (typeof data !== 'string' && 'sources' in data) {
+                this.view.drawSources(data);
+            }
         });
     }
 }

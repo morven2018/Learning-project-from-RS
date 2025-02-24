@@ -1,7 +1,17 @@
+* {
+    transition: all 0.3s ease;
+}
+
 body {
     color: #fff;
-    background: #17181c;
     font-family: sans-serif;
+    border-radius: 3px;
+    max-width: 1440px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 10px;
+    background: linear-gradient(135deg, #0a1f1f, #153030, #1e4a4a, #153030);
+    padding-bottom: 40px;
 }
 
 header {
@@ -9,27 +19,60 @@ header {
 }
 
 header h1 {
-    font-size: 40px;
+    font-size: 60px;
     font-weight: 800;
+    text-align: center;
 }
 
 footer {
+    margin-top: 60px;
     height: 100px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 40px;
 }
-footer .copyright {
+
+footer .copyright,
+.year-of-creation {
     font-size: 14px;
-    color: #333;
+    color: #a8e6cf;
     text-align: center;
 }
 footer .copyright a {
-    color: #444;
+    color: #a8e6cf;
 }
 footer .copyright a:hover {
-    color: #555;
+    color: #8fd3c9;
 }
 footer .copyright:before {
     content: '©';
+}
+
+.github-link a,
+.github-link a:visited {
+    text-decoration: none;
+    color: #7fc1b8;
+}
+
+.github-link a:hover,
+.github-link a:active {
+    color: #2592eb;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+@media (max-width: 650px) {
+    main {
+        flex-direction: column;
+        /*align-items: center;*/
+    }
 }
