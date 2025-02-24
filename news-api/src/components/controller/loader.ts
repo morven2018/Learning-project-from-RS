@@ -1,18 +1,18 @@
-import { optionsType, methodType, funcType, RequestOptions, IResponse, getDataType } from '../../types';
+import { OptionsType, MethodType, FuncType, RequestOptions, IResponse, GetDataType } from '../../types';
 import { ILoader } from '../../types/classes';
 
 class Loader implements ILoader {
     private baseLink: string | undefined;
-    private options: optionsType;
+    private options: OptionsType;
 
-    constructor(baseLink: string, options: optionsType) {
+    constructor(baseLink: string, options: OptionsType) {
         this.baseLink = baseLink;
         this.options = options;
     }
 
     getResp(
         { endpoint, options = {} }: { endpoint: string; options?: RequestOptions },
-        callback: funcType = () => {
+        callback: FuncType = () => {
             console.error('No callback for GET response');
         }
     ): void {
@@ -38,11 +38,11 @@ class Loader implements ILoader {
         return url.slice(0, -1);
     }
 
-    load(method: methodType, endpoint: string, callback: funcType, options: RequestOptions = {}): void {
+    load(method: MethodType, endpoint: string, callback: FuncType, options: RequestOptions = {}): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
-            .then((res: IResponse): Promise<getDataType> => res.json())
-            .then((data: Awaited<getDataType>): void => callback(data))
+            .then((res: IResponse): Promise<GetDataType> => res.json())
+            .then((data: Awaited<GetDataType>): void => callback(data))
             .catch((err: Error): void => console.error(err));
     }
 }

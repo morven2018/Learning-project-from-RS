@@ -1,11 +1,11 @@
 import './news.css';
-import { articleType } from '../../../types';
+import { ArticleType } from '../../../types';
 import { INews } from '../../../types/classes';
 
 class News implements INews {
-    draw(data: articleType[]): void {
-        const news: articleType[] =
-            data.length >= 10 ? data.filter((_item: articleType, idx: number): boolean => idx < 10) : data;
+    draw(data: ArticleType[]): void {
+        const news: ArticleType[] =
+            data.length >= 10 ? data.filter((_item: ArticleType, idx: number): boolean => idx < 10) : data;
 
         const fragment = document.createDocumentFragment();
         const newsItemTemp = document.querySelector('#newsItemTemp')! as HTMLTemplateElement;
@@ -15,7 +15,7 @@ class News implements INews {
             fragment.append(msg);
             msg.textContent = 'No results found';
         } else {
-            news.forEach((item: articleType, idx: number): void => {
+            news.forEach((item: ArticleType, idx: number): void => {
                 const newsClone = newsItemTemp.content.cloneNode(true)! as HTMLElement;
                 if (newsClone) {
                     if (idx % 2) newsClone.querySelector('.news__item')?.classList.add('alt');

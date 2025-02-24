@@ -1,9 +1,9 @@
 import AppLoader from './appLoader';
-import { funcType } from '../../types';
+import { FuncType } from '../../types';
 import { IAppController } from '../../types/classes';
 
 class AppController extends AppLoader implements IAppController {
-    getSources(callback: funcType): void {
+    getSources(callback: FuncType): void {
         super.getResp(
             {
                 endpoint: 'sources',
@@ -12,7 +12,7 @@ class AppController extends AppLoader implements IAppController {
         );
     }
 
-    getNews(e: MouseEvent, callback: funcType): void {
+    getNews(e: MouseEvent, callback: FuncType): void {
         let target = e.target! as HTMLElement;
         const newsContainer = e.currentTarget! as HTMLElement;
 

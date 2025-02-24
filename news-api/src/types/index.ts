@@ -1,25 +1,25 @@
-import { categoryType, LanguageType, CountryType, statusType } from './literalsEnums';
+import { CategoryType, LanguageType, CountryType, statusType } from './literalsEnums';
 
 export interface RequestOptions {
     [key: string]: string | number | undefined;
     apiKey?: string;
-    category?: categoryType;
+    category?: CategoryType;
     language?: LanguageType;
     country?: CountryType;
     sources?: string;
 }
 
 export interface IResponse extends Response {
-    sources?: Array<sourcesType>;
-    json(): Promise<getDataType>;
+    sources?: Array<SourcesType>;
+    json(): Promise<GetDataType>;
 }
 
-export type dataSourcesType = {
+export type DataSourcesType = {
     status: statusType;
-    sources: Array<sourcesType>;
+    sources: Array<SourcesType>;
 };
 
-export type sourcesType = {
+export type SourcesType = {
     id: string;
     name: string;
     description: string;
@@ -32,12 +32,12 @@ export type sourcesType = {
 export type GroupedType<T> = { [key: string]: T[] };
 
 export interface Articles {
-    articles: Array<articleType>;
+    articles: Array<ArticleType>;
     status: 'ok' | 'error';
     totalResults: number;
 }
 
-export type articleType = {
+export type ArticleType = {
     source: {
         id: string;
         name: string;
@@ -50,14 +50,14 @@ export type articleType = {
     publishedAt: string;
     content: string;
 };
-export type emptyType = '';
-export type getDataType = Articles | emptyType | IResponse;
+export type EmptyType = '';
+export type GetDataType = Articles | EmptyType | IResponse;
 
 type BaseOptions = {
     apiKey: string;
     sources: string;
     country?: string;
-    category?: categoryType;
+    category?: CategoryType;
     q?: string;
     pageSize?: number;
     page?: number;
@@ -67,7 +67,7 @@ type ApiKeyAndSourcesOptions = Pick<BaseOptions, 'apiKey' | 'sources'> & Partial
 type SourcesOnlyOptions = Pick<BaseOptions, 'sources'> & Partial<BaseOptions>;
 type ApiKeyOnlyOptions = Pick<BaseOptions, 'apiKey'> & Partial<BaseOptions>;
 
-export type optionsType = ApiKeyAndSourcesOptions | SourcesOnlyOptions | ApiKeyOnlyOptions | Record<string, never>;
+export type OptionsType = ApiKeyAndSourcesOptions | SourcesOnlyOptions | ApiKeyOnlyOptions | Record<string, never>;
 
 /* export type optionsType =
     | {
@@ -91,5 +91,5 @@ export type optionsType = ApiKeyAndSourcesOptions | SourcesOnlyOptions | ApiKeyO
       }
     | Record<string, never>;*/
 
-export type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
-export type funcType<T = getDataType> = (data: T) => void;
+export type MethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type FuncType<T = GetDataType> = (data: T) => void;

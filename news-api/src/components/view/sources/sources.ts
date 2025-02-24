@@ -1,12 +1,12 @@
 import './sources.css';
-import { GroupedType, sourcesType } from '../../../types';
-import { categoryType } from '../../../types/literalsEnums';
+import { GroupedType, SourcesType } from '../../../types';
+import { CategoryType } from '../../../types/literalsEnums';
 import { ISources } from '../../../types/classes';
 
 class Sources implements ISources {
     private currIndex: number = 0;
 
-    draw(data: sourcesType[]): void {
+    draw(data: SourcesType[]): void {
         const fragment = document.createDocumentFragment();
 
         const sourceItemTemp = document.querySelector('#sourceItemTemp')! as HTMLTemplateElement;
@@ -29,7 +29,7 @@ class Sources implements ISources {
 
         const groupedSources = this.groupByCategory(data);
 
-        Object.keys(groupedSources).forEach((category: categoryType): void => {
+        Object.keys(groupedSources).forEach((category: CategoryType): void => {
             const container = document.createElement('div');
             container.className = 'source-category';
 
@@ -92,9 +92,9 @@ class Sources implements ISources {
 
     private addElements(
         parentElement: HTMLElement,
-        groupedSources: GroupedType<sourcesType>,
+        groupedSources: GroupedType<SourcesType>,
         sourceItemTemp: HTMLTemplateElement,
-        category: categoryType
+        category: CategoryType
     ): void {
         parentElement.innerHTML = '';
         groupedSources[category].forEach((item, index): void => {
@@ -118,14 +118,14 @@ class Sources implements ISources {
         });
     }
 
-    private groupByCategory(data: sourcesType[]): GroupedType<sourcesType> {
-        const res = data.reduce((acc: GroupedType<sourcesType>, item: sourcesType): GroupedType<sourcesType> => {
+    private groupByCategory(data: SourcesType[]): GroupedType<SourcesType> {
+        const res = data.reduce((acc: GroupedType<SourcesType>, item: SourcesType): GroupedType<SourcesType> => {
             if (!acc[item.category]) {
                 acc[item.category] = [];
             }
             acc[item.category].push(item);
             return acc;
-        }, {} as GroupedType<sourcesType>);
+        }, {} as GroupedType<SourcesType>);
         return res;
     }
 
@@ -133,7 +133,7 @@ class Sources implements ISources {
         carousel: HTMLElement,
         leftButton: HTMLElement,
         rightButton: HTMLElement,
-        items: sourcesType[]
+        items: SourcesType[]
     ): void {
         const updateButtons = (): void => {
             leftButton.classList.toggle('inactive', this.currIndex === 0);

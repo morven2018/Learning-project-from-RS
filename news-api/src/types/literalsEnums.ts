@@ -17,9 +17,9 @@ export enum LanguageType {
     'zh',
 }
 
-export const category = ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology'];
+export const Category = ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology'];
 
-export type categoryType = (typeof category)[number];
+export type CategoryType = (typeof Category)[number];
 
 export enum CountryType {
     'ae',
