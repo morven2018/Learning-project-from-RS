@@ -28,7 +28,7 @@ class Sources implements ISources {
 
         const groupedSources = this.groupByCategory(data);
 
-        Object.keys(groupedSources).forEach((category: categoryType) => {
+        Object.keys(groupedSources).forEach((category: categoryType): void => {
             const container = document.createElement('div');
             container.className = 'source-category';
 
@@ -36,7 +36,7 @@ class Sources implements ISources {
             header.textContent = category.toUpperCase();
             header.className = 'source-category__header';
 
-            container.addEventListener('click', () => {
+            container.addEventListener('click', (): void => {
                 const closedElement = document.querySelector('.open');
                 closedElement?.classList.toggle('open');
                 container.classList.toggle('open');
@@ -77,13 +77,13 @@ class Sources implements ISources {
         });
 
         sourcesWrapper.append(fragment);
-        btnMenu.addEventListener('click', () => {
+        btnMenu.addEventListener('click', (): void => {
             if (!btnMenu.classList.contains('closed')) btnMenu.textContent = '<';
             else btnMenu.textContent = '>';
 
             btnMenu.classList.toggle('closed');
             const menuElements = document.querySelectorAll('.source-category');
-            menuElements.forEach((element) => element.classList.toggle('hidden'));
+            menuElements.forEach((element): boolean => element.classList.toggle('hidden'));
         });
     }
 
@@ -94,7 +94,7 @@ class Sources implements ISources {
         category: categoryType
     ): void {
         parentElement.innerHTML = '';
-        groupedSources[category].forEach((item, index) => {
+        groupedSources[category].forEach((item, index): void => {
             if (category === 'general') {
                 if (this.currIndex * 15 <= index && index < (this.currIndex + 1) * 15) {
                     const sourceClone = sourceItemTemp.content.cloneNode(true) as HTMLElement;
@@ -132,14 +132,14 @@ class Sources implements ISources {
         rightButton: HTMLElement,
         items: sourcesType[]
     ): void {
-        const updateButtons = () => {
+        const updateButtons = (): void => {
             leftButton.classList.toggle('inactive', this.currIndex === 0);
             rightButton.classList.toggle('inactive', this.currIndex >= Math.ceil(items.length / 15) - 1);
         };
 
-        const updateCarousel = () => {
+        const updateCarousel = (): void => {
             carousel.innerHTML = '';
-            items.slice(this.currIndex * 15, (this.currIndex + 1) * 15).forEach((item) => {
+            items.slice(this.currIndex * 15, (this.currIndex + 1) * 15).forEach((item): void => {
                 const srcClone = document.querySelector('#sourceItemTemp')! as HTMLTemplateElement;
                 const sourceClone = srcClone.content.cloneNode(true) as HTMLElement;
 
@@ -150,7 +150,7 @@ class Sources implements ISources {
             });
         };
 
-        leftButton.addEventListener('click', () => {
+        leftButton.addEventListener('click', (): void => {
             if (this.currIndex > 0) {
                 this.currIndex -= 1;
                 updateButtons();
@@ -158,7 +158,7 @@ class Sources implements ISources {
             }
         });
 
-        rightButton.addEventListener('click', () => {
+        rightButton.addEventListener('click', (): void => {
             if (this.currIndex < Math.ceil(items.length / 15) - 1) {
                 this.currIndex += 1;
                 updateButtons();
@@ -171,7 +171,7 @@ class Sources implements ISources {
     }
 
     private setupCloseMenuOnItemClick(menu: HTMLElement): void {
-        menu.addEventListener('click', (event) => {
+        menu.addEventListener('click', (event): void => {
             const target = event.target as HTMLElement;
             if (target.classList.contains('source__item-name')) {
                 const menuElements = document.querySelectorAll('.source-category');

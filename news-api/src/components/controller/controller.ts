@@ -3,7 +3,7 @@ import { funcType } from '../../types';
 import { IAppController } from '../../types/classes';
 
 class AppController extends AppLoader implements IAppController {
-    getSources(callback: funcType) {
+    getSources(callback: funcType): void {
         super.getResp(
             {
                 endpoint: 'sources',
@@ -12,7 +12,7 @@ class AppController extends AppLoader implements IAppController {
         );
     }
 
-    getNews(e: MouseEvent, callback: funcType) {
+    getNews(e: MouseEvent, callback: funcType): void {
         let target = e.target! as HTMLElement;
         const newsContainer = e.currentTarget! as HTMLElement;
 
@@ -25,7 +25,7 @@ class AppController extends AppLoader implements IAppController {
 
                 btnMenu.classList.toggle('closed');
                 const menuElements = document.querySelectorAll('.source-category');
-                menuElements.forEach((element) => element.classList.toggle('hidden'));
+                menuElements.forEach((element): boolean => element.classList.toggle('hidden'));
 
                 const sourceId = target.getAttribute('data-source-id')!;
                 if (newsContainer.getAttribute('data-source') !== sourceId) {

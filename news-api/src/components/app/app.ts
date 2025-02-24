@@ -13,7 +13,7 @@ class App implements IApp {
     }
 
     start(): void {
-        document.querySelector('.sources')!.addEventListener('click', (e: Event) => {
+        document.querySelector('.sources')!.addEventListener('click', (e: Event): void => {
             const mEvent = e as MouseEvent;
             this.controller.getNews(mEvent, (data: getDataType): void => {
                 if (typeof data !== 'string' && 'articles' in data) this.view.drawNews(data as Articles);
