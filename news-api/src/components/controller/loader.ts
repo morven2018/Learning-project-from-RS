@@ -1,4 +1,4 @@
-import { optionsType, methodType, funcType, RequestOptions, IResponse } from '../../types';
+import { optionsType, methodType, funcType, RequestOptions, IResponse, getDataType } from '../../types';
 import { ILoader } from '../../types/classes';
 
 class Loader implements ILoader {
@@ -41,9 +41,9 @@ class Loader implements ILoader {
     load(method: methodType, endpoint: string, callback: funcType, options: RequestOptions = {}): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
-            .then((res) => res.json())
-            .then((data) => callback(data))
-            .catch((err) => console.error(err));
+            .then((res: IResponse): Promise<getDataType> => res.json())
+            .then((data: Awaited<getDataType>): void => callback(data))
+            .catch((err: Error): void => console.error(err));
     }
 }
 
