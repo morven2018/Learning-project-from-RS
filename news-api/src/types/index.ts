@@ -11,6 +11,7 @@ export interface RequestOptions {
 
 export interface IResponse extends Response {
     sources?: Array<sourcesType>;
+    json(): Promise<getDataType>;
 }
 
 export type dataSourcesType = {

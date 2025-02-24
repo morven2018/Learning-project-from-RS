@@ -20,7 +20,9 @@ class App implements IApp {
             });
         });
         this.controller.getSources((data: getDataType): void => {
-            if (typeof data !== 'string' && 'sources' in data) this.view.drawSources(data);
+            if (typeof data !== 'string' && 'sources' in data) {
+                this.view.drawSources(data);
+            }
         });
     }
 }

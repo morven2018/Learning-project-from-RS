@@ -40,6 +40,7 @@
     grid-auto-flow: row;
     grid-template-rows: repeat(15, 1fr);
     grid-template-rows: auto;
+    transition: transform 0.7s ease;
 }
 
 .source-category__header {
@@ -77,7 +78,7 @@
 }
 
 .inactive {
-    opacity: 0.7;
+    opacity: 0.5;
     pointer-events: none;
 }
 
@@ -118,6 +119,10 @@
     border-radius: 25%;
     font-size: 16px;
     padding: 5px 10px;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
 }
 
 .left-button,
@@ -128,6 +133,10 @@
     margin: 10px;
     border-radius: 25%;
     font-size: 16px;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
 }
 
 .left-button:hover,
@@ -135,4 +144,7 @@
 .button-hide:hover {
     border-color: #3fcc59;
     color: #69db7e;
+    background-color: #3fcc59;
+    color: #fff;
+    transform: scale(1.1);
 }

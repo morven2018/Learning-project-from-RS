@@ -13,6 +13,7 @@ class Sources implements ISources {
 
         const menu = document.createElement('div');
         menu.className = 'hidden-sources';
+        // this.closeMenuOnItemClick(menu);
 
         const btnMenu = document.createElement('button');
         btnMenu.className = 'button-hide';
@@ -44,8 +45,10 @@ class Sources implements ISources {
 
             const content = document.createElement('div');
             content.className = 'source-category__content';
+
             const wrapperCarousel = document.createElement('div');
             wrapperCarousel.className = 'carousel';
+
             if (category === 'general') {
                 const carousel = document.createElement('div');
                 carousel.className = 'carousel_content';
@@ -170,7 +173,7 @@ class Sources implements ISources {
         updateCarousel();
     }
 
-    private setupCloseMenuOnItemClick(menu: HTMLElement): void {
+    private closeMenuOnItemClick(menu: HTMLElement): void {
         menu.addEventListener('click', (event): void => {
             const target = event.target as HTMLElement;
             if (target.classList.contains('source__item-name')) {
