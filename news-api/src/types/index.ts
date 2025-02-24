@@ -28,7 +28,7 @@ export type sourcesType = {
     country: string;
 };
 
-export type groupedCategoryType = { [key: string]: sourcesType[] };
+export type GroupedType<T> = { [key: string]: T[] };
 
 export interface Articles {
     articles: Array<articleType>;
@@ -74,5 +74,5 @@ export type optionsType =
       }
     | Record<string, never>;
 
-export type funcType = (data: getDataType) => void;
 export type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type funcType<T = getDataType> = (data: T) => void;
