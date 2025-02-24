@@ -1,11 +1,11 @@
-import { categoryType, languageType, countryType, statusType } from './literals';
+import { categoryType, LanguageType, CountryType, statusType } from './literalsEnums';
 
 export interface RequestOptions {
     [key: string]: string | number | undefined;
     apiKey?: string;
     category?: categoryType;
-    language?: languageType;
-    country?: countryType;
+    language?: LanguageType;
+    country?: CountryType;
     sources?: string;
 }
 

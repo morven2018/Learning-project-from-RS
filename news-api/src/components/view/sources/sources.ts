@@ -1,6 +1,6 @@
 import './sources.css';
-import { groupedCategoryType, sourcesType } from '../../../types';
-import { categoryType } from '../../../types/literals';
+import { GroupedType, sourcesType } from '../../../types';
+import { categoryType } from '../../../types/literalsEnums';
 import { ISources } from '../../../types/classes';
 
 class Sources implements ISources {
@@ -89,7 +89,7 @@ class Sources implements ISources {
 
     private addElements(
         parentElement: HTMLElement,
-        groupedSources: groupedCategoryType,
+        groupedSources: GroupedType<sourcesType>,
         sourceItemTemp: HTMLTemplateElement,
         category: categoryType
     ): void {
@@ -115,14 +115,14 @@ class Sources implements ISources {
         });
     }
 
-    private groupByCategory(data: sourcesType[]): groupedCategoryType {
-        const res = data.reduce((acc: groupedCategoryType, item: sourcesType): groupedCategoryType => {
+    private groupByCategory(data: sourcesType[]): GroupedType<sourcesType> {
+        const res = data.reduce((acc: GroupedType<sourcesType>, item: sourcesType): GroupedType<sourcesType> => {
             if (!acc[item.category]) {
                 acc[item.category] = [];
             }
             acc[item.category].push(item);
             return acc;
-        }, {} as groupedCategoryType);
+        }, {} as GroupedType<sourcesType>);
         return res;
     }
 
