@@ -9,11 +9,8 @@ export interface RequestOptions {
     sources?: string;
 }
 
-export interface Response {
-    status: statusType;
-    sources: Array<sourcesType>;
-    code?: number;
-    message?: string;
+export interface IResponse extends Response {
+    sources?: Array<sourcesType>;
 }
 
 export type dataSourcesType = {
@@ -53,7 +50,7 @@ export type articleType = {
     content: string;
 };
 export type emptyType = '';
-export type getDataType = Articles | emptyType | Response;
+export type getDataType = Articles | emptyType | IResponse;
 
 export type optionsType =
     | {
@@ -79,5 +76,3 @@ export type optionsType =
 
 export type funcType = (data: getDataType) => void;
 export type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
-
-// type getRespType = ({ endpoint: string; options?: any }, callback: callbackType ) => void;

@@ -1,10 +1,12 @@
 import AppController from '../controller/controller';
 import { AppView } from '../view/appView';
 import { getDataType, Articles } from '../../types';
+import { IApp } from '../../types/classes';
 
-class App {
+class App implements IApp {
     private controller;
     private view;
+
     constructor() {
         this.controller = new AppController();
         this.view = new AppView();

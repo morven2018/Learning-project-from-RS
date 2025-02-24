@@ -1,4 +1,4 @@
-import { optionsType, methodType, funcType, RequestOptions } from '../../types';
+import { optionsType, methodType, funcType, RequestOptions, IResponse } from '../../types';
 import { ILoader } from '../../types/classes';
 
 class Loader implements ILoader {
@@ -19,13 +19,12 @@ class Loader implements ILoader {
         this.load('GET', endpoint, callback, options);
     }
 
-    errorHandler(res: Response): Response {
+    errorHandler(res: IResponse): IResponse {
         if (!res.ok) {
             if (res.status === 401 || res.status === 404)
                 console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
             throw Error(res.statusText);
         }
-
         return res;
     }
 

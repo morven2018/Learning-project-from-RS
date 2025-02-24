@@ -1,8 +1,9 @@
 import './sources.css';
 import { groupedCategoryType, sourcesType } from '../../../types';
 import { categoryType } from '../../../types/literals';
+import { ISources } from '../../../types/classes';
 
-class Sources {
+class Sources implements ISources {
     private currIndex: number = 0;
 
     draw(data: sourcesType[]): void {
@@ -171,7 +172,6 @@ class Sources {
 
     private setupCloseMenuOnItemClick(menu: HTMLElement): void {
         menu.addEventListener('click', (event) => {
-            console.log('fwersf');
             const target = event.target as HTMLElement;
             if (target.classList.contains('source__item-name')) {
                 const menuElements = document.querySelectorAll('.source-category');
