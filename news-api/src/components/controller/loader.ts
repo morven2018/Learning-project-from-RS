@@ -29,7 +29,7 @@ class Loader implements ILoader {
     }
 
     makeUrl(options: RequestOptions, endpoint: string): string {
-        const urlOptions = { ...this.options, ...options };
+        const urlOptions = { ...this.options, ...options } as RequestOptions;
         let url = `${this.baseLink}${endpoint}?`;
         Object.keys(urlOptions).forEach((key) => {
             url += `${key}=${urlOptions[key]}&`;
