@@ -52,7 +52,23 @@ export type articleType = {
 export type emptyType = '';
 export type getDataType = Articles | emptyType | IResponse;
 
-export type optionsType =
+type BaseOptions = {
+    apiKey: string;
+    sources: string;
+    country?: string;
+    category?: categoryType;
+    q?: string;
+    pageSize?: number;
+    page?: number;
+};
+
+type ApiKeyAndSourcesOptions = Pick<BaseOptions, 'apiKey' | 'sources'> & Partial<BaseOptions>;
+type SourcesOnlyOptions = Pick<BaseOptions, 'sources'> & Partial<BaseOptions>;
+type ApiKeyOnlyOptions = Pick<BaseOptions, 'apiKey'> & Partial<BaseOptions>;
+
+export type optionsType = ApiKeyAndSourcesOptions | SourcesOnlyOptions | ApiKeyOnlyOptions | Record<string, never>;
+
+/* export type optionsType =
     | {
           [key: string]: string | number | undefined;
           apiKey: string;
@@ -72,7 +88,7 @@ export type optionsType =
           [key: string]: string | number | undefined;
           apiKey: string;
       }
-    | Record<string, never>;
+    | Record<string, never>;*/
 
 export type methodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 export type funcType<T = getDataType> = (data: T) => void;
