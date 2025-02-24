@@ -5,6 +5,7 @@ body {
     border-radius: 3px;
     max-width: 1440px;
     margin: 0 auto;
+    padding: 10px;
 }
 
 header {
