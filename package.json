@@ -9,7 +9,8 @@
     "format": "prettier --write --ignore-unknown \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md, mjs}\"",
     "format:check": "prettier --list-different --ignore-unknown \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md, mjs}\"",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix"
+    "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "stylelint": "stylelint src/styles/**/*.scss --fix"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +30,10 @@
     "sass": "^1.85.1",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
+    "stylelint": "^16.15.0",
+    "stylelint-config-clean-order": "^7.0.0",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-config-standard-scss": "^14.0.0",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.0",
