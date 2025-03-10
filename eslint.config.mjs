@@ -34,31 +34,13 @@ export default [
       semi: "error",
       "prefer-const": "error",
       "no-console": "warn",
-      // "no-inline-config": "error", - устарело далее замена
-      "no-restricted-syntax": [
-        "error",
-        {
-          selector:
-            'Program:has(ExpressionStatement[expression.callee.object.name="eslint"][expression.callee.property.name="disable"] ~ Comment)',
-          message:
-            "Disallow inline ESLint configuration comments.  Use .eslintignore or .eslintrc.js instead.",
-        },
-        {
-          selector:
-            'Program:has(ExpressionStatement[expression.callee.object.name="eslint-disable"][expression.callee.property.name="line"] ~ Comment)',
-          message:
-            "Disallow inline ESLint configuration comments.  Use .eslintignore or .eslintrc.js instead.",
-        },
-        {
-          selector:
-            'Program:has(ExpressionStatement[expression.callee.object.name="eslint-disable"][expression.callee.property.name="next"] ~ Comment)',
-          message:
-            "Disallow inline ESLint configuration comments.  Use .eslintignore or .eslintrc.js instead.",
-        },
-      ],
-      // reportUnusedDisableDirectives: "error",
+    },
+    linterOptions: {
+      noInlineConfig: true,
+      reportUnusedDisableDirectives: "warn",
     },
   },
+
   {
     files: ["*.js", "*.mjs", "*.cjs"],
     languageOptions: {
