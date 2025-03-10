@@ -1,73 +1,87 @@
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import prettier from "eslint-plugin-prettier";
-import eslintConfigPrettier from "eslint-config-prettier";
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import prettier from 'eslint-plugin-prettier';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import globals from 'globals';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    files: ["**/*.{js,mjs,cjs,ts}"],
+    files: ['**/*.{js,mjs,cjs,ts}'],
   },
 
   eslint.configs.recommended,
+  eslintPluginUnicorn.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
+  // ...tseslint.config(
+  //   eslint.configs.recommended,
+  // ...tseslint.configs.strictTypeChecked,
+  // ...tseslint.configs.stylisticTypeChecked,
+  // ),
 
   {
     languageOptions: {
+      globals: globals.builtin,
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["*.mjs"],
+          allowDefaultProject: ['*.mjs'],
         },
         tsconfigRootDir: import.meta.dirname,
-        sourceType: "module",
+        sourceType: 'module',
       },
     },
   },
+
   {
     plugins: {
       prettier: prettier,
     },
 
     rules: {
-      "prettier/prettier": [
-        "error",
+      'prettier/prettier': [
+        'error',
         {
-          endOfLine: "auto",
+          endOfLine: 'auto',
         },
       ],
-      semi: "error",
-      "prefer-const": "error",
-      "no-console": "warn",
 
-      "@typescript-eslint/consistent-type-assertions": [
-        "error",
-        { assertionStyle: "never" },
-      ],
-      "@typescript-eslint/consistent-type-imports": "error",
-      "@typescript-eslint/explicit-function-return-type": "error",
-      "@typescript-eslint/explicit-member-accessibility": [
-        "error",
-        { accessibility: "explicit", overrides: { constructors: "off" } },
-      ],
-      "@typescript-eslint/member-ordering": "error",
+      semi: 'error',
+      'prefer-const': 'error',
+      'no-console': 'warn',
 
-      "class-methods-use-this": "error",
+      '@typescript-eslint/consistent-type-assertions': [
+        'error',
+        { assertionStyle: 'never' },
+      ],
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/explicit-function-return-type': 'error',
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        { accessibility: 'explicit', overrides: { constructors: 'off' } },
+      ],
+      '@typescript-eslint/member-ordering': 'error',
+
+      'class-methods-use-this': 'error',
+
+      'unicorn/better-regex': 'warn',
     },
+
     linterOptions: {
       noInlineConfig: true,
-      reportUnusedDisableDirectives: "warn",
+      reportUnusedDisableDirectives: 'warn',
     },
   },
 
   {
-    ignores: ["webpack.*.js", "node_modules/", "dist/", "build/"],
+    ignores: ['webpack.*.js', 'node_modules/', 'dist/', 'build/'],
   },
 
   {
-    files: ["eslint.config.mjs"],
+    files: ['eslint.config.mjs'],
     languageOptions: {
       parserOptions: {
-        sourceType: "module",
+        sourceType: 'module',
       },
     },
   },
