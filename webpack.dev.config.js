@@ -7,7 +7,7 @@ module.exports = {
   devServer: {
     open: true,
     host: 'localhost',
-    port: 4200,
+    port: 4201,
     hot: true,
     static: path.resolve(__dirname, './dist'),
     historyApiFallback: true,

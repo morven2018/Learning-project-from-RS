@@ -1,5 +1,11 @@
 {
-  "include": ["src/**/*", "webpack.*.js", "./eslint.config.mjs", "index.ts"],
+  "include": [
+    "src/**/*",
+    "webpack.*.js",
+    "./eslint.config.mjs",
+    "index.ts",
+    "src/*.ts"
+  ],
   "exclude": ["node_modules"],
   "compilerOptions": {
     /* Language and Environment */
