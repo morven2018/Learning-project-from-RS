@@ -1,4 +1,5 @@
 import type { IElementParameters, IElementCreator } from '../types/interfaces';
+import type { CallbackType } from '../types/types';
 import { isNotNullable } from './is-nullable';
 
 export default class ElementCreator implements IElementCreator {
@@ -26,19 +27,20 @@ export default class ElementCreator implements IElementCreator {
     this.element = document.createElement(parameters.tag);
     this.setCssClasses(parameters.classNames);
     this.setTextContent(parameters.textContent);
-    this.setCallback(parameters.callback);
+    if (isNotNullable(parameters.callback))
+      this.setCallback(parameters.callback);
   }
 
-  private setCssClasses(cssClasses: Array<string> = []): void {
+  public setCssClasses(cssClasses: Array<string> = []): void {
     if (isNotNullable(this.element))
       cssClasses.map((cssClass) => this.element?.classList.add(cssClass));
   }
 
-  private setTextContent(text: string = ''): void {
+  public setTextContent(text: string = ''): void {
     if (isNotNullable(this.element)) this.element.textContent = text;
   }
 
-  private setCallback(callback: (event: Event) => void): void {
+  public setCallback(callback: CallbackType): void {
     if (isNotNullable(this.element))
       this.element.addEventListener('click', (event) => callback(event));
   }
