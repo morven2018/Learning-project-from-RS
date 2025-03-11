@@ -4,7 +4,7 @@ import { isNotNullable } from '../util/is-nullable';
 
 export default class View implements IView {
   public viewElementCreator: ElementCreator | undefined;
-  private defaultParameters = { tag: 'section', classNames: [] };
+  private defaultParameters = { tag: 'div', classNames: [] };
 
   constructor(parameters: IViewParameters = this.defaultParameters) {
     this.viewElementCreator = this.createView(parameters);
