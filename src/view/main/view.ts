@@ -25,4 +25,9 @@ export default class MainView extends View {
         this.viewElementCreator?.addInnerElement(innerElement);
     }
   }
+
+  /* public getPages(): void {
+    const indexView = new IndexView();
+    this.setContent(indexView);
+  } */
 }
