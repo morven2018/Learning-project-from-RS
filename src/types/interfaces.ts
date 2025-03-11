@@ -27,3 +27,7 @@ export interface IView {
 export interface IHeaderView extends IView {
   configureView: () => void;
 }
+
+export interface IMainView extends IView {
+  setContent: (content: IView) => void;
+}
