@@ -1,13 +1,8 @@
-export interface IView {
-  viewElementCreator: IElementCreator;
-  getHtmlElement: () => HTMLBaseElement;
-}
-
 export interface IElementParameters {
   tag: string;
   classNames: Array<string>;
   textContent: string;
-  callback: (event: Event) => void;
+  callback?: (event: Event) => void;
 }
 
 export interface IElementCreator {
@@ -15,4 +10,11 @@ export interface IElementCreator {
   getElement: () => HTMLElement | void;
   addInnerElement: (element: HTMLElement | IElementCreator) => void;
   createElement: (parameters: IElementParameters) => void;
+}
+
+export type IViewParameters = Pick<IElementParameters, 'tag' | 'classNames'>;
+export interface IView {
+  viewElementCreator: IElementCreator | undefined;
+  getHtmlElement: () => HTMLElement | void;
+  createView(parameters: IViewParameters): IElementCreator;
 }
