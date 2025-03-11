@@ -1,3 +1,3 @@
-console.log("что-то");
-const a = 15;
-console.log(a);
+import App from './src/app';
+
+new App();

@@ -10,8 +10,9 @@ export default class ElementCreator implements IElementCreator {
     this.createElement(parameters);
   }
 
-  public getElement(): HTMLElement | void {
+  public getElement(): HTMLElement | undefined {
     if (isNotNullable(this.element)) return this.element;
+    return undefined;
   }
 
   public addInnerElement(element: HTMLElement | IElementCreator): void {

@@ -1,6 +1,6 @@
 import View from '../view';
-import type { IFooterView } from '../../types/interfaces';
 import { isNotNullable } from '../../util/is-nullable';
+import type { IHeaderView } from '../../types/interfaces';
 
 const NAME_OF_APP = 'Decision Making Tool';
 
@@ -8,7 +8,7 @@ const CssClasses = {
   HEADER: 'header',
 };
 
-export default class FooterView extends View implements IFooterView {
+export default class HeaderView extends View implements IHeaderView {
   constructor() {
     const parameters = {
       tag: 'header',

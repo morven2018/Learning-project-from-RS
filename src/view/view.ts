@@ -10,9 +10,10 @@ export default class View implements IView {
     this.viewElementCreator = this.createView(parameters);
   }
 
-  public getHtmlElement(): HTMLElement | void {
+  public getHtmlElement(): HTMLElement | undefined {
     if (isNotNullable(this.viewElementCreator))
       return this.viewElementCreator.getElement();
+    return undefined;
   }
 
   public createView(parameters: IViewParameters): ElementCreator {

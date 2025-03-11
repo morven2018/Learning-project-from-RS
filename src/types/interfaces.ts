@@ -9,7 +9,7 @@ export interface IElementParameters {
 
 export interface IElementCreator {
   element: HTMLElement | undefined;
-  getElement: () => HTMLElement | void;
+  getElement: () => HTMLElement | undefined;
   addInnerElement: (element: HTMLElement | IElementCreator) => void;
   createElement: (parameters: IElementParameters) => void;
   setCssClasses: (cssClasses: Array<string>) => void;
@@ -20,10 +20,10 @@ export interface IElementCreator {
 export type IViewParameters = Pick<IElementParameters, 'tag' | 'classNames'>;
 export interface IView {
   viewElementCreator: IElementCreator | undefined;
-  getHtmlElement: () => HTMLElement | void;
+  getHtmlElement: () => HTMLElement | undefined;
   createView(parameters: IViewParameters): IElementCreator;
 }
 
-export interface IFooterView extends IView {
+export interface IHeaderView extends IView {
   configureView: () => void;
 }
