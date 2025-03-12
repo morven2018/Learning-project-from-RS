@@ -1,3 +1,4 @@
+import type State from '../../../state/state';
 import type { IElementParameters } from '../../../types/interfaces';
 import type { OptionType } from '../../../types/types';
 import ButtonCreator from '../../buttons/button';
@@ -25,17 +26,19 @@ const INPUT_PLACEHOLDER = {
 export default class ListCreator extends ElementCreator {
   public nextId = 1;
   public elements: HTMLElement[] = [];
-  constructor(parameters: IElementParameters) {
+  public state: State;
+  constructor(parameters: IElementParameters, state: State) {
     super(parameters);
+    this.state = state;
     this.createElement(parameters);
   }
+
   public createElement(parameters: IElementParameters): void {
     super.createElement(parameters);
     this.addElement();
   }
 
   public addElement(): void {
-    // console.log(this.element);
     const liParameters = {
       tag: 'li',
       classNames: [CssClasses.LI, `${CssClasses.LI}-${this.nextId}`],
@@ -74,11 +77,10 @@ export default class ListCreator extends ElementCreator {
     const backButton = new ButtonCreator(buttonParameters);
 
     listElement.addInnerElement(backButton);
-    console.log(listElement.element);
     if (isNotNullable(listElement.element))
       this.elements?.push(listElement.element);
-    console.log(this.elements);
     this.addInnerElement(listElement);
+    // console.log(this.elements);
     this.nextId += 1;
   }
 
@@ -100,6 +102,10 @@ export default class ListCreator extends ElementCreator {
         element.remove();
       }
     this.elements = [];
+  }
+
+  public getElements(): HTMLElement[] {
+    return this.elements;
   }
 
   private addId(parent: ElementCreator): ElementCreator {
@@ -133,7 +139,7 @@ export default class ListCreator extends ElementCreator {
         inputElement.element?.setAttribute(option, options[option]);
     }
     inputElement.element?.setAttribute('id', `${className}_${this.nextId}`);
-    console.log(inputElement.element);
+    // console.log(inputElement.element);
     return inputElement;
   }
 }
