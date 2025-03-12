@@ -1,0 +1,8 @@
+$width80: max(150px, 80%);
+
+.not-found {
+  width: $width80;
+  img {
+    width: calc(100% - 30px);
+  }
+}

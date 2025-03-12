@@ -30,4 +30,5 @@ export interface IHeaderView extends IView {
 
 export interface IMainView extends IView {
   setContent: (content: IView) => void;
+  getPages: (mainComponent: HTMLElement) => void;
 }

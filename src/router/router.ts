@@ -24,7 +24,8 @@ export default class Router {
     const hash = globalThis.location.hash;
 
     switch (hash) {
-      case '#/decision-picker': {
+      case '#/decision-picker':
+      case 'decision-picker': {
         this.mainView.setContent(new PickerView());
         break;
       }
