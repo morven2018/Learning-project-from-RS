@@ -3,6 +3,7 @@ import { isNotNullable } from '../../../util/is-nullable';
 import ElementCreator from '../../../util/element-creator';
 import notFoundImage from '../../../../asserts/404.jpg';
 import './not-found.scss';
+import ButtonCreator from '../../../components/button';
 
 const CssClasses = {
   INDEX: 'not-found',
@@ -19,8 +20,6 @@ const TEXT_CONTENT = {
   HOME: 'На главную',
 };
 
-//const PAGE = '404';
-
 export default class NotFoundView extends View {
   constructor() {
     const parameters = {
@@ -34,8 +33,23 @@ export default class NotFoundView extends View {
   public configureView(): void {
     this.addImage();
     this.addTextMessage();
+    this.addButton(
+      'back',
+      '',
+      'Go to back to the page',
+      TEXT_CONTENT.BACK,
+      (): void => globalThis.history.back()
+    );
+    this.addButton(
+      'to-main-page',
+      '',
+      'Go to the main page',
+      TEXT_CONTENT.HOME,
+      (): void => {
+        globalThis.location.href = '/';
+      }
+    );
   }
-
   private addImage(): void {
     if (isNotNullable(this.viewElementCreator)) {
       const imageParameters = {
@@ -65,6 +79,27 @@ export default class NotFoundView extends View {
       };
       const text = new ElementCreator(textParameters);
       this.viewElementCreator.addInnerElement(text);
+    }
+  }
+
+  private addButton(
+    classButton: string,
+    imgUrl: string = '',
+    title: string = '',
+    textContentBth: string = '',
+    callback: () => void
+  ): void {
+    if (isNotNullable(this.viewElementCreator)) {
+      const buttonParameters = {
+        tag: 'button',
+        classNames: [CssClasses.BUTTON, classButton],
+        textContent: textContentBth,
+        title: title,
+        img: imgUrl,
+        callback: callback,
+      };
+      const backButton = new ButtonCreator(buttonParameters);
+      this.viewElementCreator.addInnerElement(backButton);
     }
   }
 }

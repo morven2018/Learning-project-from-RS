@@ -1,1 +1,1 @@
-export type CallbackType = (event: Event) => void;
+export type CallbackType = ((event: Event) => void) | (() => void);

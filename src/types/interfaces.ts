@@ -5,6 +5,8 @@ export interface IElementParameters {
   classNames: Array<string>;
   textContent: string;
   callback?: (event: Event) => void;
+  img?: string;
+  title?: string;
 }
 
 export interface IElementCreator {

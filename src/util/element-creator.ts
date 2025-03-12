@@ -42,7 +42,11 @@ export default class ElementCreator implements IElementCreator {
   }
 
   public setCallback(callback: CallbackType): void {
-    if (isNotNullable(this.element))
+    if (
+      isNotNullable(this.element) &&
+      callback &&
+      typeof callback === 'function'
+    )
       this.element.addEventListener('click', (event) => callback(event));
   }
 }
