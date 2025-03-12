@@ -2,6 +2,7 @@ import View from '../../view';
 import { isNotNullable } from '../../../util/is-nullable';
 import ListCreator from '../../../util/list-option/input-field/list-option';
 import type { IElementParameters } from '../../../types/interfaces';
+import type State from '../../../state/state';
 
 const CssClasses = {
   INDEX: 'index',
@@ -23,12 +24,14 @@ const PAGE = 'index';
 
 export default class IndexView extends View {
   public list: ListCreator | undefined;
-  constructor() {
+  private state: State;
+  constructor(state: State) {
     const parameters = {
       tag: 'section',
       classNames: [CssClasses.INDEX],
     };
     super(parameters);
+    this.state = state;
     this.configureView();
   }
 
