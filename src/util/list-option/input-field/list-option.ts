@@ -69,6 +69,14 @@ export default class ListCreator extends ElementCreator {
     this.nextId += 1;
   }
 
+  public clearList(): void {
+    while (this.element?.firstChild) {
+      if (isNotNullable(this.element)) this.element.firstChild.remove();
+    }
+    this.nextId = 1;
+    this.addElement();
+  }
+
   private addId(parent: ElementCreator): ElementCreator {
     const idParameters = {
       tag: 'div',
