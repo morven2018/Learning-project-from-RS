@@ -59,7 +59,7 @@ export default class ListCreator extends ElementCreator {
       tag: 'button',
       classNames: [CssClasses.BUTTON],
       textContent: 'delete',
-      callback: (): void => this.getElement()?.remove(),
+      callback: (): void => listElement.element?.remove(),
       imageURL: '',
     };
 
