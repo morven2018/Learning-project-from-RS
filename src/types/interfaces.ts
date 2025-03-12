@@ -8,6 +8,7 @@ export interface IElementParameters {
   imageURL?: string;
   imageAlt?: '404 Not Found';
   title?: string;
+  id?: number;
 }
 
 export interface IElementCreator {
