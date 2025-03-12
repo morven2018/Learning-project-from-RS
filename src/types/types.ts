@@ -4,4 +4,5 @@ export type OptionType = {
   type: string;
   minlength?: string;
   min?: string;
+  placeholder: string;
 };

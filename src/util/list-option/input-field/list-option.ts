@@ -17,6 +17,11 @@ const INPUT_TYPES = {
   VALUE: 'number',
 };
 
+const INPUT_PLACEHOLDER = {
+  TITLE: 'name of option',
+  VALUE: 'weight',
+};
+
 export default class ListCreator extends ElementCreator {
   public nextId = 1;
   constructor(parameters: IElementParameters) {
@@ -41,11 +46,13 @@ export default class ListCreator extends ElementCreator {
     this.addInput(listElement, CssClasses.INPUT_TITLE, {
       type: INPUT_TYPES.TITLE,
       minlength: '2',
+      placeholder: INPUT_PLACEHOLDER.TITLE,
     });
 
     this.addInput(listElement, CssClasses.INPUT_TITLE, {
       type: INPUT_TYPES.VALUE,
       min: '0',
+      placeholder: INPUT_PLACEHOLDER.VALUE,
     });
 
     const buttonParameters = {
