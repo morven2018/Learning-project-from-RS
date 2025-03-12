@@ -5,7 +5,8 @@ export interface IElementParameters {
   classNames: Array<string>;
   textContent: string;
   callback?: (event: Event) => void;
-  img?: string;
+  imageURL?: string;
+  imageAlt?: '404 Not Found';
   title?: string;
 }
 
