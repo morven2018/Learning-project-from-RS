@@ -24,6 +24,7 @@ const INPUT_PLACEHOLDER = {
 
 export default class ListCreator extends ElementCreator {
   public nextId = 1;
+  public elements: HTMLElement[] = [];
   constructor(parameters: IElementParameters) {
     super(parameters);
     this.createElement(parameters);
@@ -42,6 +43,8 @@ export default class ListCreator extends ElementCreator {
     };
 
     const listElement = new ElementCreator(liParameters);
+    listElement.element?.setAttribute('id', this.nextId?.toString());
+
     /*const idElement =  */ this.addId(listElement);
     this.addInput(listElement, CssClasses.INPUT_TITLE, {
       type: INPUT_TYPES.TITLE,
@@ -59,22 +62,44 @@ export default class ListCreator extends ElementCreator {
       tag: 'button',
       classNames: [CssClasses.BUTTON],
       textContent: 'delete',
-      callback: (): void => listElement.element?.remove(),
+      callback: (): void => {
+        const id = listElement.element?.getAttribute('id');
+        if (id) {
+          this.removeElementById(id);
+        }
+      },
       imageURL: '',
     };
 
     const backButton = new ButtonCreator(buttonParameters);
+
     listElement.addInnerElement(backButton);
+    console.log(listElement.element);
+    if (isNotNullable(listElement.element))
+      this.elements?.push(listElement.element);
+    console.log(this.elements);
     this.addInnerElement(listElement);
     this.nextId += 1;
   }
 
-  public clearList(): void {
-    while (this.element?.firstChild) {
-      if (isNotNullable(this.element)) this.element.firstChild.remove();
+  public removeElementById(id: string): void {
+    const index = this.elements.findIndex(
+      (element) => element.getAttribute('id') === id
+    );
+
+    if (index !== -1) {
+      const element = this.elements[index];
+      element.remove();
+      this.elements.splice(index, 1);
     }
-    this.nextId = 1;
-    this.addElement();
+  }
+
+  public clearList(): void {
+    if (this.elements)
+      for (const element of this.elements) {
+        element.remove();
+      }
+    this.elements = [];
   }
 
   private addId(parent: ElementCreator): ElementCreator {
