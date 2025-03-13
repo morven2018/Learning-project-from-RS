@@ -36,7 +36,7 @@ export default class Router {
       case '#/':
       case '#/index':
       case '': {
-        this.mainView.setContent(new IndexView(this.state));
+        this.mainView.setContent(new IndexView(this.state, this));
         break;
       }
       default: {

@@ -4,6 +4,7 @@ import ListCreator from '../../../util/list-option/list-option';
 import type { IElementParameters } from '../../../types/interfaces';
 import type State from '../../../state/state';
 import ListConfigurator from '../../../util/list-configurator/list-configurator';
+import Router from '../../../router/router';
 
 const CssClasses = {
   INDEX: 'index',
@@ -32,13 +33,16 @@ const PAGE = 'index';
 export default class IndexView extends View {
   public list: ListCreator | undefined;
   private state: State;
-  constructor(state: State) {
+  private router: Router;
+
+  constructor(state: State, router: Router) {
     const parameters = {
       tag: 'section',
       classNames: [CssClasses.INDEX],
     };
     super(parameters);
     this.state = state;
+    this.router = router;
     this.configureView();
     this.list?.loadFromLocalStorage();
   }
@@ -99,7 +103,13 @@ export default class IndexView extends View {
         tag: 'button',
         classNames: [CssClasses.BUTTON_START],
         textContent: TEXT_CONTENT.BUTTON_START,
-        callback: (): void => {},
+        callback: (): void => {
+          if (
+            isNotNullable(this.list?.elements) &&
+            this.list.elements.length > 1
+          )
+            this.router.navigateTo('#/decision-picker');
+        },
         imageURL: '',
       });
     }
