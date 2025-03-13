@@ -64,5 +64,9 @@ export interface IListCreator {
   addElement: (info: IElementInfo) => HTMLElement | undefined;
   removeElementById: (id: string) => void;
   clearList: VoidMethodType;
-  // setOnInputChangeCallback(callback: () => void): void;
+  setOnInputChangeCallback(callback: () => void): void;
+}
+
+export interface IFormView {
+  configureView: (message?: string) => void;
 }
