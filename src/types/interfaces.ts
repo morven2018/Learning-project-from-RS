@@ -1,4 +1,4 @@
-import type { CallbackType } from './types';
+import type { CallbackType, VoidMethodType } from './types';
 
 export interface IElementParameters {
   tag: string;
@@ -35,4 +35,34 @@ export interface IHeaderView extends IView {
 export interface IMainView extends IView {
   setContent: (content: IView) => void;
   getPages: (mainComponent: HTMLElement) => void;
+}
+
+export interface IState {
+  fields: Map<string, string>;
+  setField: (name: string, value: string) => void;
+  getField: (name: string) => string;
+  saveState: VoidMethodType;
+}
+
+export interface IJSONObject {
+  list: Array<IElementInfo>;
+  lastId: number;
+}
+export interface IElementInfo {
+  id: string;
+  title: string;
+  weight: string;
+}
+export interface IListCreator {
+  nextId: number;
+  elements: HTMLElement[];
+  state: IState;
+  saveToLocalStorage: VoidMethodType;
+  loadFromLocalStorage: VoidMethodType;
+  getElements: () => HTMLElement[];
+  createElement: (parameters: IElementParameters) => void;
+  addElement: (info: IElementInfo) => void;
+  removeElementById: (id: string) => void;
+  clearList: VoidMethodType;
+  setOnInputChangeCallback(callback: () => void): void;
 }

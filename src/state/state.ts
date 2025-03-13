@@ -1,17 +1,18 @@
-import { isNotNullable } from '../util/is-nullable';
+import type { IState } from '../types/interfaces';
+import { isNotNullable, isNullable } from '../util/is-nullable';
 
 const KEY_FOR_SAVE_TO_LOCALSTORAGE = 'DecisionMakingToolApp';
 
-export default class State {
+export default class State implements IState {
   public fields: Map<string, string>;
+
   constructor() {
     this.fields = State.loadState();
-
     window.addEventListener('beforeunload', this.saveState.bind(this));
   }
 
   public static isFieldsObject(data: unknown): data is Record<string, string> {
-    if (typeof data !== 'object' || data === null) {
+    if (isNullable(data)) {
       return false;
     }
     for (const [key, value] of Object.entries(data)) {
@@ -19,6 +20,7 @@ export default class State {
     }
     return true;
   }
+
   public static loadState(): Map<string, string> {
     const storageItem = localStorage.getItem(KEY_FOR_SAVE_TO_LOCALSTORAGE);
     if (isNotNullable(storageItem)) {

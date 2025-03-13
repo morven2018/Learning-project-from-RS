@@ -6,3 +6,4 @@ export type OptionType = {
   min?: string;
   placeholder: string;
 };
+export type VoidMethodType = () => void;

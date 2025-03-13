@@ -1,6 +1,6 @@
 import View from '../../view';
 import { isNotNullable } from '../../../util/is-nullable';
-import ListCreator from '../../../util/list-option/input-field/list-option';
+import ListCreator from '../../../util/list-option/list-option';
 import type { IElementParameters } from '../../../types/interfaces';
 import type State from '../../../state/state';
 import ListConfigurator from '../../../util/list-configurator/list-configurator';
@@ -40,6 +40,7 @@ export default class IndexView extends View {
     super(parameters);
     this.state = state;
     this.configureView();
+    this.list?.loadFromLocalStorage();
   }
 
   public configureView(): void {
@@ -53,7 +54,11 @@ export default class IndexView extends View {
         classNames: [CssClasses.BUTTON_ADD_ELEMENT],
         textContent: TEXT_CONTENT.BUTTON_ADD_ELEMENT,
         callback: (): void => {
-          this.list?.addElement();
+          this.list?.addElement({
+            id: this.list.nextId.toString(),
+            title: '',
+            weight: '',
+          });
         },
         imageURL: '',
       });
@@ -63,6 +68,14 @@ export default class IndexView extends View {
         classNames: [CssClasses.BUTTON_PASTE_LIST],
         textContent: TEXT_CONTENT.BUTTON_PASTE_LIST,
         callback: (): void => {},
+        imageURL: '',
+      });
+
+      this.addButton({
+        tag: 'button',
+        classNames: [CssClasses.BUTTON_CLEAR_LIST],
+        textContent: TEXT_CONTENT.BUTTON_CLEAR_LIST,
+        callback: (): void => this.list?.clearList(),
         imageURL: '',
       });
 
@@ -78,9 +91,10 @@ export default class IndexView extends View {
         tag: 'button',
         classNames: [CssClasses.BUTTON_UPLOAD],
         textContent: TEXT_CONTENT.BUTTON_UPLOAD,
-        callback: (): void => {},
+        callback: (): void => this.uploadJSON(),
         imageURL: '',
       });
+
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_START],
@@ -105,6 +119,37 @@ export default class IndexView extends View {
       link.click();
       URL.revokeObjectURL(link.href);
     }
+  }
+
+  public uploadJSON(): void {
+    const fileUpload = document.createElement('input');
+    fileUpload.type = 'file';
+    fileUpload.accept = '.json';
+
+    fileUpload.addEventListener('change', (event) => {
+      const handleFileUpload = async (): Promise<void> => {
+        if (event.target instanceof HTMLInputElement) {
+          const file = event.target.files?.[0];
+          if (isNotNullable(file)) {
+            try {
+              const content = await file.text();
+              const jsonData: unknown = JSON.parse(content);
+              if (isNotNullable(this.list)) {
+                ListConfigurator.fromJSON(jsonData, this.list);
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        }
+      };
+
+      handleFileUpload().catch((error) => {
+        console.error(error);
+      });
+    });
+
+    fileUpload.click();
   }
 
   private addList(): void {

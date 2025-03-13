@@ -1,9 +1,14 @@
-import type State from '../../../state/state';
-import type { IElementParameters } from '../../../types/interfaces';
-import type { OptionType } from '../../../types/types';
-import ButtonCreator from '../../buttons/button';
-import ElementCreator from '../../element-creator';
-import { isNotNullable } from '../../is-nullable';
+import type State from '../../state/state';
+import type {
+  IElementInfo,
+  IElementParameters,
+  IListCreator,
+} from '../../types/interfaces';
+import type { OptionType } from '../../types/types';
+import ButtonCreator from '../buttons/button';
+import ElementCreator from '../element-creator';
+import { isNotNullable } from '../is-nullable';
+import ListConfigurator from '../list-configurator/list-configurator';
 
 const CssClasses = {
   LI: 'list__element',
@@ -23,32 +28,57 @@ const INPUT_PLACEHOLDER = {
   VALUE: 'weight',
 };
 
-export default class ListCreator extends ElementCreator {
+export default class ListCreator
+  extends ElementCreator
+  implements IListCreator
+{
   public nextId = 1;
   public elements: HTMLElement[] = [];
   public state: State;
+  private onInputChangeCallback: (() => void) | undefined;
+
   constructor(parameters: IElementParameters, state: State) {
     super(parameters);
     this.state = state;
     this.createElement(parameters);
+    this.setOnInputChangeCallback(() => this.saveToLocalStorage());
+    this.loadFromLocalStorage();
+  }
+
+  private static addId(parent: ElementCreator, id: string): ElementCreator {
+    const idParameters = {
+      tag: 'div',
+      classNames: [CssClasses.INDEX],
+      textContent: `#${id}`,
+      id: Number(id),
+    };
+
+    const idElement = new ElementCreator(idParameters);
+    parent.addInnerElement(idElement);
+    return idElement;
   }
 
   public createElement(parameters: IElementParameters): void {
     super.createElement(parameters);
-    this.addElement();
-  }
-
-  public addElement(): void {
-    const liParameters = {
-      tag: 'li',
-      classNames: [CssClasses.LI, `${CssClasses.LI}-${this.nextId}`],
-      textContent: '',
+    const info = {
+      id: String(this.nextId),
+      title: '',
+      weight: '',
     };
 
-    const listElement = new ElementCreator(liParameters);
-    listElement.element?.setAttribute('id', this.nextId?.toString());
+    this.addElement(info);
+  }
 
-    /*const idElement =  */ this.addId(listElement);
+  public addElement(info: IElementInfo): void {
+    const liParameters = {
+      tag: 'li',
+      classNames: [CssClasses.LI, `${CssClasses.LI}-${info.id}`],
+      textContent: '',
+    };
+    const listElement = new ElementCreator(liParameters);
+    listElement.element?.setAttribute('id', info.id?.toString());
+
+    /*const idElement =  */ ListCreator.addId(listElement, info.id);
     this.addInput(listElement, CssClasses.INPUT_TITLE, {
       type: INPUT_TYPES.TITLE,
       minlength: '2',
@@ -69,6 +99,7 @@ export default class ListCreator extends ElementCreator {
         const id = listElement.element?.getAttribute('id');
         if (id) {
           this.removeElementById(id);
+          this.saveToLocalStorage();
         }
       },
       imageURL: '',
@@ -82,6 +113,7 @@ export default class ListCreator extends ElementCreator {
     this.addInnerElement(listElement);
     // console.log(this.elements);
     this.nextId += 1;
+    this.saveToLocalStorage();
   }
 
   public removeElementById(id: string): void {
@@ -102,23 +134,35 @@ export default class ListCreator extends ElementCreator {
         element.remove();
       }
     this.elements = [];
+    this.saveToLocalStorage();
+  }
+
+  public setOnInputChangeCallback(callback: () => void): void {
+    this.onInputChangeCallback = callback;
+  }
+
+  public saveToLocalStorage(): void {
+    if (isNotNullable(this)) {
+      const content = ListConfigurator.toJSON(this.getElements(), this.nextId);
+      const jsonContent = JSON.stringify(content);
+      localStorage.setItem('optionList', jsonContent);
+    }
+  }
+
+  public loadFromLocalStorage(): void {
+    const savedList = localStorage.getItem('optionList');
+    if (isNotNullable(savedList)) {
+      try {
+        const jsonData: unknown = JSON.parse(savedList);
+        if (isNotNullable(this)) ListConfigurator.fromJSON(jsonData, this);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 
   public getElements(): HTMLElement[] {
     return this.elements;
-  }
-
-  private addId(parent: ElementCreator): ElementCreator {
-    const idParameters = {
-      tag: 'div',
-      classNames: [CssClasses.INDEX],
-      textContent: `#${this.nextId}`,
-      id: this.nextId,
-    };
-
-    const idElement = new ElementCreator(idParameters);
-    parent.addInnerElement(idElement);
-    return idElement;
   }
 
   private addInput(
@@ -130,7 +174,11 @@ export default class ListCreator extends ElementCreator {
       tag: 'input',
       classNames: [className],
       textContent: '',
-      callback: undefined,
+      callback: (): void => {
+        if (this.onInputChangeCallback) {
+          this.onInputChangeCallback();
+        }
+      },
     };
     const inputElement = new ElementCreator(inputParameters);
     parent.addInnerElement(inputElement);
@@ -139,6 +187,7 @@ export default class ListCreator extends ElementCreator {
         inputElement.element?.setAttribute(option, options[option]);
     }
     inputElement.element?.setAttribute('id', `${className}_${this.nextId}`);
+
     // console.log(inputElement.element);
     return inputElement;
   }
