@@ -51,11 +51,23 @@ export default class ListCreator
         console.log(14, jsonData);
         if (isNotNullable(jsonData)) {
           const data = ListConfigurator.fromJSON(jsonData);
-          console.log(15, data);
-          if (data && ListConfigurator.isIElementInfo(data.list)) {
-            const newElement = this.addElement(data.list);
-            if (isNotNullable(newElement)) this.elements.push(newElement);
-            this.nextId = data.lastId + 1;
+          console.log(
+            15,
+            data,
+            isNotNullable(data) &&
+              ListConfigurator.isIJSONObject(data) &&
+              Array.isArray(data.list)
+          );
+          if (isNotNullable(data) && ListConfigurator.isIJSONObject(data)) {
+            console.log(157);
+
+            for (const item of data.list) {
+              if (ListConfigurator.isIElementInfo(item)) {
+                const newElement = this.addElement(item);
+                if (isNotNullable(newElement)) this.elements.push(newElement);
+                this.nextId = data.lastId + 1;
+              }
+            }
           }
         }
       } catch (error) {

@@ -53,15 +53,15 @@ export default class ListConfigurator {
     if (typeof data !== 'object' || isNullable(data)) {
       return false;
     }
-    // console.log('a1', data);
+    console.log('a1', data);
     if (!('list' in data) || !('lastId' in data)) {
       return false;
     }
-    // console.log('a2');
+    console.log('a2');
     if (isNotNullable(data.list) && !Array.isArray(data.list)) {
       return false;
     }
-    // console.log('a3', data.list);
+    console.log('a3', data.list);
     if (isNotNullable(data.list)) {
       for (const element of data.list) {
         if (!this.isIElementInfo(element)) {
@@ -69,11 +69,11 @@ export default class ListConfigurator {
         }
       }
     }
-    // console.log('a4');
+    console.log('a4');
     if (typeof data.lastId !== 'number') {
       return false;
     }
-    // console.log('a5');
+    console.log('a5');
     return true;
   }
 
