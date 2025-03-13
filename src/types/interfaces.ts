@@ -68,5 +68,10 @@ export interface IListCreator {
 }
 
 export interface IFormView {
+  onClose: VoidMethodType;
   configureView: (message?: string) => void;
+}
+export interface IBaseFormOptions {
+  message: string;
+  onClose: () => void;
 }

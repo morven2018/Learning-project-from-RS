@@ -4,7 +4,8 @@ import ListCreator from '../../../util/list-option/list-option';
 import type { IElementParameters } from '../../../types/interfaces';
 import type State from '../../../state/state';
 import ListConfigurator from '../../../util/list-configurator/list-configurator';
-import Router from '../../../router/router';
+import type Router from '../../../router/router';
+import MessageFormView from './form-view/message-form';
 
 const CssClasses = {
   INDEX: 'index',
@@ -109,6 +110,28 @@ export default class IndexView extends View {
             this.list.elements.length > 1
           )
             this.router.navigateTo('#/decision-picker');
+          else {
+            console.log('dfbfdg');
+            const TEXT_MESSAGE = 'There are should at least 2 list option';
+            const messageForm = new MessageFormView({
+              message: TEXT_MESSAGE,
+              onClose: (): void => {
+                if (
+                  isNotNullable(messageForm.viewElementCreator) &&
+                  isNotNullable(messageForm.viewElementCreator.element)
+                )
+                  messageForm.viewElementCreator.element.remove();
+              },
+            });
+            if (
+              isNotNullable(messageForm.viewElementCreator?.element) &&
+              typeof messageForm.viewElementCreator?.element !== 'string'
+            )
+              this.viewElementCreator?.element?.append(
+                messageForm.viewElementCreator?.element
+              );
+            console.log('dfgbfdg');
+          }
         },
         imageURL: '',
       });

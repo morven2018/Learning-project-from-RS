@@ -35,7 +35,7 @@ export default class ListCreator
   public nextId = 1;
   public elements: HTMLElement[] = [];
   public state: State;
-  // private onInputChangeCallback: (() => void) | undefined;
+  private onInputChangeCallback: (() => void) | undefined;
 
   constructor(parameters: IElementParameters, state: State) {
     super(parameters);
@@ -47,10 +47,10 @@ export default class ListCreator
       this.nextId = loadedData.lastId + 1;
     }
 
-    /* this.setOnInputChangeCallback(() => {
+    this.setOnInputChangeCallback(() => {
       State.saveToLocalStorage(this.elements, this.nextId);
     });
-    this.setOnInputChangeCallback(() => this.saveToLocalStorage()); */
+    this.setOnInputChangeCallback(() => this.saveToLocalStorage());
     this.loadFromLocalStorage();
   }
 
@@ -149,9 +149,9 @@ export default class ListCreator
     State.saveToLocalStorage(this.elements, this.nextId);
   }
 
-  /* public setOnInputChangeCallback(callback: () => void): void {
+  public setOnInputChangeCallback(callback: () => void): void {
     this.onInputChangeCallback = callback;
-  } */
+  }
 
   public saveToLocalStorage(): void {
     if (isNotNullable(this)) {
@@ -195,15 +195,15 @@ export default class ListCreator
     }
     inputElement.element?.setAttribute('id', `${className}_${this.nextId}`);
 
-    /* if (inputElement.element instanceof HTMLInputElement) {
+    if (inputElement.element instanceof HTMLInputElement) {
       inputElement.element.addEventListener('input', () => {
         if (this.onInputChangeCallback) {
           this.onInputChangeCallback();
         }
       });
-    } */
+    }
 
-    // console.log(inputElement.element);
+    console.log(inputElement.element);
     return inputElement;
   }
 }
