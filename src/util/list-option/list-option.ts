@@ -1,4 +1,4 @@
-import type State from '../../state/state';
+import State from '../../state/state';
 import type {
   IElementInfo,
   IElementParameters,
@@ -35,13 +35,22 @@ export default class ListCreator
   public nextId = 1;
   public elements: HTMLElement[] = [];
   public state: State;
-  private onInputChangeCallback: (() => void) | undefined;
+  // private onInputChangeCallback: (() => void) | undefined;
 
   constructor(parameters: IElementParameters, state: State) {
     super(parameters);
     this.state = state;
     this.createElement(parameters);
-    this.setOnInputChangeCallback(() => this.saveToLocalStorage());
+    const loadedData = State.loadFromLocalStorage(this);
+    if (loadedData) {
+      this.elements = loadedData.elements;
+      this.nextId = loadedData.lastId + 1;
+    }
+
+    /* this.setOnInputChangeCallback(() => {
+      State.saveToLocalStorage(this.elements, this.nextId);
+    });
+    this.setOnInputChangeCallback(() => this.saveToLocalStorage()); */
     this.loadFromLocalStorage();
   }
 
@@ -69,7 +78,7 @@ export default class ListCreator
     this.addElement(info);
   }
 
-  public addElement(info: IElementInfo): void {
+  public addElement(info: IElementInfo): HTMLElement | undefined {
     const liParameters = {
       tag: 'li',
       classNames: [CssClasses.LI, `${CssClasses.LI}-${info.id}`],
@@ -113,7 +122,8 @@ export default class ListCreator
     this.addInnerElement(listElement);
     // console.log(this.elements);
     this.nextId += 1;
-    this.saveToLocalStorage();
+    State.saveToLocalStorage(this.elements, this.nextId);
+    return listElement.element;
   }
 
   public removeElementById(id: string): void {
@@ -125,6 +135,7 @@ export default class ListCreator
       const element = this.elements[index];
       element.remove();
       this.elements.splice(index, 1);
+      State.saveToLocalStorage(this.elements, this.nextId);
     }
   }
 
@@ -134,12 +145,13 @@ export default class ListCreator
         element.remove();
       }
     this.elements = [];
-    this.saveToLocalStorage();
+    this.nextId = 1;
+    State.saveToLocalStorage(this.elements, this.nextId);
   }
 
-  public setOnInputChangeCallback(callback: () => void): void {
+  /* public setOnInputChangeCallback(callback: () => void): void {
     this.onInputChangeCallback = callback;
-  }
+  } */
 
   public saveToLocalStorage(): void {
     if (isNotNullable(this)) {
@@ -174,11 +186,6 @@ export default class ListCreator
       tag: 'input',
       classNames: [className],
       textContent: '',
-      callback: (): void => {
-        if (this.onInputChangeCallback) {
-          this.onInputChangeCallback();
-        }
-      },
     };
     const inputElement = new ElementCreator(inputParameters);
     parent.addInnerElement(inputElement);
@@ -187,6 +194,14 @@ export default class ListCreator
         inputElement.element?.setAttribute(option, options[option]);
     }
     inputElement.element?.setAttribute('id', `${className}_${this.nextId}`);
+
+    /* if (inputElement.element instanceof HTMLInputElement) {
+      inputElement.element.addEventListener('input', () => {
+        if (this.onInputChangeCallback) {
+          this.onInputChangeCallback();
+        }
+      });
+    } */
 
     // console.log(inputElement.element);
     return inputElement;

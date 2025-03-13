@@ -3,16 +3,16 @@ import type {
   IJSONObject,
   IListCreator,
 } from '../../types/interfaces';
-import { isNullable } from '../is-nullable';
+import { isNotNullable, isNullable } from '../is-nullable';
 
 export default class ListConfigurator {
   public static toJSON(
     elementList: HTMLElement[],
-    lastID: number
+    lastId: number
   ): IJSONObject {
     const result: IJSONObject = {
       list: [],
-      lastId: lastID - 1,
+      lastId: lastId - 1,
     };
     if (elementList?.length > 0)
       for (const element of elementList) {
@@ -33,20 +33,35 @@ export default class ListConfigurator {
     return result;
   }
 
-  public static fromJSON(jsonData: unknown, list: IListCreator): void {
+  public static fromJSON(
+    jsonData: unknown,
+    list: IListCreator
+  ): {
+    elements: HTMLElement[];
+    lastId: number;
+  } {
+    const elements: HTMLElement[] = [];
     if (ListConfigurator.isIJSONObject(jsonData)) {
       list.clearList();
       for (const element of jsonData.list) {
-        console.log(element.id);
         const parameters = {
           id: element.id.slice(1),
           title: element.title,
           weight: element.weight,
         };
-        list.addElement(parameters);
+
+        const newElement = list.addElement(parameters);
+
+        if (isNotNullable(newElement)) {
+          elements.push(newElement);
+        }
       }
       list.nextId = jsonData.lastId;
     }
+    return {
+      elements,
+      lastId: list.nextId,
+    };
   }
 
   public static isIJSONObject(data: unknown): data is IJSONObject {

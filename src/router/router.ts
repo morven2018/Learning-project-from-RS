@@ -2,7 +2,8 @@ import type MainView from '../view/main/view';
 import IndexView from '../view/main/index/index-view';
 import PickerView from '../view/main/decision-picker/picker-view';
 import NotFoundView from '../view/main/not-found/not-found-view';
-import type State from '../state/state';
+import State from '../state/state';
+import { isNotNullable } from '../util/is-nullable';
 
 export default class Router {
   private mainView: MainView;
@@ -14,7 +15,7 @@ export default class Router {
     this.setupRouting();
   }
   public navigateTo(path: string): void {
-    console.log(this.mainView);
+    this.saveState();
     globalThis.location.hash = path;
   }
 
@@ -29,7 +30,7 @@ export default class Router {
     switch (hash) {
       case '#/decision-picker':
       case 'decision-picker': {
-        this.mainView.setContent(new PickerView());
+        this.mainView.setContent(new PickerView(this.state));
         break;
       }
       case '#/':
@@ -41,6 +42,16 @@ export default class Router {
       default: {
         this.mainView.setContent(new NotFoundView());
         break;
+      }
+    }
+  }
+  private saveState(): void {
+    if (isNotNullable(this.mainView.state)) {
+      const elements = this.mainView.state.getElements();
+      const nextId = this.mainView.state.getNextId();
+
+      if (isNotNullable(elements) && isNotNullable(nextId)) {
+        State.saveToLocalStorage(elements, nextId - 1);
       }
     }
   }

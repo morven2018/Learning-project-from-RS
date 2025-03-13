@@ -1,3 +1,4 @@
+import type State from '../../state/state';
 import { isNotNullable } from '../../util/is-nullable';
 import View from '../view';
 
@@ -6,12 +7,14 @@ const CssClasses = {
 };
 
 export default class MainView extends View {
-  constructor() {
+  public state: State;
+  constructor(state: State) {
     const parameters = {
       tag: 'main',
       classNames: [CssClasses.MAIN],
     };
     super(parameters);
+    this.state = state;
   }
 
   public setContent(content: View): void {

@@ -159,6 +159,7 @@ export default class IndexView extends View {
       textContent: '',
     };
     this.list = new ListCreator(parameters, this.state);
+    this.list.state.setListCreator(this.list);
     if (isNotNullable(this.viewElementCreator))
       this.viewElementCreator.addInnerElement(this.list);
   }

@@ -7,12 +7,13 @@ import MainView from './view/main/view';
 export default class App {
   private header: HeaderView;
   private main: MainView;
+  private state: State;
 
   constructor() {
-    const state = new State();
+    this.state = new State();
     this.header = new HeaderView();
-    this.main = new MainView();
-    new Router(this.main, state);
+    this.main = new MainView(this.state);
+    new Router(this.main, this.state);
 
     this.createView();
   }

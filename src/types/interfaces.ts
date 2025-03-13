@@ -61,8 +61,8 @@ export interface IListCreator {
   loadFromLocalStorage: VoidMethodType;
   getElements: () => HTMLElement[];
   createElement: (parameters: IElementParameters) => void;
-  addElement: (info: IElementInfo) => void;
+  addElement: (info: IElementInfo) => HTMLElement | undefined;
   removeElementById: (id: string) => void;
   clearList: VoidMethodType;
-  setOnInputChangeCallback(callback: () => void): void;
+  // setOnInputChangeCallback(callback: () => void): void;
 }

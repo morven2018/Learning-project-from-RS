@@ -1,5 +1,6 @@
 import View from '../../view';
 import { isNotNullable } from '../../../util/is-nullable';
+import type State from '../../../state/state';
 
 const CssClasses = {
   INDEX: 'index',
@@ -7,7 +8,8 @@ const CssClasses = {
 const PAGE = 'decision-picker';
 
 export default class PickerView extends View {
-  constructor() {
+  constructor(state: State) {
+    console.log(state);
     const parameters = {
       tag: 'section',
       classNames: [CssClasses.INDEX],
