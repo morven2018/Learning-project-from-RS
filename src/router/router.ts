@@ -14,13 +14,18 @@ export default class Router {
     this.state = state;
     this.setupRouting();
   }
+
   public navigateTo(path: string): void {
     this.saveState();
     globalThis.location.hash = path;
   }
 
   private setupRouting(): void {
-    globalThis.addEventListener('hashchange', () => this.handleRoute());
+    globalThis.addEventListener('hashchange', () => {
+      this.saveState();
+      this.handleRoute();
+      console.log(789_879);
+    });
     this.handleRoute();
   }
 
@@ -45,13 +50,14 @@ export default class Router {
       }
     }
   }
+
   private saveState(): void {
     if (isNotNullable(this.mainView.state)) {
       const elements = this.mainView.state.getElements();
       const nextId = this.mainView.state.getNextId();
 
       if (isNotNullable(elements) && isNotNullable(nextId)) {
-        State.saveToLocalStorage(elements, nextId - 1);
+        State.saveToLocalStorage(elements, nextId);
       }
     }
   }

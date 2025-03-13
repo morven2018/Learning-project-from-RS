@@ -39,19 +39,33 @@ export default class ListCreator
 
   constructor(parameters: IElementParameters, state: State) {
     super(parameters);
-    this.state = state;
     this.createElement(parameters);
-    const loadedData = State.loadFromLocalStorage(this);
-    if (loadedData) {
-      this.elements = loadedData.elements;
-      this.nextId = loadedData.lastId + 1;
+
+    this.state = state;
+
+    const savedList = localStorage.getItem('optionList');
+    console.log(147, savedList);
+    if (isNotNullable(savedList)) {
+      try {
+        const jsonData: unknown = JSON.parse(savedList);
+        console.log(14, jsonData);
+        if (isNotNullable(jsonData)) {
+          const data = ListConfigurator.fromJSON(jsonData);
+          console.log(15, data);
+          if (data && ListConfigurator.isIElementInfo(data.list)) {
+            const newElement = this.addElement(data.list);
+            if (isNotNullable(newElement)) this.elements.push(newElement);
+            this.nextId = data.lastId + 1;
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     this.setOnInputChangeCallback(() => {
       State.saveToLocalStorage(this.elements, this.nextId);
     });
-    this.setOnInputChangeCallback(() => this.saveToLocalStorage());
-    this.loadFromLocalStorage();
   }
 
   private static addId(parent: ElementCreator, id: string): ElementCreator {
@@ -117,12 +131,14 @@ export default class ListCreator
     const backButton = new ButtonCreator(buttonParameters);
 
     listElement.addInnerElement(backButton);
-    if (isNotNullable(listElement.element))
+    if (isNotNullable(listElement.element)) {
       this.elements?.push(listElement.element);
-    this.addInnerElement(listElement);
-    // console.log(this.elements);
-    this.nextId += 1;
-    State.saveToLocalStorage(this.elements, this.nextId);
+      console.log(174, this.elements);
+      this.addInnerElement(listElement);
+      // console.log(this.elements);
+      this.nextId += 1;
+      State.saveToLocalStorage(this.elements, this.nextId);
+    }
     return listElement.element;
   }
 
@@ -138,10 +154,10 @@ export default class ListCreator
       State.saveToLocalStorage(this.elements, this.nextId);
     }
   }
-
   public clearList(): void {
     if (this.elements)
       for (const element of this.elements) {
+        console.log(12, element);
         element.remove();
       }
     this.elements = [];
@@ -166,7 +182,7 @@ export default class ListCreator
     if (isNotNullable(savedList)) {
       try {
         const jsonData: unknown = JSON.parse(savedList);
-        if (isNotNullable(this)) ListConfigurator.fromJSON(jsonData, this);
+        if (isNotNullable(this)) ListConfigurator.fromJSON(jsonData);
       } catch (error) {
         console.error(error);
       }

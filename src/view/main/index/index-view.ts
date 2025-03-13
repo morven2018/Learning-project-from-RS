@@ -168,7 +168,7 @@ export default class IndexView extends View {
               const content = await file.text();
               const jsonData: unknown = JSON.parse(content);
               if (isNotNullable(this.list)) {
-                ListConfigurator.fromJSON(jsonData, this.list);
+                ListConfigurator.fromJSON(jsonData);
               }
             } catch (error) {
               console.error(error);

@@ -1,8 +1,4 @@
-import type {
-  IElementInfo,
-  IJSONObject,
-  IListCreator,
-} from '../../types/interfaces';
+import type { IElementInfo, IJSONObject } from '../../types/interfaces';
 import { isNotNullable, isNullable } from '../is-nullable';
 
 export default class ListConfigurator {
@@ -10,11 +6,12 @@ export default class ListConfigurator {
     elementList: HTMLElement[],
     lastId: number
   ): IJSONObject {
+    if (isNullable(lastId)) lastId = 2;
     const result: IJSONObject = {
       list: [],
       lastId: lastId - 1,
     };
-    if (elementList?.length > 0)
+    if (elementList?.length > 0) {
       for (const element of elementList) {
         if (
           element.children[1] instanceof HTMLInputElement &&
@@ -30,58 +27,53 @@ export default class ListConfigurator {
           result.list.push(elementInfo);
         }
       }
+    }
     return result;
   }
 
   public static fromJSON(
-    jsonData: unknown,
-    list: IListCreator
-  ): {
-    elements: HTMLElement[];
-    lastId: number;
-  } {
-    const elements: HTMLElement[] = [];
+    jsonData: unknown
+  ): { list: HTMLElement[]; lastId: number } | undefined {
     if (ListConfigurator.isIJSONObject(jsonData)) {
-      list.clearList();
-      for (const element of jsonData.list) {
-        const parameters = {
-          id: element.id.slice(1),
-          title: element.title,
-          weight: element.weight,
-        };
-
-        const newElement = list.addElement(parameters);
-
-        if (isNotNullable(newElement)) {
-          elements.push(newElement);
-        }
-      }
-      list.nextId = jsonData.lastId;
+      console.log({
+        list: jsonData.list,
+        lastId: jsonData.lastId,
+      });
+      return {
+        list: jsonData.list,
+        lastId: jsonData.lastId,
+      };
     }
-    return {
-      elements,
-      lastId: list.nextId,
-    };
+    return undefined;
   }
-
-  public static isIJSONObject(data: unknown): data is IJSONObject {
+  // +
+  public static isIJSONObject(
+    data: unknown
+  ): data is { list: HTMLElement[]; lastId: number } {
     if (typeof data !== 'object' || isNullable(data)) {
       return false;
     }
+    // console.log('a1', data);
     if (!('list' in data) || !('lastId' in data)) {
       return false;
     }
-    if (!Array.isArray(data.list)) {
+    // console.log('a2');
+    if (isNotNullable(data.list) && !Array.isArray(data.list)) {
       return false;
     }
-    for (const element of data.list) {
-      if (!ListConfigurator.isIElementInfo(element)) {
-        return false;
+    // console.log('a3', data.list);
+    if (isNotNullable(data.list)) {
+      for (const element of data.list) {
+        if (!this.isIElementInfo(element)) {
+          return false;
+        }
       }
     }
+    // console.log('a4');
     if (typeof data.lastId !== 'number') {
       return false;
     }
+    // console.log('a5');
     return true;
   }
 

@@ -1,26 +1,29 @@
-import type { IListCreator, IState } from '../types/interfaces';
+import type { IState } from '../types/interfaces';
 import { isNotNullable, isNullable } from '../util/is-nullable';
 import ListConfigurator from '../util/list-configurator/list-configurator';
 import type ListCreator from '../util/list-option/list-option';
 
 const KEY_FOR_SAVE_TO_LOCALSTORAGE = 'DecisionMakingToolApp';
 const KEY_FOR_SAVE_LIST = 'optionList';
-
 export default class State implements IState {
   public fields: Map<string, string>;
   private listCreator: ListCreator | undefined;
 
   constructor() {
     this.fields = State.loadState();
-    window.addEventListener('beforeunload', this.saveState.bind(this));
+    console.log('FVX', this.fields); // +
+    // globalThis.addEventListener('beforeunload', this.saveState.bind(this));
   }
 
   public static loadState(): Map<string, string> {
-    const storageItem = localStorage.getItem(KEY_FOR_SAVE_TO_LOCALSTORAGE);
+    const storageItem = localStorage.getItem(KEY_FOR_SAVE_LIST);
+    console.log(1, storageItem);
     if (isNotNullable(storageItem)) {
       try {
         const parsed: unknown = JSON.parse(storageItem);
+        console.log(1, parsed, typeof parsed);
         if (typeof parsed === 'object' && State.isFieldsObject(parsed)) {
+          // console.log(165, Object.entries(parsed));
           return new Map(Object.entries(parsed));
         }
       } catch (error) {
@@ -34,23 +37,23 @@ export default class State implements IState {
     if (isNullable(data)) {
       return false;
     }
-    for (const [key, value] of Object.entries(data)) {
-      if (typeof key === 'string' || typeof value !== 'string') return false;
-    }
+    console.log(51);
+    const [key, value] = Object.entries(data);
+    // console.log(key, value, !Array.isArray(value), typeof key !== 'string');
+    if (typeof key === 'string' || !Array.isArray(value)) return false;
+
+    // console.log(56);
     return true;
   }
 
-  public static loadFromLocalStorage(listCreator: IListCreator):
-    | {
-        elements: HTMLElement[];
-        lastId: number;
-      }
+  public static loadFromLocalStorage():
+    | { list: HTMLElement[]; lastId: number }
     | undefined {
     const savedList = localStorage.getItem(KEY_FOR_SAVE_LIST);
     if (isNotNullable(savedList)) {
       try {
         const jsonData: unknown = JSON.parse(savedList);
-        return ListConfigurator.fromJSON(jsonData, listCreator);
+        return ListConfigurator.fromJSON(jsonData);
       } catch (error) {
         console.error(error);
       }
@@ -63,14 +66,17 @@ export default class State implements IState {
     lastId: number
   ): void {
     if (isNotNullable(elementList)) {
-      const content = ListConfigurator.toJSON(elementList, lastId);
+      /*const content = ListConfigurator.toJSON(elementList, lastId);
       const jsonContent = JSON.stringify(content);
-      localStorage.setItem(KEY_FOR_SAVE_LIST, jsonContent);
+      localStorage.setItem(KEY_FOR_SAVE_TO_LOCALSTORAGE, jsonContent); */
+      console.log(lastId);
     }
   }
+
   public setListCreator(listCreator: ListCreator): void {
     this.listCreator = listCreator;
   }
+
   public getElements(): HTMLElement[] | undefined {
     return this.listCreator?.elements;
   }
@@ -81,10 +87,18 @@ export default class State implements IState {
 
   public saveState(): void {
     const fieldsObject = Object.fromEntries(this.fields.entries());
+    console.log('dfgb', this.fields, this.fields.entries());
     localStorage.setItem(
       KEY_FOR_SAVE_TO_LOCALSTORAGE,
       JSON.stringify(fieldsObject)
     );
+
+    if (this.listCreator) {
+      State.saveToLocalStorage(
+        this.listCreator.elements,
+        this.listCreator.nextId
+      );
+    }
   }
 
   public setField(name: string, value: string): void {
@@ -98,12 +112,4 @@ export default class State implements IState {
     }
     return '';
   }
-
-  /* public saveState(): void {
-    const fieldsObject = Object.fromEntries(this.fields.entries());
-    localStorage.setItem(
-      KEY_FOR_SAVE_TO_LOCALSTORAGE,
-      JSON.stringify(fieldsObject)
-    );
-  } */
 }
