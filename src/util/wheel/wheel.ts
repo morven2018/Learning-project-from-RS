@@ -20,6 +20,11 @@ const TEXT_PARAMETERS = {
 
 export default class WheelCreator extends ElementCreator {
   public valueList: IValueList;
+  private rotationAngle: number = 0;
+  private animationStartTime: number | undefined = undefined;
+  private animationDuration: number = 10_000;
+  private isAnimating: boolean = false;
+  private sectionColors: string[] = [];
 
   constructor(
     parameters: IElementParameters,
@@ -28,57 +33,24 @@ export default class WheelCreator extends ElementCreator {
   ) {
     super(parameters);
     this.valueList = valueList;
+
+    this.sectionColors = Object.keys(valueList).map(() =>
+      WheelCreator.randomColor()
+    );
+
     if (
       isNotNullable(this.element) &&
       this.element instanceof HTMLCanvasElement
     ) {
       this.element.setAttribute('width', SIZE.WIDTH);
       this.element.setAttribute('height', SIZE.HEIGHT);
+      console.log(timer);
 
       const context = this.element.getContext('2d');
-      const centerX = this.element.width / 2;
-      const centerY = this.element.height / 2;
-      const radius = Math.min(centerX, centerY) - 20;
-      const minAngle = this.angle();
-      let startAngle = 0;
-
-      if (isNotNullable(context)) {
-        for (const [key, value] of Object.entries(this.valueList)) {
-          context.beginPath();
-          context.moveTo(centerX, centerY);
-          context.arc(
-            centerX,
-            centerY,
-            radius,
-            startAngle,
-            startAngle + minAngle * value
-          );
-          context.lineTo(centerX, centerY);
-          context.fillStyle = WheelCreator.randomColor();
-          context.fill();
-          context.strokeStyle = 'white';
-          context.stroke();
-
-          const middleAngle = startAngle + (minAngle * value) / 2;
-          const textX = centerX + Math.cos(middleAngle) * (radius / 2);
-          const textY = centerY + Math.sin(middleAngle) * (radius / 2);
-          context.save();
-          context.fillStyle = TEXT_PARAMETERS.COLOR;
-          context.font = TEXT_PARAMETERS.FONT;
-          context.translate(textX, textY);
-          context.rotate(middleAngle);
-          context.textAlign = TEXT_PARAMETERS.ALIGN;
-          context.textBaseline = TEXT_PARAMETERS.BASELINE;
-          context.fillText(key, 0, 0);
-          context.restore();
-
-          startAngle += minAngle * value;
-        }
-
-        WheelCreator.drawArrow(context, centerX, 50, centerX, 20, ARROW_COLOR);
+      if (context) {
+        this.drawWheel(context);
       }
     }
-    console.log(this, valueList, timer);
   }
 
   public static drawArrow(
@@ -131,6 +103,93 @@ export default class WheelCreator extends ElementCreator {
     const g = Math.floor(Math.random() * 106) + 50;
     const b = Math.floor(Math.random() * 106) + 50;
     return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  public startAnimation(): void {
+    if (this.isAnimating) return;
+
+    this.animationStartTime = performance.now();
+    this.isAnimating = true;
+    this.animate();
+  }
+
+  private animate(): void {
+    if (
+      !this.isAnimating ||
+      !this.element ||
+      !(this.element instanceof HTMLCanvasElement)
+    )
+      return;
+
+    const context = this.element.getContext('2d');
+    if (!context) return;
+
+    const currentTime = performance.now();
+    const elapsedTime = currentTime - (this.animationStartTime || 0);
+
+    if (elapsedTime >= this.animationDuration) {
+      this.isAnimating = false;
+      this.rotationAngle = 0;
+      this.drawWheel(context);
+      return;
+    }
+
+    const progress = elapsedTime / this.animationDuration;
+    this.rotationAngle = progress * Math.PI * 4;
+
+    context.clearRect(0, 0, this.element.width, this.element.height);
+    this.drawWheel(context);
+
+    requestAnimationFrame(() => this.animate());
+  }
+
+  private drawWheel(context: CanvasRenderingContext2D): void {
+    if (
+      isNotNullable(this.element) &&
+      this.element instanceof HTMLCanvasElement
+    ) {
+      const centerX = this.element.width / 2;
+      const centerY = this.element.height / 2;
+      const radius = Math.min(centerX, centerY) - 20;
+      const minAngle = this.angle();
+      let startAngle = this.rotationAngle;
+
+      for (const [index, [key, value]] of Object.entries(
+        this.valueList
+      ).entries()) {
+        context.beginPath();
+        context.moveTo(centerX, centerY);
+        context.arc(
+          centerX,
+          centerY,
+          radius,
+          startAngle,
+          startAngle + minAngle * value
+        );
+        context.lineTo(centerX, centerY);
+        context.fillStyle = this.sectionColors[index];
+        context.fill();
+        context.strokeStyle = 'white';
+        context.stroke();
+
+        const middleAngle = startAngle + (minAngle * value) / 2;
+        const textX = centerX + Math.cos(middleAngle) * (radius / 2);
+        const textY = centerY + Math.sin(middleAngle) * (radius / 2);
+        context.save();
+        context.fillStyle = TEXT_PARAMETERS.COLOR;
+        context.font = TEXT_PARAMETERS.FONT;
+        context.translate(textX, textY);
+        context.rotate(middleAngle);
+        context.textAlign = TEXT_PARAMETERS.ALIGN;
+        context.textBaseline = TEXT_PARAMETERS.BASELINE;
+        context.fillText(key, 0, 0);
+        context.restore();
+
+        startAngle += minAngle * value;
+      }
+
+      WheelCreator.drawArrow(context, centerX, 50, centerX, 20, ARROW_COLOR);
+    }
   }
 
   private angle(): number {

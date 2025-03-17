@@ -15,6 +15,7 @@ const CssClasses = {
   BUTTON_SOUND_OFF: 'picker__sound-off_button',
   BUTTON_BACK: 'picker__back_button',
   CANVAS: 'picker_wheel',
+  START: 'Pick',
 };
 
 const TEXT_CONTENT = {
@@ -23,9 +24,6 @@ const TEXT_CONTENT = {
   INPUT: 'Timer',
   BUTTON_SOUND_ON: 'Sound off',
   BUTTON_SOUND_OFF: 'Sound on',
-  BUTTON_CLEAR_LIST: 'Clear List',
-  BUTTON_SAVE: 'Save list to the file',
-  BUTTON_UPLOAD: 'Load list from file',
   BUTTON_START: 'Start',
 };
 
@@ -73,6 +71,14 @@ export default class PickerView extends View {
 
       const timer = new TimerCreator(timerParameters);
       this.viewElementCreator.addInnerElement(timer);
+
+      this.addButton({
+        tag: 'button',
+        classNames: [CssClasses.START],
+        textContent: TEXT_CONTENT.BUTTON_START,
+        callback: (): void => wheel.startAnimation(),
+        imageURL: '',
+      });
 
       const wheelParameter = {
         tag: 'canvas',
