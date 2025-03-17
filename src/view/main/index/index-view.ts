@@ -80,7 +80,7 @@ export default class IndexView extends View {
         tag: 'button',
         classNames: [CssClasses.BUTTON_CLEAR_LIST],
         textContent: TEXT_CONTENT.BUTTON_CLEAR_LIST,
-        callback: (): void => this.list?.clearList(),
+        callback: (): void => this.list?.clearList(true),
         imageURL: '',
       });
 

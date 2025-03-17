@@ -63,7 +63,7 @@ export interface IListCreator {
   createElement: (parameters: IElementParameters) => void;
   addElement: (info: IElementInfo) => HTMLElement | undefined;
   removeElementById: (id: string) => void;
-  clearList: VoidMethodType;
+  clearList: (click?: boolean) => void;
   setOnInputChangeCallback(callback: () => void): void;
 }
 

@@ -12,7 +12,6 @@ export default class State implements IState {
   constructor() {
     this.fields = State.loadState();
     console.log('feilds', this.fields);
-    // globalThis.addEventListener('beforeunload', this.saveState.bind(this));
   }
 
   public static loadState(): Map<string, string> {
@@ -36,12 +35,12 @@ export default class State implements IState {
     if (isNullable(data)) {
       return false;
     }
-    // console.log(51);
-    const [key, value] = Object.entries(data);
-    // console.log(key, value, !Array.isArray(value), typeof key !== 'string');
-    if (typeof key === 'string' || !Array.isArray(value)) return false;
 
-    // console.log(56);
+    for (const key in data) {
+      if (typeof key === 'string' || typeof data[key] !== 'string') {
+        return false;
+      }
+    }
     return true;
   }
 
@@ -65,8 +64,19 @@ export default class State implements IState {
     lastId: number
   ): void {
     console.log('sevetolocalStrage', elementList, lastId);
-    if (isNotNullable(elementList && Number.isNaN(lastId))) {
-      const content = ListConfigurator.toJSON(elementList, lastId);
+    if (isNotNullable(elementList)) {
+      const storedElements = [
+        ...new Set(elementList.map((element) => element.getAttribute('id'))),
+      ]
+        .map((id) =>
+          elementList.find((element) => element.getAttribute('id') === id)
+        )
+        .filter((element) => isNotNullable(element));
+
+      localStorage.removeItem(KEY_FOR_SAVE_LIST);
+      console.log('BGH', localStorage.optionList);
+
+      const content = ListConfigurator.toJSON(storedElements, lastId);
 
       const jsonContent = JSON.stringify(content);
       console.log('save this', jsonContent);
@@ -92,7 +102,7 @@ export default class State implements IState {
     const fieldsObject = Object.fromEntries(this.fields.entries());
     // console.log('dfgb15', this.fields, this.fields.entries(), this.listCreator);
     localStorage.setItem(KEY_FOR_SAVE_LIST, JSON.stringify(fieldsObject));
-    console.log('save state');
+    console.log('save state', fieldsObject);
     if (this.listCreator) {
       State.saveToLocalStorage(
         this.listCreator.elements,

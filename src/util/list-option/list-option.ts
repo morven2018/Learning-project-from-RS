@@ -50,7 +50,6 @@ export default class ListCreator
     if (isNotNullable(savedList)) {
       try {
         const jsonData: unknown = JSON.parse(savedList);
-        // console.log(14, jsonData);
         if (isNotNullable(jsonData)) {
           const data = ListConfigurator.fromJSON(jsonData);
           /* console.log(
@@ -82,6 +81,10 @@ export default class ListCreator
       console.log('save change');
       State.saveToLocalStorage(this.elements, this.nextId);
     });
+
+    window.addEventListener('beforeunload', () => {
+      this.clearList();
+    });
   }
 
   private static addId(parent: ElementCreator, id: string): ElementCreator {
@@ -109,15 +112,6 @@ export default class ListCreator
   }
 
   public addElement(info: IElementInfo): HTMLElement | undefined {
-    if (this.elements) {
-      const existingElement = this.elements.find(
-        (element) => element.getAttribute('id') === info.id
-      );
-      if (existingElement) {
-        return existingElement;
-      }
-    }
-
     const liParameters = {
       tag: 'li',
       classNames: [CssClasses.LI, `${CssClasses.LI}-${info.id}`],
@@ -127,17 +121,25 @@ export default class ListCreator
     listElement.element?.setAttribute('id', info.id?.toString());
 
     /*const idElement =  */ ListCreator.addId(listElement, info.id);
-    this.addInput(listElement, CssClasses.INPUT_TITLE, {
+    const inputTitle = this.addInput(listElement, CssClasses.INPUT_TITLE, {
       type: INPUT_TYPES.TITLE,
       minlength: '2',
       placeholder: INPUT_PLACEHOLDER.TITLE,
     });
 
-    this.addInput(listElement, CssClasses.INPUT_TITLE, {
+    if (inputTitle.element instanceof HTMLInputElement && info.title) {
+      inputTitle.element.value = info.title;
+    }
+
+    const inputWeight = this.addInput(listElement, CssClasses.INPUT_TITLE, {
       type: INPUT_TYPES.VALUE,
       min: '0',
       placeholder: INPUT_PLACEHOLDER.VALUE,
     });
+
+    if (inputWeight.element instanceof HTMLInputElement && info.weight) {
+      inputWeight.element.value = info.weight;
+    }
 
     const buttonParameters = {
       tag: 'button',
@@ -178,14 +180,16 @@ export default class ListCreator
       State.saveToLocalStorage(this.elements, this.nextId);
     }
   }
-  public clearList(): void {
+  public clearList(click: boolean = false): void {
     if (this.elements)
       for (const element of this.elements) {
         //  console.log(12, element);
         element.remove();
       }
+
     this.elements = [];
     this.nextId = 1;
+    if (click) State.saveToLocalStorage(this.elements, this.nextId);
   }
 
   public setOnInputChangeCallback(callback: () => void): void {
