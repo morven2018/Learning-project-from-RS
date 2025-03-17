@@ -1,11 +1,36 @@
 import View from '../../view';
 import { isNotNullable } from '../../../util/is-nullable';
 import type State from '../../../state/state';
+// import type { OptionType } from '../../../types/types';
+// import ElementCreator from '../../../util/element-creator';
+import TimerCreator from '../../../util/timer/timer';
+// import sound from '../../../../asserts/sounds/sound.mp3';
 
 const CssClasses = {
   INDEX: 'index',
+  LIST_CLASS: 'list-of-option',
+  INPUT: 'picker__timer',
+  BUTTON_SOUND_ON: 'picker__sound-on_button',
+  BUTTON_SOUND_OFF: 'picker__sound-off_button',
+  BUTTON_BACK: 'picker__back_button',
 };
-const PAGE = 'decision-picker';
+
+const TEXT_CONTENT = {
+  TITLE: 'Page is not founded',
+  BACK: 'Back',
+  INPUT: 'Timer',
+  BUTTON_SOUND_ON: 'Sound off',
+  BUTTON_SOUND_OFF: 'Sound on',
+  BUTTON_CLEAR_LIST: 'Clear List',
+  BUTTON_SAVE: 'Save list to the file',
+  BUTTON_UPLOAD: 'Load list from file',
+  BUTTON_START: 'Start',
+};
+
+// const PAGE = 'decision-picker';
+
+const exampleList = { point1: 1, point2: 1, point3: 2, point4: 7, point5: 0.8 };
+// const audio = new Audio(sound);
 
 export default class PickerView extends View {
   constructor(state: State) {
@@ -19,7 +44,33 @@ export default class PickerView extends View {
   }
 
   public configureView(): void {
-    if (isNotNullable(this.viewElementCreator))
-      this.viewElementCreator.setTextContent(PAGE);
+    if (isNotNullable(this.viewElementCreator)) {
+      this.viewElementCreator.setTextContent(Object.keys(exampleList).join(''));
+
+      this.addButton({
+        tag: 'button',
+        classNames: [CssClasses.BUTTON_BACK, 'back'],
+        textContent: TEXT_CONTENT.BACK,
+        callback: (): void => globalThis.history.back(),
+        imageURL: '',
+      });
+
+      this.addButton({
+        tag: 'button',
+        classNames: [CssClasses.BUTTON_SOUND_ON],
+        textContent: TEXT_CONTENT.BUTTON_SOUND_ON,
+        callback: (): void => {},
+        imageURL: '',
+      });
+
+      const timerParameters = {
+        tag: 'div',
+        classNames: [CssClasses.INPUT],
+        textContent: '',
+      };
+
+      const timer = new TimerCreator(timerParameters);
+      this.viewElementCreator.addInnerElement(timer);
+    }
   }
 }
