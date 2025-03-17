@@ -2,7 +2,7 @@ import View from '../../view';
 import { isNotNullable } from '../../../util/is-nullable';
 import ListCreator from '../../../util/list-option/list-option';
 import type { IElementParameters } from '../../../types/interfaces';
-import type State from '../../../state/state';
+import State from '../../../state/state';
 import ListConfigurator from '../../../util/list-configurator/list-configurator';
 import type Router from '../../../router/router';
 import MessageFormView from './form-view/message-form';
@@ -171,7 +171,26 @@ export default class IndexView extends View {
               const jsonData: unknown = JSON.parse(content);
               console.log('upload', jsonData);
               if (isNotNullable(this.list)) {
-                ListConfigurator.fromJSON(jsonData);
+                const data = ListConfigurator.fromJSON(jsonData);
+                if (
+                  isNotNullable(data) &&
+                  ListConfigurator.isIJSONObject(data)
+                ) {
+                  for (const item of data.list) {
+                    if (ListConfigurator.isIElementInfo(item)) {
+                      const newElement = this.list.addElement(item);
+                      if (isNotNullable(newElement)) {
+                        this.list.elements.push(newElement);
+                      }
+                    }
+                  }
+                  this.list.nextId = data.lastId + 1;
+
+                  State.saveToLocalStorage(
+                    this.list.elements,
+                    this.list.nextId
+                  );
+                }
               }
             } catch (error) {
               console.error(error);
