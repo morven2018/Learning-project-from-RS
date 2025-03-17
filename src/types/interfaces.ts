@@ -75,3 +75,7 @@ export interface IBaseFormOptions {
   message: string;
   onClose: () => void;
 }
+
+export interface IValueList {
+  [key: string]: number;
+}

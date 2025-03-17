@@ -4,6 +4,7 @@ import type State from '../../../state/state';
 // import type { OptionType } from '../../../types/types';
 // import ElementCreator from '../../../util/element-creator';
 import TimerCreator from '../../../util/timer/timer';
+import WheelCreator from '../../../util/wheel/wheel';
 // import sound from '../../../../asserts/sounds/sound.mp3';
 
 const CssClasses = {
@@ -13,6 +14,7 @@ const CssClasses = {
   BUTTON_SOUND_ON: 'picker__sound-on_button',
   BUTTON_SOUND_OFF: 'picker__sound-off_button',
   BUTTON_BACK: 'picker__back_button',
+  CANVAS: 'picker_wheel',
 };
 
 const TEXT_CONTENT = {
@@ -29,7 +31,7 @@ const TEXT_CONTENT = {
 
 // const PAGE = 'decision-picker';
 
-const exampleList = { point1: 1, point2: 1, point3: 2, point4: 7, point5: 0.8 };
+const exampleList = { title: 1, point2: 1, point3: 2, point4: 7, point5: 0.8 };
 // const audio = new Audio(sound);
 
 export default class PickerView extends View {
@@ -71,6 +73,15 @@ export default class PickerView extends View {
 
       const timer = new TimerCreator(timerParameters);
       this.viewElementCreator.addInnerElement(timer);
+
+      const wheelParameter = {
+        tag: 'canvas',
+        classNames: [CssClasses.CANVAS],
+        textContent: '',
+      };
+
+      const wheel = new WheelCreator(wheelParameter, exampleList, timer);
+      this.viewElementCreator.addInnerElement(wheel);
     }
   }
 }
