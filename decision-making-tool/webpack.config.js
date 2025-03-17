@@ -51,7 +51,7 @@ const baseConfig = {
           {
             loader: 'url-loader',
             options: {
-              limit: 8192,
+              limit: 5192,
               name: 'images/[name].[hash].[ext]',
             },
           },

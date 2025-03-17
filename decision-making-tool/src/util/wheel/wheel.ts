@@ -8,8 +8,8 @@ const SIZE = {
   WIDTH: '400',
   HEIGHT: '400',
 };
-// const ROTATION_SPEED = 0.05;
 const ARROW_COLOR = '#7c8094';
+const STROKE_COLOR = '#b388ff';
 
 const TEXT_PARAMETERS = {
   COLOR: 'white',
@@ -73,8 +73,8 @@ export default class WheelCreator extends ElementCreator {
 
     context.save();
 
-    context.strokeStyle = TEXT_PARAMETERS.COLOR;
-    context.lineWidth = 2;
+    context.strokeStyle = STROKE_COLOR;
+    context.lineWidth = 5;
     context.fillStyle = color;
 
     const midX = (fromX + toX) / 2;
@@ -217,7 +217,7 @@ export default class WheelCreator extends ElementCreator {
         context.lineTo(centerX, centerY);
         context.fillStyle = this.sectionColors[index];
         context.fill();
-        context.strokeStyle = TEXT_PARAMETERS.COLOR;
+        context.strokeStyle = STROKE_COLOR;
         context.stroke();
 
         const middleAngle = startAngle + (minAngle * value) / 2;

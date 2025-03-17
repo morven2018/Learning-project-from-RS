@@ -14,7 +14,6 @@ import deleteIcon from '../../../asserts/icons/delete.png';
 
 const DELETE_URL = deleteIcon.toString();
 
-
 const CssClasses = {
   LI: 'list__element',
   INDEX: 'list__element__id',
@@ -175,7 +174,6 @@ export default class ListCreator
       const element = this.elements[index];
       element.remove();
       this.elements.splice(index, 1);
-      console.log('save remove');
       State.saveToLocalStorage(this.elements, this.nextId);
     }
   }
