@@ -9,6 +9,8 @@ const SIZE = {
   HEIGHT: '400',
 };
 
+const ARROW_COLOR = '#7c8094';
+
 const TEXT_PARAMETERS = {
   COLOR: 'white',
   FONT: '16px Arial',
@@ -72,9 +74,56 @@ export default class WheelCreator extends ElementCreator {
 
           startAngle += minAngle * value;
         }
+
+        WheelCreator.drawArrow(context, centerX, 50, centerX, 20, ARROW_COLOR);
       }
     }
     console.log(this, valueList, timer);
+  }
+
+  public static drawArrow(
+    context: CanvasRenderingContext2D,
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+    color: string,
+    arrowSize: number = 25
+  ): void {
+    const dx = toX - fromX;
+    const dy = toY - fromY;
+    const angle = Math.atan2(dy, dx);
+
+    context.save();
+
+    context.strokeStyle = TEXT_PARAMETERS.COLOR;
+    context.lineWidth = 2;
+    context.fillStyle = color;
+
+    const midX = (fromX + toX) / 2;
+    const midY = (fromY + toY) / 2;
+
+    const triangleHeight = arrowSize * Math.sin(Math.PI / 6);
+
+    const offsetY = triangleHeight / 2;
+
+    context.beginPath();
+    context.moveTo(midX, midY + offsetY);
+
+    context.lineTo(
+      midX - arrowSize * Math.cos(angle - Math.PI / 6),
+      midY - offsetY + arrowSize * Math.sin(angle - Math.PI / 6)
+    );
+    context.lineTo(
+      midX - arrowSize * Math.cos(angle + Math.PI / 6),
+      midY - offsetY + arrowSize * Math.sin(angle + Math.PI / 6)
+    );
+    context.closePath();
+
+    context.stroke();
+    context.fill();
+
+    context.restore();
   }
 
   public static randomColor(): string {
