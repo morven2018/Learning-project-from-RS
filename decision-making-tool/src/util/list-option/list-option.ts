@@ -9,6 +9,7 @@ import ButtonCreator from '../buttons/button';
 import ElementCreator from '../element-creator';
 import { isNotNullable } from '../is-nullable';
 import ListConfigurator from '../list-configurator/list-configurator';
+import './list-option.scss';
 
 const CssClasses = {
   LI: 'list__element',

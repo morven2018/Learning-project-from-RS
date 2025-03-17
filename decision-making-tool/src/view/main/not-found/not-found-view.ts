@@ -1,10 +1,11 @@
 import View from '../../view';
-// import { isNotNullable } from '../../../util/is-nullable';
-// import ElementCreator from '../../../util/element-creator';
-import notFoundImage from '../../../../asserts/404.jpg';
-import './not-found.scss';
-// import ButtonCreator from '../../../util/buttons/button';
 import type { IView } from '../../../types/interfaces';
+
+import './not-found.scss';
+
+import notFoundImage from '../../../../asserts/404.jpg';
+import backIcon from '../../../../asserts/icons/back.png';
+import homeIcon from '../../../../asserts/icons/home.png';
 
 const CssClasses = {
   INDEX: 'not-found',
@@ -14,6 +15,8 @@ const CssClasses = {
 };
 
 const IMAGE_URL = notFoundImage.toString();
+const BACK_URL = backIcon.toString();
+const HOME_URL = homeIcon.toString();
 
 const TEXT_CONTENT = {
   TITLE: 'Page is not founded',
@@ -49,19 +52,21 @@ export default class NotFoundView extends View implements IView {
     this.addButton({
       tag: 'button',
       classNames: [CssClasses.BUTTON, 'back'],
-      textContent: TEXT_CONTENT.BACK,
+      textContent: '',
+      title: TEXT_CONTENT.BACK,
       callback: (): void => globalThis.history.back(),
-      imageURL: '',
+      imageURL: BACK_URL,
     });
 
     this.addButton({
       tag: 'button',
       classNames: [CssClasses.BUTTON, 'to-home-page'],
-      textContent: TEXT_CONTENT.HOME,
+      textContent: '',
+      title: TEXT_CONTENT.HOME,
       callback: (): void => {
         globalThis.location.href = '/';
       },
-      imageURL: '',
+      imageURL: HOME_URL,
     });
   }
 }

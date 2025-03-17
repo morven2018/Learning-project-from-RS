@@ -29,7 +29,7 @@ const TEXT_CONTENT = {
   BUTTON_START: 'Start',
 };
 
-const PAGE = 'index';
+// const PAGE = 'index';
 
 export default class IndexView extends View {
   public list: ListCreator | undefined;
@@ -50,7 +50,7 @@ export default class IndexView extends View {
 
   public configureView(): void {
     if (isNotNullable(this.viewElementCreator)) {
-      this.viewElementCreator.setTextContent(PAGE);
+      // this.viewElementCreator.setTextContent(PAGE);
 
       this.addList();
 

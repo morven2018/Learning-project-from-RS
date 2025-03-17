@@ -3,6 +3,7 @@ import State from './state/state';
 import { isNotNullable, isNullable } from './util/is-nullable';
 import HeaderView from './view/header/header-view';
 import MainView from './view/main/view';
+import './style.scss';
 
 export default class App {
   private header: HeaderView;

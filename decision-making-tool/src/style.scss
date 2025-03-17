@@ -1,0 +1,25 @@
+$primary-bg: #f5f0ff;
+$primary-accent: #8a4fff;
+$secondary-accent: #b388ff;
+$dark-accent: #5e35b1;
+$light-accent: #d1c4e9;
+$text-primary: #2e2e2e;
+$text-secondary: #666666;
+$text-on-accent: #ffffff;
+$additional-color: #8dd1da;
+$light-additional: #d8f1eb;
+$gray-additional: #a0c0cb;
+$light-gray: #5c5c5c;
+
+:root {
+  background-color: $light-gray;
+}
+
+body {
+  background-color: $primary-bg;
+
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+}
