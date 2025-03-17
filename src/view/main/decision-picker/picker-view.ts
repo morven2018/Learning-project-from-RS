@@ -31,7 +31,7 @@ const TEXT_CONTENT = {
 
 // const PAGE = 'decision-picker';
 
-const exampleList = { title: 1, point2: 1, point3: 2, point4: 7, point5: 0.8 };
+const exampleList = { title: 1, point2: 4, point3: 2, point4: 7, point5: 8 };
 // const audio = new Audio(sound);
 
 export default class PickerView extends View {

@@ -8,7 +8,7 @@ const SIZE = {
   WIDTH: '400',
   HEIGHT: '400',
 };
-
+// const ROTATION_SPEED = 0.05;
 const ARROW_COLOR = '#7c8094';
 
 const TEXT_PARAMETERS = {
@@ -118,6 +118,47 @@ export default class WheelCreator extends ElementCreator {
     this.animate();
   }
 
+  private updateArea(rotationAngle: number): void {
+    if (!this.area || !this.area.element) return;
+
+    const selectedItem = this.getSelectedItem(rotationAngle);
+    this.area.element.textContent = selectedItem || '';
+  }
+
+  private highlightArea(): void {
+    if (!this.area || !this.area.element) return;
+
+    this.area.element.style.backgroundColor = 'green';
+  }
+
+  private getSelectedItem(rotationAngle: number): string | undefined {
+    const totalWeight = Object.values(this.valueList).reduce(
+      (sum, weight) => sum + weight,
+      0
+    );
+
+    let normalizedAngle = rotationAngle % (2 * Math.PI);
+    if (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
+
+    normalizedAngle += Math.PI / 2;
+
+    let accumulatedAngle = 0;
+
+    for (const [key, value] of Object.entries(this.valueList)) {
+      const sectorAngle = (2 * Math.PI * value) / totalWeight;
+
+      if (
+        normalizedAngle >= accumulatedAngle &&
+        normalizedAngle <= accumulatedAngle + sectorAngle
+      ) {
+        return key;
+      }
+
+      accumulatedAngle += sectorAngle;
+    }
+    return undefined;
+  }
+
   private animate(): void {
     if (
       !this.isAnimating ||
@@ -136,6 +177,7 @@ export default class WheelCreator extends ElementCreator {
       this.isAnimating = false;
       this.rotationAngle = 0;
       this.drawWheel(context);
+      this.highlightArea();
       return;
     }
 
@@ -144,6 +186,7 @@ export default class WheelCreator extends ElementCreator {
 
     context.clearRect(0, 0, this.element.width, this.element.height);
     this.drawWheel(context);
+    this.updateArea(this.rotationAngle);
 
     requestAnimationFrame(() => this.animate());
   }
@@ -174,7 +217,7 @@ export default class WheelCreator extends ElementCreator {
         context.lineTo(centerX, centerY);
         context.fillStyle = this.sectionColors[index];
         context.fill();
-        context.strokeStyle = 'white';
+        context.strokeStyle = TEXT_PARAMETERS.COLOR;
         context.stroke();
 
         const middleAngle = startAngle + (minAngle * value) / 2;
