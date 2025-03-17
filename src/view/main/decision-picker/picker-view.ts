@@ -5,6 +5,7 @@ import type State from '../../../state/state';
 // import ElementCreator from '../../../util/element-creator';
 import TimerCreator from '../../../util/timer/timer';
 import WheelCreator from '../../../util/wheel/wheel';
+import ElementCreator from '../../../util/element-creator';
 // import sound from '../../../../asserts/sounds/sound.mp3';
 
 const CssClasses = {
@@ -16,6 +17,7 @@ const CssClasses = {
   BUTTON_BACK: 'picker__back_button',
   CANVAS: 'picker_wheel',
   START: 'Pick',
+  PICKED: 'picked_element',
 };
 
 const TEXT_CONTENT = {
@@ -80,13 +82,26 @@ export default class PickerView extends View {
         imageURL: '',
       });
 
+      const pickedElementParameters = {
+        tag: 'p',
+        classNames: [CssClasses.PICKED],
+        textContent: TEXT_CONTENT.BUTTON_START,
+      };
+      const pickedElement = new ElementCreator(pickedElementParameters);
+      this.viewElementCreator.addInnerElement(pickedElement);
+
       const wheelParameter = {
         tag: 'canvas',
         classNames: [CssClasses.CANVAS],
         textContent: '',
       };
 
-      const wheel = new WheelCreator(wheelParameter, exampleList, timer);
+      const wheel = new WheelCreator(
+        wheelParameter,
+        exampleList,
+        timer,
+        pickedElement
+      );
       this.viewElementCreator.addInnerElement(wheel);
     }
   }

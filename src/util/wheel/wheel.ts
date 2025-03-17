@@ -25,15 +25,20 @@ export default class WheelCreator extends ElementCreator {
   private animationDuration: number = 10_000;
   private isAnimating: boolean = false;
   private sectionColors: string[] = [];
+  private area: ElementCreator | undefined = undefined;
 
   constructor(
     parameters: IElementParameters,
     valueList: IValueList,
-    timer: TimerCreator
+    timer: TimerCreator,
+    area: ElementCreator
   ) {
     super(parameters);
     this.valueList = valueList;
+    this.area = area;
 
+    if (isNotNullable(this.area.element))
+      this.area.element.textContent = Object.keys(valueList)[0];
     this.sectionColors = Object.keys(valueList).map(() =>
       WheelCreator.randomColor()
     );
