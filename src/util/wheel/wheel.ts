@@ -1,4 +1,5 @@
 import type { IElementParameters, IValueList } from '../../types/interfaces';
+import { TextAlign, TextBaseline } from '../../types/types';
 import ElementCreator from '../element-creator';
 import { isNotNullable } from '../is-nullable';
 import type TimerCreator from '../timer/timer';
@@ -11,10 +12,13 @@ const SIZE = {
 const TEXT_PARAMETERS = {
   COLOR: 'white',
   FONT: '16px Arial',
+  ALIGN: TextAlign.Center,
+  BASELINE: TextBaseline.Middle,
 };
 
 export default class WheelCreator extends ElementCreator {
   public valueList: IValueList;
+
   constructor(
     parameters: IElementParameters,
     valueList: IValueList,
@@ -35,6 +39,7 @@ export default class WheelCreator extends ElementCreator {
       const radius = Math.min(centerX, centerY) - 20;
       const minAngle = this.angle();
       let startAngle = 0;
+
       if (isNotNullable(context)) {
         for (const [key, value] of Object.entries(this.valueList)) {
           context.beginPath();
@@ -60,8 +65,8 @@ export default class WheelCreator extends ElementCreator {
           context.font = TEXT_PARAMETERS.FONT;
           context.translate(textX, textY);
           context.rotate(middleAngle);
-          context.textAlign = 'center';
-          context.textBaseline = 'middle';
+          context.textAlign = TEXT_PARAMETERS.ALIGN;
+          context.textBaseline = TEXT_PARAMETERS.BASELINE;
           context.fillText(key, 0, 0);
           context.restore();
 

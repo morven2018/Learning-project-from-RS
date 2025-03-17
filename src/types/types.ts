@@ -7,3 +7,20 @@ export type OptionType = {
   placeholder: string;
 };
 export type VoidMethodType = () => void;
+
+export enum TextAlign {
+  Center = 'center',
+  Start = 'start',
+  End = 'end',
+  Left = 'left',
+  Right = 'right',
+}
+
+export enum TextBaseline {
+  Middle = 'middle',
+  Top = 'top',
+  Hanging = 'hanging',
+  Alphabetic = 'alphabetic',
+  Ideographic = 'ideographic',
+  Bottom = 'bottom',
+}
