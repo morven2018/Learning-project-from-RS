@@ -10,6 +10,10 @@ import ElementCreator from '../element-creator';
 import { isNotNullable } from '../is-nullable';
 import ListConfigurator from '../list-configurator/list-configurator';
 import './list-option.scss';
+import deleteIcon from '../../../asserts/icons/delete.png';
+
+const DELETE_URL = deleteIcon.toString();
+
 
 const CssClasses = {
   LI: 'list__element',
@@ -45,7 +49,6 @@ export default class ListCreator
     this.createElement(parameters);
 
     this.state = state;
-    console.log('stat', this.state);
     this.clearList();
 
     const savedList = localStorage.getItem('optionList');
@@ -55,19 +58,9 @@ export default class ListCreator
         const jsonData: unknown = JSON.parse(savedList);
         if (isNotNullable(jsonData)) {
           const data = ListConfigurator.fromJSON(jsonData);
-          /* console.log(
-            15,
-            data,
-            isNotNullable(data) &&
-              ListConfigurator.isIJSONObject(data) &&
-              Array.isArray(data.list)
-          ); */
           if (isNotNullable(data) && ListConfigurator.isIJSONObject(data)) {
-            //  console.log(157);
-
             for (const item of data.list) {
               if (ListConfigurator.isIElementInfo(item)) {
-                //console.log(item);
                 const newElement = this.addElement(item);
                 if (isNotNullable(newElement)) this.elements.push(newElement);
                 this.nextId = data.lastId + 1;
@@ -123,10 +116,11 @@ export default class ListCreator
     const listElement = new ElementCreator(liParameters);
     listElement.element?.setAttribute('id', info.id?.toString());
 
-    /*const idElement =  */ ListCreator.addId(listElement, info.id);
+    ListCreator.addId(listElement, info.id);
     const inputTitle = this.addInput(listElement, CssClasses.INPUT_TITLE, {
       type: INPUT_TYPES.TITLE,
       minlength: '2',
+      maxlength: '80',
       placeholder: INPUT_PLACEHOLDER.TITLE,
     });
 
@@ -137,6 +131,7 @@ export default class ListCreator
     const inputWeight = this.addInput(listElement, CssClasses.INPUT_TITLE, {
       type: INPUT_TYPES.VALUE,
       min: '0',
+      max: '100000',
       placeholder: INPUT_PLACEHOLDER.VALUE,
     });
 
@@ -147,7 +142,8 @@ export default class ListCreator
     const buttonParameters = {
       tag: 'button',
       classNames: [CssClasses.BUTTON],
-      textContent: 'delete',
+      textContent: '',
+      title: 'delete item',
       callback: (): void => {
         const id = listElement.element?.getAttribute('id');
         if (id) {
@@ -156,7 +152,7 @@ export default class ListCreator
           State.saveToLocalStorage(this.elements, this.nextId);
         }
       },
-      imageURL: '',
+      imageURL: DELETE_URL,
     };
 
     const backButton = new ButtonCreator(buttonParameters);
@@ -186,7 +182,6 @@ export default class ListCreator
   public clearList(click: boolean = false): void {
     if (this.elements)
       for (const element of this.elements) {
-        //  console.log(12, element);
         element.remove();
       }
 
@@ -239,7 +234,8 @@ export default class ListCreator
           isNotNullable(inputElement.element) &&
           inputElement.element.getAttribute('type') === INPUT_TYPES.VALUE &&
           inputElement.element instanceof HTMLInputElement &&
-          !REGEX.test(inputElement.element.value)
+          (!REGEX.test(inputElement.element.value) ||
+            inputElement.element.value.length > 6)
         )
           inputElement.element.value = '';
         if (this.onInputChangeCallback) {

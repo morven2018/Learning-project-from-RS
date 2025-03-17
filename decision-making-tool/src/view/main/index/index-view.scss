@@ -1,0 +1,53 @@
+@use '../../../style.scss';
+
+$breakpoint1: 850px;
+
+.index {
+  margin: auto;
+  align-self: center;
+  padding: style.$big-padding;
+  display: grid;
+  justify-items: center;
+  grid-template-rows: auto 50px;
+  grid-template-areas:
+    'list-of-option list-of-option list-of-option list-of-option list-of-option list-of-option'
+    'add-list-element__button paste-list__button clear-list__button save__button upload__button start__button';
+}
+.list-of-option {
+  grid-area: list-of-option;
+  display: flex;
+  flex-direction: column;
+  gap: style.$gap-size;
+  padding: 0;
+  /* @media (max-width: $breakpoint1) {
+    margin: style.$small-padding;
+  } */
+}
+.add-list-element__button,
+.paste-list__button,
+.clear-list__button,
+.save__button,
+.upload__button,
+.start__button {
+  width: 50px;
+  height: 50px;
+  grid-area: auto;
+}
+.add-list-element__button {
+  grid-area: add-list-element__button;
+}
+.paste-list__button {
+  grid-area: paste-list__button;
+}
+.clear-list__button {
+  grid-area: clear-list__button;
+}
+.save__button {
+  grid-area: save__button;
+}
+.upload__button {
+  grid-area: upload__button;
+}
+.start__button {
+  grid-area: start__button;
+}

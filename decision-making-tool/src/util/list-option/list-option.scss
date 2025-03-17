@@ -1,5 +1,37 @@
+@use '../../style.scss';
+
+$breakpoint1: 850px;
+$breakpoint2: 600px;
+
 .list__element {
   list-style: none;
-  display: flex;
-  flex-wrap: no-wrap;
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr 1fr;
+
+  gap: style.$gap-size;
+  background-color: style.$secondary-accent;
+  border-radius: style.$border;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: style.$small-padding;
+  width: 90%;
+  margin: auto;
+  align-items: center;
+  color: style.$text-on-accent;
+
+  @media (max-width: $breakpoint1) {
+    grid-template-columns: 20px 8fr 80px 40px;
+  }
+
+  input {
+    padding: 10px;
+    border-radius: style.$border;
+    border: 1px solid style.$light-gray;
+    background-color: style.$dark-accent;
+    color: style.$light-additional;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    &[type='number'] {
+      max-width: 80px;
+    }
+  }
 }

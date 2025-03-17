@@ -7,6 +7,11 @@ export default class ButtonCreator extends ElementCreator {
     if (parameters.id)
       this.element?.setAttribute('id', parameters.id.toString());
 
+    if (parameters.title) {
+      this.element?.setAttribute('title', parameters.title);
+      this.element?.setAttribute('aria-label', parameters.title);
+    }
+
     if (parameters.imageURL) {
       const imgElement = document.createElement('img');
       imgElement.src = parameters.imageURL;

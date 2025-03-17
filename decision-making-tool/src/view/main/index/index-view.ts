@@ -6,6 +6,20 @@ import State from '../../../state/state';
 import ListConfigurator from '../../../util/list-configurator/list-configurator';
 import type Router from '../../../router/router';
 import MessageFormView from './form-view/message-form';
+import './index-view.scss';
+import addIcon from '../../../../asserts/icons/add.png';
+import pasteIcon from '../../../../asserts/icons/paste.png';
+import clearIcon from '../../../../asserts/icons/clear.png';
+import saveIcon from '../../../../asserts/icons/downloads.png';
+import uploadIcon from '../../../../asserts/icons/upload.png';
+import startIcon from '../../../../asserts/icons/play.png';
+
+const ADD_URL = addIcon.toString();
+const PASTE_URL = pasteIcon.toString();
+const CLEAR_URL = clearIcon.toString();
+const SAVE_URL = saveIcon.toString();
+const UPLOAD_URL = uploadIcon.toString();
+const START_URL = startIcon.toString();
 
 const CssClasses = {
   INDEX: 'index',
@@ -29,8 +43,6 @@ const TEXT_CONTENT = {
   BUTTON_START: 'Start',
 };
 
-// const PAGE = 'index';
-
 export default class IndexView extends View {
   public list: ListCreator | undefined;
   private state: State;
@@ -50,14 +62,13 @@ export default class IndexView extends View {
 
   public configureView(): void {
     if (isNotNullable(this.viewElementCreator)) {
-      // this.viewElementCreator.setTextContent(PAGE);
-
       this.addList();
 
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_ADD_ELEMENT],
-        textContent: TEXT_CONTENT.BUTTON_ADD_ELEMENT,
+        textContent: '',
+        title: TEXT_CONTENT.BUTTON_ADD_ELEMENT,
         callback: (): void => {
           this.list?.addElement({
             id: this.list.nextId.toString(),
@@ -65,45 +76,50 @@ export default class IndexView extends View {
             weight: '',
           });
         },
-        imageURL: '',
+        imageURL: ADD_URL,
       });
 
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_PASTE_LIST],
-        textContent: TEXT_CONTENT.BUTTON_PASTE_LIST,
+        textContent: '',
+        title: TEXT_CONTENT.BUTTON_PASTE_LIST,
         callback: (): void => {},
-        imageURL: '',
+        imageURL: PASTE_URL,
       });
 
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_CLEAR_LIST],
-        textContent: TEXT_CONTENT.BUTTON_CLEAR_LIST,
+        textContent: '',
+        title: TEXT_CONTENT.BUTTON_CLEAR_LIST,
         callback: (): void => this.list?.clearList(true),
-        imageURL: '',
+        imageURL: CLEAR_URL,
       });
 
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_SAVE],
-        textContent: TEXT_CONTENT.BUTTON_SAVE,
+        textContent: '',
+        title: TEXT_CONTENT.BUTTON_SAVE,
         callback: (): void => this.saveJSON(),
-        imageURL: '',
+        imageURL: SAVE_URL,
       });
 
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_UPLOAD],
-        textContent: TEXT_CONTENT.BUTTON_UPLOAD,
+        textContent: '',
+        title: TEXT_CONTENT.BUTTON_UPLOAD,
         callback: (): void => this.uploadJSON(),
-        imageURL: '',
+        imageURL: UPLOAD_URL,
       });
 
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_START],
-        textContent: TEXT_CONTENT.BUTTON_START,
+        textContent: '',
+        title: TEXT_CONTENT.BUTTON_START,
         callback: (): void => {
           if (
             isNotNullable(this.list?.elements) &&
@@ -111,7 +127,6 @@ export default class IndexView extends View {
           )
             this.router.navigateTo('#/decision-picker');
           else {
-            // console.log('dfbfdg');
             const TEXT_MESSAGE = 'There are should at least 2 list option';
             const messageForm = new MessageFormView({
               message: TEXT_MESSAGE,
@@ -130,10 +145,9 @@ export default class IndexView extends View {
               this.viewElementCreator?.element?.append(
                 messageForm.viewElementCreator?.element
               );
-            // console.log('dfgbfdg');
           }
         },
-        imageURL: '',
+        imageURL: START_URL,
       });
     }
   }
