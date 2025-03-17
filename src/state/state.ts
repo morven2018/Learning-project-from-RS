@@ -12,7 +12,7 @@ export default class State implements IState {
   constructor() {
     this.fields = State.loadState();
     console.log('feilds', this.fields);
-    globalThis.addEventListener('beforeunload', this.saveState.bind(this));
+    // globalThis.addEventListener('beforeunload', this.saveState.bind(this));
   }
 
   public static loadState(): Map<string, string> {

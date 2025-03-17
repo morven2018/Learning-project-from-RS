@@ -109,6 +109,15 @@ export default class ListCreator
   }
 
   public addElement(info: IElementInfo): HTMLElement | undefined {
+    if (this.elements) {
+      const existingElement = this.elements.find(
+        (element) => element.getAttribute('id') === info.id
+      );
+      if (existingElement) {
+        return existingElement;
+      }
+    }
+
     const liParameters = {
       tag: 'li',
       classNames: [CssClasses.LI, `${CssClasses.LI}-${info.id}`],
