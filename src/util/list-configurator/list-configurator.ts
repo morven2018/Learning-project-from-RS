@@ -34,22 +34,10 @@ export default class ListConfigurator {
   public static fromJSON(
     jsonData: unknown
   ): { list: HTMLElement[]; lastId: number } | undefined {
+    console.log('fromJSON');
     if (ListConfigurator.isIJSONObject(jsonData)) {
+      console.log(jsonData);
       for (const element of jsonData.list) element.id = element.id.slice(1);
-      /* const resultList = jsonData.list.map((item) => {
-        console.log(item);
-        return 
-         {
-              id: item.id.slice(1),
-              title: item.title,
-              weight: item.weight,
-            
-      }});
-      console.log(resultList);
-      /* console.log({
-        list: jsonData.list,
-        lastId: jsonData.lastId,{id: '#1', title: '', weight: ''}
-      });*/
       return {
         list: jsonData.list,
         lastId: jsonData.lastId,

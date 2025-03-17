@@ -81,7 +81,6 @@ export default class State implements IState {
       const jsonContent = JSON.stringify(content);
       console.log('save this', jsonContent);
       localStorage.setItem(KEY_FOR_SAVE_LIST, jsonContent);
-      // console.log(lastId);
     }
   }
 

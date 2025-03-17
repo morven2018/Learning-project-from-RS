@@ -28,6 +28,8 @@ const INPUT_PLACEHOLDER = {
   VALUE: 'weight',
 };
 
+const REGEX = /^[\d.]+$/;
+
 export default class ListCreator
   extends ElementCreator
   implements IListCreator
@@ -232,6 +234,13 @@ export default class ListCreator
 
     if (inputElement.element instanceof HTMLInputElement) {
       inputElement.element.addEventListener('input', () => {
+        if (
+          isNotNullable(inputElement.element) &&
+          inputElement.element.getAttribute('type') === INPUT_TYPES.VALUE &&
+          inputElement.element instanceof HTMLInputElement &&
+          !REGEX.test(inputElement.element.value)
+        )
+          inputElement.element.value = '';
         if (this.onInputChangeCallback) {
           this.onInputChangeCallback();
         }
