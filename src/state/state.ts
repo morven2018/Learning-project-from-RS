@@ -3,7 +3,7 @@ import { isNotNullable, isNullable } from '../util/is-nullable';
 import ListConfigurator from '../util/list-configurator/list-configurator';
 import type ListCreator from '../util/list-option/list-option';
 
-const KEY_FOR_SAVE_TO_LOCALSTORAGE = 'DecisionMakingToolApp';
+// const KEY_FOR_SAVE_TO_LOCALSTORAGE = 'DecisionMakingToolApp';
 const KEY_FOR_SAVE_LIST = 'optionList';
 export default class State implements IState {
   public fields: Map<string, string>;
@@ -11,19 +11,18 @@ export default class State implements IState {
 
   constructor() {
     this.fields = State.loadState();
-    console.log('FVX', this.fields); // +
-    // globalThis.addEventListener('beforeunload', this.saveState.bind(this));
+    console.log('feilds', this.fields);
+    globalThis.addEventListener('beforeunload', this.saveState.bind(this));
   }
 
   public static loadState(): Map<string, string> {
     const storageItem = localStorage.getItem(KEY_FOR_SAVE_LIST);
-    console.log(1, storageItem);
+    console.log('loadState', storageItem);
     if (isNotNullable(storageItem)) {
       try {
         const parsed: unknown = JSON.parse(storageItem);
-        console.log(1, parsed, typeof parsed);
         if (typeof parsed === 'object' && State.isFieldsObject(parsed)) {
-          // console.log(165, Object.entries(parsed));
+          console.log('parsed', Object.entries(parsed));
           return new Map(Object.entries(parsed));
         }
       } catch (error) {
@@ -37,7 +36,7 @@ export default class State implements IState {
     if (isNullable(data)) {
       return false;
     }
-    console.log(51);
+    // console.log(51);
     const [key, value] = Object.entries(data);
     // console.log(key, value, !Array.isArray(value), typeof key !== 'string');
     if (typeof key === 'string' || !Array.isArray(value)) return false;
@@ -65,11 +64,14 @@ export default class State implements IState {
     elementList: HTMLElement[],
     lastId: number
   ): void {
-    if (isNotNullable(elementList)) {
-      /*const content = ListConfigurator.toJSON(elementList, lastId);
+    console.log('sevetolocalStrage', elementList, lastId);
+    if (isNotNullable(elementList && Number.isNaN(lastId))) {
+      const content = ListConfigurator.toJSON(elementList, lastId);
+
       const jsonContent = JSON.stringify(content);
-      localStorage.setItem(KEY_FOR_SAVE_TO_LOCALSTORAGE, jsonContent); */
-      console.log(lastId);
+      console.log('save this', jsonContent);
+      localStorage.setItem(KEY_FOR_SAVE_LIST, jsonContent);
+      // console.log(lastId);
     }
   }
 
@@ -86,13 +88,11 @@ export default class State implements IState {
   }
 
   public saveState(): void {
+    // console.log('saveState');
     const fieldsObject = Object.fromEntries(this.fields.entries());
-    console.log('dfgb', this.fields, this.fields.entries());
-    localStorage.setItem(
-      KEY_FOR_SAVE_TO_LOCALSTORAGE,
-      JSON.stringify(fieldsObject)
-    );
-
+    // console.log('dfgb15', this.fields, this.fields.entries(), this.listCreator);
+    localStorage.setItem(KEY_FOR_SAVE_LIST, JSON.stringify(fieldsObject));
+    console.log('save state');
     if (this.listCreator) {
       State.saveToLocalStorage(
         this.listCreator.elements,

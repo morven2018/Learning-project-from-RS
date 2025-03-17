@@ -57,7 +57,7 @@ export interface IListCreator {
   nextId: number;
   elements: HTMLElement[];
   state: IState;
-  saveToLocalStorage: VoidMethodType;
+  // saveToLocalStorage: VoidMethodType;
   loadFromLocalStorage: VoidMethodType;
   getElements: () => HTMLElement[];
   createElement: (parameters: IElementParameters) => void;

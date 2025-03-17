@@ -35,10 +35,21 @@ export default class ListConfigurator {
     jsonData: unknown
   ): { list: HTMLElement[]; lastId: number } | undefined {
     if (ListConfigurator.isIJSONObject(jsonData)) {
-      console.log({
+      for (const element of jsonData.list) element.id = element.id.slice(1);
+      /* const resultList = jsonData.list.map((item) => {
+        console.log(item);
+        return 
+         {
+              id: item.id.slice(1),
+              title: item.title,
+              weight: item.weight,
+            
+      }});
+      console.log(resultList);
+      /* console.log({
         list: jsonData.list,
-        lastId: jsonData.lastId,
-      });
+        lastId: jsonData.lastId,{id: '#1', title: '', weight: ''}
+      });*/
       return {
         list: jsonData.list,
         lastId: jsonData.lastId,
@@ -53,15 +64,15 @@ export default class ListConfigurator {
     if (typeof data !== 'object' || isNullable(data)) {
       return false;
     }
-    console.log('a1', data);
+    // console.log('a1', data);
     if (!('list' in data) || !('lastId' in data)) {
       return false;
     }
-    console.log('a2');
+    //  console.log('a2');
     if (isNotNullable(data.list) && !Array.isArray(data.list)) {
       return false;
     }
-    console.log('a3', data.list);
+    // console.log('a3', data.list);
     if (isNotNullable(data.list)) {
       for (const element of data.list) {
         if (!this.isIElementInfo(element)) {
@@ -69,11 +80,11 @@ export default class ListConfigurator {
         }
       }
     }
-    console.log('a4');
+    // console.log('a4');
     if (typeof data.lastId !== 'number') {
       return false;
     }
-    console.log('a5');
+    //  console.log('a5');
     return true;
   }
 

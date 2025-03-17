@@ -24,7 +24,7 @@ export default class Router {
     globalThis.addEventListener('hashchange', () => {
       this.saveState();
       this.handleRoute();
-      console.log(789_879);
+      // console.log(789_879);
     });
     this.handleRoute();
   }

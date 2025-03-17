@@ -111,7 +111,7 @@ export default class IndexView extends View {
           )
             this.router.navigateTo('#/decision-picker');
           else {
-            console.log('dfbfdg');
+            // console.log('dfbfdg');
             const TEXT_MESSAGE = 'There are should at least 2 list option';
             const messageForm = new MessageFormView({
               message: TEXT_MESSAGE,
@@ -130,7 +130,7 @@ export default class IndexView extends View {
               this.viewElementCreator?.element?.append(
                 messageForm.viewElementCreator?.element
               );
-            console.log('dfgbfdg');
+            // console.log('dfgbfdg');
           }
         },
         imageURL: '',

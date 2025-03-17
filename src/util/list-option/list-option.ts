@@ -42,27 +42,30 @@ export default class ListCreator
     this.createElement(parameters);
 
     this.state = state;
+    console.log('stat', this.state);
+    this.clearList();
 
     const savedList = localStorage.getItem('optionList');
-    console.log(147, savedList);
+
     if (isNotNullable(savedList)) {
       try {
         const jsonData: unknown = JSON.parse(savedList);
-        console.log(14, jsonData);
+        // console.log(14, jsonData);
         if (isNotNullable(jsonData)) {
           const data = ListConfigurator.fromJSON(jsonData);
-          console.log(
+          /* console.log(
             15,
             data,
             isNotNullable(data) &&
               ListConfigurator.isIJSONObject(data) &&
               Array.isArray(data.list)
-          );
+          ); */
           if (isNotNullable(data) && ListConfigurator.isIJSONObject(data)) {
-            console.log(157);
+            //  console.log(157);
 
             for (const item of data.list) {
               if (ListConfigurator.isIElementInfo(item)) {
+                //console.log(item);
                 const newElement = this.addElement(item);
                 if (isNotNullable(newElement)) this.elements.push(newElement);
                 this.nextId = data.lastId + 1;
@@ -76,6 +79,7 @@ export default class ListCreator
     }
 
     this.setOnInputChangeCallback(() => {
+      console.log('save change');
       State.saveToLocalStorage(this.elements, this.nextId);
     });
   }
@@ -134,7 +138,8 @@ export default class ListCreator
         const id = listElement.element?.getAttribute('id');
         if (id) {
           this.removeElementById(id);
-          this.saveToLocalStorage();
+          console.log('delete save');
+          State.saveToLocalStorage(this.elements, this.nextId);
         }
       },
       imageURL: '',
@@ -145,11 +150,8 @@ export default class ListCreator
     listElement.addInnerElement(backButton);
     if (isNotNullable(listElement.element)) {
       this.elements?.push(listElement.element);
-      console.log(174, this.elements);
       this.addInnerElement(listElement);
-      // console.log(this.elements);
       this.nextId += 1;
-      State.saveToLocalStorage(this.elements, this.nextId);
     }
     return listElement.element;
   }
@@ -163,30 +165,22 @@ export default class ListCreator
       const element = this.elements[index];
       element.remove();
       this.elements.splice(index, 1);
+      console.log('save remove');
       State.saveToLocalStorage(this.elements, this.nextId);
     }
   }
   public clearList(): void {
     if (this.elements)
       for (const element of this.elements) {
-        console.log(12, element);
+        //  console.log(12, element);
         element.remove();
       }
     this.elements = [];
     this.nextId = 1;
-    State.saveToLocalStorage(this.elements, this.nextId);
   }
 
   public setOnInputChangeCallback(callback: () => void): void {
     this.onInputChangeCallback = callback;
-  }
-
-  public saveToLocalStorage(): void {
-    if (isNotNullable(this)) {
-      const content = ListConfigurator.toJSON(this.getElements(), this.nextId);
-      const jsonContent = JSON.stringify(content);
-      localStorage.setItem('optionList', jsonContent);
-    }
   }
 
   public loadFromLocalStorage(): void {
@@ -231,7 +225,7 @@ export default class ListCreator
       });
     }
 
-    console.log(inputElement.element);
+    // console.log(inputElement.element);
     return inputElement;
   }
 }
