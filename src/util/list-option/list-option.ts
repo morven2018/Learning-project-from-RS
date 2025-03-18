@@ -70,6 +70,16 @@ export default class ListCreator
       } catch (error) {
         console.error(error);
       }
+    } else {
+      this.nextId = 1;
+      const basicParameters = {
+        id: this.nextId.toString(),
+        title: '',
+        weight: '',
+      };
+      const newElement = this.addElement(basicParameters);
+      if (isNotNullable(newElement)) this.elements.push(newElement);
+      this.nextId += 1;
     }
 
     this.setOnInputChangeCallback(() => {

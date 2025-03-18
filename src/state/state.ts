@@ -11,7 +11,6 @@ export default class State implements IState {
 
   constructor() {
     this.fields = State.loadState();
-    console.log('feilds', this.fields);
   }
 
   public static loadState(): Map<string, string> {
