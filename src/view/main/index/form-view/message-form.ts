@@ -1,6 +1,7 @@
 import type { IBaseFormOptions } from '../../../../types/interfaces';
 import ButtonCreator from '../../../../util/buttons/button';
 import FormView from '../../../../util/form/form-view';
+import './form.scss';
 
 const CssClasses = {
   FORM: 'form',

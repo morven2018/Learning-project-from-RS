@@ -13,7 +13,7 @@ import clearIcon from '../../../../asserts/icons/clear.png';
 import saveIcon from '../../../../asserts/icons/downloads.png';
 import uploadIcon from '../../../../asserts/icons/upload.png';
 import startIcon from '../../../../asserts/icons/play.png';
-import PasteFormView from '../../../util/form/paste-form';
+import PasteFormView from './form-view/paste-form';
 
 const ADD_URL = addIcon.toString();
 const PASTE_URL = pasteIcon.toString();
@@ -258,6 +258,7 @@ export default class IndexView extends View {
               weight: isNotNullable(weight) ? weight : '0',
             });
           }
+          State.saveToLocalStorage(this.list?.elements, this.list?.nextId);
         }
       },
     });

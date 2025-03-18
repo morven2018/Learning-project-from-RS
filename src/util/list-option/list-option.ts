@@ -252,7 +252,6 @@ export default class ListCreator
       });
     }
 
-    // console.log(inputElement.element);
     return inputElement;
   }
 }

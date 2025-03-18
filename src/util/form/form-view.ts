@@ -18,7 +18,6 @@ export default class FormView extends View implements IFormView {
       classNames: [CssClasses.BASE_FORM],
     };
     super(parameters);
-    console.log(options);
     this.onClose = options.onClose;
     this.configureView(options.message);
   }

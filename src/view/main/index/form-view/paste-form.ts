@@ -1,8 +1,9 @@
-import View from '../../view/view';
-import ElementCreator from '../element-creator';
-import ButtonCreator from '../buttons/button';
-import type { IBaseFormOptions, IFormView } from '../../types/interfaces';
-import { isNotNullable } from '../is-nullable';
+import View from '../../../view';
+import ElementCreator from '../../../../util/element-creator';
+import ButtonCreator from '../../../../util/buttons/button';
+import type { IBaseFormOptions, IFormView } from '../../../../types/interfaces';
+import { isNotNullable } from '../../../../util/is-nullable';
+import './form.scss';
 
 const CssClasses = {
   BASE_FORM: 'paste-dialog-view',
@@ -20,7 +21,6 @@ const AREA_TEXT = `Paste a list of new options in a CSV-like format:
 export default class PasteFormView extends View implements IFormView {
   public onClose: () => void;
   public onSubmit: (items: string[]) => void;
-  // public showModal: () => void;
   private textarea: HTMLTextAreaElement | undefined = undefined;
 
   constructor(
