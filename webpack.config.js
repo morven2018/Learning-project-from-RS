@@ -11,7 +11,7 @@ const baseConfig = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/morven2018-JSFE2024Q4/decision-making-tool/',
+    publicPath: '/',
   },
   plugins: [
     new HtmlWebpackPlugin({

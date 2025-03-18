@@ -12,7 +12,7 @@ const CssClasses = {
 export default class FormView extends View implements IFormView {
   public onClose: () => void;
 
-  constructor(options: IBaseFormOptions, tag: string = 'div') {
+  constructor(options: IBaseFormOptions, tag: string = 'dialog') {
     const parameters = {
       tag: tag,
       classNames: [CssClasses.BASE_FORM],

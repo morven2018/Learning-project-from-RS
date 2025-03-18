@@ -124,7 +124,7 @@ export default class IndexView extends View {
         callback: (): void => {
           if (
             isNotNullable(this.list?.elements) &&
-            this.list.elements.length > 1
+            this.list.elements.length > 2
           )
             this.router.navigateTo('#/decision-picker');
           else {

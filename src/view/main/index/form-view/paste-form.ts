@@ -14,10 +14,10 @@ const CssClasses = {
 };
 const AREA_TEXT = `Paste a list of new options in a CSV-like format:
 
- title,1                   -> | title                 | 1 |
- title with whitespace,2   -> | title with whitespace | 2 |
- title , with , commas,3   -> | title , with , commas | 3 |
- title with "quotes",4     -> | title with "quotes"   | 4 |`;
+ title,1                             -> | title                               | 1 |
+ title with whitespace,2   -> | title with whitespace    | 2 |
+ title , with , commas,3   -> | title , with , commas     | 3 |
+ title with "quotes",4       -> | title with "quotes"         | 4 |`;
 export default class PasteFormView extends View implements IFormView {
   public onClose: () => void;
   public onSubmit: (items: string[]) => void;
