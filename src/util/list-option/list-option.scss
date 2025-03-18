@@ -1,27 +1,31 @@
 @use '../../style.scss';
 
-$breakpoint1: 850px;
-$breakpoint2: 500px;
+$breakpoint1: 850.1px;
+$breakpoint2: 500.1px;
 
 .list__element {
   list-style: none;
+
   display: grid;
   grid-template-columns: 1fr 8fr 1fr 1fr;
-
   gap: style.$gap-size;
-  background-color: style.$secondary-accent;
-  border-radius: style.$border;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  padding: style.$small-padding;
+  align-items: center;
+
   width: 90%;
   margin: auto;
-  align-items: center;
+  padding: style.$small-padding;
+  border-radius: style.$border;
+
+  background-color: style.$secondary-accent;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
   color: style.$text-on-accent;
 
   .list__element__id {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 10px 10px 10px 20px;
+
     border-radius: style.$border;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
   @media (max-width: $breakpoint2) {
@@ -30,10 +34,13 @@ $breakpoint2: 500px;
 
   input {
     padding: 10px;
-    border-radius: style.$border;
+
     border: 1px solid style.$light-gray;
+    border-radius: style.$border;
+
     background-color: style.$dark-accent;
     color: style.$light-additional;
+
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
     &[type='number'] {

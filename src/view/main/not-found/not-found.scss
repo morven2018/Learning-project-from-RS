@@ -9,10 +9,12 @@ $width80: max(150px, 80%);
     margin: 0 calc(15% + 15px);
   }
   .not-found__text {
-    font-size: style.$info-size;
     align-self: center;
+
     width: 250px;
     margin: 40px auto;
+
+    font-size: style.$info-size;
   }
   .not-found__button {
     transform: translateX(20vw);

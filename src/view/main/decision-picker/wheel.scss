@@ -20,26 +20,36 @@ body {
   grid-area: back;
   height: 40px;
 }
-.picker__sound-on_button {
+.picker__sound-on_button,
+.picker__sound-off_button {
   grid-area: sound;
   height: 40px;
   vertical-align: middle;
+  img {
+    height: 24px;
+    width: 24px;
+  }
 }
 .picker__timer {
   grid-area: timer;
+  height: 40px;
   border: 1px solid style.$gray-additional;
   border-radius: style.$border;
-  height: 40px;
+
+  img {
+    height: 24px;
+    width: 24px;
+  }
 
   .picker__timer__label {
     padding: style.$small-padding;
   }
   .picker__timer__input {
-    border-radius: style.$border;
     width: calc(90% - 50px);
     height: 34px;
-    border: none;
     margin: 3px 0;
+    border: none;
+    border-radius: style.$border;
     background-color: style.$light-accent;
   }
 }
@@ -50,10 +60,12 @@ body {
 
 .picked_element {
   grid-area: p;
-  border: 1px solid style.$gray-additional;
-  border-radius: style.$border;
   padding: style.$small-padding;
   margin: 0;
+
+  border: 1px solid style.$gray-additional;
+  border-radius: style.$border;
+
   text-align: center;
 }
 .picker_wheel {

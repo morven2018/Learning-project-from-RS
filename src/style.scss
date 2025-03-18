@@ -20,17 +20,20 @@ $input-margin: 5px;
 $gap-size: 10px;
 
 :root {
-  background-color: $light-gray;
   box-sizing: content-box;
+  background-color: $light-gray;
   font-family: monospace;
 }
 
 body {
-  background-color: $light-additional;
+  transform: translateY(10%);
+
   max-width: 900px;
   margin: auto;
-  transform: translateY(10%);
+
   border-radius: $border;
+
+  background-color: $light-additional;
   .icon {
     width: 24px;
     height: 24px;
@@ -38,23 +41,26 @@ body {
   }
 
   header {
-    color: $dark-accent;
-    text-align: center;
     padding: $big-padding;
+    text-align: center;
     font-size: $header-size;
+    color: $dark-accent;
   }
 
   button {
-    border: 1px solid $gray-additional;
-    background-color: $secondary-accent;
     padding: 6px;
+
+    border: 1px solid $gray-additional;
     border-radius: $border;
+
+    background-color: $secondary-accent;
+
     cursor: pointer;
 
     &:hover,
     &:focus {
-      background-color: $primary-accent;
       border-color: $text-primary;
+      background-color: $primary-accent;
     }
   }
 }
