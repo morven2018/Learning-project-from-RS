@@ -5,8 +5,10 @@
     "./eslint.config.mjs",
     "index.ts",
     "src/*.ts",
-, "../webpack.dev.config.js"    "../webpack.prod.config.js"
-, "../webpack.config.js"  ],
+    "./webpack.dev.config.js",
+    "./webpack.prod.config.js",
+    "./webpack.config.js"
+  ],
   "exclude": ["node_modules"],
   "compilerOptions": {
     /* Language and Environment */
