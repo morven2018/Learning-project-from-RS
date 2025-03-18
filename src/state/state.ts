@@ -15,12 +15,11 @@ export default class State implements IState {
 
   public static loadState(): Map<string, string> {
     const storageItem = localStorage.getItem(KEY_FOR_SAVE_LIST);
-    console.log('loadState', storageItem);
+
     if (isNotNullable(storageItem)) {
       try {
         const parsed: unknown = JSON.parse(storageItem);
         if (typeof parsed === 'object' && State.isFieldsObject(parsed)) {
-          console.log('parsed', Object.entries(parsed));
           return new Map(Object.entries(parsed));
         }
       } catch (error) {
@@ -62,7 +61,6 @@ export default class State implements IState {
     elementList: HTMLElement[],
     lastId: number
   ): void {
-    console.log('sevetolocalStrage', elementList, lastId);
     if (isNotNullable(elementList)) {
       const storedElements = [
         ...new Set(elementList.map((element) => element.getAttribute('id'))),
@@ -73,12 +71,11 @@ export default class State implements IState {
         .filter((element) => isNotNullable(element));
 
       localStorage.removeItem(KEY_FOR_SAVE_LIST);
-      console.log('BGH', localStorage.optionList);
 
       const content = ListConfigurator.toJSON(storedElements, lastId);
 
       const jsonContent = JSON.stringify(content);
-      console.log('save this', jsonContent);
+
       localStorage.setItem(KEY_FOR_SAVE_LIST, jsonContent);
     }
   }
@@ -96,11 +93,10 @@ export default class State implements IState {
   }
 
   public saveState(): void {
-    // console.log('saveState');
     const fieldsObject = Object.fromEntries(this.fields.entries());
-    // console.log('dfgb15', this.fields, this.fields.entries(), this.listCreator);
+
     localStorage.setItem(KEY_FOR_SAVE_LIST, JSON.stringify(fieldsObject));
-    console.log('save state', fieldsObject);
+
     if (this.listCreator) {
       State.saveToLocalStorage(
         this.listCreator.elements,

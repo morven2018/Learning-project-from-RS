@@ -83,7 +83,6 @@ export default class ListCreator
     }
 
     this.setOnInputChangeCallback(() => {
-      console.log('save change');
       State.saveToLocalStorage(this.elements, this.nextId);
     });
 
@@ -157,7 +156,6 @@ export default class ListCreator
         const id = listElement.element?.getAttribute('id');
         if (id) {
           this.removeElementById(id);
-          console.log('delete save');
           State.saveToLocalStorage(this.elements, this.nextId);
         }
       },

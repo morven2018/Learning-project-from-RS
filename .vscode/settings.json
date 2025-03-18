@@ -4,6 +4,7 @@
     "dotenv",
     "eslintcache",
     "jscoverage",
+    "maxlength",
     "Microbundle",
     "Nuxt",
     "vuepress",

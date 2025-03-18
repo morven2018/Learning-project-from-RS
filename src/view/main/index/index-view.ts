@@ -170,7 +170,6 @@ export default class IndexView extends View {
   }
 
   public uploadJSON(): void {
-    console.log('upload');
     const fileUpload = document.createElement('input');
     fileUpload.type = 'file';
     fileUpload.accept = '.json';
@@ -179,12 +178,10 @@ export default class IndexView extends View {
       const handleFileUpload = async (): Promise<void> => {
         if (event.target instanceof HTMLInputElement) {
           const file = event.target.files?.[0];
-          console.log('upload', file);
           if (isNotNullable(file)) {
             try {
               const content = await file.text();
               const jsonData: unknown = JSON.parse(content);
-              console.log('upload', jsonData);
               if (isNotNullable(this.list)) {
                 const data = ListConfigurator.fromJSON(jsonData);
                 if (
