@@ -18,6 +18,12 @@ $breakpoint2: 600px;
   align-items: center;
   color: style.$text-on-accent;
 
+  .list__element__id {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 10px 10px 20px;
+    border-radius: style.$border;
+  }
+
   @media (max-width: $breakpoint1) {
     grid-template-columns: 20px 8fr 80px 40px;
   }

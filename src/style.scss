@@ -33,6 +33,7 @@ body {
   .icon {
     width: 24px;
     height: 24px;
+    pointer-events: none;
   }
 
   header {
@@ -47,10 +48,12 @@ body {
     background-color: $secondary-accent;
     padding: 6px;
     border-radius: $border;
-    :hover,
-    :focus {
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
       background-color: $primary-accent;
-      border-color: $light-additional;
+      border-color: $text-primary;
     }
   }
 }
