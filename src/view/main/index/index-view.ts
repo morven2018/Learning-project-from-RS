@@ -13,6 +13,7 @@ import clearIcon from '../../../../asserts/icons/clear.png';
 import saveIcon from '../../../../asserts/icons/downloads.png';
 import uploadIcon from '../../../../asserts/icons/upload.png';
 import startIcon from '../../../../asserts/icons/play.png';
+import PasteFormView from '../../../util/form/paste-form';
 
 const ADD_URL = addIcon.toString();
 const PASTE_URL = pasteIcon.toString();
@@ -84,7 +85,7 @@ export default class IndexView extends View {
         classNames: [CssClasses.BUTTON_PASTE_LIST],
         textContent: '',
         title: TEXT_CONTENT.BUTTON_PASTE_LIST,
-        callback: (): void => {},
+        callback: (): void => this.handlePasteList(),
         imageURL: PASTE_URL,
       });
 
@@ -231,5 +232,40 @@ export default class IndexView extends View {
     this.list.state.setListCreator(this.list);
     if (isNotNullable(this.viewElementCreator))
       this.viewElementCreator.addInnerElement(this.list);
+  }
+
+  private handlePasteList(): void {
+    const pasteListForm = new PasteFormView({
+      message: '',
+      onClose: (): void => {
+        if (
+          isNotNullable(pasteListForm.viewElementCreator) &&
+          isNotNullable(pasteListForm.viewElementCreator.element)
+        )
+          pasteListForm.viewElementCreator.element.remove();
+      },
+      onSubmit: (items: string[]): void => {
+        if (isNotNullable(this.list)) {
+          for (const item of items) {
+            const [title, weight] = item.split(',').map((line) => line.trim());
+            this.list?.addElement({
+              id: this.list.nextId.toString(),
+              title: title,
+              weight: weight,
+            });
+          }
+        }
+      },
+    });
+
+    if (
+      isNotNullable(pasteListForm.viewElementCreator?.element) &&
+      typeof pasteListForm.viewElementCreator?.element !== 'string'
+    )
+      this.viewElementCreator?.element?.append(
+        pasteListForm.viewElementCreator?.element
+      );
+
+    pasteListForm.showModal();
   }
 }
