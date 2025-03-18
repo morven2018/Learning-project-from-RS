@@ -1,5 +1,5 @@
 import View from '../../view';
-import { isNotNullable } from '../../../util/is-nullable';
+import { isNotNullable, isNullable } from '../../../util/is-nullable';
 import ListCreator from '../../../util/list-option/list-option';
 import type { IElementParameters } from '../../../types/interfaces';
 import State from '../../../state/state';
@@ -122,10 +122,7 @@ export default class IndexView extends View {
         textContent: '',
         title: TEXT_CONTENT.BUTTON_START,
         callback: (): void => {
-          if (
-            isNotNullable(this.list?.elements) &&
-            this.list.elements.length > 2
-          )
+          if (isNotNullable(this.list?.elements) && this.isEnoughItem())
             this.router.navigateTo('#/decision-picker');
           else {
             const TEXT_MESSAGE = 'There are should at least 2 list option';
@@ -151,6 +148,37 @@ export default class IndexView extends View {
         imageURL: START_URL,
       });
     }
+  }
+
+  public isEnoughItem(): boolean {
+    if (
+      isNullable(this.list) ||
+      isNullable(this.list.elements) ||
+      this.list.elements.length < 2
+    ) {
+      return false;
+    }
+
+    let counter = 0;
+
+    for (const item of this.list.elements) {
+      if (item instanceof HTMLElement) {
+        const childElement = item.children;
+
+        const title = childElement[1];
+        const value = childElement[2];
+        if (
+          title instanceof HTMLInputElement &&
+          value instanceof HTMLInputElement
+        ) {
+          console.log(title.value, value.value);
+          if (title.value !== '' && Number(value.value) > 0) counter += 1;
+        }
+
+        if (counter >= 2) return true;
+      }
+    }
+    return false;
   }
 
   public saveJSON(): void {

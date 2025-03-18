@@ -1,0 +1,62 @@
+@use '../../../style.scss';
+
+body {
+  transform: translateY(10%);
+}
+
+.picker {
+  display: grid;
+  grid-template-areas:
+    'back sound timer'
+    'pick pick pick'
+    'p p p'
+    'wheel wheel wheel';
+  grid-template-rows: 60px 60px 60px 400px;
+  align-items: center;
+  gap: style.$gap-size;
+  padding: 0 style.$big-padding style.$big-padding;
+}
+.picker__back_button {
+  grid-area: back;
+  height: 40px;
+}
+.picker__sound-on_button {
+  grid-area: sound;
+  height: 40px;
+  vertical-align: middle;
+}
+.picker__timer {
+  grid-area: timer;
+  border: 1px solid style.$gray-additional;
+  border-radius: style.$border;
+  height: 40px;
+
+  .picker__timer__label {
+    padding: style.$small-padding;
+  }
+  .picker__timer__input {
+    border-radius: style.$border;
+    width: calc(90% - 50px);
+    height: 34px;
+    border: none;
+    margin: 3px 0;
+    background-color: style.$light-accent;
+  }
+}
+.Pick {
+  grid-area: pick;
+  margin: 0 40px;
+}
+
+.picked_element {
+  grid-area: p;
+  border: 1px solid style.$gray-additional;
+  border-radius: style.$border;
+  padding: style.$small-padding;
+  margin: 0;
+  text-align: center;
+}
+.picker_wheel {
+  grid-area: wheel;
+  margin: 0 auto;
+}

@@ -11,7 +11,7 @@ const baseConfig = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './',
+    publicPath: '/',
   },
   plugins: [
     new HtmlWebpackPlugin({

@@ -34,13 +34,15 @@ export default class Router {
 
     switch (hash) {
       case '#/decision-picker':
-      case 'decision-picker': {
+      case 'decision-picker':
+      case '/decision-picker': {
         this.mainView.setContent(new PickerView(this.state));
         break;
       }
       case '#/':
       case '#/index':
-      case '': {
+      case '':
+      case '/': {
         this.mainView.setContent(new IndexView(this.state, this));
         break;
       }

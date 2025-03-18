@@ -11,6 +11,8 @@ const SIZE = {
 const ARROW_COLOR = '#7c8094';
 const STROKE_COLOR = '#b388ff';
 
+const HIGHLIGHT_COLOR = '# #5e35b1';
+
 const TEXT_PARAMETERS = {
   COLOR: 'white',
   FONT: '16px Arial',
@@ -128,7 +130,7 @@ export default class WheelCreator extends ElementCreator {
   private highlightArea(): void {
     if (!this.area || !this.area.element) return;
 
-    this.area.element.style.backgroundColor = 'green';
+    this.area.element.style.backgroundColor = HIGHLIGHT_COLOR;
   }
 
   private getSelectedItem(rotationAngle: number): string | undefined {

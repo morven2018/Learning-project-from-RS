@@ -1,11 +1,14 @@
 import ElementCreator from '../element-creator';
 import type { IElementParameters } from '../../types/interfaces';
 import { isNotNullable } from '../is-nullable';
+import timer from '../../../asserts/icons/timer.png';
+
+const TIMER = timer.toString();
 
 const INPUT_TYPE = 'number';
-
+const ALT_TEXT = 'Timer';
 const INPUT_PLACEHOLDER = '5 - 30 seconds';
-const REGEX = /^[\d]+$/;
+const REGEX = /^\d+$/;
 
 const DEFAULT_VALUE = '10';
 
@@ -29,9 +32,13 @@ export default class TimerCreator extends ElementCreator {
     const labelParameters = {
       tag: 'label',
       classNames: [CssClasses.LABEL],
-      textContent: 'Timer',
+      textContent: '',
     };
     const label = new ElementCreator(labelParameters);
+    const icon = document.createElement('img');
+    label.element?.append(icon);
+    icon.src = TIMER;
+    icon.alt = ALT_TEXT;
     this.addInnerElement(label);
 
     const inputParameters = {

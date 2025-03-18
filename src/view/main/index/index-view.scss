@@ -19,10 +19,8 @@ $breakpoint1: 650px;
   flex-direction: column;
   gap: style.$gap-size;
   padding: 0;
-  /* @media (max-width: $breakpoint1) {
-    margin: style.$small-padding;
-  } */
 }
+
 .add-list-element__button,
 .paste-list__button,
 .clear-list__button,

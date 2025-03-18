@@ -41,6 +41,7 @@ export default class NotFoundView extends View implements IView {
       tag: 'img',
       classNames: [CssClasses.IMAGE],
       textContent: '',
+      imageURL: IMAGE_URL,
     });
 
     this.addTextMessage({

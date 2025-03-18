@@ -1,15 +1,24 @@
 import View from '../../view';
 import { isNotNullable } from '../../../util/is-nullable';
 import type State from '../../../state/state';
-// import type { OptionType } from '../../../types/types';
-// import ElementCreator from '../../../util/element-creator';
+
 import TimerCreator from '../../../util/timer/timer';
 import WheelCreator from '../../../util/wheel/wheel';
 import ElementCreator from '../../../util/element-creator';
-// import sound from '../../../../asserts/sounds/sound.mp3';
+import './wheel.scss';
+import sound from '../../../../asserts/sounds/sound.mp3';
+import back from '../../../../asserts/icons/back.png';
+import sound_on from '../../../../asserts/icons/sound.png';
+import sound_off from '../../../../asserts/icons/nosound.png';
+import play from '../../../../asserts/icons/play.png';
+
+const SOUND_OFF_URL = sound_off.toString();
+const SOUND_ON_URL = sound_on.toString();
+const BACK = back.toString();
+const PICK = play.toString();
 
 const CssClasses = {
-  INDEX: 'index',
+  INDEX: 'picker',
   LIST_CLASS: 'list-of-option',
   INPUT: 'picker__timer',
   BUTTON_SOUND_ON: 'picker__sound-on_button',
@@ -29,12 +38,16 @@ const TEXT_CONTENT = {
   BUTTON_START: 'Start',
 };
 
-// const PAGE = 'decision-picker';
+const SOUND_STATE_KEY = 'soundState';
 
 const exampleList = { title: 1, point2: 4, point3: 2, point4: 7, point5: 8 };
-// const audio = new Audio(sound);
+const audio = new Audio(sound);
 
 export default class PickerView extends View {
+  private isSoundOn: boolean = true;
+  private soundButton: HTMLButtonElement | undefined = undefined;
+  private soundIcon: HTMLImageElement | undefined = undefined;
+
   constructor(state: State) {
     console.log(state);
     const parameters = {
@@ -42,28 +55,39 @@ export default class PickerView extends View {
       classNames: [CssClasses.INDEX],
     };
     super(parameters);
+    // this.viewElementCreator?.element?.classList =
+    this.loadSoundState();
     this.configureView();
   }
 
   public configureView(): void {
     if (isNotNullable(this.viewElementCreator)) {
-      this.viewElementCreator.setTextContent(Object.keys(exampleList).join(''));
+      // this.viewElementCreator.setTextContent(Object.keys(exampleList).join(''));
 
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_BACK, 'back'],
-        textContent: TEXT_CONTENT.BACK,
+        textContent: '',
+        title: TEXT_CONTENT.BACK,
         callback: (): void => globalThis.history.back(),
-        imageURL: '',
+        imageURL: BACK,
       });
 
-      this.addButton({
+      const button = this.addButtonSound({
         tag: 'button',
-        classNames: [CssClasses.BUTTON_SOUND_ON],
-        textContent: TEXT_CONTENT.BUTTON_SOUND_ON,
-        callback: (): void => {},
-        imageURL: '',
+        classNames: [
+          this.isSoundOn
+            ? CssClasses.BUTTON_SOUND_ON
+            : CssClasses.BUTTON_SOUND_OFF,
+        ],
+        textContent: '',
+        title: this.isSoundOn
+          ? TEXT_CONTENT.BUTTON_SOUND_ON
+          : TEXT_CONTENT.BUTTON_SOUND_OFF,
+        callback: (): void => this.toggleSound(),
+        imageURL: this.isSoundOn ? SOUND_ON_URL : SOUND_OFF_URL,
       });
+      if (button instanceof HTMLButtonElement) this.soundButton = button;
 
       const timerParameters = {
         tag: 'div',
@@ -77,9 +101,10 @@ export default class PickerView extends View {
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.START],
-        textContent: TEXT_CONTENT.BUTTON_START,
+        textContent: '',
+        title: TEXT_CONTENT.BUTTON_START,
         callback: (): void => wheel.startAnimation(),
-        imageURL: '',
+        imageURL: PICK,
       });
 
       const pickedElementParameters = {
@@ -103,6 +128,67 @@ export default class PickerView extends View {
         pickedElement
       );
       this.viewElementCreator.addInnerElement(wheel);
+    }
+  }
+  public addButtonSound(parameters: {
+    tag: string;
+    classNames: string[];
+    textContent: string;
+    title: string;
+    callback: () => void;
+    imageURL: string;
+  }): HTMLElement | undefined {
+    const button = new ElementCreator({
+      tag: parameters.tag,
+      classNames: parameters.classNames,
+      textContent: parameters.textContent,
+    });
+
+    const image = document.createElement('img');
+    image.src = parameters.imageURL;
+    image.setAttribute('title', parameters.title);
+    image.setAttribute('aria-label', parameters.title);
+
+    button.element?.append(image);
+
+    button.element?.addEventListener('click', parameters.callback);
+
+    this.viewElementCreator?.addInnerElement(button);
+
+    this.soundIcon = image;
+
+    return button.getElement();
+  }
+
+  private loadSoundState(): void {
+    const savedState = localStorage.getItem(SOUND_STATE_KEY);
+    if (isNotNullable(savedState)) {
+      this.isSoundOn = savedState === 'true';
+    }
+    audio.volume = this.isSoundOn ? 1 : 0;
+  }
+
+  private toggleSound(): void {
+    this.isSoundOn = !this.isSoundOn;
+
+    localStorage.setItem(SOUND_STATE_KEY, this.isSoundOn.toString());
+
+    audio.volume = this.isSoundOn ? 1 : 0;
+
+    if (this.soundButton && this.soundIcon) {
+      this.soundIcon.src = this.isSoundOn ? SOUND_ON_URL : SOUND_OFF_URL;
+
+      this.soundButton.classList.toggle(
+        CssClasses.BUTTON_SOUND_ON,
+        this.isSoundOn
+      );
+      this.soundButton.classList.toggle(
+        CssClasses.BUTTON_SOUND_OFF,
+        !this.isSoundOn
+      );
+      this.soundButton.title = this.isSoundOn
+        ? TEXT_CONTENT.BUTTON_SOUND_ON
+        : TEXT_CONTENT.BUTTON_SOUND_OFF;
     }
   }
 }
