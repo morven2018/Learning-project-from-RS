@@ -246,12 +246,16 @@ export default class IndexView extends View {
       },
       onSubmit: (items: string[]): void => {
         if (isNotNullable(this.list)) {
+          this.list?.clearList();
           for (const item of items) {
-            const [title, weight] = item.split(',').map((line) => line.trim());
+            const data = item.split(',');
+            let weight = data?.pop()?.trim();
+            const title = data?.join(',');
+            if (Number.isNaN(Number(weight))) weight = '0';
             this.list?.addElement({
               id: this.list.nextId.toString(),
               title: title,
-              weight: weight,
+              weight: isNotNullable(weight) ? weight : '0',
             });
           }
         }
@@ -265,7 +269,6 @@ export default class IndexView extends View {
       this.viewElementCreator?.element?.append(
         pasteListForm.viewElementCreator?.element
       );
-
     pasteListForm.showModal();
   }
 }

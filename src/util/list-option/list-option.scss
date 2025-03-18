@@ -1,7 +1,7 @@
 @use '../../style.scss';
 
 $breakpoint1: 850px;
-$breakpoint2: 600px;
+$breakpoint2: 500px;
 
 .list__element {
   list-style: none;
@@ -24,7 +24,7 @@ $breakpoint2: 600px;
     border-radius: style.$border;
   }
 
-  @media (max-width: $breakpoint1) {
+  @media (max-width: $breakpoint2) {
     grid-template-columns: 20px 8fr 80px 40px;
   }
 
