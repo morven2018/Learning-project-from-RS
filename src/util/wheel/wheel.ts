@@ -22,7 +22,7 @@ const TEXT_PARAMETERS = {
 
 const BASE_ANIMATION_DURATION = 10_000;
 const TO_SECONDS = 1000;
-const ANGULAR_VELOCITY = Math.PI * 2;
+const ANGULAR_VELOCITY = Math.PI / 4;
 
 export default class WheelCreator extends ElementCreator {
   public valueList: IValueList;
@@ -146,17 +146,25 @@ export default class WheelCreator extends ElementCreator {
     let normalizedAngle = rotationAngle % (2 * Math.PI);
     if (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
 
-    normalizedAngle += Math.PI / 2;
+    normalizedAngle -= (3 * Math.PI) / 2;
+    if (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
+
+    normalizedAngle = 2 * Math.PI - normalizedAngle;
 
     let accumulatedAngle = 0;
 
     for (const [key, value] of Object.entries(this.valueList)) {
       const sectorAngle = (2 * Math.PI * value) / totalWeight;
-
       if (
         normalizedAngle >= accumulatedAngle &&
         normalizedAngle <= accumulatedAngle + sectorAngle
       ) {
+        console.log(
+          key,
+          normalizedAngle,
+          accumulatedAngle,
+          accumulatedAngle + sectorAngle
+        );
         return key;
       }
 

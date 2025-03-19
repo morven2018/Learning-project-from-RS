@@ -1,6 +1,6 @@
 import View from '../../view';
 import { isNotNullable } from '../../../util/is-nullable';
-import type State from '../../../state/state';
+import State from '../../../state/state';
 
 import TimerCreator from '../../../util/timer/timer';
 import WheelCreator from '../../../util/wheel/wheel';
@@ -48,8 +48,7 @@ export default class PickerView extends View {
   private soundButton: HTMLButtonElement | undefined = undefined;
   private soundIcon: HTMLImageElement | undefined = undefined;
 
-  constructor(state: State) {
-    console.log(state);
+  constructor() {
     const parameters = {
       tag: 'section',
       classNames: [CssClasses.INDEX],
@@ -61,8 +60,6 @@ export default class PickerView extends View {
 
   public configureView(): void {
     if (isNotNullable(this.viewElementCreator)) {
-      // this.viewElementCreator.setTextContent(Object.keys(exampleList).join(''));
-
       this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_BACK, 'back'],
@@ -96,7 +93,7 @@ export default class PickerView extends View {
 
       const timer = new TimerCreator(timerParameters);
       this.viewElementCreator.addInnerElement(timer);
-      console.log('timer pick', timer);
+      // console.log('timer pick', timer);
 
       this.addButton({
         tag: 'button',
@@ -121,9 +118,10 @@ export default class PickerView extends View {
         textContent: '',
       };
 
+      const optionList = State.getOptionList() || exampleList;
       const wheel = new WheelCreator(
         wheelParameter,
-        exampleList,
+        optionList,
         timer,
         pickedElement
       );

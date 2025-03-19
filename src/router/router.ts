@@ -24,7 +24,6 @@ export default class Router {
     globalThis.addEventListener('hashchange', () => {
       this.saveState();
       this.handleRoute();
-      // console.log(789_879);
     });
     this.handleRoute();
   }
@@ -36,7 +35,7 @@ export default class Router {
       case '#/decision-picker':
       case 'decision-picker':
       case '/decision-picker': {
-        this.mainView.setContent(new PickerView(this.state));
+        this.mainView.setContent(new PickerView());
         break;
       }
       case '#/':
