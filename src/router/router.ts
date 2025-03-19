@@ -35,7 +35,7 @@ export default class Router {
       case '#/decision-picker':
       case 'decision-picker':
       case '/decision-picker': {
-        this.mainView.setContent(new PickerView());
+        this.mainView.setContent(new PickerView(this));
         break;
       }
       case '#/':

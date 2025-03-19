@@ -1,5 +1,5 @@
 import View from '../../view';
-import { isNotNullable } from '../../../util/is-nullable';
+import { isNotNullable, isNullable } from '../../../util/is-nullable';
 import State from '../../../state/state';
 
 import TimerCreator from '../../../util/timer/timer';
@@ -11,6 +11,7 @@ import back from '../../../../asserts/icons/back.png';
 import sound_on from '../../../../asserts/icons/sound.png';
 import sound_off from '../../../../asserts/icons/nosound.png';
 import play from '../../../../asserts/icons/play.png';
+import type Router from '../../../router/router';
 
 const SOUND_OFF_URL = sound_off.toString();
 const SOUND_ON_URL = sound_on.toString();
@@ -47,8 +48,9 @@ export default class PickerView extends View {
   private isSoundOn: boolean = true;
   private soundButton: HTMLButtonElement | undefined = undefined;
   private soundIcon: HTMLImageElement | undefined = undefined;
+  private router: Router;
 
-  constructor() {
+  constructor(router: Router) {
     const parameters = {
       tag: 'section',
       classNames: [CssClasses.INDEX],
@@ -57,8 +59,25 @@ export default class PickerView extends View {
 
     this.audio = new Audio(sound);
     this.audio.loop = true;
+    this.router = router;
     this.loadSoundState();
     this.configureView();
+  }
+
+  public static isEnoughItem(list: Record<string, number>): boolean {
+    if (isNullable(list) || Object.keys(list).length < 2) {
+      return false;
+    }
+
+    let counter = 0;
+    for (const [key, value] of Object.entries(list)) {
+      if (key !== '' && value > 0) {
+        counter += 1;
+      }
+
+      if (counter >= 2) return true;
+    }
+    return false;
   }
 
   public configureView(): void {
@@ -132,9 +151,10 @@ export default class PickerView extends View {
       const optionList = State.shuffleObject(
         State.getOptionList() || exampleList
       );
-
-      console.log(optionList);
-
+      if (!PickerView.isEnoughItem(optionList)) {
+        this.router.navigateTo('#/index');
+        return;
+      }
       const onAnimationEnd = (): void => {
         if (this.isSoundOn) {
           this.audio.pause();
