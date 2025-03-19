@@ -22,7 +22,7 @@ const TEXT_PARAMETERS = {
 
 const BASE_ANIMATION_DURATION = 10_000;
 const TO_SECONDS = 1000;
-const ANGULAR_VELOCITY = Math.PI / 4;
+const ANGULAR_VELOCITY = Math.PI * 2;
 
 export default class WheelCreator extends ElementCreator {
   public valueList: IValueList;
@@ -127,7 +127,12 @@ export default class WheelCreator extends ElementCreator {
 
     this.animationStartTime = performance.now();
     this.isAnimating = true;
-    this.animate();
+
+    const animationDuration = this.timer?.getTimerValue()
+      ? this.timer?.getTimerValue() * TO_SECONDS
+      : BASE_ANIMATION_DURATION;
+
+    this.animate(animationDuration);
   }
 
   private updateArea(rotationAngle: number): void {
@@ -172,11 +177,7 @@ export default class WheelCreator extends ElementCreator {
     return undefined;
   }
 
-  private animate(): void {
-    const animationDuration = this.timer?.getTimerValue()
-      ? this.timer?.getTimerValue() * TO_SECONDS
-      : BASE_ANIMATION_DURATION;
-
+  private animate(animationDuration: number): void {
     if (
       !this.isAnimating ||
       !this.element ||
@@ -204,6 +205,12 @@ export default class WheelCreator extends ElementCreator {
       return;
     }
 
+    const remainingTime =
+      Math.ceil((10 * (animationDuration - elapsedTime)) / TO_SECONDS) / 10;
+    if (this.timer) {
+      this.timer.setTimerValue(remainingTime.toString());
+    }
+
     this.rotationAngle =
       ((ANGULAR_VELOCITY * elapsedTime) / 1000) % (2 * Math.PI);
 
@@ -211,7 +218,7 @@ export default class WheelCreator extends ElementCreator {
     this.drawWheel(context);
     this.updateArea(this.rotationAngle);
 
-    requestAnimationFrame(() => this.animate());
+    requestAnimationFrame(() => this.animate(animationDuration));
   }
 
   private drawWheel(context: CanvasRenderingContext2D): void {
