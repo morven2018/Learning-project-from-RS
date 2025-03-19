@@ -11,7 +11,7 @@ const SIZE = {
 const ARROW_COLOR = '#7c8094';
 const STROKE_COLOR = '#b388ff';
 
-const HIGHLIGHT_COLOR = '# #5e35b1';
+const HIGHLIGHT_COLOR = '#5e35b1';
 
 const TEXT_PARAMETERS = {
   COLOR: 'white',
@@ -20,14 +20,18 @@ const TEXT_PARAMETERS = {
   BASELINE: TextBaseline.Middle,
 };
 
+const BASE_ANIMATION_DURATION = 10_000;
+const TO_SECONDS = 1000;
+const ANGULAR_VELOCITY = Math.PI * 2;
+
 export default class WheelCreator extends ElementCreator {
   public valueList: IValueList;
   private rotationAngle: number = 0;
   private animationStartTime: number | undefined = undefined;
-  private animationDuration: number = 10_000;
   private isAnimating: boolean = false;
   private sectionColors: string[] = [];
   private area: ElementCreator | undefined = undefined;
+  private timer: TimerCreator | undefined = undefined;
 
   constructor(
     parameters: IElementParameters,
@@ -38,6 +42,7 @@ export default class WheelCreator extends ElementCreator {
     super(parameters);
     this.valueList = valueList;
     this.area = area;
+    this.timer = timer;
 
     if (isNotNullable(this.area.element))
       this.area.element.textContent = Object.keys(valueList)[0];
@@ -129,8 +134,7 @@ export default class WheelCreator extends ElementCreator {
 
   private highlightArea(): void {
     if (!this.area || !this.area.element) return;
-
-    this.area.element.style.backgroundColor = HIGHLIGHT_COLOR;
+    this.area.element.style.borderColor = HIGHLIGHT_COLOR;
   }
 
   private getSelectedItem(rotationAngle: number): string | undefined {
@@ -162,6 +166,10 @@ export default class WheelCreator extends ElementCreator {
   }
 
   private animate(): void {
+    const animationDuration = this.timer?.getTimerValue()
+      ? this.timer?.getTimerValue() * TO_SECONDS
+      : BASE_ANIMATION_DURATION;
+
     if (
       !this.isAnimating ||
       !this.element ||
@@ -175,7 +183,7 @@ export default class WheelCreator extends ElementCreator {
     const currentTime = performance.now();
     const elapsedTime = currentTime - (this.animationStartTime || 0);
 
-    if (elapsedTime >= this.animationDuration) {
+    if (elapsedTime >= animationDuration) {
       this.isAnimating = false;
       this.rotationAngle = 0;
       this.drawWheel(context);
@@ -183,8 +191,8 @@ export default class WheelCreator extends ElementCreator {
       return;
     }
 
-    const progress = elapsedTime / this.animationDuration;
-    this.rotationAngle = progress * Math.PI * 4;
+    this.rotationAngle =
+      ((ANGULAR_VELOCITY * elapsedTime) / 1000) % (2 * Math.PI);
 
     context.clearRect(0, 0, this.element.width, this.element.height);
     this.drawWheel(context);

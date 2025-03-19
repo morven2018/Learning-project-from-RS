@@ -55,7 +55,6 @@ export default class PickerView extends View {
       classNames: [CssClasses.INDEX],
     };
     super(parameters);
-    // this.viewElementCreator?.element?.classList =
     this.loadSoundState();
     this.configureView();
   }
@@ -97,6 +96,7 @@ export default class PickerView extends View {
 
       const timer = new TimerCreator(timerParameters);
       this.viewElementCreator.addInnerElement(timer);
+      console.log('timer pick', timer);
 
       this.addButton({
         tag: 'button',

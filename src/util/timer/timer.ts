@@ -26,9 +26,18 @@ const CssClasses = {
 const TIMER_ID = 'timer';
 
 export default class TimerCreator extends ElementCreator {
+  private inputElement: HTMLInputElement | undefined = undefined;
+
+  constructor(parameters: IElementParameters) {
+    super(parameters);
+    this.createElement(parameters);
+  }
+
   public createElement(parameters: IElementParameters): void {
     super.createElement(parameters);
+
     if (parameters.id) this.element?.setAttribute('id', TIMER_ID);
+
     const labelParameters = {
       tag: 'label',
       classNames: [CssClasses.LABEL],
@@ -64,5 +73,24 @@ export default class TimerCreator extends ElementCreator {
     });
 
     this.addInnerElement(input);
+
+    if (input.element instanceof HTMLInputElement)
+      this.inputElement = input.element;
+  }
+
+  public setTimerValue(value: string): void {
+    if (isNotNullable(this.inputElement)) {
+      this.inputElement.value = value;
+    }
+  }
+
+  public getTimerValue(): number {
+    if (
+      isNotNullable(this.inputElement) &&
+      isNotNullable(this.inputElement.value)
+    ) {
+      return Number(this.inputElement.value);
+    }
+    return Number(DEFAULT_VALUE);
   }
 }
