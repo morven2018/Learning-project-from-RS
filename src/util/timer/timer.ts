@@ -7,7 +7,7 @@ const TIMER = timer.toString();
 
 const INPUT_TYPE = 'number';
 const ALT_TEXT = 'Timer';
-const INPUT_PLACEHOLDER = '5 - 30 seconds';
+const INPUT_PLACEHOLDER = 'Input time of choosing';
 const REGEX = /^\d+$/;
 
 const DEFAULT_VALUE = '10';

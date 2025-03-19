@@ -33,18 +33,21 @@ export default class WheelCreator extends ElementCreator {
   private sectionColors: string[] = [];
   private area: ElementCreator | undefined = undefined;
   private timer: TimerCreator | undefined = undefined;
+  private buttons: Array<HTMLElement | undefined> = [];
 
   constructor(
     parameters: IElementParameters,
     valueList: IValueList,
     timer: TimerCreator,
-    area: ElementCreator
+    area: ElementCreator,
+    buttons: Array<HTMLElement | undefined>
   ) {
     super(parameters);
     this.valueList = valueList;
     this.area = area;
     this.timer = timer;
     this.finalRotationAngle = -Math.PI / 2;
+    this.buttons = buttons;
 
     if (isNotNullable(this.area.element))
       this.area.element.textContent = Object.keys(valueList)[0];
@@ -124,6 +127,7 @@ export default class WheelCreator extends ElementCreator {
     if (this.timer) {
       this.timer.disableInput();
     }
+    this.disableButtons();
 
     this.animationStartTime = performance.now();
     this.isAnimating = true;
@@ -202,12 +206,16 @@ export default class WheelCreator extends ElementCreator {
         this.timer.enableInput();
       }
 
+      this.enableButtons();
+      this.timer?.setTimerValue('0');
+
       return;
     }
 
-    const remainingTime =
-      Math.ceil((10 * (animationDuration - elapsedTime)) / TO_SECONDS) / 10;
-    if (this.timer) {
+    const remainingTime = Math.ceil(
+      (animationDuration - elapsedTime) / TO_SECONDS
+    );
+    if (isNotNullable(this.timer)) {
       this.timer.setTimerValue(remainingTime.toString());
     }
 
@@ -276,5 +284,21 @@ export default class WheelCreator extends ElementCreator {
     let parts = 0;
     for (const value of Object.values(this.valueList)) parts += value;
     return (Math.PI * 2) / parts;
+  }
+
+  private disableButtons(): void {
+    for (const button of this.buttons) {
+      if (isNotNullable(button) && button instanceof HTMLButtonElement) {
+        button.disabled = true;
+      }
+    }
+  }
+
+  private enableButtons(): void {
+    for (const button of this.buttons) {
+      if (isNotNullable(button) && button instanceof HTMLButtonElement) {
+        button.disabled = false;
+      }
+    }
   }
 }

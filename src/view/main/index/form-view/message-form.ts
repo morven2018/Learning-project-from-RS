@@ -8,7 +8,6 @@ const CssClasses = {
   INPUT: 'form__input',
   BUTTON: 'form__button_close',
 };
-// const TEXT_MESSAGE = 'There are should at least 2 list option';
 
 export default class MessageFormView extends FormView {
   public onClose: () => void;
@@ -16,10 +15,10 @@ export default class MessageFormView extends FormView {
   constructor(options: IBaseFormOptions) {
     super(options);
     this.onClose = options.onClose;
-    this.addButton();
+    this.addButtons();
   }
 
-  public addButton(): void {
+  public addButtons(): void {
     const buttonParameters = {
       tag: 'button',
       classNames: [CssClasses.BUTTON],

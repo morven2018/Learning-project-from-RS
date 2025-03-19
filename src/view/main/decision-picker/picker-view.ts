@@ -60,7 +60,7 @@ export default class PickerView extends View {
 
   public configureView(): void {
     if (isNotNullable(this.viewElementCreator)) {
-      this.addButton({
+      const backButton = this.addButton({
         tag: 'button',
         classNames: [CssClasses.BUTTON_BACK, 'back'],
         textContent: '',
@@ -69,7 +69,7 @@ export default class PickerView extends View {
         imageURL: BACK,
       });
 
-      const button = this.addButtonSound({
+      const buttonSound = this.addButtonSound({
         tag: 'button',
         classNames: [
           this.isSoundOn
@@ -83,7 +83,8 @@ export default class PickerView extends View {
         callback: (): void => this.toggleSound(),
         imageURL: this.isSoundOn ? SOUND_ON_URL : SOUND_OFF_URL,
       });
-      if (button instanceof HTMLButtonElement) this.soundButton = button;
+      if (buttonSound instanceof HTMLButtonElement)
+        this.soundButton = buttonSound;
 
       const timerParameters = {
         tag: 'div',
@@ -93,9 +94,8 @@ export default class PickerView extends View {
 
       const timer = new TimerCreator(timerParameters);
       this.viewElementCreator.addInnerElement(timer);
-      // console.log('timer pick', timer);
 
-      this.addButton({
+      const pickButton = this.addButton({
         tag: 'button',
         classNames: [CssClasses.START],
         textContent: '',
@@ -121,12 +121,12 @@ export default class PickerView extends View {
       const optionList = State.shuffleObject(
         State.getOptionList() || exampleList
       );
-      console.log('opt', optionList);
       const wheel = new WheelCreator(
         wheelParameter,
         optionList,
         timer,
-        pickedElement
+        pickedElement,
+        [backButton?.element, buttonSound, pickButton?.element]
       );
       this.viewElementCreator.addInnerElement(wheel);
     }

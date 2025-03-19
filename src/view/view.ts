@@ -56,10 +56,13 @@ export default class View implements IView {
     }
   }
 
-  public addButton(buttonParameters: IElementParameters): void {
+  public addButton(
+    buttonParameters: IElementParameters
+  ): ButtonCreator | undefined {
     if (isNotNullable(this.viewElementCreator)) {
       const backButton = new ButtonCreator(buttonParameters);
       this.viewElementCreator.addInnerElement(backButton);
+      return backButton;
     }
   }
 }
