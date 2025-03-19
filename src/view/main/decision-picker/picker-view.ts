@@ -133,6 +133,8 @@ export default class PickerView extends View {
         State.getOptionList() || exampleList
       );
 
+      console.log(optionList);
+
       const onAnimationEnd = (): void => {
         if (this.isSoundOn) {
           this.audio.pause();

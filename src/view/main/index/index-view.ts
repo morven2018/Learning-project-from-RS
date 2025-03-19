@@ -71,11 +71,17 @@ export default class IndexView extends View {
         textContent: '',
         title: TEXT_CONTENT.BUTTON_ADD_ELEMENT,
         callback: (): void => {
-          this.list?.addElement({
-            id: this.list.nextId.toString(),
-            title: '',
-            weight: '',
-          });
+          this.list?.addElement(
+            {
+              id: this.list.nextId.toString(),
+              title: '',
+              weight: '',
+            },
+            true
+          );
+          if (isNotNullable(this.list)) {
+            State.saveToLocalStorage(this.list.elements, this.list.nextId);
+          }
         },
         imageURL: ADD_URL,
       });
@@ -160,19 +166,22 @@ export default class IndexView extends View {
     }
 
     let counter = 0;
-
+    // this.list.removeDuplicates();
     for (const item of this.list.elements) {
       if (item instanceof HTMLElement) {
         const childElement = item.children;
-
+        console.log(item);
         const title = childElement[1];
         const value = childElement[2];
         if (
           title instanceof HTMLInputElement &&
-          value instanceof HTMLInputElement
+          value instanceof HTMLInputElement &&
+          title.value !== '' &&
+          value.value !== '0' &&
+          Number(value.value) > 0
         ) {
-          console.log(title.value, value.value);
-          if (title.value !== '' && Number(value.value) > 0) counter += 1;
+          counter += 1;
+          console.log('coutr', title.value, value.value, counter);
         }
 
         if (counter >= 2) return true;

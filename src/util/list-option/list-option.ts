@@ -7,7 +7,7 @@ import type {
 import type { OptionType } from '../../types/types';
 import ButtonCreator from '../buttons/button';
 import ElementCreator from '../element-creator';
-import { isNotNullable } from '../is-nullable';
+import { isNotNullable, isNullable } from '../is-nullable';
 import ListConfigurator from '../list-configurator/list-configurator';
 import './list-option.scss';
 import deleteIcon from '../../../asserts/icons/delete.png';
@@ -51,6 +51,7 @@ export default class ListCreator
     this.clearList();
 
     const savedList = localStorage.getItem('optionList');
+    this.elements = [];
 
     if (isNotNullable(savedList)) {
       try {
@@ -81,7 +82,6 @@ export default class ListCreator
       if (isNotNullable(newElement)) this.elements.push(newElement);
       this.nextId += 1;
     }
-
     this.setOnInputChangeCallback(() => {
       State.saveToLocalStorage(this.elements, this.nextId);
     });
@@ -112,10 +112,13 @@ export default class ListCreator
       weight: '',
     };
 
-    this.addElement(info);
+    this.addElement(info, true);
   }
 
-  public addElement(info: IElementInfo): HTMLElement | undefined {
+  public addElement(
+    info: IElementInfo,
+    newElement: boolean = false
+  ): HTMLElement | undefined {
     const liParameters = {
       tag: 'li',
       classNames: [CssClasses.LI, `${CssClasses.LI}-${info.id}`],
@@ -166,10 +169,11 @@ export default class ListCreator
 
     listElement.addInnerElement(backButton);
     if (isNotNullable(listElement.element)) {
-      this.elements?.push(listElement.element);
+      if (newElement) this.elements?.push(listElement.element);
       this.addInnerElement(listElement);
       this.nextId += 1;
     }
+
     return listElement.element;
   }
 
@@ -183,8 +187,10 @@ export default class ListCreator
       element.remove();
       this.elements.splice(index, 1);
       State.saveToLocalStorage(this.elements, this.nextId);
+      console.log(this.elements);
     }
   }
+
   public clearList(click: boolean = false): void {
     if (this.elements)
       for (const element of this.elements) {
@@ -214,6 +220,18 @@ export default class ListCreator
 
   public getElements(): HTMLElement[] {
     return this.elements;
+  }
+
+  public removeDuplicates(): void {
+    const uniqueIds = new Set<string>();
+    this.elements = this.elements.filter((element) => {
+      const id = element.dataset.id;
+      if (isNotNullable(id) && isNullable(uniqueIds.has(id))) {
+        uniqueIds.add(id);
+        return true;
+      }
+      return false;
+    });
   }
 
   private addInput(
