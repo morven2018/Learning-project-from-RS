@@ -118,7 +118,10 @@ export default class PickerView extends View {
         textContent: '',
       };
 
-      const optionList = State.getOptionList() || exampleList;
+      const optionList = State.shuffleObject(
+        State.getOptionList() || exampleList
+      );
+      console.log('opt', optionList);
       const wheel = new WheelCreator(
         wheelParameter,
         optionList,

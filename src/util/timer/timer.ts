@@ -93,4 +93,16 @@ export default class TimerCreator extends ElementCreator {
     }
     return Number(DEFAULT_VALUE);
   }
+
+  public disableInput(): void {
+    if (this.inputElement) {
+      this.inputElement.disabled = true;
+    }
+  }
+
+  public enableInput(): void {
+    if (this.inputElement) {
+      this.inputElement.disabled = false;
+    }
+  }
 }

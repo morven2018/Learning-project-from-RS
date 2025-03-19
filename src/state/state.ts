@@ -97,6 +97,17 @@ export default class State implements IState {
     }
   }
 
+  public static shuffleObject<T>(object: Record<string, T>): Record<string, T> {
+    const entries = Object.entries(object);
+
+    for (let index = entries.length - 1; index > 0; index--) {
+      const index_ = Math.floor(Math.random() * (index + 1));
+      [entries[index], entries[index_]] = [entries[index_], entries[index]];
+    }
+
+    return Object.fromEntries(entries);
+  }
+
   public setListCreator(listCreator: ListCreator): void {
     this.listCreator = listCreator;
   }

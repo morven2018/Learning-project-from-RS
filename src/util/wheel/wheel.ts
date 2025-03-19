@@ -121,6 +121,10 @@ export default class WheelCreator extends ElementCreator {
   public startAnimation(): void {
     if (this.isAnimating) return;
 
+    if (this.timer) {
+      this.timer.disableInput();
+    }
+
     this.animationStartTime = performance.now();
     this.isAnimating = true;
     this.animate();
@@ -192,6 +196,11 @@ export default class WheelCreator extends ElementCreator {
       this.rotationAngle = 0;
       this.drawWheel(context);
       this.highlightArea();
+
+      if (this.timer) {
+        this.timer.enableInput();
+      }
+
       return;
     }
 
