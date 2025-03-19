@@ -27,6 +27,7 @@ const ANGULAR_VELOCITY = Math.PI / 4;
 export default class WheelCreator extends ElementCreator {
   public valueList: IValueList;
   private rotationAngle: number = 0;
+  private finalRotationAngle: number = 0;
   private animationStartTime: number | undefined = undefined;
   private isAnimating: boolean = false;
   private sectionColors: string[] = [];
@@ -43,6 +44,7 @@ export default class WheelCreator extends ElementCreator {
     this.valueList = valueList;
     this.area = area;
     this.timer = timer;
+    this.finalRotationAngle = -Math.PI / 2;
 
     if (isNotNullable(this.area.element))
       this.area.element.textContent = Object.keys(valueList)[0];
@@ -56,7 +58,6 @@ export default class WheelCreator extends ElementCreator {
     ) {
       this.element.setAttribute('width', SIZE.WIDTH);
       this.element.setAttribute('height', SIZE.HEIGHT);
-      console.log(timer);
 
       const context = this.element.getContext('2d');
       if (context) {
@@ -159,12 +160,6 @@ export default class WheelCreator extends ElementCreator {
         normalizedAngle >= accumulatedAngle &&
         normalizedAngle <= accumulatedAngle + sectorAngle
       ) {
-        console.log(
-          key,
-          normalizedAngle,
-          accumulatedAngle,
-          accumulatedAngle + sectorAngle
-        );
         return key;
       }
 
@@ -193,6 +188,7 @@ export default class WheelCreator extends ElementCreator {
 
     if (elapsedTime >= animationDuration) {
       this.isAnimating = false;
+      this.finalRotationAngle = this.rotationAngle;
       this.rotationAngle = 0;
       this.drawWheel(context);
       this.highlightArea();
@@ -218,7 +214,9 @@ export default class WheelCreator extends ElementCreator {
       const centerY = this.element.height / 2;
       const radius = Math.min(centerX, centerY) - 20;
       const minAngle = this.angle();
-      let startAngle = this.rotationAngle;
+      let startAngle = this.isAnimating
+        ? this.rotationAngle
+        : this.finalRotationAngle;
 
       for (const [index, [key, value]] of Object.entries(
         this.valueList
