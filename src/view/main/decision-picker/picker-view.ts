@@ -41,9 +41,9 @@ const TEXT_CONTENT = {
 const SOUND_STATE_KEY = 'soundState';
 
 const exampleList = { title: 1, point2: 4, point3: 2, point4: 7, point5: 8 };
-const audio = new Audio(sound);
 
 export default class PickerView extends View {
+  public audio: HTMLAudioElement;
   private isSoundOn: boolean = true;
   private soundButton: HTMLButtonElement | undefined = undefined;
   private soundIcon: HTMLImageElement | undefined = undefined;
@@ -54,6 +54,9 @@ export default class PickerView extends View {
       classNames: [CssClasses.INDEX],
     };
     super(parameters);
+
+    this.audio = new Audio(sound);
+    this.audio.loop = true;
     this.loadSoundState();
     this.configureView();
   }
@@ -100,7 +103,15 @@ export default class PickerView extends View {
         classNames: [CssClasses.START],
         textContent: '',
         title: TEXT_CONTENT.BUTTON_START,
-        callback: (): void => wheel.startAnimation(),
+        callback: (): void => {
+          if (this.isSoundOn) {
+            this.audio.play().catch((error) => {
+              console.error('Failed to play sound:', error);
+            });
+          }
+
+          wheel.startAnimation();
+        },
         imageURL: PICK,
       });
 
@@ -121,16 +132,26 @@ export default class PickerView extends View {
       const optionList = State.shuffleObject(
         State.getOptionList() || exampleList
       );
+
+      const onAnimationEnd = (): void => {
+        if (this.isSoundOn) {
+          this.audio.pause();
+          this.audio.currentTime = 0;
+        }
+      };
+
       const wheel = new WheelCreator(
         wheelParameter,
         optionList,
         timer,
         pickedElement,
-        [backButton?.element, buttonSound, pickButton?.element]
+        [backButton?.element, buttonSound, pickButton?.element],
+        onAnimationEnd
       );
       this.viewElementCreator.addInnerElement(wheel);
     }
   }
+
   public addButtonSound(parameters: {
     tag: string;
     classNames: string[];
@@ -166,7 +187,7 @@ export default class PickerView extends View {
     if (isNotNullable(savedState)) {
       this.isSoundOn = savedState === 'true';
     }
-    audio.volume = this.isSoundOn ? 1 : 0;
+    this.audio.volume = this.isSoundOn ? 1 : 0;
   }
 
   private toggleSound(): void {
@@ -174,7 +195,7 @@ export default class PickerView extends View {
 
     localStorage.setItem(SOUND_STATE_KEY, this.isSoundOn.toString());
 
-    audio.volume = this.isSoundOn ? 1 : 0;
+    this.audio.volume = this.isSoundOn ? 1 : 0;
 
     if (this.soundButton && this.soundIcon) {
       this.soundIcon.src = this.isSoundOn ? SOUND_ON_URL : SOUND_OFF_URL;

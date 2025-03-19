@@ -32,6 +32,10 @@ body {
 }
 .picker__timer {
   grid-area: timer;
+
+  display: flex;
+  justify-content: space-evenly;
+
   height: 40px;
   border: 1px solid style.$gray-additional;
   border-radius: style.$border;

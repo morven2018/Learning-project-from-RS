@@ -34,13 +34,15 @@ export default class WheelCreator extends ElementCreator {
   private area: ElementCreator | undefined = undefined;
   private timer: TimerCreator | undefined = undefined;
   private buttons: Array<HTMLElement | undefined> = [];
+  private onAnimationEnd: (() => void) | undefined = undefined;
 
   constructor(
     parameters: IElementParameters,
     valueList: IValueList,
     timer: TimerCreator,
     area: ElementCreator,
-    buttons: Array<HTMLElement | undefined>
+    buttons: Array<HTMLElement | undefined>,
+    onAnimationEnd?: () => void
   ) {
     super(parameters);
     this.valueList = valueList;
@@ -48,6 +50,7 @@ export default class WheelCreator extends ElementCreator {
     this.timer = timer;
     this.finalRotationAngle = -Math.PI / 2;
     this.buttons = buttons;
+    this.onAnimationEnd = onAnimationEnd;
 
     if (isNotNullable(this.area.element))
       this.area.element.textContent = Object.keys(valueList)[0];
@@ -208,6 +211,10 @@ export default class WheelCreator extends ElementCreator {
 
       this.enableButtons();
       this.timer?.setTimerValue('0');
+
+      if (this.onAnimationEnd) {
+        this.onAnimationEnd();
+      }
 
       return;
     }
