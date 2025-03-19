@@ -1,4 +1,4 @@
-import type { IState } from '../types/interfaces';
+import type { IState, IValueList } from '../types/interfaces';
 import { isNotNullable, isNullable } from '../util/is-nullable';
 import ListConfigurator from '../util/list-configurator/list-configurator';
 import type ListCreator from '../util/list-option/list-option';
@@ -57,11 +57,28 @@ export default class State implements IState {
     return undefined;
   }
 
+  public static getOptionList(): IValueList | undefined {
+    const savedData = this.loadFromLocalStorage();
+    if (savedData) {
+      const valueList: IValueList = {};
+      for (const element of savedData.list) {
+        if (
+          ListConfigurator.isIElementInfo(element) &&
+          isNotNullable(element.title)
+        ) {
+          valueList[element.title] = Number.parseInt(element.weight);
+        }
+      }
+      return valueList;
+    }
+    return undefined;
+  }
+
   public static saveToLocalStorage(
     elementList: HTMLElement[],
     lastId: number
   ): void {
-    if (isNotNullable(elementList)) {
+    if (isNotNullable(elementList) && Array.isArray(elementList)) {
       const storedElements = [
         ...new Set(elementList.map((element) => element.getAttribute('id'))),
       ]
