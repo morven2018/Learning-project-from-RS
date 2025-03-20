@@ -1,4 +1,4 @@
-import type { IBaseFormOptions } from '../../../../types/interfaces';
+import type { IBaseFormOptions, IFormView } from '../../../../types/interfaces';
 import ButtonCreator from '../../../../util/buttons/button';
 import FormView from '../../../../util/form/form-view';
 import './form.scss';
@@ -9,7 +9,7 @@ const CssClasses = {
   BUTTON: 'form__button_close',
 };
 
-export default class MessageFormView extends FormView {
+export default class MessageFormView extends FormView implements IFormView {
   public onClose: () => void;
 
   constructor(options: IBaseFormOptions) {

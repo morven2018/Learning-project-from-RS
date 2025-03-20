@@ -6,6 +6,7 @@ import './not-found.scss';
 import notFoundImage from '../../../../asserts/404.jpg';
 import backIcon from '../../../../asserts/icons/back.png';
 import homeIcon from '../../../../asserts/icons/home.png';
+import type Router from '../../../router/router';
 
 const CssClasses = {
   INDEX: 'not-found',
@@ -25,7 +26,9 @@ const TEXT_CONTENT = {
 };
 
 export default class NotFoundView extends View implements IView {
-  constructor() {
+  private router: Router;
+
+  constructor(router: Router) {
     const parameters = {
       tag: 'section',
       classNames: [CssClasses.INDEX],
@@ -33,6 +36,7 @@ export default class NotFoundView extends View implements IView {
       imageAlt: '404 Not Found',
     };
     super(parameters);
+    this.router = router;
     this.configureView();
   }
 
@@ -65,7 +69,7 @@ export default class NotFoundView extends View implements IView {
       textContent: '',
       title: TEXT_CONTENT.HOME,
       callback: (): void => {
-        globalThis.location.href = '/';
+        this.router.navigateTo('#/index');
       },
       imageURL: HOME_URL,
     });

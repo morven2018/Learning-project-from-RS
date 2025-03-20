@@ -43,7 +43,36 @@ export default class PasteFormView extends View implements IFormView {
   }
   public showModal(): void {
     if (this.viewElementCreator?.element instanceof HTMLDialogElement) {
-      this.viewElementCreator.element.showModal();
+      const dialog = this.viewElementCreator.element;
+      dialog.showModal();
+
+      dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.onClose();
+        }
+      });
+      setTimeout(() => {
+        document.addEventListener('click', (event) => {
+          const target = event.target;
+          if (
+            target instanceof Node &&
+            isNotNullable(this.viewElementCreator?.element)
+          )
+            console.log(
+              'close0',
+              !this.viewElementCreator?.element?.contains(target),
+              !dialog.contains(target)
+            );
+          if (
+            target instanceof Node &&
+            isNotNullable(this.viewElementCreator?.element) &&
+            !event.composedPath().includes(this.viewElementCreator?.element)
+          ) {
+            console.log('close');
+            this.onClose();
+          }
+        });
+      }, 0);
     }
   }
 

@@ -46,7 +46,7 @@ export default class Router {
         break;
       }
       default: {
-        this.mainView.setContent(new NotFoundView());
+        this.mainView.setContent(new NotFoundView(this));
         break;
       }
     }

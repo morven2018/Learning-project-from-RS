@@ -40,5 +40,27 @@ export default class FormView extends View implements IFormView {
     };
     const messageElement = new ElementCreator(messageParameters);
     this.viewElementCreator?.addInnerElement(messageElement);
+
+    if (this.viewElementCreator?.element instanceof HTMLDialogElement) {
+      const dialog = this.viewElementCreator.element;
+      dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          this.onClose();
+        }
+      });
+    }
+
+    /*document.addEventListener('click', (event) => {
+      const target = event.target;
+      const dialog = this.viewElementCreator?.element;
+
+      if (
+        dialog instanceof HTMLDialogElement &&
+        target instanceof Node &&
+        !dialog.contains(target)
+      ) {
+        this.onClose();
+      }
+    });*/
   }
 }
