@@ -51,8 +51,21 @@ const baseConfig = {
           {
             loader: 'url-loader',
             options: {
-              limit: 100,
-              name: 'images/[name].[ext]',
+              limit: 28192,
+              name: '/images/[name].[ext]',
+              // name: './decision-making-tool/images/[name].[ext]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(mp3)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+              outputPath: 'assets/sounds',
             },
           },
         ],
