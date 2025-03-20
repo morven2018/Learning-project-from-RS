@@ -20,7 +20,7 @@ const TEXT_PARAMETERS = {
   BASELINE: TextBaseline.Middle,
 };
 
-const BASE_ANIMATION_DURATION = 10_000;
+const MIN_DURATION = 5000;
 const TO_SECONDS = 1000;
 const ANGULAR_VELOCITY = Math.PI * 2;
 
@@ -124,22 +124,27 @@ export default class WheelCreator extends ElementCreator {
     return `rgb(${r}, ${g}, ${b})`;
   }
 
+  public static easeInOut(t: number): number {
+    return -(Math.cos(Math.PI * t) - 1) / 2;
+  }
+
   public startAnimation(): void {
     if (this.isAnimating) return;
 
-    if (this.timer) {
-      this.timer.disableInput();
-    }
-    this.disableButtons();
-
-    this.animationStartTime = performance.now();
-    this.isAnimating = true;
-
     const animationDuration = this.timer?.getTimerValue()
       ? this.timer?.getTimerValue() * TO_SECONDS
-      : BASE_ANIMATION_DURATION;
+      : 0;
+    if (animationDuration >= MIN_DURATION) {
+      if (this.timer) {
+        this.timer.disableInput();
+      }
+      this.disableButtons();
 
-    this.animate(animationDuration);
+      this.animationStartTime = performance.now();
+      this.isAnimating = true;
+
+      this.animate(animationDuration);
+    } else return;
   }
 
   private updateArea(rotationAngle: number): void {
@@ -197,6 +202,11 @@ export default class WheelCreator extends ElementCreator {
 
     const currentTime = performance.now();
     const elapsedTime = currentTime - (this.animationStartTime || 0);
+    const progress = Math.min(elapsedTime / animationDuration, 1);
+
+    const easedProgress = WheelCreator.easeInOut(progress);
+
+    this.rotationAngle = ANGULAR_VELOCITY * easedProgress;
 
     if (elapsedTime >= animationDuration) {
       this.isAnimating = false;
@@ -284,6 +294,14 @@ export default class WheelCreator extends ElementCreator {
       }
 
       WheelCreator.drawArrow(context, centerX, 50, centerX, 20, ARROW_COLOR);
+
+      context.beginPath();
+      context.arc(centerX, centerY, radius * 0.1, 0, 2 * Math.PI);
+      context.fillStyle = ARROW_COLOR;
+      context.strokeStyle = STROKE_COLOR;
+      context.lineWidth = 2;
+      context.fill();
+      context.stroke();
     }
   }
 

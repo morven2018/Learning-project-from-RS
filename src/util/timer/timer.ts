@@ -54,6 +54,7 @@ export default class TimerCreator extends ElementCreator {
       tag: 'input',
       classNames: [CssClasses.INPUT],
       textContent: '',
+      min: 5,
     };
     const input = new ElementCreator(inputParameters);
 
@@ -66,7 +67,8 @@ export default class TimerCreator extends ElementCreator {
       if (
         input.element instanceof HTMLInputElement &&
         isNotNullable(input.element.value) &&
-        !REGEX.test(input.element.value)
+        !REGEX.test(input.element.value) &&
+        Number(input.element.value) < 5
       ) {
         input.element.value = DEFAULT_VALUE.toString();
       }
