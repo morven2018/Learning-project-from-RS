@@ -1,11 +1,18 @@
 import View from '../../view';
 import { isNotNullable, isNullable } from '../../../util/is-nullable';
 import ListCreator from '../../../util/list-option/list-option';
-import type { IElementParameters } from '../../../types/interfaces';
 import State from '../../../state/state';
 import ListConfigurator from '../../../util/list-configurator/list-configurator';
-import type Router from '../../../router/router';
 import MessageFormView from './form-view/message-form';
+
+import type {
+  IElementParameters,
+  IIndexView,
+  IListCreator,
+  IRouter,
+  IState,
+} from '../../../types/interfaces';
+
 import './index-view.scss';
 import addIcon from '../../../../asserts/icons/add.png';
 import pasteIcon from '../../../../asserts/icons/paste.png';
@@ -44,12 +51,12 @@ const TEXT_CONTENT = {
   BUTTON_START: 'Start',
 };
 
-export default class IndexView extends View {
-  public list: ListCreator | undefined;
-  private state: State;
-  private router: Router;
+export default class IndexView extends View implements IIndexView {
+  public list: IListCreator | undefined;
+  private state: IState;
+  private router: IRouter;
 
-  constructor(state: State, router: Router) {
+  constructor(state: IState, router: IRouter) {
     const parameters = {
       tag: 'section',
       classNames: [CssClasses.INDEX],
@@ -138,8 +145,10 @@ export default class IndexView extends View {
                 if (
                   isNotNullable(messageForm.viewElementCreator) &&
                   isNotNullable(messageForm.viewElementCreator.element)
-                )
+                ) {
+                  document.body.style.overflow = '';
                   messageForm.viewElementCreator.element.remove();
+                }
               },
             });
             if (
@@ -166,11 +175,9 @@ export default class IndexView extends View {
     }
 
     let counter = 0;
-    // this.list.removeDuplicates();
     for (const item of this.list.elements) {
       if (item instanceof HTMLElement) {
         const childElement = item.children;
-        console.log(item);
         const title = childElement[1];
         const value = childElement[2];
         if (
@@ -181,7 +188,6 @@ export default class IndexView extends View {
           Number(value.value) > 0
         ) {
           counter += 1;
-          console.log('coutr', title.value, value.value, counter);
         }
 
         if (counter >= 2) return true;
@@ -217,6 +223,7 @@ export default class IndexView extends View {
           const file = event.target.files?.[0];
           if (isNotNullable(file)) {
             try {
+              this.list?.clearList();
               const content = await file.text();
               const jsonData: unknown = JSON.parse(content);
               if (isNotNullable(this.list)) {
@@ -275,12 +282,13 @@ export default class IndexView extends View {
         if (
           isNotNullable(pasteListForm.viewElementCreator) &&
           isNotNullable(pasteListForm.viewElementCreator.element)
-        )
+        ) {
+          document.body.style.overflow = '';
           pasteListForm.viewElementCreator.element.remove();
+        }
       },
       onSubmit: (items: string[]): void => {
         if (isNotNullable(this.list)) {
-          this.list?.clearList();
           for (const item of items) {
             const data = item.split(',');
             let weight = data?.pop()?.trim();

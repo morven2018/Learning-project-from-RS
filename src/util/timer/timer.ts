@@ -1,6 +1,8 @@
 import ElementCreator from '../element-creator';
-import type { IElementParameters } from '../../types/interfaces';
 import { isNotNullable } from '../is-nullable';
+
+import type { IElementParameters, ITimerCreator } from '../../types/interfaces';
+
 import timer from '../../../asserts/icons/timer.png';
 
 const TIMER = timer.toString();
@@ -25,7 +27,10 @@ const CssClasses = {
 
 const TIMER_ID = 'timer';
 
-export default class TimerCreator extends ElementCreator {
+export default class TimerCreator
+  extends ElementCreator
+  implements ITimerCreator
+{
   private inputElement: HTMLInputElement | undefined = undefined;
 
   constructor(parameters: IElementParameters) {

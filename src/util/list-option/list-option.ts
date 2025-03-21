@@ -1,14 +1,18 @@
 import State from '../../state/state';
-import type {
-  IElementInfo,
-  IElementParameters,
-  IListCreator,
-} from '../../types/interfaces';
+
 import type { OptionType } from '../../types/types';
 import ButtonCreator from '../buttons/button';
 import ElementCreator from '../element-creator';
 import { isNotNullable, isNullable } from '../is-nullable';
 import ListConfigurator from '../list-configurator/list-configurator';
+
+import type {
+  IElementInfo,
+  IElementParameters,
+  IListCreator,
+  IState,
+} from '../../types/interfaces';
+
 import './list-option.scss';
 import deleteIcon from '../../../asserts/icons/delete.png';
 
@@ -40,10 +44,10 @@ export default class ListCreator
 {
   public nextId = 1;
   public elements: HTMLElement[] = [];
-  public state: State;
+  public state: IState;
   private onInputChangeCallback: (() => void) | undefined;
 
-  constructor(parameters: IElementParameters, state: State) {
+  constructor(parameters: IElementParameters, state: IState) {
     super(parameters);
     this.createElement(parameters);
 
@@ -91,7 +95,7 @@ export default class ListCreator
     });
   }
 
-  private static addId(parent: ElementCreator, id: string): ElementCreator {
+  public static addId(parent: ElementCreator, id: string): ElementCreator {
     const idParameters = {
       tag: 'div',
       classNames: [CssClasses.INDEX],
@@ -187,7 +191,7 @@ export default class ListCreator
       element.remove();
       this.elements.splice(index, 1);
       State.saveToLocalStorage(this.elements, this.nextId);
-      console.log(this.elements);
+      if (this.elements.length === 0) this.nextId = 1;
     }
   }
 

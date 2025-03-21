@@ -1,8 +1,16 @@
-import type { IElementParameters, IValueList } from '../../types/interfaces';
 import { TextAlign, TextBaseline } from '../../types/types';
 import ElementCreator from '../element-creator';
+import FormView from '../form/form-view';
 import { isNotNullable } from '../is-nullable';
+
+import type {
+  IElementParameters,
+  IValueList,
+  IWheelCreator,
+} from '../../types/interfaces';
 import type TimerCreator from '../timer/timer';
+
+import '../../view/main/index/form-view/form.scss';
 
 const SIZE = {
   WIDTH: '400',
@@ -11,6 +19,7 @@ const SIZE = {
 const ARROW_COLOR = '#7c8094';
 const STROKE_COLOR = '#b388ff';
 
+const USUAL_COLOR = '#d1c4e9;';
 const HIGHLIGHT_COLOR = '#5e35b1';
 
 const TEXT_PARAMETERS = {
@@ -19,12 +28,17 @@ const TEXT_PARAMETERS = {
   ALIGN: TextAlign.Center,
   BASELINE: TextBaseline.Middle,
 };
+const TEXT_MESSAGE = 'The button to start the picking';
 
+const MAX_LENGTH = 14;
 const MIN_DURATION = 5000;
 const TO_SECONDS = 1000;
 const ANGULAR_VELOCITY = Math.PI * 2;
 
-export default class WheelCreator extends ElementCreator {
+export default class WheelCreator
+  extends ElementCreator
+  implements IWheelCreator
+{
   public valueList: IValueList;
   private rotationAngle: number = 0;
   private finalRotationAngle: number = 0;
@@ -53,7 +67,7 @@ export default class WheelCreator extends ElementCreator {
     this.onAnimationEnd = onAnimationEnd;
 
     if (isNotNullable(this.area.element))
-      this.area.element.textContent = Object.keys(valueList)[0];
+      this.area.element.textContent = TEXT_MESSAGE;
     this.sectionColors = Object.keys(valueList).map(() =>
       WheelCreator.randomColor()
     );
@@ -131,6 +145,7 @@ export default class WheelCreator extends ElementCreator {
   public startAnimation(): void {
     if (this.isAnimating) return;
 
+    this.highlightAreaDisable();
     const animationDuration = this.timer?.getTimerValue()
       ? this.timer?.getTimerValue() * TO_SECONDS
       : 0;
@@ -144,7 +159,25 @@ export default class WheelCreator extends ElementCreator {
       this.isAnimating = true;
 
       this.animate(animationDuration);
-    } else return;
+    } else {
+      const message: FormView = new FormView(
+        {
+          message: 'The timer must be set for at least 5 seconds.',
+          onClose: (): void => {
+            if (
+              isNotNullable(message.viewElementCreator) &&
+              isNotNullable(message.viewElementCreator.element)
+            ) {
+              document.body.style.overflow = '';
+              message.viewElementCreator.element.remove();
+            }
+          },
+        },
+        'dialog'
+      );
+      if (isNotNullable(message.viewElementCreator?.element))
+        document.body.append(message.viewElementCreator?.element);
+    }
   }
 
   private updateArea(rotationAngle: number): void {
@@ -157,6 +190,11 @@ export default class WheelCreator extends ElementCreator {
   private highlightArea(): void {
     if (!this.area || !this.area.element) return;
     this.area.element.style.borderColor = HIGHLIGHT_COLOR;
+  }
+
+  private highlightAreaDisable(): void {
+    if (!this.area || !this.area.element) return;
+    this.area.element.style.borderColor = USUAL_COLOR;
   }
 
   private getSelectedItem(rotationAngle: number): string | undefined {
@@ -200,6 +238,7 @@ export default class WheelCreator extends ElementCreator {
     const context = this.element.getContext('2d');
     if (!context) return;
 
+    this.highlightAreaDisable();
     const currentTime = performance.now();
     const elapsedTime = currentTime - (this.animationStartTime || 0);
     const progress = Math.min(elapsedTime / animationDuration, 1);
@@ -217,6 +256,7 @@ export default class WheelCreator extends ElementCreator {
 
       if (this.timer) {
         this.timer.enableInput();
+        this.timer.setTimerValue('0');
       }
 
       this.enableButtons();
@@ -287,7 +327,9 @@ export default class WheelCreator extends ElementCreator {
         context.rotate(middleAngle);
         context.textAlign = TEXT_PARAMETERS.ALIGN;
         context.textBaseline = TEXT_PARAMETERS.BASELINE;
-        context.fillText(key, 0, 0);
+        const text =
+          key.length < MAX_LENGTH ? key : key.slice(0, MAX_LENGTH + 1) + '...';
+        context.fillText(text, 0, 0);
         context.restore();
 
         startAngle += minAngle * value;

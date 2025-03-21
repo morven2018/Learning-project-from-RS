@@ -1,6 +1,7 @@
+import { isNotNullable } from './is-nullable';
+
 import type { IElementParameters, IElementCreator } from '../types/interfaces';
 import type { CallbackType } from '../types/types';
-import { isNotNullable } from './is-nullable';
 
 export default class ElementCreator implements IElementCreator {
   public element: HTMLElement | undefined;

@@ -17,7 +17,12 @@
 
   background-color: style.$additional-color;
 }
-
+.form-view {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .form__button_close,
 .form-view__close-button {
   align-self: flex-end;

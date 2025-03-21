@@ -1,5 +1,5 @@
-import type { IElementInfo, IJSONObject } from '../../types/interfaces';
 import { isNotNullable, isNullable } from '../is-nullable';
+import type { IElementInfo, IJSONObject } from '../../types/interfaces';
 
 export default class ListConfigurator {
   public static toJSON(
@@ -34,9 +34,9 @@ export default class ListConfigurator {
   public static fromJSON(
     jsonData: unknown
   ): { list: HTMLElement[]; lastId: number } | undefined {
-    console.log('fromJSON');
+    // console.log('fromJSON');
     if (ListConfigurator.isIJSONObject(jsonData)) {
-      console.log(jsonData);
+      // console.log(jsonData);
       for (const element of jsonData.list) element.id = element.id.slice(1);
       return {
         list: jsonData.list,
@@ -45,22 +45,20 @@ export default class ListConfigurator {
     }
     return undefined;
   }
-  // +
+
   public static isIJSONObject(
     data: unknown
   ): data is { list: HTMLElement[]; lastId: number } {
     if (typeof data !== 'object' || isNullable(data)) {
       return false;
     }
-    // console.log('a1', data);
+
     if (!('list' in data) || !('lastId' in data)) {
       return false;
     }
-    //  console.log('a2');
     if (isNotNullable(data.list) && !Array.isArray(data.list)) {
       return false;
     }
-    // console.log('a3', data.list);
     if (isNotNullable(data.list)) {
       for (const element of data.list) {
         if (!this.isIElementInfo(element)) {
@@ -68,11 +66,9 @@ export default class ListConfigurator {
         }
       }
     }
-    // console.log('a4');
     if (typeof data.lastId !== 'number') {
       return false;
     }
-    //  console.log('a5');
     return true;
   }
 

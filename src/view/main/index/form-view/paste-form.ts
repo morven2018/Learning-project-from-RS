@@ -1,8 +1,13 @@
 import View from '../../../view';
 import ElementCreator from '../../../../util/element-creator';
 import ButtonCreator from '../../../../util/buttons/button';
-import type { IBaseFormOptions, IFormView } from '../../../../types/interfaces';
 import { isNotNullable } from '../../../../util/is-nullable';
+
+import type {
+  IBaseFormOptions,
+  IPasteFormView,
+} from '../../../../types/interfaces';
+
 import './form.scss';
 
 const CssClasses = {
@@ -18,7 +23,7 @@ const AREA_TEXT = `Paste a list of new options in a CSV-like format:
  title with whitespace,2   -> | title with whitespace    | 2 |
  title , with , commas,3   -> | title , with , commas     | 3 |
  title with "quotes",4       -> | title with "quotes"         | 4 |`;
-export default class PasteFormView extends View implements IFormView {
+export default class PasteFormView extends View implements IPasteFormView {
   public onClose: () => void;
   public onSubmit: (items: string[]) => void;
   private textarea: HTMLTextAreaElement | undefined = undefined;
@@ -32,6 +37,7 @@ export default class PasteFormView extends View implements IFormView {
       classNames: [CssClasses.BASE_FORM],
     };
     super(parameters);
+    document.body.style.overflow = 'hidden';
     this.onSubmit = options.onSubmit;
     this.onClose = options.onClose;
     this.configureView();
@@ -56,19 +62,17 @@ export default class PasteFormView extends View implements IFormView {
           const target = event.target;
           if (
             target instanceof Node &&
-            isNotNullable(this.viewElementCreator?.element)
-          )
-            console.log(
-              'close0',
-              !this.viewElementCreator?.element?.contains(target),
-              !dialog.contains(target)
-            );
-          if (
+            isNotNullable(this.viewElementCreator?.element) &&
             target instanceof Node &&
             isNotNullable(this.viewElementCreator?.element) &&
             !event.composedPath().includes(this.viewElementCreator?.element)
           ) {
-            console.log('close');
+            /* console.log(
+              'close0',
+              !this.viewElementCreator?.element?.contains(target),
+              !dialog.contains(target)
+            ); */
+            // console.log('close');
             this.onClose();
           }
         });

@@ -1,11 +1,12 @@
+import ButtonCreator from '../util/buttons/button';
+import ElementCreator from '../util/element-creator';
+import { isNotNullable } from '../util/is-nullable';
+
 import type {
   IElementParameters,
   IView,
   IViewParameters,
 } from '../types/interfaces';
-import ButtonCreator from '../util/buttons/button';
-import ElementCreator from '../util/element-creator';
-import { isNotNullable } from '../util/is-nullable';
 
 export default class View implements IView {
   public viewElementCreator: ElementCreator | undefined;
@@ -41,7 +42,7 @@ export default class View implements IView {
         if (imageParameters.imageURL)
           imgElement.setAttribute('src', imageParameters.imageURL);
         imgElement.setAttribute('alt', '404 Not Found');
-        console.log(img, this.viewElementCreator);
+        // console.log(img, this.viewElementCreator);
         this.viewElementCreator.addInnerElement(img);
       } else {
         console.error('img problem');

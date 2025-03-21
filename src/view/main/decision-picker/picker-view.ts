@@ -12,6 +12,7 @@ import sound_on from '../../../../asserts/icons/sound.png';
 import sound_off from '../../../../asserts/icons/nosound.png';
 import play from '../../../../asserts/icons/play.png';
 import type Router from '../../../router/router';
+import type { IPickerView } from '../../../types/interfaces';
 
 const SOUND_OFF_URL = sound_off.toString();
 const SOUND_ON_URL = sound_on.toString();
@@ -43,7 +44,7 @@ const SOUND_STATE_KEY = 'soundState';
 
 const exampleList = { title: 1, point2: 4, point3: 2, point4: 7, point5: 8 };
 
-export default class PickerView extends View {
+export default class PickerView extends View implements IPickerView {
   public audio: HTMLAudioElement;
   private isSoundOn: boolean = true;
   private soundButton: HTMLButtonElement | undefined = undefined;
@@ -128,7 +129,6 @@ export default class PickerView extends View {
               console.error('Failed to play sound:', error);
             });
           }
-
           wheel.startAnimation();
         },
         imageURL: PICK,

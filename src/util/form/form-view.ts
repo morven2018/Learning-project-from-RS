@@ -1,6 +1,7 @@
 import View from '../../view/view';
 import ElementCreator from '../element-creator';
 import ButtonCreator from '../buttons/button';
+
 import type { IBaseFormOptions, IFormView } from '../../types/interfaces';
 
 const CssClasses = {
@@ -20,6 +21,7 @@ export default class FormView extends View implements IFormView {
     super(parameters);
     this.onClose = options.onClose;
     this.configureView(options.message);
+    this.addEventListeners();
   }
 
   public configureView(message: string = ''): void {
@@ -49,18 +51,14 @@ export default class FormView extends View implements IFormView {
         }
       });
     }
+  }
+  private addEventListeners(): void {
+    document.addEventListener('keydown', this.handleKeyDown.bind(this));
+  }
 
-    /*document.addEventListener('click', (event) => {
-      const target = event.target;
-      const dialog = this.viewElementCreator?.element;
-
-      if (
-        dialog instanceof HTMLDialogElement &&
-        target instanceof Node &&
-        !dialog.contains(target)
-      ) {
-        this.onClose();
-      }
-    });*/
+  private handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      this.onClose();
+    }
   }
 }

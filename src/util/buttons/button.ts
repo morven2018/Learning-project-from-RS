@@ -1,7 +1,14 @@
 import ElementCreator from '../element-creator';
-import type { IElementParameters } from '../../types/interfaces';
 
-export default class ButtonCreator extends ElementCreator {
+import type {
+  IButtonCreator,
+  IElementParameters,
+} from '../../types/interfaces';
+
+export default class ButtonCreator
+  extends ElementCreator
+  implements IButtonCreator
+{
   public createElement(parameters: IElementParameters): void {
     super.createElement(parameters);
     if (parameters.id)

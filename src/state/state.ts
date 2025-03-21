@@ -1,13 +1,12 @@
-import type { IState, IValueList } from '../types/interfaces';
 import { isNotNullable, isNullable } from '../util/is-nullable';
 import ListConfigurator from '../util/list-configurator/list-configurator';
-import type ListCreator from '../util/list-option/list-option';
 
-// const KEY_FOR_SAVE_TO_LOCALSTORAGE = 'DecisionMakingToolApp';
+import type { IListCreator, IState, IValueList } from '../types/interfaces';
+
 const KEY_FOR_SAVE_LIST = 'optionList';
 export default class State implements IState {
   public fields: Map<string, string>;
-  private listCreator: ListCreator | undefined;
+  private listCreator: IListCreator | undefined;
 
   constructor() {
     this.fields = State.loadState();
@@ -108,7 +107,7 @@ export default class State implements IState {
     return Object.fromEntries(entries);
   }
 
-  public setListCreator(listCreator: ListCreator): void {
+  public setListCreator(listCreator: IListCreator): void {
     this.listCreator = listCreator;
   }
 

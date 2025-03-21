@@ -1,12 +1,12 @@
 import View from '../../view';
+
+import type Router from '../../../router/router';
 import type { IView } from '../../../types/interfaces';
 
 import './not-found.scss';
-
 import notFoundImage from '../../../../asserts/404.jpg';
 import backIcon from '../../../../asserts/icons/back.png';
 import homeIcon from '../../../../asserts/icons/home.png';
-import type Router from '../../../router/router';
 
 const CssClasses = {
   INDEX: 'not-found',

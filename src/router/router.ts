@@ -1,15 +1,16 @@
-import type MainView from '../view/main/view';
 import IndexView from '../view/main/index/index-view';
 import PickerView from '../view/main/decision-picker/picker-view';
 import NotFoundView from '../view/main/not-found/not-found-view';
 import State from '../state/state';
 import { isNotNullable } from '../util/is-nullable';
 
-export default class Router {
-  private mainView: MainView;
-  private state: State;
+import type { IMainView, IRouter, IState } from '../types/interfaces';
 
-  constructor(mainView: MainView, state: State) {
+export default class Router implements IRouter {
+  private mainView: IMainView;
+  private state: IState;
+
+  constructor(mainView: IMainView, state: IState) {
     this.mainView = mainView;
     this.state = state;
     this.setupRouting();

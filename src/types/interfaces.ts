@@ -22,6 +22,7 @@ export interface IElementCreator {
 }
 
 export type IViewParameters = Pick<IElementParameters, 'tag' | 'classNames'>;
+
 export interface IView {
   viewElementCreator: IElementCreator | undefined;
   getHtmlElement: () => HTMLElement | undefined;
@@ -32,16 +33,45 @@ export interface IHeaderView extends IView {
   configureView: () => void;
 }
 
-export interface IMainView extends IView {
+export interface IMainView {
+  state: IState;
   setContent: (content: IView) => void;
-  getPages: (mainComponent: HTMLElement) => void;
+}
+
+export interface IIndexView {
+  list: IListCreator | undefined;
+  configureView: VoidMethodType;
+  isEnoughItem: VoidMethodType;
+  saveJSON: VoidMethodType;
+  uploadJSON: VoidMethodType;
+}
+
+export interface IPickerView extends IView {
+  audio: HTMLAudioElement;
+  addButtonSound: (parameters: IPickerParameters) => HTMLElement | undefined;
+}
+
+export interface IPickerParameters {
+  tag: string;
+  classNames: string[];
+  textContent: string;
+  title: string;
+  callback: () => void;
+  imageURL: string;
 }
 
 export interface IState {
   fields: Map<string, string>;
+  setListCreator: (listCreator: IListCreator) => void;
+  getElements: () => HTMLElement[] | undefined;
+  getNextId: () => number | undefined;
+  saveState: VoidMethodType;
   setField: (name: string, value: string) => void;
   getField: (name: string) => string;
-  saveState: VoidMethodType;
+}
+
+export interface IRouter {
+  navigateTo: (path: string) => void;
 }
 
 export interface IJSONObject {
@@ -53,15 +83,22 @@ export interface IElementInfo {
   title: string;
   weight: string;
 }
-export interface IListCreator {
+
+export interface IValueList {
+  [key: string]: number;
+}
+
+export interface IListCreator extends IElementCreator {
   nextId: number;
   elements: HTMLElement[];
   state: IState;
-  // saveToLocalStorage: VoidMethodType;
   loadFromLocalStorage: VoidMethodType;
   getElements: () => HTMLElement[];
   createElement: (parameters: IElementParameters) => void;
-  addElement: (info: IElementInfo) => HTMLElement | undefined;
+  addElement: (
+    info: IElementInfo,
+    newElement?: boolean
+  ) => HTMLElement | undefined;
   removeElementById: (id: string) => void;
   clearList: (click?: boolean) => void;
   setOnInputChangeCallback(callback: () => void): void;
@@ -71,11 +108,34 @@ export interface IFormView {
   onClose: VoidMethodType;
   configureView: (message?: string) => void;
 }
+
+export interface IMessageFormView extends IFormView {
+  addButtons: VoidMethodType;
+}
+
+export interface IPasteFormView extends IFormView {
+  onSubmit: (items: string[]) => void;
+  showModal: VoidMethodType;
+}
+
 export interface IBaseFormOptions {
   message: string;
   onClose: () => void;
 }
 
-export interface IValueList {
-  [key: string]: number;
+export interface IButtonCreator extends IElementCreator {
+  createElement: (parameters: IElementParameters) => void;
+}
+
+export interface ITimerCreator {
+  createElement: (parameters: IElementParameters) => void;
+  setTimerValue: (value: string) => void;
+  getTimerValue: () => number;
+  disableInput: VoidMethodType;
+  enableInput: VoidMethodType;
+}
+
+export interface IWheelCreator {
+  valueList: IValueList;
+  startAnimation: VoidMethodType;
 }
