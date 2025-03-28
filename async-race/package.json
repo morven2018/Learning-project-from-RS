@@ -4,11 +4,14 @@
   "main": "./index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --open",
+    "build": "webpack --mode production",
     "format": "prettier --write --ignore-unknown \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md, mjs}\"",
     "format:check": "prettier --list-different --ignore-unknown \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md, mjs}\"",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
-    "stylelint": "stylelint src/styles/**/*.scss --fix"
+    "stylelint": "stylelint src/styles/**/*.scss --fix",
+    "deploy": "npm run build && gh-pages -d dist -e async-race"
   },
   "author": "",
   "license": "ISC",
