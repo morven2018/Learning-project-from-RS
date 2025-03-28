@@ -8,5 +8,9 @@
     "Nuxt",
     "vuepress",
     "wscript"
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["typescript"]
 }
