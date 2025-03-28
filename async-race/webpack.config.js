@@ -11,15 +11,28 @@ const baseConfig = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './',
+    publicPath: '/',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      templateContent: `
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Async Race</title>
+        </head>
+        <body>
+          <div id="root"></div>
+        </body>
+      </html>
+      `,
       filename: 'index.html',
     }),
     new CleanWebpackPlugin(),
   ],
+
   optimization: {
     splitChunks: {
       name: 'common',
@@ -44,6 +57,13 @@ const baseConfig = {
         test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
+        type: 'src/asset/resource',
+        generator: {
+          filename: 'src/assets/[hash][ext][query]',
+        },
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
