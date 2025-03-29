@@ -28,17 +28,12 @@ const baseConfig = {
         </body>
       </html>
       `,
+      favicon: './src/assets/icon/icon.ico',
       filename: 'index.html',
     }),
     new CleanWebpackPlugin(),
   ],
 
-  optimization: {
-    splitChunks: {
-      name: 'common',
-      chunks: 'all',
-    },
-  },
   module: {
     rules: [
       {
