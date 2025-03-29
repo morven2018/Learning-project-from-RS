@@ -9,6 +9,19 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 export default defineConfig([
   { files: ['**/*.{js,mjs,cjs,ts}'] },
 
+  {
+    languageOptions: {
+      globals: globals.builtin,
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['*.mjs'],
+        },
+        tsconfigRootDir: import.meta.dirname,
+        sourceType: 'module',
+      },
+    },
+  },
+
   eslint.configs.recommended,
   eslintPluginUnicorn.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -61,6 +74,29 @@ export default defineConfig([
       'class-methods-use-this': 'error',
 
       'unicorn/better-regex': 'warn',
+      'unicorn/consistent-function-scoping': 'error',
+      'unicorn/no-array-reduce': 'error',
+
+      'max-lines-per-function': [
+        'error',
+        {
+          max: 40,
+          skipBlankLines: true,
+          skipComments: true,
+          IIFEs: true,
+        },
+      ],
+
+      'no-magic-numbers': [
+        'error',
+        {
+          ignore: [-1, 0, 1, 2], // Basic numbers allowed
+          ignoreArrayIndexes: true,
+          enforceConst: true,
+          detectObjects: false,
+        },
+      ],
+      'unicorn/no-useless-undefined': 'off',
 
       linterOptions: {
         noInlineConfig: true,
