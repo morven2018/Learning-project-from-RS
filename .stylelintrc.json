@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
+    "stylelint-config-clean-order"
+  ],
+  "rules": {
+    "no-empty-source": true,
+    "syntax-string-no-invalid": true,
+    "declaration-no-important": true
+  }
+}
