@@ -9,7 +9,7 @@
     "check:before-start": "npm run lint && npm run stylelint && npm run format:check",
     "build": "webpack --mode=production",
     "format": "prettier --write --ignore-unknown \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md,mjs,html}\"",
-    "format:check": "prettier --list-different --ignore-unknown \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md,mjs,html}\"",
+    "ci:format": "prettier --list-different --ignore-unknown \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md,mjs,html}\"",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
     "stylelint": "stylelint \"src/**/*.{css,scss,sass,less}\"",
