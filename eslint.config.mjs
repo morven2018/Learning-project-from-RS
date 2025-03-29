@@ -90,7 +90,7 @@ export default defineConfig([
       'no-magic-numbers': [
         'error',
         {
-          ignore: [-1, 0, 1, 2], // Basic numbers allowed
+          ignore: [-1, 0, 1, 2],
           ignoreArrayIndexes: true,
           enforceConst: true,
           detectObjects: false,
