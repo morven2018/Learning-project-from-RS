@@ -14,8 +14,35 @@ export class ApiClient {
       response.headers.get('X-Total-Count') || '0',
       10
     );
-    const cars = (await response.json()) as ICar[];
+    const cars = await response.json();
     return { cars, totalCount };
+  }
+
+  public static async getCar(id: number): Promise<ICar> {
+    let url = new URL(`${baseURL}/garage/${id}`);
+    const response = await fetch(url);
+    if (!response.ok)
+      throw new Error(`Car not found (status: ${response.status})`);
+    const car = await response.json();
+    return car;
+  }
+
+  public static async createCar(name: string, color: string): Promise<ICar> {
+    const carInfo = {
+      name,
+      color,
+    };
+
+    const url = `${baseURL}/garage`;
+
+    const fetchBody = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(carInfo),
+    };
+
+    const response = await fetch(url, fetchBody);
+    return response.json();
   }
 
   public static addSearchParams(url: URL, params?: IPaginationParameters): URL {
