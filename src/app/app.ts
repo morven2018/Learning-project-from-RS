@@ -13,6 +13,8 @@ export default class App {
     this.router = new Router(this.main);
     this.header = new HeaderView(this.router);
 
+    this.router.setHeaderView(this.header);
+
     this.createView();
   }
 

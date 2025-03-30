@@ -2,11 +2,12 @@ import GarageView from '../app/garage/garage-view';
 import NotFoundView from '../app/not-found/not-found-view';
 import WinnersView from '../app/winners/winners-view';
 // import State from '../lib/store';
-import { IMainView, IRouter } from '../lib/types/interfaces';
+import { IHeaderView, IMainView, IRouter } from '../lib/types/interfaces';
 
 export default class Router implements IRouter {
   private mainView: IMainView;
   private readonly routeMap: Record<string, () => void>;
+  private headerView: IHeaderView | undefined = undefined;
   // private state: IState;
 
   constructor(mainView: IMainView) {
@@ -14,6 +15,10 @@ export default class Router implements IRouter {
     // this.state = state;
     this.routeMap = this.buildRouteMap();
     this.setupRouting();
+  }
+
+  public setHeaderView(headerView: IHeaderView): void {
+    this.headerView = headerView;
   }
 
   private buildRouteMap(): Record<string, () => void> {
@@ -59,13 +64,19 @@ export default class Router implements IRouter {
 
   private handleRoute(): void {
     const hash = window.location.hash;
+    const normalizedPath = this.normalizePath(hash);
     const routeHandler =
       this.routeMap[hash] ||
       this.routeMap[hash.substring(1)] ||
       this.routeMap[`/${hash.substring(1)}`];
 
+    // const currentRoute = hash ? this.normalizePath(hash) : 'garage';
+
     if (routeHandler) {
       routeHandler();
+      if (this.headerView) {
+        this.headerView.updateActiveState(normalizedPath);
+      }
     } else {
       this.showNotFound();
     }

@@ -32,6 +32,7 @@ export interface IView {
 
 export interface IHeaderView extends IView {
   configureView: (router: IRouter) => void;
+  updateActiveState: (currentRoute: string) => void;
 }
 
 export interface IMainView {

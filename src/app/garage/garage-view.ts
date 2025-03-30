@@ -1,5 +1,5 @@
 import View from '../../components/view';
-import { IHeaderView } from '../../lib/types/interfaces';
+import { IView } from '../../lib/types/interfaces';
 
 const NAME_OF_APP = 'Decision Making Tool';
 
@@ -7,7 +7,7 @@ const CssClasses = {
   HEADER: 'garage',
 };
 
-export default class GarageView extends View implements IHeaderView {
+export default class GarageView extends View implements IView {
   constructor() {
     const parameters = {
       tag: 'main',

@@ -1,10 +1,10 @@
 import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
-import { IHeaderView } from '../../lib/types/interfaces';
+import { IView } from '../../lib/types/interfaces';
 
 const NAME_OF_APP = 'Decision Making Tool';
 
-export default class NotFoundView extends View implements IHeaderView {
+export default class NotFoundView extends View implements IView {
   constructor() {
     const parameters = {
       tag: CssTags.Section,
