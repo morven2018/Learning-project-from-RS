@@ -17,7 +17,7 @@ export enum CssTags {
 }
 
 export enum Pages {
-  Garage = '/garage',
-  Winners = '/winners',
-  Notfound = '/not-found',
+  Garage = 'garage',
+  Winners = 'winners',
+  Notfound = 'not-found',
 }

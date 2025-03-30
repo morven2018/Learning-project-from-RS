@@ -6,17 +6,47 @@ import { IMainView, IRouter } from '../lib/types/interfaces';
 
 export default class Router implements IRouter {
   private mainView: IMainView;
+  private readonly routeMap: Record<string, () => void>;
   // private state: IState;
 
   constructor(mainView: IMainView) {
     this.mainView = mainView;
     // this.state = state;
+    this.routeMap = this.buildRouteMap();
     this.setupRouting();
   }
 
+  private buildRouteMap(): Record<string, () => void> {
+    return {
+      '#/winners': () => this.mainView.setContent(new WinnersView()),
+      winners: () => this.mainView.setContent(new WinnersView()),
+      '/winners': () => this.mainView.setContent(new WinnersView()),
+      '#/': () => this.mainView.setContent(new GarageView()),
+      '#/index': () => this.mainView.setContent(new GarageView()),
+      '#/garage': () => this.mainView.setContent(new GarageView()),
+      '': () => this.mainView.setContent(new GarageView()),
+      '/': () => this.mainView.setContent(new GarageView()),
+    };
+  }
+
+  public get validRoutes(): string[] {
+    return Object.keys(this.routeMap)
+      .filter((route) => route !== '')
+      .map((route) => route.replace(/^#\/?|\/$/g, ''))
+      .filter((value, index, self) => self.indexOf(value) === index);
+  }
+
   public navigateTo(path: string): void {
-    // this.saveState();
-    globalThis.location.hash = path;
+    const normalizedPath = this.normalizePath(path);
+    if (
+      this.routeMap[normalizedPath] ||
+      this.routeMap[`#/${normalizedPath}`] ||
+      this.routeMap[`/${normalizedPath}`]
+    ) {
+      window.location.hash = `#/${normalizedPath}`;
+    } else {
+      this.showNotFound();
+    }
   }
 
   private setupRouting(): void {
@@ -28,38 +58,24 @@ export default class Router implements IRouter {
   }
 
   private handleRoute(): void {
-    const hash = window.location.pathname.substring(1);
+    const hash = window.location.hash;
+    const routeHandler =
+      this.routeMap[hash] ||
+      this.routeMap[hash.substring(1)] ||
+      this.routeMap[`/${hash.substring(1)}`];
 
-    switch (hash) {
-      case '#/winners':
-      case 'winners':
-      case '/winners': {
-        this.mainView.setContent(new WinnersView());
-        break;
-      }
-      case '#/':
-      case '#/index':
-      case '#/garage':
-      case '':
-      case '/': {
-        this.mainView.setContent(new GarageView());
-        break;
-      }
-      default: {
-        this.mainView.setContent(new NotFoundView());
-        break;
-      }
+    if (routeHandler) {
+      routeHandler();
+    } else {
+      this.showNotFound();
     }
   }
 
-  /* private saveState(): void {
-     if (this.mainView.state) {
-      const elements = this.mainView.state.getElements();
-      const nextId = this.mainView.state.getNextId();
+  private normalizePath(path: string): string {
+    return path.replace(/^#\/?|\/$/g, '').toLowerCase();
+  }
 
-      if (elements && nextId) {
-        State.saveToLocalStorage(elements, nextId);
-      }
-    }
-  } */
+  private showNotFound(): void {
+    this.mainView.setContent(new NotFoundView());
+  }
 }
