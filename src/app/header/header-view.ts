@@ -52,15 +52,6 @@ export default class HeaderView extends View implements IHeaderView {
     });
   }
 
-  private getCurrentPathFromUrl(): string {
-    const hash = window.location.hash.substring(1);
-
-    const normalizedPath = hash.replace(/^\/|\/$/g, '').toLowerCase();
-    console.log(normalizedPath);
-
-    return normalizedPath;
-  }
-
   public updateActiveState(currentRoute: string): void {
     const validRoutes = [Pages.Garage, Pages.Winners];
     const isRouteValid = validRoutes.includes(currentRoute as Pages);

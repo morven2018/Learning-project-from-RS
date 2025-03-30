@@ -5,6 +5,8 @@ export type OptionType = {
   minlength?: string;
   min?: string;
   placeholder: string;
+  required?: string;
+  title?: string;
 };
 
 export type VoidMethodType = () => void;

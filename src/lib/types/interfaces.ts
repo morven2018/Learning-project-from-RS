@@ -1,4 +1,4 @@
-import type { VoidMethodType, CallbackType } from './types.ts';
+import type { VoidMethodType, CallbackType, OptionType } from './types.ts';
 
 export interface IElementParameters {
   tag: string;
@@ -10,6 +10,7 @@ export interface IElementParameters {
   title?: string;
   id?: number;
   route?: string;
+  options?: OptionType;
 }
 
 export interface IElementCreator {
@@ -20,6 +21,10 @@ export interface IElementCreator {
   setCssClasses: (cssClasses: Array<string>) => void;
   setTextContent: (text: string) => void;
   setCallback: (callback: CallbackType) => void;
+}
+
+export interface IFormCreator extends IElementCreator {
+  getInput: () => HTMLInputElement[];
 }
 
 export type IViewParameters = Pick<IElementParameters, 'tag' | 'classNames'>;

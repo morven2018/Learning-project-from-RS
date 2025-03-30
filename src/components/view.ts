@@ -3,7 +3,7 @@ import {
   IView,
   IViewParameters,
 } from '../lib/types/interfaces';
-import ButtonCreator from './buttons/button';
+import ButtonCreator from './button';
 import ElementCreator from './element-creator';
 
 export default class View implements IView {
