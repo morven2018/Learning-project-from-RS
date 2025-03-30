@@ -1,4 +1,5 @@
 import { ICar, IPaginationParameters } from '../types/api-interfaces';
+import { HttpMethod } from '../types/enums';
 
 const baseURL = 'http://127.0.0.1:3000';
 
@@ -19,10 +20,12 @@ export class ApiClient {
   }
 
   public static async getCar(id: number): Promise<ICar> {
-    let url = new URL(`${baseURL}/garage/${id}`);
+    let url = `${baseURL}/garage/${id}`;
+
     const response = await fetch(url);
     if (!response.ok)
       throw new Error(`Car not found (status: ${response.status})`);
+
     const car = await response.json();
     return car;
   }
@@ -36,12 +39,49 @@ export class ApiClient {
     const url = `${baseURL}/garage`;
 
     const fetchBody = {
-      method: 'POST',
+      method: HttpMethod.Post,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(carInfo),
     };
 
     const response = await fetch(url, fetchBody);
+    return response.json();
+  }
+
+  public static async deleteCar(id: number): Promise<boolean> {
+    let url = `${baseURL}/garage/${id}`;
+
+    const fetchParameters = {
+      method: HttpMethod.Delete,
+    };
+    const response = await fetch(url, fetchParameters);
+    if (!response.ok)
+      throw new Error(`Car not found (status: ${response.status})`);
+    return true;
+  }
+
+  public static async updateCar(
+    id: number,
+    name: string,
+    color: string
+  ): Promise<ICar> {
+    const carInfo = {
+      name,
+      color,
+    };
+
+    let url = `${baseURL}/garage/${id}`;
+
+    const fetchBody = {
+      method: HttpMethod.Put,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(carInfo),
+    };
+
+    const response = await fetch(url, fetchBody);
+    if (!response.ok)
+      throw new Error(`Car not found (status: ${response.status})`);
+
     return response.json();
   }
 

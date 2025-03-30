@@ -34,9 +34,9 @@ export enum Pages {
 }
 
 export enum HttpMethod {
-  GET,
-  POST,
-  PUT,
-  PATCH,
-  DELETE,
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Patch = 'PATCH',
+  Delete = 'DELETE',
 }
