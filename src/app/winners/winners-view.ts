@@ -1,14 +1,17 @@
 import View from '../../components/view';
-import { CssClasses, CssTags } from '../../lib/types/enums';
 import { IHeaderView } from '../../lib/types/interfaces';
 
 const NAME_OF_APP = 'Decision Making Tool';
 
-export default class NotFoundView extends View implements IHeaderView {
+const CssClasses = {
+  HEADER: 'winners',
+};
+
+export default class WinnersView extends View implements IHeaderView {
   constructor() {
     const parameters = {
-      tag: CssTags.Section,
-      classNames: [CssClasses.NotFound],
+      tag: 'main',
+      classNames: [CssClasses.HEADER],
     };
     super(parameters);
     this.configureView();

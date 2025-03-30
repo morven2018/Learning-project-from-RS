@@ -5,6 +5,7 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import unicorn from 'eslint-plugin-unicorn';
 
 export default defineConfig([
   { files: ['**/*.{js,mjs,cjs,ts}'] },
@@ -23,7 +24,6 @@ export default defineConfig([
   },
 
   eslint.configs.recommended,
-  eslintPluginUnicorn.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   // {
   //   files: ['**/*.{js,mjs,cjs,ts}'],
@@ -45,7 +45,9 @@ export default defineConfig([
   {
     extends: ['prettier'],
     plugins: {
-      prettier: prettier,
+      '@typescript-eslint': tseslint.plugin,
+      unicorn,
+      prettier,
     },
 
     rules: {

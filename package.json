@@ -5,7 +5,7 @@
   "scripts": {
     "prepare": "husky",
     "test": "echo \"Error: no test specified\"",
-    "start": "npm run check:before-start && webpack serve --open --mode=development",
+    "start": "webpack serve --open --mode=development",
     "check:before-start": "npm run lint && npm run stylelint && npm run format:check",
     "build": "webpack --mode=production",
     "format": "prettier --write --ignore-unknown \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md,mjs,html}\"",

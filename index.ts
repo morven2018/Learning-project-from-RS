@@ -1,1 +1,3 @@
-document.body.textContent = 'bfbfd';
+import App from './src/app/app';
+
+new App();
