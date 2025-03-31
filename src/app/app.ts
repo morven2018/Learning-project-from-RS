@@ -2,6 +2,8 @@ import Router from '../router/router';
 import HeaderView from './header/header-view';
 import MainView from './main/main-view';
 
+import './styles.scss';
+
 export default class App {
   private header: HeaderView;
   private main: MainView | undefined;

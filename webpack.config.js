@@ -54,20 +54,13 @@ const baseConfig = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
-        type: 'src/asset/resource',
-        generator: {
-          filename: 'src/assets/[hash][ext][query]',
-        },
-      },
-      {
         test: /\.(png|jpe?g|gif|svg)$/i,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 28192,
-              name: './images/[name].[ext]',
+              name: './asserts/[name].[ext]',
             },
           },
         ],

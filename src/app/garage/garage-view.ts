@@ -84,9 +84,7 @@ export default class GarageView extends View implements IView {
 
       const total = (await ApiClient.getCars({ _limit: 1 })).totalCount;
 
-      // console.log(await ApiClient.deleteCar(5));
-
-      console.log(await ApiClient.updateCar(1, 'dfdfgbfdg', '#AAAAAA'));
+      // console.log(await ApiClient.updateCar(1, 'dfdfgbfdg', '#AAAAAA'));
 
       headerParameters.textContent = `${headerParameters.textContent}: ${total}`;
 

@@ -1,5 +1,5 @@
 import { CssClasses, CssTags } from '../lib/types/enums';
-import { IElementParameters, IFormCreator } from '../lib/types/interfaces';
+import { IElementParameters } from '../lib/types/interfaces';
 import ButtonCreator from './button';
 import ElementCreator from './element-creator';
 import InputCreator from './input';

@@ -1,13 +1,23 @@
 import { ICar } from '../lib/types/api-interfaces';
 import { CssClasses, CssTags } from '../lib/types/enums';
-import {
-  IElementParameters,
-  IFormCreator,
-  IListNodeCreator,
-} from '../lib/types/interfaces';
+import { IElementParameters, IListNodeCreator } from '../lib/types/interfaces';
 import ButtonCreator from './button';
 import ElementCreator from './element-creator';
-import InputCreator from './input';
+
+import startIcon from '../assets/icon/start.png';
+import stopIcon from '../assets/icon/stop.png';
+
+const raceParameters = {
+  tag: CssTags.Div,
+  classNames: [CssClasses.RaceArea],
+  textContent: '',
+};
+
+const raceBtnsParameters = {
+  tag: CssTags.Div,
+  classNames: [CssClasses.RaceBtn],
+  textContent: '',
+};
 
 export default class ListNodeCreator
   extends ElementCreator
@@ -15,6 +25,8 @@ export default class ListNodeCreator
 {
   public selectBtn: ButtonCreator | undefined;
   public deleteBtn: ButtonCreator | undefined;
+  public startBth: ButtonCreator | undefined;
+  public stopBth: ButtonCreator | undefined;
   private name: ElementCreator | undefined;
   // public listnode: HTMLInputElement[] = [];
   // public btn: ButtonCreator | undefined;
@@ -56,13 +68,54 @@ export default class ListNodeCreator
 
     const nameParams = {
       tag: CssTags.Div,
-      classNames: [CssClasses.Name],
+      classNames: [CssClasses.NameArea],
       textContent: elementInfo.name,
     };
 
     this.name = new ElementCreator(nameParams);
     this.addInnerElement(this.name);
 
-    console.log(this);
+    const raceArea = this.createRaceArea(elementInfo);
+    this.addInnerElement(raceArea);
+
+    console.log(this, raceArea);
+  }
+
+  public createRaceArea(elementInfo: ICar): ElementCreator {
+    const area = new ElementCreator(raceParameters);
+
+    const buttonArea = this.addButtons(elementInfo);
+    area.addInnerElement(buttonArea);
+
+    return area;
+  }
+  public addButtons(elementInfo: ICar): ElementCreator {
+    const btnArea = new ElementCreator(raceBtnsParameters);
+
+    const startBtnParameters = {
+      tag: CssTags.Button,
+      classNames: [CssClasses.Start],
+      textContent: '',
+      imageURL: startIcon,
+      title: 'Start',
+      value: elementInfo.id.toString(),
+    };
+
+    this.startBth = new ButtonCreator(startBtnParameters);
+    btnArea.addInnerElement(this.startBth);
+
+    const stopBtnParameters = {
+      tag: CssTags.Button,
+      classNames: [CssClasses.Stop],
+      textContent: '',
+      imageURL: stopIcon,
+      title: 'Stop',
+      value: elementInfo.id.toString(),
+    };
+
+    this.stopBth = new ButtonCreator(stopBtnParameters);
+    btnArea.addInnerElement(this.stopBth);
+
+    return btnArea;
   }
 }

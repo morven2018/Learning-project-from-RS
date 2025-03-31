@@ -19,7 +19,11 @@ export enum CssClasses {
   Element = 'list-element',
   Select = 'select-btn',
   Delete = 'delete-bth',
-  Name = 'car-name',
+  NameArea = 'name-of-car',
+  RaceArea = 'race-area',
+  RaceBtn = 'race-bths',
+  Start = 'start-btn',
+  Stop = 'stop-btn',
 }
 
 export enum CssTags {
