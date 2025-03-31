@@ -1,3 +1,4 @@
+import { ICar } from './api-interfaces.js';
 import type { VoidMethodType, CallbackType, OptionType } from './types.ts';
 
 export interface IElementParameters {
@@ -11,6 +12,7 @@ export interface IElementParameters {
   id?: number;
   route?: string;
   options?: OptionType;
+  value?: string;
 }
 
 export interface IElementCreator {
@@ -22,7 +24,9 @@ export interface IElementCreator {
   setTextContent: (text: string) => void;
   setCallback: (callback: CallbackType) => void;
 }
-
+export interface IListNodeCreator extends IElementCreator {
+  createElement: (parameters: IElementParameters, elementInfo?: ICar) => void;
+}
 export interface IFormCreator extends IElementCreator {
   getInput: () => HTMLInputElement[];
 }

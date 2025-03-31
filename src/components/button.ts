@@ -22,5 +22,7 @@ export default class ButtonCreator
       this.element?.append(imgElement);
       imgElement.className = 'icon';
     }
+
+    if (parameters.value) this.element?.setAttribute('value', parameters.value);
   }
 }

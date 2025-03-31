@@ -15,6 +15,11 @@ export enum CssClasses {
   Race = 'race-btn',
   Reset = 'reset-btn',
   Generate = 'generate-btn',
+  GarageList = 'list-of-cars',
+  Element = 'list-element',
+  Select = 'select-btn',
+  Delete = 'delete-bth',
+  Name = 'car-name',
 }
 
 export enum CssTags {
@@ -25,6 +30,9 @@ export enum CssTags {
   Form = 'form',
   Input = 'input',
   H1 = 'h1',
+  Ul = 'ul',
+  Li = 'li',
+  Div = 'div',
 }
 
 export enum Pages {

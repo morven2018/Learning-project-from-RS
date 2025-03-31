@@ -1,8 +1,9 @@
 import ElementCreator from '../../components/element-creator';
 import FormCreator from '../../components/form';
+import ListNodeCreator from '../../components/list-node';
 import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
-import { IView } from '../../lib/types/interfaces';
+import { IElementCreator, IView } from '../../lib/types/interfaces';
 import { ApiClient } from '../../lib/utils/api-client';
 
 //const NAME_OF_APP = 'Decision Making Tool';
@@ -54,11 +55,21 @@ const headerParameters = {
   textContent: 'Garage',
 };
 
+const baseLiParameters = {
+  tag: CssTags.Li,
+  classNames: [CssClasses.Element],
+  textContent: '',
+};
+
 export default class GarageView extends View implements IView {
   public buttons: HTMLButtonElement[] = [];
+  public page: number;
+  public limit: number;
   constructor() {
     super(parameters);
     this.buttons = [];
+    this.page = 1;
+    this.limit = 7;
     this.configureView();
   }
 
@@ -73,11 +84,41 @@ export default class GarageView extends View implements IView {
 
       const total = (await ApiClient.getCars({ _limit: 1 })).totalCount;
 
+      // console.log(await ApiClient.deleteCar(5));
+
+      console.log(await ApiClient.updateCar(1, 'dfdfgbfdg', '#AAAAAA'));
+
       headerParameters.textContent = `${headerParameters.textContent}: ${total}`;
 
       const h1 = new ElementCreator(headerParameters);
       this.viewElementCreator?.addInnerElement(h1);
+
+      const liParameters = {
+        tag: CssTags.Ul,
+        classNames: [CssClasses.GarageList],
+        textContent: `Page #${this.page}`,
+      };
+
+      const list = new ElementCreator(liParameters);
+      this.viewElementCreator.addInnerElement(list);
+
+      this.generateNodes(list);
+      //carsInfo.forEach((car) => )
       // this.viewElementCreator.setTextContent(NAME_OF_APP);
     }
+  }
+
+  public async generateNodes(parent: IElementCreator) {
+    const carsInfo = (
+      await ApiClient.getCars({
+        _page: this.page,
+        _limit: this.limit,
+      })
+    ).cars;
+
+    carsInfo.forEach((element) => {
+      const car = new ListNodeCreator(baseLiParameters, element);
+      parent.addInnerElement(car);
+    });
   }
 }
