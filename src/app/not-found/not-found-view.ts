@@ -1,6 +1,6 @@
 import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
-import { IView } from '../../lib/types/interfaces';
+import type { IView } from '../../lib/types/interfaces';
 
 const NAME_OF_APP = 'Decision Making Tool';
 

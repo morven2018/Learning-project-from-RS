@@ -11,7 +11,7 @@ export enum CssClasses {
   FormUpdate = 'form-update-car',
   InputName = 'car-name',
   InputColor = 'color',
-  H1 = 'header',
+  H1 = 'header-info',
   Race = 'race-btn',
   Reset = 'reset-btn',
   Generate = 'generate-btn',
@@ -21,9 +21,10 @@ export enum CssClasses {
   Delete = 'delete-bth',
   NameArea = 'name-of-car',
   RaceArea = 'race-area',
-  RaceBtn = 'race-bths',
+  RaceButton = 'race-bths',
   Start = 'start-btn',
   Stop = 'stop-btn',
+  RaceTrack = 'race-track',
 }
 
 export enum CssTags {
@@ -37,6 +38,7 @@ export enum CssTags {
   Ul = 'ul',
   Li = 'li',
   Div = 'div',
+  Race = 'canvas',
 }
 
 export enum Pages {

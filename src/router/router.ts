@@ -2,7 +2,7 @@ import GarageView from '../app/garage/garage-view';
 import NotFoundView from '../app/not-found/not-found-view';
 import WinnersView from '../app/winners/winners-view';
 // import State from '../lib/store';
-import { IHeaderView, IMainView, IRouter } from '../lib/types/interfaces';
+import type { IHeaderView, IMainView, IRouter } from '../lib/types/interfaces';
 
 export default class Router implements IRouter {
   private mainView: IMainView;
@@ -17,8 +17,34 @@ export default class Router implements IRouter {
     this.setupRouting();
   }
 
+  public get validRoutes(): string[] | undefined {
+    const result = Object.keys(this.routeMap)
+      .filter((route) => route !== '')
+      .map((route) => this.normalizePath(route))
+      .filter((value, index, self) => self.indexOf(value) === index);
+    if (result) return result;
+    return undefined;
+  }
+
+  public static normalizePath(path: string): string {
+    return path.replaceAll(/^#\/?/g, '').replaceAll(/\/$/g, '').toLowerCase();
+  }
+
   public setHeaderView(headerView: IHeaderView): void {
     this.headerView = headerView;
+  }
+
+  public navigateTo(path: string): void {
+    const normalizedPath = Router.normalizePath(path);
+    if (
+      this.routeMap[normalizedPath] ||
+      this.routeMap[`#/${normalizedPath}`] ||
+      this.routeMap[`/${normalizedPath}`]
+    ) {
+      globalThis.location.hash = `#/${normalizedPath}`;
+    } else {
+      this.showNotFound();
+    }
   }
 
   private buildRouteMap(): Record<string, () => void> {
@@ -34,26 +60,6 @@ export default class Router implements IRouter {
     };
   }
 
-  public get validRoutes(): string[] {
-    return Object.keys(this.routeMap)
-      .filter((route) => route !== '')
-      .map((route) => route.replace(/^#\/?|\/$/g, ''))
-      .filter((value, index, self) => self.indexOf(value) === index);
-  }
-
-  public navigateTo(path: string): void {
-    const normalizedPath = this.normalizePath(path);
-    if (
-      this.routeMap[normalizedPath] ||
-      this.routeMap[`#/${normalizedPath}`] ||
-      this.routeMap[`/${normalizedPath}`]
-    ) {
-      window.location.hash = `#/${normalizedPath}`;
-    } else {
-      this.showNotFound();
-    }
-  }
-
   private setupRouting(): void {
     globalThis.addEventListener('hashchange', () => {
       // this.saveState();
@@ -63,12 +69,12 @@ export default class Router implements IRouter {
   }
 
   private handleRoute(): void {
-    const hash = window.location.hash;
-    const normalizedPath = this.normalizePath(hash);
+    const hash = globalThis.location.hash;
+    const normalizedPath = Router.normalizePath(hash);
     const routeHandler =
       this.routeMap[hash] ||
-      this.routeMap[hash.substring(1)] ||
-      this.routeMap[`/${hash.substring(1)}`];
+      this.routeMap[hash.slice(1)] ||
+      this.routeMap[`/${hash.slice(1)}`];
 
     // const currentRoute = hash ? this.normalizePath(hash) : 'garage';
 
@@ -80,10 +86,6 @@ export default class Router implements IRouter {
     } else {
       this.showNotFound();
     }
-  }
-
-  private normalizePath(path: string): string {
-    return path.replace(/^#\/?|\/$/g, '').toLowerCase();
   }
 
   private showNotFound(): void {

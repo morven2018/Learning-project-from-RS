@@ -1,12 +1,17 @@
-import { ICar } from '../lib/types/api-interfaces';
+import type { ICar } from '../lib/types/api-interfaces';
 import { CssClasses, CssTags } from '../lib/types/enums';
-import { IElementParameters, IListNodeCreator } from '../lib/types/interfaces';
+import type {
+  IElementParameters,
+  IListNodeCreator,
+} from '../lib/types/interfaces';
 import ButtonCreator from './button';
 import ElementCreator from './element-creator';
 
 import startIcon from '../assets/icon/start.png';
 import stopIcon from '../assets/icon/stop.png';
+import RaceCreator from './race-track';
 
+const mainPaddingPx = 30;
 const raceParameters = {
   tag: CssTags.Div,
   classNames: [CssClasses.RaceArea],
@@ -15,10 +20,11 @@ const raceParameters = {
 
 const raceBtnsParameters = {
   tag: CssTags.Div,
-  classNames: [CssClasses.RaceBtn],
+  classNames: [CssClasses.RaceButton],
   textContent: '',
 };
 
+const trackHeight = 250;
 export default class ListNodeCreator
   extends ElementCreator
   implements IListNodeCreator
@@ -28,12 +34,19 @@ export default class ListNodeCreator
   public startBth: ButtonCreator | undefined;
   public stopBth: ButtonCreator | undefined;
   private name: ElementCreator | undefined;
+  private raceTrack: RaceCreator | undefined;
   // public listnode: HTMLInputElement[] = [];
   // public btn: ButtonCreator | undefined;
 
   constructor(parameters: IElementParameters, elementInfo: ICar) {
     super(parameters);
     this.createElement(parameters, elementInfo);
+  }
+
+  public static getWidth(): number {
+    const width = document.documentElement.clientWidth;
+    const padding = Math.max(mainPaddingPx, width * 0.1);
+    return width - 2 * padding;
   }
 
   public createElement(
@@ -46,33 +59,33 @@ export default class ListNodeCreator
 
     if (this.element) this.element.id = elementInfo.id.toString();
 
-    const bthSelectParams = {
+    const bthSelectParameters = {
       tag: CssTags.Button,
       classNames: [CssClasses.Select],
       textContent: 'SELECT',
       value: elementInfo.id.toString(),
     };
 
-    this.selectBtn = new ButtonCreator(bthSelectParams);
+    this.selectBtn = new ButtonCreator(bthSelectParameters);
     this.addInnerElement(this.selectBtn);
 
-    const bthDeleteParams = {
+    const bthDeleteParameters = {
       tag: CssTags.Button,
       classNames: [CssClasses.Delete],
       textContent: 'Delete',
       value: elementInfo.id.toString(),
     };
 
-    this.deleteBtn = new ButtonCreator(bthDeleteParams);
+    this.deleteBtn = new ButtonCreator(bthDeleteParameters);
     this.addInnerElement(this.deleteBtn);
 
-    const nameParams = {
+    const nameParameters = {
       tag: CssTags.Div,
       classNames: [CssClasses.NameArea],
       textContent: elementInfo.name,
     };
 
-    this.name = new ElementCreator(nameParams);
+    this.name = new ElementCreator(nameParameters);
     this.addInnerElement(this.name);
 
     const raceArea = this.createRaceArea(elementInfo);
@@ -87,12 +100,16 @@ export default class ListNodeCreator
     const buttonArea = this.addButtons(elementInfo);
     area.addInnerElement(buttonArea);
 
+    this.raceTrack = this.addRaceArea(elementInfo);
+    area.addInnerElement(this.raceTrack);
+
     return area;
   }
-  public addButtons(elementInfo: ICar): ElementCreator {
-    const btnArea = new ElementCreator(raceBtnsParameters);
 
-    const startBtnParameters = {
+  public addButtons(elementInfo: ICar): ElementCreator {
+    const buttonArea = new ElementCreator(raceBtnsParameters);
+
+    const startButtonParameters = {
       tag: CssTags.Button,
       classNames: [CssClasses.Start],
       textContent: '',
@@ -101,10 +118,10 @@ export default class ListNodeCreator
       value: elementInfo.id.toString(),
     };
 
-    this.startBth = new ButtonCreator(startBtnParameters);
-    btnArea.addInnerElement(this.startBth);
+    this.startBth = new ButtonCreator(startButtonParameters);
+    buttonArea.addInnerElement(this.startBth);
 
-    const stopBtnParameters = {
+    const stopButtonParameters = {
       tag: CssTags.Button,
       classNames: [CssClasses.Stop],
       textContent: '',
@@ -113,9 +130,27 @@ export default class ListNodeCreator
       value: elementInfo.id.toString(),
     };
 
-    this.stopBth = new ButtonCreator(stopBtnParameters);
-    btnArea.addInnerElement(this.stopBth);
+    this.stopBth = new ButtonCreator(stopButtonParameters);
+    buttonArea.addInnerElement(this.stopBth);
 
-    return btnArea;
+    return buttonArea;
+  }
+
+  public addRaceArea(elementInfo: ICar): RaceCreator {
+    const width = ListNodeCreator.getWidth() || 400;
+    const raceParameters = {
+      tag: CssTags.Race,
+      classNames: [CssClasses.RaceTrack],
+      textContent: '',
+      id: elementInfo.id.toString(),
+      options: {
+        width: width,
+        height: trackHeight,
+      },
+    };
+    console.log(this);
+
+    const track = new RaceCreator(raceParameters, elementInfo);
+    return track;
   }
 }

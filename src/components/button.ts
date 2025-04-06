@@ -1,4 +1,7 @@
-import { IButtonCreator, IElementParameters } from '../lib/types/interfaces';
+import type {
+  IButtonCreator,
+  IElementParameters,
+} from '../lib/types/interfaces';
 import ElementCreator from './element-creator';
 
 export default class ButtonCreator

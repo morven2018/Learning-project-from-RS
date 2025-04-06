@@ -3,7 +3,7 @@ import FormCreator from '../../components/form';
 import ListNodeCreator from '../../components/list-node';
 import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
-import { IElementCreator, IView } from '../../lib/types/interfaces';
+import type { IElementCreator, IView } from '../../lib/types/interfaces';
 import { ApiClient } from '../../lib/utils/api-client';
 
 //const NAME_OF_APP = 'Decision Making Tool';
@@ -28,24 +28,24 @@ const formParameters = [
   },
 ];
 
-const btnParameters = [
+const buttonParameters = [
   {
     tag: CssTags.Button,
     classNames: [CssClasses.Race],
     textContent: 'RACE',
-    callback: () => {},
+    callback: (): void => {},
   },
   {
     tag: CssTags.Button,
     classNames: [CssClasses.Reset],
     textContent: 'RESET',
-    callback: () => {},
+    callback: (): void => {},
   },
   {
     tag: CssTags.Button,
     classNames: [CssClasses.Generate],
     textContent: 'GENERATE CARS',
-    callback: () => {},
+    callback: (): void => {},
   },
 ];
 
@@ -65,58 +65,73 @@ export default class GarageView extends View implements IView {
   public buttons: HTMLButtonElement[] = [];
   public page: number;
   public limit: number;
+  public forms: FormCreator[] = [];
   constructor() {
     super(parameters);
     this.buttons = [];
     this.page = 1;
     this.limit = 7;
-    this.configureView();
+    void this.configureView().catch((error) => {
+      console.error('Failed to configure view:', error);
+    });
   }
 
   public async configureView(): Promise<void> {
     if (this.viewElementCreator) {
-      formParameters.forEach((parametersForm) => {
+      for (const parametersForm of formParameters) {
         const form = new FormCreator(parametersForm);
+        this.forms.push(form);
+        /* if (
+          form.element instanceof HTMLElement &&
+          typeof parametersForm?.title === 'string'
+        )
+          form.element.dataset.textname = parametersForm.title; */
         this.viewElementCreator?.addInnerElement(form);
-      });
+      }
 
-      btnParameters.forEach((parameters) => this.addButton(parameters));
+      for (const parameters of buttonParameters) this.addButton(parameters);
+      try {
+        const response = await ApiClient.getCars({ _limit: 1 });
+        const total = response.totalCount;
+        // console.log(response);
 
-      const total = (await ApiClient.getCars({ _limit: 1 })).totalCount;
+        headerParameters.textContent = `${headerParameters.textContent}: ${total}`;
 
-      // console.log(await ApiClient.updateCar(1, 'dfdfgbfdg', '#AAAAAA'));
+        const h1 = new ElementCreator(headerParameters);
+        this.viewElementCreator?.addInnerElement(h1);
 
-      headerParameters.textContent = `${headerParameters.textContent}: ${total}`;
+        const liParameters = {
+          tag: CssTags.Ul,
+          classNames: [CssClasses.GarageList],
+          textContent: `Page #${this.page}`,
+        };
 
-      const h1 = new ElementCreator(headerParameters);
-      this.viewElementCreator?.addInnerElement(h1);
-
-      const liParameters = {
-        tag: CssTags.Ul,
-        classNames: [CssClasses.GarageList],
-        textContent: `Page #${this.page}`,
-      };
-
-      const list = new ElementCreator(liParameters);
-      this.viewElementCreator.addInnerElement(list);
-
-      this.generateNodes(list);
-      //carsInfo.forEach((car) => )
-      // this.viewElementCreator.setTextContent(NAME_OF_APP);
+        const list = new ElementCreator(liParameters);
+        this.viewElementCreator.addInnerElement(list);
+        // console.log('dfsv0');
+        await this.generateNodes(list);
+        // console.log('dfsv');
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
-  public async generateNodes(parent: IElementCreator) {
-    const carsInfo = (
-      await ApiClient.getCars({
+  public async generateNodes(parent: IElementCreator): Promise<void> {
+    console.log('fgb');
+    try {
+      const { cars } = await ApiClient.getCars({
         _page: this.page,
         _limit: this.limit,
-      })
-    ).cars;
-
-    carsInfo.forEach((element) => {
-      const car = new ListNodeCreator(baseLiParameters, element);
-      parent.addInnerElement(car);
-    });
+      });
+      console.log(cars);
+      for (const car of cars) {
+        const carNode = new ListNodeCreator(baseLiParameters, car);
+        parent.addInnerElement(carNode);
+      }
+    } catch (error) {
+      console.error('Failed to generate car nodes:', error);
+      throw error;
+    }
   }
 }

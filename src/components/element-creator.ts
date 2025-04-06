@@ -1,5 +1,8 @@
-import { IElementCreator, IElementParameters } from '../lib/types/interfaces';
-import { CallbackType } from '../lib/types/types';
+import type {
+  IElementCreator,
+  IElementParameters,
+} from '../lib/types/interfaces';
+import type { CallbackType } from '../lib/types/types';
 
 export default class ElementCreator implements IElementCreator {
   public element: HTMLElement | undefined;

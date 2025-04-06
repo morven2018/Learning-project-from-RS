@@ -1,6 +1,6 @@
 import View from '../../components/view';
 import { CssClasses, CssTags, Pages } from '../../lib/types/enums';
-import { IHeaderView, IRouter } from '../../lib/types/interfaces';
+import type { IHeaderView, IRouter } from '../../lib/types/interfaces';
 
 const buttonsInfo = [
   {
@@ -30,38 +30,47 @@ export default class HeaderView extends View implements IHeaderView {
     super(parameters);
     this.configureView(router);
     console.log(this.buttons);
-    const currentPath = this.getNormalizedPath() || Pages.Garage;
+    const currentPath = HeaderView.getNormalizedPath() || Pages.Garage;
     this.updateActiveState(currentPath);
   }
 
-  private getNormalizedPath(): string {
-    const hash = window.location.hash.substring(1);
+  public static getNormalizedPath(): string {
+    const hash = globalThis.location.hash
+      ? globalThis.location.hash.slice(1)
+      : '';
     const path = hash.split('?')[0];
-    return path.replace(/^\/|\/$/g, '').toLowerCase();
+    const result = path?.replaceAll(/^\/|\/$/g, '').toLowerCase();
+    return result && typeof result === 'string' ? result : '';
+  }
+
+  public static isValidPage(value: string): value is Pages {
+    return Object.values(Pages).includes(value);
   }
 
   public configureView(router: IRouter): void {
-    buttonsInfo.forEach((btnParams) => {
-      const element = this.addButton(btnParams);
-      element?.setCallback(() => router.navigateTo(btnParams.route));
+    for (const buttonParameters of buttonsInfo) {
+      const element = this.addButton(buttonParameters);
+      element?.setCallback(() => router.navigateTo(buttonParameters.route));
       const htmlElement = element?.getElement();
       if (htmlElement) {
-        htmlElement.setAttribute('data-route', btnParams.route);
+        htmlElement.dataset.route = buttonParameters.route;
         this.buttons.push(htmlElement);
       }
-    });
+    }
   }
 
   public updateActiveState(currentRoute: string): void {
-    const validRoutes = [Pages.Garage, Pages.Winners];
-    const isRouteValid = validRoutes.includes(currentRoute as Pages);
+    const validRoutes = new Set([Pages.Garage, Pages.Winners]);
+    if (HeaderView.isValidPage(currentRoute)) {
+      const isRouteValid = validRoutes.has(currentRoute);
 
-    this.buttons.forEach((button) => {
-      const buttonRoute = button.getAttribute('data-route');
-      const isCurrent = isRouteValid && buttonRoute === currentRoute;
+      for (const button of this.buttons) {
+        const buttonRoute = button.dataset.route;
+        const isCurrent = isRouteValid && buttonRoute === currentRoute;
 
-      button.classList.toggle(CssClasses.Disable, isCurrent);
-      //  button.toggleAttribute('disabled', isCurrent);
-    });
+        button.classList.toggle(CssClasses.Disable, isCurrent);
+        //  button.toggleAttribute('disabled', isCurrent);
+      }
+    }
   }
 }

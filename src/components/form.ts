@@ -1,5 +1,5 @@
 import { CssClasses, CssTags } from '../lib/types/enums';
-import { IElementParameters } from '../lib/types/interfaces';
+import type { IElementParameters } from '../lib/types/interfaces';
 import ButtonCreator from './button';
 import ElementCreator from './element-creator';
 import InputCreator from './input';
@@ -9,20 +9,20 @@ const inputParameters = [
     tag: CssTags.Input,
     classNames: [CssClasses.InputName],
     textContent: '',
-    optionType: {
+    options: {
       type: 'text',
       minlength: '3',
       required: 'true',
-      placeholder: 'Input car brand and model',
+      placeholder: 'car brand and model',
     },
   },
   {
     tag: CssTags.Input,
     classNames: [CssClasses.InputColor],
     textContent: '',
-    optionType: {
+    options: {
       type: 'color',
-      title: 'Input color of the car',
+      title: 'color of the car',
       required: 'true',
     },
   },
@@ -41,21 +41,25 @@ export default class FormCreator extends ElementCreator {
   public createElement(parameters: IElementParameters): void {
     super.createElement(parameters);
 
-    inputParameters.forEach((inputParameter) => {
+    for (const inputParameter of inputParameters) {
       const input = new InputCreator(inputParameter);
+      if (input.element instanceof HTMLInputElement) {
+        input.element.placeholder = `${parameters.title} ${inputParameter.options.placeholder}`;
+      }
+
       if (input && input.element && input.element instanceof HTMLInputElement) {
         input.element.id = `${parameters.classNames[0]}__${inputParameter.classNames[0]}`;
         this.inputs?.push(input.element);
         this.addInnerElement(input);
       }
-    });
+    }
 
-    const btnParameters = {
+    const buttonParameters = {
       tag: CssTags.Button,
       classNames: [`${parameters.classNames[0]}__btn`],
       textContent: parameters.title || '',
     };
-    this.btn = new ButtonCreator(btnParameters);
+    this.btn = new ButtonCreator(buttonParameters);
     this.addInnerElement(this.btn);
   }
 

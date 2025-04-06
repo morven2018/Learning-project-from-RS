@@ -1,17 +1,17 @@
 import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
-import { IView } from '../../lib/types/interfaces';
+import type { IView } from '../../lib/types/interfaces';
 
 export default class MainView extends View implements IView {
   constructor() {
-    const params = {
+    const parameters = {
       tag: CssTags.Main,
       classNames: [CssClasses.Main],
     };
-    super(params);
+    super(parameters);
   }
 
-  setContent(content: IView) {
+  public setContent(content: IView): void {
     const htmlElement = this.viewElementCreator?.getElement();
     if (htmlElement) {
       while (htmlElement.firstElementChild) {

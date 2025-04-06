@@ -1,4 +1,4 @@
-import { IState } from './types/interfaces';
+import type { IState } from './types/interfaces';
 
 const KEY_FOR_SAVE_TO_LOCALSTORAGE = 'exampleSpaApp';
 
@@ -9,6 +9,14 @@ export default class State implements IState {
     this.fields = State.loadState();
 
     window.addEventListener('beforeunload', this.saveState.bind(this));
+  }
+  public static loadState(): Map<string, string> {
+    const storageItem = localStorage.getItem(KEY_FOR_SAVE_TO_LOCALSTORAGE);
+    if (storageItem) {
+      const fieldObject = JSON.parse(storageItem);
+      return new Map(Object.entries(fieldObject));
+    }
+    return new Map();
   }
 
   public setField(name: string, value: string): void {
@@ -23,20 +31,15 @@ export default class State implements IState {
     return '';
   }
 
-  saveState() {
-    const fieldsObject = Object.fromEntries(this.fields.entries());
-    localStorage.setItem(
-      KEY_FOR_SAVE_TO_LOCALSTORAGE,
-      JSON.stringify(fieldsObject)
-    );
-  }
-
-  public static loadState(): Map<string, string> {
-    const storageItem = localStorage.getItem(KEY_FOR_SAVE_TO_LOCALSTORAGE);
-    if (storageItem) {
-      const fieldObject = JSON.parse(storageItem);
-      return new Map(Object.entries(fieldObject));
+  public saveState() {
+    try {
+      const fieldsObject = Object.fromEntries(this.fields.entries());
+      localStorage.setItem(
+        KEY_FOR_SAVE_TO_LOCALSTORAGE,
+        JSON.stringify(fieldsObject)
+      );
+    } catch (error) {
+      console.error(error);
     }
-    return new Map();
   }
 }

@@ -1,17 +1,17 @@
-import { ICar, IPaginationParameters } from '../types/api-interfaces';
+import type { ICar, IPaginationParameters } from '../types/api-interfaces';
 import { HttpMethod } from '../types/enums';
 
 const baseURL = 'http://127.0.0.1:3000';
 
 export class ApiClient {
   public static async getCars(
-    params?: IPaginationParameters
+    parameters?: IPaginationParameters
   ): Promise<{ cars: ICar[]; totalCount: number }> {
     let url = new URL(`${baseURL}/garage`);
-    url = ApiClient.addSearchParams(url, params);
+    url = ApiClient.addSearchParams(url, parameters);
 
     const response = await fetch(url);
-    const totalCount = parseInt(
+    const totalCount = Number.parseInt(
       response.headers.get('X-Total-Count') || '0',
       10
     );
@@ -19,15 +19,33 @@ export class ApiClient {
     return { cars, totalCount };
   }
 
+  public static isICar(value: unknown): value is ICar {
+    return (
+      typeof value === 'object' &&
+      value !== null &&
+      'id' in value &&
+      typeof value.id === 'number' &&
+      'name' in value &&
+      typeof value.name === 'string' &&
+      'color' in value &&
+      typeof value.color === 'string'
+    );
+  }
+
   public static async getCar(id: number): Promise<ICar> {
-    let url = `${baseURL}/garage/${id}`;
+    const url = `${baseURL}/garage/${id}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok)
+        throw new Error(`Car not found (status: ${response.status})`);
 
-    const response = await fetch(url);
-    if (!response.ok)
-      throw new Error(`Car not found (status: ${response.status})`);
+      const car: unknown = await response.json();
 
-    const car = await response.json();
-    return car;
+      if (car && typeof car === 'object' && ApiClient.isICar(car)) return car;
+      throw new Error('Parsing error');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   public static async createCar(name: string, color: string): Promise<ICar> {
@@ -49,7 +67,7 @@ export class ApiClient {
   }
 
   public static async deleteCar(id: number): Promise<boolean> {
-    let url = `${baseURL}/garage/${id}`;
+    const url = `${baseURL}/garage/${id}`;
 
     const fetchParameters = {
       method: HttpMethod.Delete,
@@ -70,7 +88,7 @@ export class ApiClient {
       color,
     };
 
-    let url = `${baseURL}/garage/${id}`;
+    const url = `${baseURL}/garage/${id}`;
 
     const fetchBody = {
       method: HttpMethod.Put,
@@ -85,13 +103,16 @@ export class ApiClient {
     return response.json();
   }
 
-  public static addSearchParams(url: URL, params?: IPaginationParameters): URL {
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
+  public static addSearchParams(
+    url: URL,
+    parameters?: IPaginationParameters
+  ): URL {
+    if (parameters) {
+      for (const [key, value] of Object.entries(parameters)) {
         if (value) {
           url.searchParams.append(key, String(value));
         }
-      });
+      }
     }
     return url;
   }

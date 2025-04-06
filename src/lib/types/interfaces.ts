@@ -1,4 +1,4 @@
-import { ICar } from './api-interfaces.js';
+import type { ICar } from './api-interfaces.js';
 import type { VoidMethodType, CallbackType, OptionType } from './types.ts';
 
 export interface IElementParameters {
@@ -9,7 +9,7 @@ export interface IElementParameters {
   imageURL?: string;
   imageAlt?: string;
   title?: string;
-  id?: number;
+  id?: string;
   route?: string;
   options?: OptionType;
   value?: string;
@@ -76,7 +76,7 @@ export interface IState {
   // setListCreator: (listCreator: IListCreator) => void;
   // getElements: () => HTMLElement[] | undefined;
   // getNextId: () => number | undefined;
-  saveState: VoidMethodType;
+  // saveState: VoidMethodType;
   setField: (name: string, value: string) => void;
   getField: (name: string) => string;
 }

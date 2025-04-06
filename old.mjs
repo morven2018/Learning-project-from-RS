@@ -1,24 +1,14 @@
+import { defineConfig } from 'eslint/config';
+import globals from 'globals';
+// import js from '@eslint/js';
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
-import globals from 'globals';
+import unicorn from 'eslint-plugin-unicorn';
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
-  {
-    files: ['**/*.{js,mjs,cjs,ts}'],
-  },
-
-  eslint.configs.recommended,
-  eslintPluginUnicorn.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  // ...tseslint.config(
-  //   eslint.configs.recommended,
-  // ...tseslint.configs.strictTypeChecked,
-  // ...tseslint.configs.stylisticTypeChecked,
-  // ),
+export default defineConfig([
+  { files: ['**/*.{js,mjs,cjs,ts}'] },
 
   {
     languageOptions: {
@@ -33,9 +23,31 @@ export default [
     },
   },
 
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  // {
+  //   files: ['**/*.{js,mjs,cjs,ts}'],
+  //   plugins: { js },
+  //   extends: ['js/recommended', 'plugin:prettier/recommended'],
+  // },
   {
+    languageOptions: {
+      globals: globals.builtin,
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['*.mjs'],
+        },
+        tsconfigRootDir: import.meta.dirname,
+        sourceType: 'module',
+      },
+    },
+  },
+  {
+    extends: ['prettier'],
     plugins: {
-      prettier: prettier,
+      '@typescript-eslint': tseslint.plugin,
+      unicorn,
+      prettier,
     },
 
     rules: {
@@ -45,7 +57,6 @@ export default [
           endOfLine: 'auto',
         },
       ],
-
       semi: 'error',
       'prefer-const': 'error',
       'no-console': 'warn',
@@ -65,14 +76,36 @@ export default [
       'class-methods-use-this': 'error',
 
       'unicorn/better-regex': 'warn',
-    },
+      'unicorn/consistent-function-scoping': 'error',
+      'unicorn/no-array-reduce': 'error',
 
-    linterOptions: {
-      noInlineConfig: true,
-      reportUnusedDisableDirectives: 'warn',
+      'max-lines-per-function': [
+        'error',
+        {
+          max: 40,
+          skipBlankLines: true,
+          skipComments: true,
+          IIFEs: true,
+        },
+      ],
+
+      'no-magic-numbers': [
+        'error',
+        {
+          ignore: [-1, 0, 1, 2],
+          ignoreArrayIndexes: true,
+          enforceConst: true,
+          detectObjects: false,
+        },
+      ],
+      'unicorn/no-useless-undefined': 'off',
+
+      linterOptions: {
+        noInlineConfig: true,
+        reportUnusedDisableDirectives: 'warn',
+      },
     },
   },
-
   {
     ignores: ['webpack.*.js', 'node_modules/', 'dist/', 'build/'],
   },
@@ -87,4 +120,4 @@ export default [
   },
 
   eslintConfigPrettier,
-];
+]);
