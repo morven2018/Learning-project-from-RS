@@ -185,11 +185,11 @@ export interface IJsonCarInfo {
 export interface IJsonCarInfoItem {
   id: string;
   name: string;
-  'cyrillic-name': string;
-  class: string;
-  'year-from': number;
-  'year-to': number;
-  path: {
+  'cyrillic-name'?: string;
+  class?: string;
+  'year-from'?: number;
+  'year-to'?: number;
+  path?: {
     'mark-id': string;
   };
 }

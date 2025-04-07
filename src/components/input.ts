@@ -12,7 +12,10 @@ export default class InputCreator
     super.createElement(parameters);
     if (parameters.options) {
       for (const key in parameters.options) {
-        if (parameters.options[key])
+        if (
+          parameters.options[key] &&
+          typeof parameters.options[key] === 'string'
+        )
           this.element?.setAttribute(key, parameters.options[key]);
       }
     }

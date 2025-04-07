@@ -3,6 +3,7 @@ import ApiClient from './api-client';
 import CarGenerator from './car-generator';
 
 export default class CarCreator {
+  private static isCreating = false;
   public static async createCar(carInfo: ICarCreate): Promise<ICar> {
     try {
       const createdCar = await ApiClient.createCar(carInfo.name, carInfo.color);
@@ -17,18 +18,24 @@ export default class CarCreator {
     }
   }
 
-  public static createNCars(n: number): void {
-    if (n <= 0) return;
+  public static async createNCars(n: number): Promise<ICar[]> {
+    if (n <= 0 || this.isCreating) return [];
 
-    const creationPromises: Promise<ICar | void>[] = [];
+    this.isCreating = true;
+    try {
+      const carsToCreate = Array.from({ length: n }, () =>
+        CarGenerator.generateCar()
+      );
+      const creationPromises = carsToCreate
+        .filter(Boolean)
+        .map((car) => this.createCar(car));
+      const result = await Promise.all(creationPromises);
 
-    for (let index = 0; index < n; index += 1) {
-      const car = CarGenerator.generateCar();
-      if (car) {
-        creationPromises.push(CarCreator.createCar(car).catch(console.error));
-      }
+      return result;
+    } catch {
+      console.error('Error');
+    } finally {
+      this.isCreating = false;
     }
-
-    Promise.all(creationPromises).catch(console.error);
   }
 }

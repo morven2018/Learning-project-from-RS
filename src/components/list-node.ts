@@ -1,5 +1,6 @@
 import type { ICar } from '../lib/types/api-interfaces';
 import { CssClasses, CssTags } from '../lib/types/enums';
+import type GarageView from '../app/garage/garage-view';
 import type {
   IElementParameters,
   IListNodeCreator,
@@ -10,7 +11,7 @@ import ElementCreator from './element-creator';
 import startIcon from '../assets/icon/start.png';
 import stopIcon from '../assets/icon/stop.png';
 import RaceCreator from './race-track';
-import { ApiClient } from '../lib/utils/api-client';
+import ApiClient from '../lib/utils/api-client';
 
 const mainPaddingPx = 30;
 const raceParameters = {
@@ -30,6 +31,7 @@ export default class ListNodeCreator
   extends ElementCreator
   implements IListNodeCreator
 {
+  public parent: GarageView | undefined = undefined;
   public selectBtn: ButtonCreator | undefined;
   public deleteBtn: ButtonCreator | undefined;
   public startBth: ButtonCreator | undefined;
@@ -37,15 +39,37 @@ export default class ListNodeCreator
   private name: ElementCreator | undefined;
   private raceTrack: RaceCreator | undefined;
 
-  constructor(parameters: IElementParameters, elementInfo: ICar) {
+  constructor(
+    parameters: IElementParameters,
+    elementInfo: ICar,
+    parent?: GarageView
+  ) {
     super(parameters);
     this.createElement(parameters, elementInfo);
+    if (parent) this.parent = parent;
   }
 
   public static getWidth(): number {
     const width = document.documentElement.clientWidth;
     const padding = Math.max(mainPaddingPx, width * 0.1);
     return width - 2 * padding;
+  }
+  public static addRaceArea(elementInfo: ICar): RaceCreator {
+    const width = ListNodeCreator.getWidth() || 400;
+    const raceParameters = {
+      tag: CssTags.Race,
+      classNames: [CssClasses.RaceTrack],
+      textContent: '',
+      id: elementInfo.id.toString(),
+      options: {
+        width: width,
+        height: trackHeight,
+      },
+    };
+    // console.log(this);
+
+    const track = new RaceCreator(raceParameters, elementInfo);
+    return track;
   }
 
   public createElement(
@@ -91,7 +115,7 @@ export default class ListNodeCreator
     const raceArea = this.createRaceArea(elementInfo);
     this.addInnerElement(raceArea);
 
-    console.log(this, raceArea);
+    // console.log(this, raceArea);
   }
 
   public createRaceArea(elementInfo: ICar): ElementCreator {
@@ -100,7 +124,7 @@ export default class ListNodeCreator
     const buttonArea = this.addButtons(elementInfo);
     area.addInnerElement(buttonArea);
 
-    this.raceTrack = this.addRaceArea(elementInfo);
+    this.raceTrack = ListNodeCreator.addRaceArea(elementInfo);
     area.addInnerElement(this.raceTrack);
 
     return area;
@@ -138,24 +162,6 @@ export default class ListNodeCreator
     return buttonArea;
   }
 
-  public addRaceArea(elementInfo: ICar): RaceCreator {
-    const width = ListNodeCreator.getWidth() || 400;
-    const raceParameters = {
-      tag: CssTags.Race,
-      classNames: [CssClasses.RaceTrack],
-      textContent: '',
-      id: elementInfo.id.toString(),
-      options: {
-        width: width,
-        height: trackHeight,
-      },
-    };
-    console.log(this);
-
-    const track = new RaceCreator(raceParameters, elementInfo);
-    return track;
-  }
-
   private startCar(): void {
     this.raceTrack?.startAnimation();
   }
@@ -167,6 +173,7 @@ export default class ListNodeCreator
       ApiClient.deleteCar(id)
         .then(() => {
           if (this.element instanceof HTMLElement) this.element.remove();
+          if (this.parent) this.parent.updateCarList();
         })
         .catch(console.error);
   }

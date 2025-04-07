@@ -8,7 +8,7 @@ import ApiClient from '../../lib/utils/api-client';
 import CarCreator from '../../lib/utils/car-creator';
 
 //const NAME_OF_APP = 'Decision Making Tool';
-const numberOfGeneratedCars = 100;
+const numberOfGeneratedCars = 1;
 const parameters = {
   tag: CssTags.Section,
   classNames: [CssClasses.Garage],
@@ -29,31 +29,10 @@ const formParameters = [
   },
 ];
 
-const buttonParameters = [
-  {
-    tag: CssTags.Button,
-    classNames: [CssClasses.Race],
-    textContent: 'RACE',
-    callback: (): void => {},
-  },
-  {
-    tag: CssTags.Button,
-    classNames: [CssClasses.Reset],
-    textContent: 'RESET',
-    callback: (): void => {},
-  },
-  {
-    tag: CssTags.Button,
-    classNames: [CssClasses.Generate],
-    textContent: 'GENERATE CARS',
-    callback: (): void => CarCreator.createNCars(numberOfGeneratedCars),
-  },
-];
-
 const headerParameters = {
   tag: CssTags.H1,
   classNames: [CssClasses.H1],
-  textContent: 'Garage',
+  textContent: '',
 };
 
 const baseLiParameters = {
@@ -67,26 +46,44 @@ export default class GarageView extends View implements IView {
   public page: number;
   public limit: number;
   public forms: FormCreator[] = [];
+  private list: ElementCreator | undefined = undefined;
+  private header: ElementCreator | undefined = undefined;
   constructor() {
     super(parameters);
     this.buttons = [];
     this.page = 1;
     this.limit = 7;
-    void this.configureView().catch((error) => {
+    this.configureView().catch((error) => {
       console.error('Failed to configure view:', error);
     });
   }
 
   public async configureView(): Promise<void> {
     if (this.viewElementCreator) {
+      const buttonParameters = [
+        {
+          tag: CssTags.Button,
+          classNames: [CssClasses.Race],
+          textContent: 'RACE',
+          callback: (): void => {},
+        },
+        {
+          tag: CssTags.Button,
+          classNames: [CssClasses.Reset],
+          textContent: 'RESET',
+          callback: (): void => {},
+        },
+        {
+          tag: CssTags.Button,
+          classNames: [CssClasses.Generate],
+          textContent: 'GENERATE CARS',
+          callback: this.generateHandler.bind(this),
+        },
+      ];
+
       for (const parametersForm of formParameters) {
         const form = new FormCreator(parametersForm);
         this.forms.push(form);
-        /* if (
-          form.element instanceof HTMLElement &&
-          typeof parametersForm?.title === 'string'
-        )
-          form.element.dataset.textname = parametersForm.title; */
         this.viewElementCreator?.addInnerElement(form);
       }
 
@@ -94,12 +91,11 @@ export default class GarageView extends View implements IView {
       try {
         const response = await ApiClient.getCars({ _limit: 1 });
         const total = response.totalCount;
-        // console.log(response);
 
-        headerParameters.textContent = `${headerParameters.textContent}: ${total}`;
+        headerParameters.textContent = `Garage: ${total}`;
 
-        const h1 = new ElementCreator(headerParameters);
-        this.viewElementCreator?.addInnerElement(h1);
+        this.header = new ElementCreator(headerParameters);
+        this.viewElementCreator?.addInnerElement(this.header);
 
         const liParameters = {
           tag: CssTags.Ul,
@@ -107,11 +103,9 @@ export default class GarageView extends View implements IView {
           textContent: `Page #${this.page}`,
         };
 
-        const list = new ElementCreator(liParameters);
-        this.viewElementCreator.addInnerElement(list);
-        // console.log('dfsv0');
-        await this.generateNodes(list);
-        // console.log('dfsv');
+        this.list = new ElementCreator(liParameters);
+        this.viewElementCreator.addInnerElement(this.list);
+        await this.generateNodes(this.list);
       } catch (error) {
         console.error(error);
       }
@@ -119,7 +113,6 @@ export default class GarageView extends View implements IView {
   }
 
   public async generateNodes(parent: IElementCreator): Promise<void> {
-    console.log('fgb');
     try {
       const { cars } = await ApiClient.getCars({
         _page: this.page,
@@ -127,12 +120,27 @@ export default class GarageView extends View implements IView {
       });
       console.log(cars);
       for (const car of cars) {
-        const carNode = new ListNodeCreator(baseLiParameters, car);
+        const carNode = new ListNodeCreator(baseLiParameters, car, this);
         parent.addInnerElement(carNode);
       }
     } catch (error) {
       console.error('Failed to generate car nodes:', error);
       throw error;
+    }
+  }
+  public async generateHandler(event: Event): Promise<void> {
+    event.preventDefault();
+    event.stopPropagation();
+    await CarCreator.createNCars(numberOfGeneratedCars);
+    this.updateCarList();
+  }
+
+  public updateCarList(): void {
+    if (this.viewElementCreator?.element instanceof HTMLElement) {
+      this.viewElementCreator.element.replaceChildren();
+      this.configureView().catch((error) => {
+        console.error('Failed to configure view:', error);
+      });
     }
   }
 }

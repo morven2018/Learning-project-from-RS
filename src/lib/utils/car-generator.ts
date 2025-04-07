@@ -10,6 +10,7 @@ export default class CarGenerator {
   public static generateCar(): ICarCreate {
     const carName = CarGenerator.generateCarName();
     const carColor = CarGenerator.generateColor();
+    console.log(carName, carColor);
     return {
       name: carName || 'no-name',
       color: carColor,
@@ -18,6 +19,7 @@ export default class CarGenerator {
 
   private static generateCarName(): string | undefined {
     const modelList = CarGenerator.loadData();
+    console.log('modelList', modelList);
     if (modelList) {
       const brandItem = Math.floor(Math.random() * modelList.length);
       const markList = modelList[brandItem];
@@ -46,11 +48,19 @@ export default class CarGenerator {
 
   private static loadData(): JsonModels | void {
     try {
+      console.log(
+        'dfdfggbngbn',
+        Array.isArray(data) &&
+          data.every((item) => CarGenerator.isJsonCarInfo(item))
+      );
       if (
         Array.isArray(data) &&
         data.every((item) => CarGenerator.isJsonCarInfo(item))
-      )
+      ) {
+        console.log(data);
         return data;
+      }
+
       throw new Error('not correct Json data');
     } catch (error) {
       console.error(error);
@@ -58,65 +68,40 @@ export default class CarGenerator {
   }
 
   private static isJsonCarInfoItem(item: unknown): item is IJsonCarInfoItem {
-    if (!item || typeof item !== 'object') return false;
+    // console.log('dfvdf', item);
 
     const result =
-      CarGenerator.hasStringProperties(item, [
-        'id',
-        'name',
-        'cyrillic-name',
-        'class',
-      ]) &&
-      CarGenerator.hasNumberProperties(item, ['year-from', 'year-to']) &&
-      item.path &&
-      typeof item.path === 'object' &&
-      CarGenerator.hasStringProperties(item.path, ['mark-id']);
-
+      item &&
+      typeof item === 'object' &&
+      'id' in item &&
+      typeof item.id === 'string' &&
+      'name' in item &&
+      typeof item.name === 'string';
+    // console.log('result', result);
     if (typeof result === 'boolean') return result;
     return false;
   }
 
   private static isJsonCarInfo(car: unknown): car is IJsonCarInfo {
+    // console.log('car', car);
     const result =
       car &&
       typeof car === 'object' &&
-      CarGenerator.hasStringProperties(car, [
-        'id',
-        'name',
-        'cyrillic-name',
-        'country',
-      ]) &&
+      'id' in car &&
+      typeof car.id === 'string' &&
+      'name' in car &&
+      typeof car.name === 'string' &&
+      'cyrillic-name' in car &&
+      typeof car['cyrillic-name'] === 'string' &&
+      'country' in car &&
+      typeof car.country === 'string' &&
+      'popular' in car &&
       typeof car.popular === 'boolean' &&
+      'models' in car &&
       Array.isArray(car.models) &&
       car.models.every((element) => CarGenerator.isJsonCarInfoItem(element));
-
+    // console.log('result', result);
     if (typeof result === 'boolean') return result;
     return false;
   }
-
-  private static hasStringProperties = (
-    property: unknown,
-    keys: string[]
-  ): property is Record<string, string> => {
-    if (!property || typeof property !== 'object') return false;
-    return keys.every(
-      (k) =>
-        k in property &&
-        typeof property === 'string' &&
-        typeof property[k] === 'string'
-    );
-  };
-
-  private static hasNumberProperties = (
-    property: unknown,
-    keys: string[]
-  ): property is Record<string, number> => {
-    if (!property || typeof property !== 'object') return false;
-    return keys.every(
-      (k) =>
-        k in property &&
-        typeof property === 'string' &&
-        typeof property[k] === 'number'
-    );
-  };
 }
