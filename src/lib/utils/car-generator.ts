@@ -3,15 +3,15 @@ import type {
   JsonModels,
   IJsonCarInfo,
   IJsonCarInfoItem,
-  ICarCreate,
 } from '../types/interfaces';
+import type { ICarCreate } from '../types/api-interfaces';
 
 export default class CarGenerator {
   public static generateCar(): ICarCreate {
     const carName = CarGenerator.generateCarName();
     const carColor = CarGenerator.generateColor();
     return {
-      name: carName,
+      name: carName || 'no-name',
       color: carColor,
     };
   }

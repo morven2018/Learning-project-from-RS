@@ -193,5 +193,3 @@ export interface IJsonCarInfoItem {
     'mark-id': string;
   };
 }
-
-

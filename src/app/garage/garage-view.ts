@@ -4,10 +4,11 @@ import ListNodeCreator from '../../components/list-node';
 import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
 import type { IElementCreator, IView } from '../../lib/types/interfaces';
-import { ApiClient } from '../../lib/utils/api-client';
+import ApiClient from '../../lib/utils/api-client';
+import CarCreator from '../../lib/utils/car-creator';
 
 //const NAME_OF_APP = 'Decision Making Tool';
-
+const numberOfGeneratedCars = 100;
 const parameters = {
   tag: CssTags.Section,
   classNames: [CssClasses.Garage],
@@ -45,7 +46,7 @@ const buttonParameters = [
     tag: CssTags.Button,
     classNames: [CssClasses.Generate],
     textContent: 'GENERATE CARS',
-    callback: (): void => {},
+    callback: (): void => CarCreator.createNCars(numberOfGeneratedCars),
   },
 ];
 

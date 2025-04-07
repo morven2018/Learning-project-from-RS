@@ -3,7 +3,7 @@ import { HttpMethod } from '../types/enums';
 
 const baseURL = 'http://127.0.0.1:3000';
 
-export class ApiClient {
+export default class ApiClient {
   public static async getCars(
     parameters?: IPaginationParameters
   ): Promise<{ cars: ICar[]; totalCount: number }> {
