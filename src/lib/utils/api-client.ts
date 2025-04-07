@@ -15,37 +15,43 @@ export default class ApiClient {
       response.headers.get('X-Total-Count') || '0',
       10
     );
-    const cars = await response.json();
+    const cars: unknown = await response.json();
+    if (!Array.isArray(cars) || !cars.every((car) => this.isICar(car)))
+      throw new Error('Invalid car data received from server');
     return { cars, totalCount };
-  }
-
-  public static isICar(value: unknown): value is ICar {
-    return (
-      typeof value === 'object' &&
-      value !== null &&
-      'id' in value &&
-      typeof value.id === 'number' &&
-      'name' in value &&
-      typeof value.name === 'string' &&
-      'color' in value &&
-      typeof value.color === 'string'
-    );
   }
 
   public static async getCar(id: number): Promise<ICar> {
     const url = `${baseURL}/garage/${id}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok)
-        throw new Error(`Car not found (status: ${response.status})`);
+    const response = await fetch(url);
 
-      const car: unknown = await response.json();
-
-      if (car && typeof car === 'object' && ApiClient.isICar(car)) return car;
-      throw new Error('Parsing error');
-    } catch (error) {
-      console.error(error);
+    if (!response.ok) {
+      throw new Error(`Car not found (status: ${response.status})`);
     }
+
+    const car: unknown = await response.json();
+
+    if (!ApiClient.isICar(car)) {
+      throw new Error('Invalid car data received from server');
+    }
+
+    return car;
+  }
+
+  public static isICar(car: unknown): car is ICar {
+    if (typeof car !== 'object' || car === null) {
+      return false;
+    }
+    const result =
+      car &&
+      'id' in car &&
+      typeof car.id === 'number' &&
+      'name' in car &&
+      typeof car.name === 'string' &&
+      'color' in car &&
+      typeof car.color === 'string';
+    if (typeof result === 'boolean') return result;
+    return false;
   }
 
   public static async createCar(name: string, color: string): Promise<ICar> {
@@ -63,7 +69,18 @@ export default class ApiClient {
     };
 
     const response = await fetch(url, fetchBody);
-    return response.json();
+
+    if (!response.ok) {
+      throw new Error(`Failed to create car: ${response.statusText}`);
+    }
+
+    const createdCar: unknown = await response.json();
+
+    if (!ApiClient.isICar(createdCar)) {
+      throw new Error('Invalid car data received from server');
+    }
+
+    return createdCar;
   }
 
   public static async deleteCar(id: number): Promise<boolean> {
@@ -97,10 +114,18 @@ export default class ApiClient {
     };
 
     const response = await fetch(url, fetchBody);
-    if (!response.ok)
-      throw new Error(`Car not found (status: ${response.status})`);
 
-    return response.json();
+    if (!response.ok) {
+      throw new Error(`Failed to update car: ${response.statusText}`);
+    }
+
+    const updatedCar: unknown = await response.json();
+
+    if (!ApiClient.isICar(updatedCar)) {
+      throw new Error('Invalid car data received from server');
+    }
+
+    return updatedCar;
   }
 
   public static addSearchParams(

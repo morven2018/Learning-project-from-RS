@@ -379,7 +379,6 @@ export default class RaceCreator extends ElementCreator {
       }
       // const shouldShowStopImage = this.stopImage;
       if (this.stopImage && Date.now() <= this.showStopImageUntil) {
-        console.log('GV');
         const width = Math.min(Car.CarWidth, this.element.width * 0.2);
         const trackWidth = this.element.width - Track.Padding * 2;
         const carX = Track.Padding + this.car.position * trackWidth;

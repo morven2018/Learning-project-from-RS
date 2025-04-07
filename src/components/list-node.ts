@@ -51,10 +51,13 @@ export default class ListNodeCreator
 
   public static getWidth(): number {
     const width = document.documentElement.clientWidth;
-    const padding = Math.max(mainPaddingPx, width * 0.1);
+    const padding = Math.max(mainPaddingPx, width * 0.02);
     return width - 2 * padding;
   }
-  public static addRaceArea(elementInfo: ICar): RaceCreator {
+  public static addRaceArea(
+    elementInfo: ICar,
+    parentNode: ListNodeCreator
+  ): RaceCreator {
     const width = ListNodeCreator.getWidth() || 400;
     const raceParameters = {
       tag: CssTags.Race,
@@ -67,7 +70,7 @@ export default class ListNodeCreator
       },
     };
 
-    const track = new RaceCreator(raceParameters, elementInfo, this);
+    const track = new RaceCreator(raceParameters, elementInfo, parentNode);
     return track;
   }
 
@@ -77,13 +80,13 @@ export default class ListNodeCreator
   ): void {
     super.createElement(parameters);
 
-    const callback = (event: Event): void => {
+    /* const callback = (event: Event): void => {
       event.preventDefault();
       if (this.parent) {
         this.parent.setSelectedCarId(elementInfo.id);
         this.parent.fillUpdateForm(elementInfo);
       }
-    };
+    }; */
 
     if (!elementInfo) return;
 
@@ -94,11 +97,21 @@ export default class ListNodeCreator
       classNames: [CssClasses.Select],
       textContent: 'SELECT',
       value: elementInfo.id.toString(),
-      callback: callback.bind(this),
+      callback: (event: Event): void => {
+        event.preventDefault();
+        if (this.parent && elementInfo) {
+          this.parent.setSelectedCarId(elementInfo.id);
+          this.parent.fillUpdateForm(elementInfo);
+        }
+      },
     };
 
-    this.selectBtn = new ButtonCreator(bthSelectParameters);
-    this.addInnerElement(this.selectBtn);
+    if (this.selectBtn) {
+      this.selectBtn.update(bthSelectParameters);
+    } else {
+      this.selectBtn = new ButtonCreator(bthSelectParameters);
+      this.addInnerElement(this.selectBtn);
+    }
 
     const bthDeleteParameters = {
       tag: CssTags.Button,
@@ -132,7 +145,7 @@ export default class ListNodeCreator
     const buttonArea = this.addButtons(elementInfo);
     area.addInnerElement(buttonArea);
 
-    this.raceTrack = ListNodeCreator.addRaceArea(elementInfo);
+    this.raceTrack = ListNodeCreator.addRaceArea(elementInfo, this);
     area.addInnerElement(this.raceTrack);
 
     return area;

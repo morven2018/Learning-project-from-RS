@@ -114,7 +114,6 @@ export default class GarageView extends View implements IView {
       try {
         const response = await ApiClient.getCars({ _limit: 1 });
         this.total = response.totalCount;
-        console.log(this.total);
 
         headerParameters.textContent = `Garage: ${this.total}`;
 
@@ -126,17 +125,14 @@ export default class GarageView extends View implements IView {
           classNames: [CssClasses.GarageList],
           textContent: `Page #${this.page}`,
         };
-        console.log('f7');
+
         this.list = new ElementCreator(liParameters);
         this.viewElementCreator.addInnerElement(this.list);
-        console.log('f5');
         this.initPagination();
-        console.log('f2');
         if (!this.list) {
           console.error('List element is not initialized');
           return;
         }
-        console.log('7f');
 
         await this.generateNodes(this.list);
       } catch (error) {
@@ -146,7 +142,6 @@ export default class GarageView extends View implements IView {
   }
 
   public async generateNodes(parent: IElementCreator): Promise<void> {
-    console.log('f');
     try {
       const response = await ApiClient.getCars({
         _page: this.page,
@@ -260,7 +255,7 @@ export default class GarageView extends View implements IView {
       classNames: [CssClasses.Pagination],
       textContent: '',
     };
-    console.log('f11');
+
     this.pagination = new Pagination(paginationParameters, {
       currentPage: this.page,
       totalItems: this.total,
@@ -271,7 +266,7 @@ export default class GarageView extends View implements IView {
         this.updateCarList();
       },
     });
-    console.log('f111');
+
     if (this.viewElementCreator) {
       this.viewElementCreator.addInnerElement(this.pagination);
     }

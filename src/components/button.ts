@@ -31,4 +31,25 @@ export default class ButtonCreator
     if (parameters.callback)
       this.element?.addEventListener('click', parameters.callback);
   }
+
+  public update(parameters: {
+    tag?: string;
+    classNames?: string[];
+    textContent?: string;
+    value?: string;
+    callback?: (event: Event) => void;
+  }): void {
+    if (parameters.classNames && this.element) {
+      this.element.className = parameters.classNames.join(' ');
+    }
+    if (parameters.textContent && this.element) {
+      this.element.textContent = parameters.textContent;
+    }
+    if (parameters.value && this.element) {
+      this.element.setAttribute('value', parameters.value);
+    }
+    if (parameters.callback) {
+      this.setCallback(parameters.callback);
+    }
+  }
 }

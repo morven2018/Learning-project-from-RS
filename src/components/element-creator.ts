@@ -51,4 +51,16 @@ export default class ElementCreator implements IElementCreator {
       this.element.replaceChildren();
     }
   }
+  public update(parameters: {
+    tag?: string;
+    classNames?: string[];
+    textContent?: string;
+  }): void {
+    if (parameters.classNames && this.element) {
+      this.element.className = parameters.classNames.join(' ');
+    }
+    if (parameters.textContent && this.element) {
+      this.element.textContent = parameters.textContent;
+    }
+  }
 }
