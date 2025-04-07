@@ -24,7 +24,7 @@ const raceBtnsParameters = {
   textContent: '',
 };
 
-const trackHeight = 100;
+const trackHeight = 80;
 export default class ListNodeCreator
   extends ElementCreator
   implements IListNodeCreator
@@ -35,8 +35,6 @@ export default class ListNodeCreator
   public stopBth: ButtonCreator | undefined;
   private name: ElementCreator | undefined;
   private raceTrack: RaceCreator | undefined;
-  // public listnode: HTMLInputElement[] = [];
-  // public btn: ButtonCreator | undefined;
 
   constructor(parameters: IElementParameters, elementInfo: ICar) {
     super(parameters);
@@ -116,6 +114,7 @@ export default class ListNodeCreator
       imageURL: startIcon,
       title: 'Start',
       value: elementInfo.id.toString(),
+      callback: this.startCar.bind(this),
     };
 
     this.startBth = new ButtonCreator(startButtonParameters);
@@ -128,6 +127,7 @@ export default class ListNodeCreator
       imageURL: stopIcon,
       title: 'Stop',
       value: elementInfo.id.toString(),
+      callback: this.stopCar.bind(this),
     };
 
     this.stopBth = new ButtonCreator(stopButtonParameters);
@@ -152,5 +152,12 @@ export default class ListNodeCreator
 
     const track = new RaceCreator(raceParameters, elementInfo);
     return track;
+  }
+
+  private startCar(): void {
+    this.raceTrack?.startAnimation();
+  }
+  private stopCar(): void {
+    this.raceTrack?.stopAnimation();
   }
 }

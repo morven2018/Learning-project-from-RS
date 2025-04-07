@@ -27,5 +27,8 @@ export default class ButtonCreator
     }
 
     if (parameters.value) this.element?.setAttribute('value', parameters.value);
+
+    if (parameters.callback)
+      this.element?.addEventListener('click', parameters.callback);
   }
 }

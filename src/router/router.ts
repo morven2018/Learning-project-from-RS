@@ -8,6 +8,7 @@ export default class Router implements IRouter {
   private mainView: IMainView;
   private readonly routeMap: Record<string, () => void>;
   private headerView: IHeaderView | undefined = undefined;
+
   // private state: IState;
 
   constructor(mainView: IMainView) {
@@ -22,7 +23,11 @@ export default class Router implements IRouter {
       .filter((route) => route !== '')
       .map((route) => this.normalizePath(route))
       .filter((value, index, self) => self.indexOf(value) === index);
-    if (result) return result;
+    if (
+      Array.isArray(result) &&
+      result.every((item) => typeof item === 'string')
+    )
+      return result;
     return undefined;
   }
 

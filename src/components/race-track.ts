@@ -1,9 +1,14 @@
 import type { ICar } from '../lib/types/api-interfaces';
-import type { IElementParameters } from '../lib/types/interfaces';
+import type {
+  IElementParameters,
+  ICarState,
+  IAnimationState,
+} from '../lib/types/interfaces';
 import ElementCreator from './element-creator';
 import finish from '../assets/images/finish.png';
 import body from '../assets/images/car-body.svg';
 import wheels from '../assets/images/wheel.svg';
+import fail from '../assets/images/fail.png';
 import { Colors } from '../lib/types/enums';
 
 const dashHeight = 4;
@@ -15,17 +20,47 @@ const finishLine = 80;
 const finishDelta = 0.24 * finishSize;
 const carWidth = 100;
 const wheelOffset = 2;
+const defaultCarSpeed = 0.002;
+const wheelSizeRatio = 0.13;
+const delay = 50_000;
 
 export default class RaceCreator extends ElementCreator {
   public context: CanvasRenderingContext2D | undefined = undefined;
   private wheelAngle = 0;
-  private wheelImage: HTMLImageElement | undefined = undefined;
-  private animationId: number | undefined = undefined;
+  private finishImage: HTMLImageElement | undefined = undefined;
+  // private wheelImage: HTMLImageElement | undefined = undefined;
+  // private animationId: number | undefined = undefined;
   private isAnimating = false;
+  private stopImage: HTMLImageElement | undefined = undefined;
+  private showStopImageUntil: number = 0;
+  private isStopImageLoading: boolean = false;
+  // private carPosition = padding;
+  // private isMoving = false;
+  // private carImageCache: HTMLImageElement | null = null;
+
+  private animationState: IAnimationState = {
+    id: undefined,
+    isRunning: false,
+    wheelAngle: 0,
+  };
+
+  private car: ICarState = {
+    position: 0,
+    assets: {
+      body: undefined,
+      wheels: undefined,
+      color: '',
+    },
+    state: {
+      speed: defaultCarSpeed,
+      isMoving: false,
+    },
+  };
 
   constructor(parameters: IElementParameters, elementInfo?: ICar) {
     super(parameters);
     this.createElement(parameters, elementInfo);
+    // this.loadStopImage().catch(console.error);
   }
 
   private static async loadImage(source: string): Promise<HTMLImageElement> {
@@ -34,6 +69,25 @@ export default class RaceCreator extends ElementCreator {
       img.src = source;
       img.addEventListener('load', () => resolve(img));
     });
+  }
+
+  private static async loadBody(color: string): Promise<HTMLImageElement> {
+    const response = await fetch(body);
+    let svgText = await response.text();
+
+    svgText = svgText.replaceAll(/fill="#[^"]*"/g, `fill="${color}"`);
+    svgText = svgText.replaceAll(/stroke="#[^"]*"/g, `stroke="${color}"`);
+
+    const blob = new Blob([svgText], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const image = await RaceCreator.loadImage(url);
+    URL.revokeObjectURL(url);
+
+    return image;
+  }
+
+  private static async loadWheels(): Promise<HTMLImageElement> {
+    return RaceCreator.loadImage(wheels);
   }
 
   public createElement(
@@ -46,46 +100,129 @@ export default class RaceCreator extends ElementCreator {
       this.element.height = Number(parameters.options?.height);
       const context = this.element.getContext('2d');
       if (context) this.context = context;
-      this.drawTracks();
-      this.drawFinish().catch(console.error);
-      this.drawCar(elementInfo).catch(console.error);
+      this.loadFinishImage().catch(console.error);
+      this.loadAndDraw(elementInfo).catch(console.error);
+      // this.loadStopImage(elementInfo).catch(console.error);
     }
   }
 
   public startAnimation(): void {
-    if (!this.isAnimating) {
-      this.isAnimating = true;
-      this.animate();
+    if (this.animationState.isRunning) return;
+
+    this.animationState.isRunning = true;
+    this.car.state.isMoving = true;
+    this.animateFrame();
+  }
+
+  public async stopAnimation(): Promise<void> {
+    if (!this.animationState.isRunning) return;
+
+    this.animationState.isRunning = false;
+    this.car.state.isMoving = false;
+    this.showStopImageUntil = Date.now() + delay;
+
+    await this.loadStopImage();
+    this.animateFrame();
+    this.renderFrame();
+  }
+
+  public async stopCar(): Promise<void> {
+    await this.stopAnimation();
+
+    this.car = {
+      position: 0,
+      assets: this.car.assets,
+      state: {
+        speed: defaultCarSpeed,
+        isMoving: false,
+      },
+    };
+
+    this.animationState = {
+      id: undefined,
+      isRunning: false,
+      wheelAngle: 0,
+    };
+
+    this.renderFrame();
+  }
+
+  private async loadAndDraw(elementInfo: ICar): Promise<void> {
+    try {
+      await this.loadCarAssets(elementInfo.color);
+      this.renderFrame();
+    } catch (error) {
+      console.error('Failed to load and draw:', error);
+      this.drawStaticElements();
     }
   }
 
-  public stopAnimation(): void {
-    this.isAnimating = false;
-    if (this.animationId) {
-      cancelAnimationFrame(this.animationId);
-      this.animationId = undefined;
-    }
-  }
-
-  private animate(): void {
-    if (!this.isAnimating) return;
-
+  private drawStopImage(carX: number, carY: number, carWidth: number): void {
+    console.log('this.stopImage && Date.now() <= this.showStopImageUntil');
     if (this.element instanceof HTMLCanvasElement && this.context) {
-      this.context.clearRect(0, 0, this.element.width, this.element.height);
-      this.drawTracks();
-      this.drawFinish().catch(console.error);
-      this.drawWheels();
-    }
+      if (!this.context || !this.stopImage) return;
 
-    this.wheelAngle += 0.1;
-    if (this.wheelAngle > Math.PI * 2) {
-      this.wheelAngle = 0;
-    }
+      const imgWidth = carWidth * 0.8;
+      const imgHeight = imgWidth * 0.5;
 
-    this.animationId = requestAnimationFrame(() => this.animate());
+      this.context.drawImage(
+        this.stopImage,
+        carX - imgWidth / 2,
+        carY - imgHeight - 20,
+        imgWidth,
+        imgHeight
+      );
+    }
   }
 
-  private drawTracks(): void {
+  private async loadStopImage(): Promise<void> {
+    if (this.isStopImageLoading || this.stopImage) return;
+
+    this.isStopImageLoading = true;
+
+    try {
+      this.stopImage = await RaceCreator.loadImage(fail);
+    } catch {
+      this.stopImage = undefined;
+    } finally {
+      this.isStopImageLoading = false;
+    }
+  }
+
+  private async loadCarAssets(color: string): Promise<void> {
+    if (this.car.assets.color === color && this.car.assets.body) {
+      return;
+    }
+
+    try {
+      const bodyImage = await RaceCreator.loadBody(color);
+      const wheelsImage = await RaceCreator.loadWheels();
+
+      this.car.assets = {
+        body: bodyImage,
+        wheels: wheelsImage,
+        color,
+      };
+    } catch (error) {
+      console.error('Failed to load car assets:', error);
+      throw error;
+    }
+  }
+
+  private drawStaticElements(): void {
+    if (!this.context || !this.element) return;
+
+    this.drawTrack();
+    this.drawFinish();
+  }
+  private async loadFinishImage(): Promise<void> {
+    try {
+      this.finishImage = await RaceCreator.loadImage(finish);
+    } catch (error) {
+      console.error('Failed to load finish image:', error);
+    }
+  }
+  private drawTrack(): void {
     if (this.element instanceof HTMLCanvasElement && this.context) {
       const width = this.element.width;
       const y = this.element.height - padding;
@@ -111,16 +248,21 @@ export default class RaceCreator extends ElementCreator {
     }
   }
 
-  private async drawFinish(): Promise<void> {
+  private drawFinish(): void {
     if (this.element instanceof HTMLCanvasElement && this.context) {
       const width = this.element.width - padding - finishLine - finishDelta;
       const height =
         this.element.height - padding - finishSize - dashHeight / 2;
 
-      try {
-        const image = await RaceCreator.loadImage(finish);
-        this.context.drawImage(image, width, height, finishSize, finishSize);
-      } catch {
+      if (this.finishImage) {
+        this.context.drawImage(
+          this.finishImage,
+          width,
+          height,
+          finishSize,
+          finishSize
+        );
+      } else {
         this.context.strokeStyle = Colors.ReserveFinishColor;
         this.context.lineWidth = dashHeight;
         this.context.beginPath();
@@ -131,100 +273,94 @@ export default class RaceCreator extends ElementCreator {
     }
   }
 
-  private async drawCar(elementInfo: ICar): Promise<void> {
-    if (
-      this.element instanceof HTMLCanvasElement &&
-      this.context &&
-      elementInfo.color
-    ) {
-      try {
-        await this.drawCarBody(elementInfo.color);
-        await this.loadWheels();
-        this.drawWheels();
-      } catch (error) {
-        console.error(error);
+  private animateFrame(): void {
+    if (!this.animationState.isRunning) return;
+
+    this.updateCarState();
+
+    this.renderFrame();
+
+    this.animationState.id = requestAnimationFrame(() => this.animateFrame());
+  }
+
+  private updateCarState(): void {
+    this.animationState.wheelAngle += 0.1;
+    if (this.animationState.wheelAngle > Math.PI * 2) {
+      this.animationState.wheelAngle = 0;
+    }
+
+    if (this.car.state.isMoving) {
+      this.car.position = Math.min(1, this.car.position + this.car.state.speed);
+    }
+    if (this.car.position >= 1) {
+      this.stopAnimation().catch(console.error);
+    }
+  }
+  private renderFrame(): void {
+    if (this.element instanceof HTMLCanvasElement && this.context) {
+      this.context.clearRect(0, 0, this.element.width, this.element.height);
+
+      this.drawStaticElements();
+
+      if (this.car.assets.body && this.car.assets.wheels) {
+        this.drawCar();
+      }
+      const shouldShowStopImage = this.stopImage;
+      if (shouldShowStopImage && !this.car.state.isMoving) {
+        console.log('GV');
+        const width = Math.min(carWidth, this.element.width * 0.2);
+        const trackWidth = this.element.width - padding * 2;
+        const carX = padding + this.car.position * trackWidth;
+        const carY = this.element.height - padding - ((width * 2) / 3) * 0.85;
+        this.drawStopImage(carX, carY, width);
       }
     }
   }
 
-  private async drawCarBody(color: string): Promise<void> {
-    if (this.element instanceof HTMLCanvasElement && this.context) {
+  private drawCar(): void {
+    if (
+      this.element instanceof HTMLCanvasElement &&
+      this.context &&
+      this.car.assets.body &&
+      this.car.assets.wheels
+    ) {
       const width = Math.min(carWidth, this.element.width * 0.2);
       const height = (width * 2) / 3;
+      const trackWidth = this.element.width - padding * 2;
 
-      try {
-        const response = await fetch(body);
-        let svgText = await response.text();
+      const carX = padding + this.car.position * trackWidth;
+      const carY = this.element.height - padding - height * 0.85;
 
-        svgText = svgText.replaceAll(/fill="#[^"]*"/g, `fill="${color}"`);
-        svgText = svgText.replaceAll(/stroke="#[^"]*"/g, `stroke="${color}"`);
+      this.context.drawImage(this.car.assets.body, carX, carY, width, height);
 
-        const blob = new Blob([svgText], { type: 'image/svg+xml' });
-        const url = URL.createObjectURL(blob);
-        const image = await RaceCreator.loadImage(url);
-
-        this.context.drawImage(
-          image,
-          padding,
-          this.element.height - height * 0.85,
-          width,
-          height
-        );
-
-        URL.revokeObjectURL(url);
-      } catch (error) {
-        console.error(error);
-      }
+      this.drawWheels(carX, carY, carWidth);
     }
   }
 
-  private async loadWheels(): Promise<void> {
-    try {
-      this.wheelImage = await RaceCreator.loadImage(wheels);
-    } catch (error) {
-      console.error('Error loading wheels:', error);
-    }
+  private drawWheels(carX: number, carY: number, carWidth: number): void {
+    if (!this.context || !this.car.assets.wheels) return;
+
+    const wheelSize = carWidth * wheelSizeRatio;
+    const wheelY = carY + carWidth / 2 - 5;
+
+    this.drawWheel(carX + carWidth * 0.8 - wheelOffset, wheelY, wheelSize);
+
+    this.drawWheel(carX + carWidth * 0.25 - wheelOffset, wheelY, wheelSize);
   }
 
-  private drawWheels(): void {
-    if (
-      this.element instanceof HTMLCanvasElement &&
-      this.context &&
-      this.wheelImage
-    ) {
-      const widthCar = Math.min(carWidth, this.element.width * 0.2);
-      const wheelSize = widthCar * 0.13;
-      const wheelY = this.element.height - padding - wheelSize / 2;
+  private drawWheel(x: number, y: number, size: number): void {
+    if (!this.context || !this.car.assets.wheels) return;
 
-      this.context.save();
-      this.context.translate(
-        padding + widthCar * 0.25 - wheelOffset,
-        wheelY - wheelOffset
-      );
-      this.context.rotate(this.wheelAngle);
-      this.context.drawImage(
-        this.wheelImage,
-        -wheelSize / 2,
-        -wheelSize / 2,
-        wheelSize,
-        wheelSize
-      );
-      this.context.restore();
-
-      this.context.save();
-      this.context.translate(
-        padding + widthCar * 0.75 + wheelOffset,
-        wheelY - wheelOffset
-      );
-      this.context.rotate(this.wheelAngle);
-      this.context.drawImage(
-        this.wheelImage,
-        -wheelSize / 2,
-        -wheelSize / 2,
-        wheelSize,
-        wheelSize
-      );
-      this.context.restore();
-    }
+    this.context.save();
+    this.context.translate(x, y);
+    this.context.rotate(this.animationState.wheelAngle);
+    this.context.drawImage(
+      this.car.assets.wheels,
+      -size / 2,
+      -size / 2,
+      size,
+      size
+    );
+    this.context.restore();
   }
 }

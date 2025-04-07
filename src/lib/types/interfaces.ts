@@ -150,3 +150,24 @@ export interface IWheelCreator {
   valueList: IValueList;
   startAnimation: VoidMethodType;
 }
+
+export interface ICarState {
+  position: number;
+  assets: ICarAssets;
+  state: IInnerCarState;
+}
+
+export interface IInnerCarState {
+  speed: number;
+  isMoving: boolean;
+}
+export interface ICarAssets {
+  body: HTMLImageElement | undefined;
+  wheels: HTMLImageElement | undefined;
+  color: string;
+}
+export interface IAnimationState {
+  id: number | undefined;
+  isRunning: boolean;
+  wheelAngle: number;
+}
