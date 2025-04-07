@@ -10,6 +10,7 @@ import body from '../assets/images/car-body.svg';
 import wheels from '../assets/images/wheel.svg';
 import fail from '../assets/images/fail.png';
 import { Car, Colors, Track } from '../lib/types/enums';
+import type ListNodeCreator from './list-node';
 
 const delay = 5000;
 
@@ -23,6 +24,7 @@ export default class RaceCreator extends ElementCreator {
   private stopImage: HTMLImageElement | undefined = undefined;
   private showStopImageUntil: number = 0;
   private isStopImageLoading: boolean = false;
+  private parent: ListNodeCreator | undefined = undefined;
   // private carPosition = padding;
   // private isMoving = false;
   // private carImageCache: HTMLImageElement | null = null;
@@ -46,9 +48,14 @@ export default class RaceCreator extends ElementCreator {
     },
   };
 
-  constructor(parameters: IElementParameters, elementInfo?: ICar) {
+  constructor(
+    parameters: IElementParameters,
+    elementInfo?: ICar,
+    parent?: ListNodeCreator
+  ) {
     super(parameters);
     this.createElement(parameters, elementInfo);
+    if (parent) this.parent = parent;
     // this.loadStopImage().catch(console.error);
   }
 
@@ -79,6 +86,19 @@ export default class RaceCreator extends ElementCreator {
     return RaceCreator.loadImage(wheels);
   }
 
+  public updateCarColor(color: string): void {
+    this.loadCarAssets(color)
+      .then(() => this.renderFrame())
+      .catch(console.error);
+  }
+  public updateCarAppearance(color: string, name: string): void {
+    this.updateCarColor(color);
+    if (this.parent) {
+      const nameElement = this.parent.name;
+      if (nameElement && nameElement.element instanceof HTMLElement)
+        nameElement.element.textContent = name;
+    }
+  }
   public createElement(
     parameters: IElementParameters,
     elementInfo?: ICar

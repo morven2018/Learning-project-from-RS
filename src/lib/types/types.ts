@@ -1,4 +1,4 @@
-import { ICarCreate } from './api-interfaces';
+import type { ICarCreate } from './api-interfaces';
 
 export type CallbackType = ((event: Event) => void) | (() => void);
 export type OptionType = {

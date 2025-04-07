@@ -7,6 +7,7 @@ import type { IElementCreator, IView } from '../../lib/types/interfaces';
 import ApiClient from '../../lib/utils/api-client';
 import CarCreator from '../../lib/utils/car-creator';
 import type RaceCreator from '../../components/race-track';
+import type { ICar, ICarCreate } from '../../lib/types/api-interfaces';
 
 //const NAME_OF_APP = 'Decision Making Tool';
 const numberOfGeneratedCars = 1;
@@ -50,6 +51,7 @@ export default class GarageView extends View implements IView {
   public raceCreators: RaceCreator[] = [];
   private list: ElementCreator | undefined = undefined;
   private header: ElementCreator | undefined = undefined;
+  private selectedCarId: number | undefined = undefined;
 
   constructor() {
     super(parameters);
@@ -91,9 +93,17 @@ export default class GarageView extends View implements IView {
       this.forms.push(addForm);
       this.viewElementCreator.addInnerElement(addForm);
 
-      const updateForm = new FormCreator(formParameters[1], () =>
-        this.handleUpdateCar()
+      const updateForm = new FormCreator(
+        formParameters[1],
+        (carData: ICarCreate): void => {
+          (async (): Promise<void> => {
+            await this.handleUpdateCar(carData);
+          })().catch((error) => {
+            console.error('Update error:', error);
+          });
+        }
       );
+
       this.forms.push(updateForm);
       this.viewElementCreator.addInnerElement(updateForm);
 
@@ -194,6 +204,10 @@ export default class GarageView extends View implements IView {
     }
   }
 
+  public setSelectedCarId(id: number): void {
+    this.selectedCarId = id;
+  }
+
   private addCar(carData: { name: string; color: string }): void {
     console.log('add');
     if (!carData.name || !carData.color) {
@@ -215,24 +229,34 @@ export default class GarageView extends View implements IView {
     name: string;
     color: string;
   }): Promise<void> {
-    const updateForm = this.forms[1];
-    const carId = updateForm.element?.dataset.carId;
-
-    if (!carId || !carData.name || !carData.color) {
+    if (!this.selectedCarId) {
       return;
     }
 
     try {
       await ApiClient.updateCar(
-        Number.parseInt(carId),
+        this.selectedCarId,
         carData.name,
         carData.color
       );
 
+      const carNode = this.findCarNode(this.selectedCarId);
+      if (carNode) {
+        carNode.updateCarAppearance(carData.color, carData.name);
+      }
+
       this.updateCarList();
-      updateForm.element?.classList.add('disabled');
+
+      this.forms[1].resetForm();
+      this.forms[1].element?.classList.add('disabled');
     } catch (error) {
-      console.error('Failed to update car:', error);
+      console.error('Update failed:', error);
     }
+  }
+
+  private findCarNode(carId: number): RaceCreator | undefined {
+    return this.raceCreators.find(
+      (creator) => creator.element?.id === carId.toString()
+    );
   }
 }

@@ -37,7 +37,7 @@ export default class ListNodeCreator
   public startBth: ButtonCreator | undefined;
   public raceTrack: RaceCreator | undefined;
   public stopBth: ButtonCreator | undefined;
-  private name: ElementCreator | undefined;
+  public name: ElementCreator | undefined;
 
   constructor(
     parameters: IElementParameters,
@@ -67,7 +67,7 @@ export default class ListNodeCreator
       },
     };
 
-    const track = new RaceCreator(raceParameters, elementInfo);
+    const track = new RaceCreator(raceParameters, elementInfo, this);
     return track;
   }
 
@@ -89,6 +89,7 @@ export default class ListNodeCreator
       callback: (event: Event): void => {
         event.preventDefault();
         if (this.parent) {
+          this.parent.setSelectedCarId(elementInfo.id);
           this.parent.fillUpdateForm(elementInfo);
         }
       },
@@ -167,6 +168,16 @@ export default class ListNodeCreator
     return buttonArea;
   }
 
+  public updateCarAppearance(color: string, name: string): void {
+    if (this.raceTrack) {
+      this.raceTrack.updateCarColor(color);
+    }
+
+    const nameElement = this.element?.querySelector(`.${CssClasses.NameArea}`);
+    if (nameElement) {
+      nameElement.textContent = name;
+    }
+  }
   private startCar(): void {
     this.raceTrack?.startAnimation();
   }
