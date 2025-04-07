@@ -45,4 +45,10 @@ export default class ElementCreator implements IElementCreator {
     if (this.element && callback && typeof callback === 'function')
       this.element.addEventListener('click', (event) => callback(event));
   }
+
+  public clearInnerElements(): void {
+    if (this.element instanceof HTMLElement) {
+      this.element.replaceChildren();
+    }
+  }
 }
