@@ -84,12 +84,15 @@ export default class GarageView extends View implements IView {
         },
       ];
 
-      for (const parametersForm of formParameters) {
-        const form = new FormCreator(parametersForm);
-        this.forms.push(form);
-        this.viewElementCreator?.addInnerElement(form);
-      }
+      const addForm = new FormCreator(formParameters[0], (carData) =>
+        this.addCar(carData)
+      );
+      this.forms.push(addForm);
+      this.viewElementCreator.addInnerElement(addForm);
 
+      const updateForm = new FormCreator(formParameters[1], () => {});
+      this.forms.push(updateForm);
+      this.viewElementCreator.addInnerElement(updateForm);
       for (const parameters of buttonParameters) this.addButton(parameters);
       try {
         const response = await ApiClient.getCars({ _limit: 1 });
@@ -163,5 +166,23 @@ export default class GarageView extends View implements IView {
     for (const raceCreator of this.raceCreators) {
       raceCreator.startAnimation();
     }
+  }
+
+  private addCar(carData: { name: string; color: string }): void {
+    console.log('add');
+    if (!carData.name || !carData.color) {
+      alert('Please fill all fields');
+      return;
+    }
+    console.log('add2');
+    ApiClient.createCar(carData.name, carData.color)
+      .then(() => {
+        const addForm = this.forms[0];
+        addForm.resetForm();
+        this.updateCarList();
+      })
+      .catch((error) => {
+        console.error('Failed to add car:', error);
+      });
   }
 }

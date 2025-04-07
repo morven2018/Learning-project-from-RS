@@ -1,3 +1,5 @@
+import { ICarCreate } from './api-interfaces';
+
 export type CallbackType = ((event: Event) => void) | (() => void);
 export type OptionType = {
   [key: string]: string | number | undefined;
@@ -29,3 +31,4 @@ export enum TextBaseline {
   Ideographic = 'ideographic',
   Bottom = 'bottom',
 }
+export type FormSubmitCallback = (data: ICarCreate) => void;

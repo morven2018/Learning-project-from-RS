@@ -18,7 +18,7 @@ export default class CarCreator {
     }
   }
 
-  public static async createNCars(n: number): Promise<ICar[]> {
+  public static async createNCars(n: number): Promise<ICar[] | undefined> {
     if (n <= 0 || this.isCreating) return [];
 
     this.isCreating = true;

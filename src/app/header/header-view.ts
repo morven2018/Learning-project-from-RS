@@ -44,7 +44,8 @@ export default class HeaderView extends View implements IHeaderView {
   }
 
   public static isValidPage(value: string): value is Pages {
-    return Object.values(Pages).includes(value);
+    const result = !!Object.values(Pages).includes(value);
+    return result;
   }
 
   public configureView(router: IRouter): void {

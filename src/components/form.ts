@@ -1,5 +1,6 @@
 import { CssClasses, CssTags } from '../lib/types/enums';
 import type { IElementParameters } from '../lib/types/interfaces';
+import type { FormSubmitCallback } from '../lib/types/types';
 import ButtonCreator from './button';
 import ElementCreator from './element-creator';
 import InputCreator from './input';
@@ -24,6 +25,7 @@ const inputParameters = [
       type: 'color',
       title: 'color of the car',
       required: 'true',
+      value: '#000000',
     },
   },
 ];
@@ -31,15 +33,26 @@ const inputParameters = [
 export default class FormCreator extends ElementCreator {
   public inputs: HTMLInputElement[] = [];
   public btn: ButtonCreator | undefined;
+  private onSubmit: FormSubmitCallback | undefined;
 
-  constructor(parameters: IElementParameters) {
+  constructor(parameters: IElementParameters, onSubmit?: FormSubmitCallback) {
     super(parameters);
     this.inputs = [];
-    this.createElement(parameters);
+    this.createElement(parameters, onSubmit);
   }
 
-  public createElement(parameters: IElementParameters): void {
+  public createElement(
+    parameters: IElementParameters,
+    onSubmit?: FormSubmitCallback
+  ): void {
     super.createElement(parameters);
+
+    if (this.element) {
+      this.element.addEventListener('submit', (event: Event): void =>
+        this.handleSubmit(event)
+      );
+    }
+    if (onSubmit) this.onSubmit = onSubmit;
 
     for (const inputParameter of inputParameters) {
       const input = new InputCreator(inputParameter);
@@ -61,9 +74,40 @@ export default class FormCreator extends ElementCreator {
     };
     this.btn = new ButtonCreator(buttonParameters);
     this.addInnerElement(this.btn);
+    this.btn.element?.setAttribute('type', 'submit');
   }
 
   public getInput(): HTMLInputElement[] {
     return this.inputs;
+  }
+
+  public resetForm(): void {
+    for (const input of this.inputs) {
+      if (input.type === 'text') {
+        input.value = '';
+      } else if (input.type === 'color') {
+        input.value = '#000000';
+      }
+    }
+  }
+
+  private handleSubmit(event: Event): void {
+    event.preventDefault();
+
+    const nameInput = this.inputs.find((input) =>
+      input.classList.contains(CssClasses.InputName)
+    );
+    const colorInput = this.inputs.find((input) =>
+      input.classList.contains(CssClasses.InputColor)
+    );
+
+    if (!nameInput || !colorInput) return;
+
+    const carData = {
+      name: nameInput.value.trim(),
+      color: colorInput.value,
+    };
+
+    this.onSubmit(carData);
   }
 }
