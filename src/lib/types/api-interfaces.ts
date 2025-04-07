@@ -8,3 +8,7 @@ export interface ICar {
   name: string;
   color: string;
 }
+export interface ICarCreate {
+  name: string;
+  color: string;
+}

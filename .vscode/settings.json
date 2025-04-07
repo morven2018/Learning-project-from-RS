@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "Abarth",
     "codepaths",
     "commitlint",
     "dotenv",
@@ -8,7 +9,9 @@
     "Microbundle",
     "Nuxt",
     "vuepress",
-    "wscript"
+    "wscript",
+    "Абарт",
+    "сyrillic"
   ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"

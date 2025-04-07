@@ -171,3 +171,27 @@ export interface IAnimationState {
   isRunning: boolean;
   wheelAngle: number;
 }
+
+export type JsonModels = IJsonCarInfo[];
+
+export interface IJsonCarInfo {
+  id: string;
+  name: string;
+  'сyrillic-name': string;
+  popular: boolean;
+  country: string;
+  models: IJsonCarInfoItem[];
+}
+export interface IJsonCarInfoItem {
+  id: string;
+  name: string;
+  'cyrillic-name': string;
+  class: string;
+  'year-from': number;
+  'year-to': number;
+  path: {
+    'mark-id': string;
+  };
+}
+
+
