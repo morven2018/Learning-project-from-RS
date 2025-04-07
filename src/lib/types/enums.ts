@@ -68,7 +68,7 @@ export enum Track {
   TrackDash = 15,
   Padding = 5,
   FinishSize = 50,
-  FinishLine = 80,
+  FinishLine = 120,
   FinishDelta = 0.24 * 50,
 }
 export enum Car {

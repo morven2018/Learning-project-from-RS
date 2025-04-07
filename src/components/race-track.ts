@@ -197,6 +197,19 @@ export default class RaceCreator extends ElementCreator {
     }
   }
 
+  private getFinishPosition(): number {
+    if (this.element instanceof HTMLCanvasElement) {
+      const finishX =
+        this.element.width -
+        Track.Padding -
+        Track.FinishLine +
+        Track.FinishDelta;
+      const trackWidth = this.element.width - 2 * Track.Padding;
+      return (finishX - Track.Padding) / trackWidth;
+    }
+    return 1;
+  }
+
   private async loadStopImage(): Promise<void> {
     if (this.isStopImageLoading || this.stopImage) return;
 
@@ -330,7 +343,14 @@ export default class RaceCreator extends ElementCreator {
   }
   private renderFrame(): void {
     if (this.element instanceof HTMLCanvasElement && this.context) {
+      const finishPosition = this.getFinishPosition();
+
       this.context.clearRect(0, 0, this.element.width, this.element.height);
+
+      if (Math.abs(this.car.position - finishPosition) < 0.01) {
+        this.stopAnimation();
+        // this.onFinish?.();
+      }
 
       this.drawStaticElements();
 
