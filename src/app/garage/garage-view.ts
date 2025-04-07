@@ -68,7 +68,7 @@ export default class GarageView extends View implements IView {
           tag: CssTags.Button,
           classNames: [CssClasses.Race],
           textContent: 'RACE',
-          callback: (): void => {},
+          callback: this.raceAllCars.bind(this),
         },
         {
           tag: CssTags.Button,
@@ -156,6 +156,12 @@ export default class GarageView extends View implements IView {
   public resetAllCars(): void {
     for (const raceCreator of this.raceCreators) {
       raceCreator.stopCar();
+    }
+  }
+
+  public raceAllCars(): void {
+    for (const raceCreator of this.raceCreators) {
+      raceCreator.startAnimation();
     }
   }
 }
