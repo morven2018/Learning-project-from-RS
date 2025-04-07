@@ -9,20 +9,9 @@ import finish from '../assets/images/finish.png';
 import body from '../assets/images/car-body.svg';
 import wheels from '../assets/images/wheel.svg';
 import fail from '../assets/images/fail.png';
-import { Colors } from '../lib/types/enums';
+import { Car, Colors, Track } from '../lib/types/enums';
 
-const dashHeight = 4;
-const trackGap = 3;
-const trackDash = 15;
-const padding = 5;
-const finishSize = 50;
-const finishLine = 80;
-const finishDelta = 0.24 * finishSize;
-const carWidth = 100;
-const wheelOffset = 2;
-const defaultCarSpeed = 0.002;
-const wheelSizeRatio = 0.13;
-const delay = 50_000;
+const delay = 5000;
 
 export default class RaceCreator extends ElementCreator {
   public context: CanvasRenderingContext2D | undefined = undefined;
@@ -52,7 +41,7 @@ export default class RaceCreator extends ElementCreator {
       color: '',
     },
     state: {
-      speed: defaultCarSpeed,
+      speed: Car.DefaultCarSpeed,
       isMoving: false,
     },
   };
@@ -114,11 +103,46 @@ export default class RaceCreator extends ElementCreator {
     this.animateFrame();
   }
 
-  public async stopAnimation(): Promise<void> {
+  public stopAnimation(): void {
+    if (!this.animationState.isRunning || !this.animationState.id) return;
+
+    this.animationState.isRunning = false;
+    cancelAnimationFrame(this.animationState.id);
+  }
+
+  public resetCarPosition(): void {
+    this.car.state.isMoving = false; //Stop the car
+    this.car.position = 0; // Reset the car position
+    this.resetAnimationState();
+  }
+
+  public async showStopImage(): Promise<void> {
+    this.showStopImageUntil = Date.now() + delay; // Set the duration
+    await this.loadStopImage(); // Load the image
+    this.renderFrame(); // Trigger rendering
+  }
+
+  public resetAnimationState(): void {
+    if (this.animationState.id) {
+      cancelAnimationFrame(this.animationState.id);
+    }
+
+    this.animationState = {
+      id: undefined,
+      isRunning: false,
+      wheelAngle: 0,
+    };
+  }
+
+  public stopAnimation() {
     if (!this.animationState.isRunning) return;
 
     this.animationState.isRunning = false;
     this.car.state.isMoving = false;
+  }
+
+  public async brokeCar(): Promise<void> {
+    this.stopAnimation();
     this.showStopImageUntil = Date.now() + delay;
 
     await this.loadStopImage();
@@ -126,14 +150,14 @@ export default class RaceCreator extends ElementCreator {
     this.renderFrame();
   }
 
-  public async stopCar(): Promise<void> {
-    await this.stopAnimation();
+  public stopCar(): void {
+    this.stopAnimation();
 
     this.car = {
       position: 0,
       assets: this.car.assets,
       state: {
-        speed: defaultCarSpeed,
+        speed: Car.DefaultCarSpeed,
         isMoving: false,
       },
     };
@@ -161,17 +185,16 @@ export default class RaceCreator extends ElementCreator {
     console.log('this.stopImage && Date.now() <= this.showStopImageUntil');
     if (this.element instanceof HTMLCanvasElement && this.context) {
       if (!this.context || !this.stopImage) return;
-
-      const imgWidth = carWidth * 0.8;
-      const imgHeight = imgWidth * 0.5;
-
+      console.log('123');
+      console.log(carX, carY);
       this.context.drawImage(
         this.stopImage,
-        carX - imgWidth / 2,
-        carY - imgHeight - 20,
-        imgWidth,
-        imgHeight
+        carX + Car.CarWidth * 0.7,
+        carY + Car.BrokeSize,
+        Car.BrokeSize,
+        Car.BrokeSize
       );
+      console.log('1235');
     }
   }
 
@@ -225,7 +248,7 @@ export default class RaceCreator extends ElementCreator {
   private drawTrack(): void {
     if (this.element instanceof HTMLCanvasElement && this.context) {
       const width = this.element.width;
-      const y = this.element.height - padding;
+      const y = this.element.height - Track.Padding;
 
       const gradient = this.context.createLinearGradient(0, y, width, y);
       gradient.addColorStop(0, Colors.Yellow);
@@ -233,41 +256,51 @@ export default class RaceCreator extends ElementCreator {
       gradient.addColorStop(1, Colors.Ochre);
 
       this.context.strokeStyle = gradient;
-      this.context.lineWidth = dashHeight;
-
+      this.context.lineWidth = Track.DashHeight;
+      const padding = Number(Track.Padding);
       let x = padding;
       while (x < width - padding) {
         this.context.beginPath();
         this.context.moveTo(x, y);
-        let x2 = x + trackDash;
+        let x2 = x + Track.TrackDash;
         if (x2 > width - padding) x2 = width - padding;
         this.context.lineTo(x2, y);
         this.context.stroke();
-        x += trackDash + trackGap;
+        x += Track.TrackDash + Track.TrackGap;
       }
     }
   }
 
   private drawFinish(): void {
     if (this.element instanceof HTMLCanvasElement && this.context) {
-      const width = this.element.width - padding - finishLine - finishDelta;
+      const width =
+        this.element.width -
+        Track.Padding -
+        Track.FinishLine -
+        Track.FinishDelta;
       const height =
-        this.element.height - padding - finishSize - dashHeight / 2;
+        this.element.height -
+        Track.Padding -
+        Track.FinishSize -
+        Track.DashHeight / 2;
 
       if (this.finishImage) {
         this.context.drawImage(
           this.finishImage,
           width,
           height,
-          finishSize,
-          finishSize
+          Track.FinishSize,
+          Track.FinishSize
         );
       } else {
         this.context.strokeStyle = Colors.ReserveFinishColor;
-        this.context.lineWidth = dashHeight;
+        this.context.lineWidth = Track.DashHeight;
         this.context.beginPath();
-        this.context.moveTo(width + finishDelta, padding);
-        this.context.lineTo(width + finishDelta, this.element.height - padding);
+        this.context.moveTo(width + Track.FinishDelta, Track.Padding);
+        this.context.lineTo(
+          width + Track.FinishDelta,
+          this.element.height - Track.Padding
+        );
         this.context.stroke();
       }
     }
@@ -305,13 +338,14 @@ export default class RaceCreator extends ElementCreator {
       if (this.car.assets.body && this.car.assets.wheels) {
         this.drawCar();
       }
-      const shouldShowStopImage = this.stopImage;
-      if (shouldShowStopImage && !this.car.state.isMoving) {
+      // const shouldShowStopImage = this.stopImage;
+      if (this.stopImage && Date.now() <= this.showStopImageUntil) {
         console.log('GV');
-        const width = Math.min(carWidth, this.element.width * 0.2);
-        const trackWidth = this.element.width - padding * 2;
-        const carX = padding + this.car.position * trackWidth;
-        const carY = this.element.height - padding - ((width * 2) / 3) * 0.85;
+        const width = Math.min(Car.CarWidth, this.element.width * 0.2);
+        const trackWidth = this.element.width - Track.Padding * 2;
+        const carX = Track.Padding + this.car.position * trackWidth;
+        const carY =
+          this.element.height - Track.Padding - ((width * 2) / 3) * 0.85;
         this.drawStopImage(carX, carY, width);
       }
     }
@@ -324,28 +358,28 @@ export default class RaceCreator extends ElementCreator {
       this.car.assets.body &&
       this.car.assets.wheels
     ) {
-      const width = Math.min(carWidth, this.element.width * 0.2);
+      const width = Math.min(Car.CarWidth, this.element.width * 0.2);
       const height = (width * 2) / 3;
-      const trackWidth = this.element.width - padding * 2;
+      const trackWidth = this.element.width - Track.Padding * 2;
 
-      const carX = padding + this.car.position * trackWidth;
-      const carY = this.element.height - padding - height * 0.85;
+      const carX = Track.Padding + this.car.position * trackWidth;
+      const carY = this.element.height - Track.Padding - height * 0.85;
 
       this.context.drawImage(this.car.assets.body, carX, carY, width, height);
 
-      this.drawWheels(carX, carY, carWidth);
+      this.drawWheels(carX, carY, Car.CarWidth);
     }
   }
 
   private drawWheels(carX: number, carY: number, carWidth: number): void {
     if (!this.context || !this.car.assets.wheels) return;
 
-    const wheelSize = carWidth * wheelSizeRatio;
+    const wheelSize = carWidth * Car.WheelSizeRatio;
     const wheelY = carY + carWidth / 2 - 5;
 
-    this.drawWheel(carX + carWidth * 0.8 - wheelOffset, wheelY, wheelSize);
+    this.drawWheel(carX + carWidth * 0.8 - Car.WheelOffset, wheelY, wheelSize);
 
-    this.drawWheel(carX + carWidth * 0.25 - wheelOffset, wheelY, wheelSize);
+    this.drawWheel(carX + carWidth * 0.25 - Car.WheelOffset, wheelY, wheelSize);
   }
 
   private drawWheel(x: number, y: number, size: number): void {

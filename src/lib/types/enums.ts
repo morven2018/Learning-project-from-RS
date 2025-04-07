@@ -61,3 +61,20 @@ export enum Colors {
   Orange = '#FFA500',
   Ochre = '#FF8C00',
 }
+
+export enum Track {
+  DashHeight = 4,
+  TrackGap = 3,
+  TrackDash = 15,
+  Padding = 5,
+  FinishSize = 50,
+  FinishLine = 80,
+  FinishDelta = 0.24 * 50,
+}
+export enum Car {
+  CarWidth = 100,
+  WheelOffset = 2,
+  DefaultCarSpeed = 0.002,
+  WheelSizeRatio = 0.13,
+  BrokeSize = 15,
+}

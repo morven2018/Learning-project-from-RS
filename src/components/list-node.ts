@@ -158,6 +158,6 @@ export default class ListNodeCreator
     this.raceTrack?.startAnimation();
   }
   private stopCar(): void {
-    this.raceTrack?.stopAnimation();
+    this.raceTrack?.brokeCar().catch(console.error);
   }
 }
