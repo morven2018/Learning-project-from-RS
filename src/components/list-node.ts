@@ -35,9 +35,9 @@ export default class ListNodeCreator
   public selectBtn: ButtonCreator | undefined;
   public deleteBtn: ButtonCreator | undefined;
   public startBth: ButtonCreator | undefined;
+  public raceTrack: RaceCreator | undefined;
   public stopBth: ButtonCreator | undefined;
   private name: ElementCreator | undefined;
-  private raceTrack: RaceCreator | undefined;
 
   constructor(
     parameters: IElementParameters,
@@ -66,7 +66,6 @@ export default class ListNodeCreator
         height: trackHeight,
       },
     };
-    // console.log(this);
 
     const track = new RaceCreator(raceParameters, elementInfo);
     return track;
@@ -165,8 +164,9 @@ export default class ListNodeCreator
   private startCar(): void {
     this.raceTrack?.startAnimation();
   }
+
   private stopCar(): void {
-    this.raceTrack?.brokeCar().catch(console.error);
+    this.raceTrack?.stopCar();
   }
   private deleteCar(id: number): void {
     if (Number.isFinite(id))

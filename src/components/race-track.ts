@@ -112,7 +112,7 @@ export default class RaceCreator extends ElementCreator {
     cancelAnimationFrame(this.animationState.id);
   }
 
-  public resetCarPosition(): void {
+  public resetCar(): void {
     this.car.state.isMoving = false;
     this.car.position = 0;
     this.resetAnimationState();

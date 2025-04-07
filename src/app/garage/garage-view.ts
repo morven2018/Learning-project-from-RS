@@ -6,6 +6,7 @@ import { CssClasses, CssTags } from '../../lib/types/enums';
 import type { IElementCreator, IView } from '../../lib/types/interfaces';
 import ApiClient from '../../lib/utils/api-client';
 import CarCreator from '../../lib/utils/car-creator';
+import type RaceCreator from '../../components/race-track';
 
 //const NAME_OF_APP = 'Decision Making Tool';
 const numberOfGeneratedCars = 1;
@@ -46,8 +47,10 @@ export default class GarageView extends View implements IView {
   public page: number;
   public limit: number;
   public forms: FormCreator[] = [];
+  public raceCreators: RaceCreator[] = [];
   private list: ElementCreator | undefined = undefined;
   private header: ElementCreator | undefined = undefined;
+
   constructor() {
     super(parameters);
     this.buttons = [];
@@ -71,7 +74,7 @@ export default class GarageView extends View implements IView {
           tag: CssTags.Button,
           classNames: [CssClasses.Reset],
           textContent: 'RESET',
-          callback: (): void => {},
+          callback: this.resetAllCars.bind(this),
         },
         {
           tag: CssTags.Button,
@@ -118,10 +121,15 @@ export default class GarageView extends View implements IView {
         _page: this.page,
         _limit: this.limit,
       });
-      console.log(cars);
+      this.raceCreators = [];
+      // console.log(cars);
       for (const car of cars) {
         const carNode = new ListNodeCreator(baseLiParameters, car, this);
         parent.addInnerElement(carNode);
+
+        if (carNode.raceTrack) {
+          this.raceCreators.push(carNode.raceTrack);
+        }
       }
     } catch (error) {
       console.error('Failed to generate car nodes:', error);
@@ -136,11 +144,18 @@ export default class GarageView extends View implements IView {
   }
 
   public updateCarList(): void {
+    this.raceCreators = [];
     if (this.viewElementCreator?.element instanceof HTMLElement) {
       this.viewElementCreator.element.replaceChildren();
       this.configureView().catch((error) => {
         console.error('Failed to configure view:', error);
       });
+    }
+  }
+
+  public resetAllCars(): void {
+    for (const raceCreator of this.raceCreators) {
+      raceCreator.stopCar();
     }
   }
 }
