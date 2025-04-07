@@ -9,6 +9,7 @@ import CarCreator from '../../lib/utils/car-creator';
 import type RaceCreator from '../../components/race-track';
 import type { ICar, ICarCreate } from '../../lib/types/api-interfaces';
 import Pagination from '../../components/pagination';
+import './garage.scss';
 
 //const NAME_OF_APP = 'Decision Making Tool';
 const numberOfGeneratedCars = 1;

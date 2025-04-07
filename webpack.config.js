@@ -61,6 +61,7 @@ const baseConfig = {
             options: {
               limit: 28192,
               name: './asserts/[name].[ext]',
+              // name: './async-race/asserts/[name].[ext]',
             },
           },
         ],

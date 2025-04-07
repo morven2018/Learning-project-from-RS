@@ -6,9 +6,10 @@ $text-color-button: #bdbdbd;
 $button-color: #2c3e50;
 $button-hover: #3498db;
 $button-disable: #a7a7a9;
-$border-color: #343434;
+$input-color: #343434;
 $accent: #ffd700;
 $accent-text: #9d2004;
+$accent-color: #e1452d;
 $padding-big: 30px;
 $padding-small: 10px;
 $gap: 40px;
@@ -22,6 +23,7 @@ $button-width: 80px;
 $button-size-pagination: 36px;
 $button-height: 36pxpx;
 $button-image: 24px;
+$button-max: 120px;
 
 @mixin teko($weight: 400) {
   font-family: 'Teko', sans-serif;
@@ -68,11 +70,13 @@ button {
   color: $text-color-button;
   padding: $padding-small;
   gap: $gap;
-  :hover {
+
+  &:hover {
     background-color: $button-hover;
   }
-  :disabled,
-  .disable {
+
+  &:disabled,
+  &.disable {
     background-color: $button-disable;
     opacity: 0.7;
   }
