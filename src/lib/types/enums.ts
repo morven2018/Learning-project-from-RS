@@ -54,3 +54,10 @@ export enum HttpMethod {
   Patch = 'PATCH',
   Delete = 'DELETE',
 }
+
+export enum Colors {
+  ReserveFinishColor = '#ff0000',
+  Yellow = '#FFD700',
+  Orange = '#FFA500',
+  Ochre = '#FF8C00',
+}

@@ -4,8 +4,8 @@ import ElementCreator from './element-creator';
 import finish from '../assets/images/finish.png';
 import body from '../assets/images/car-body.svg';
 import wheels from '../assets/images/wheel.svg';
+import { Colors } from '../lib/types/enums';
 
-const trackColor = '#333';
 const dashHeight = 4;
 const trackGap = 3;
 const trackDash = 15;
@@ -13,12 +13,8 @@ const padding = 5;
 const finishSize = 50;
 const finishLine = 80;
 const finishDelta = 0.24 * finishSize;
-const reserveFinishColor = '#ff0000';
 const carWidth = 100;
 const wheelOffset = 2;
-const yellow = '#FFD700';
-const orange = '#FFA500';
-const ochre = '#FF8C00';
 
 export default class RaceCreator extends ElementCreator {
   public context: CanvasRenderingContext2D | undefined = undefined;
@@ -95,9 +91,9 @@ export default class RaceCreator extends ElementCreator {
       const y = this.element.height - padding;
 
       const gradient = this.context.createLinearGradient(0, y, width, y);
-      gradient.addColorStop(0, yellow);
-      gradient.addColorStop(0.5, orange);
-      gradient.addColorStop(1, ochre);
+      gradient.addColorStop(0, Colors.Yellow);
+      gradient.addColorStop(0.5, Colors.Orange);
+      gradient.addColorStop(1, Colors.Ochre);
 
       this.context.strokeStyle = gradient;
       this.context.lineWidth = dashHeight;
@@ -125,7 +121,7 @@ export default class RaceCreator extends ElementCreator {
         const image = await RaceCreator.loadImage(finish);
         this.context.drawImage(image, width, height, finishSize, finishSize);
       } catch {
-        this.context.strokeStyle = reserveFinishColor;
+        this.context.strokeStyle = Colors.ReserveFinishColor;
         this.context.lineWidth = dashHeight;
         this.context.beginPath();
         this.context.moveTo(width + finishDelta, padding);
