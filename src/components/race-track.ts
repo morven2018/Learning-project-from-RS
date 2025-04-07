@@ -15,11 +15,11 @@ const delay = 5000;
 
 export default class RaceCreator extends ElementCreator {
   public context: CanvasRenderingContext2D | undefined = undefined;
-  private wheelAngle = 0;
+  // private wheelAngle = 0;
   private finishImage: HTMLImageElement | undefined = undefined;
   // private wheelImage: HTMLImageElement | undefined = undefined;
   // private animationId: number | undefined = undefined;
-  private isAnimating = false;
+  // private isAnimating = false;
   private stopImage: HTMLImageElement | undefined = undefined;
   private showStopImageUntil: number = 0;
   private isStopImageLoading: boolean = false;

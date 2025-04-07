@@ -87,12 +87,16 @@ export default class GarageView extends View implements IView {
       const addForm = new FormCreator(formParameters[0], (carData) =>
         this.addCar(carData)
       );
+
       this.forms.push(addForm);
       this.viewElementCreator.addInnerElement(addForm);
 
-      const updateForm = new FormCreator(formParameters[1], () => {});
+      const updateForm = new FormCreator(formParameters[1], () =>
+        this.handleUpdateCar()
+      );
       this.forms.push(updateForm);
       this.viewElementCreator.addInnerElement(updateForm);
+
       for (const parameters of buttonParameters) this.addButton(parameters);
       try {
         const response = await ApiClient.getCars({ _limit: 1 });
@@ -168,10 +172,31 @@ export default class GarageView extends View implements IView {
     }
   }
 
+  public fillUpdateForm(carInfo: ICar): void {
+    const updateForm = this.forms[1];
+
+    const nameInput = updateForm
+      .getInputs()
+      .find((input) => input.classList.contains(CssClasses.InputName));
+    const colorInput = updateForm
+      .getInputs()
+      .find((input) => input.classList.contains(CssClasses.InputColor));
+
+    if (nameInput && colorInput) {
+      nameInput.value = carInfo.name;
+      colorInput.value = carInfo.color;
+
+      updateForm.element?.classList.remove('disabled');
+
+      if (updateForm.element) {
+        updateForm.element.dataset.carId = carInfo.id.toString();
+      }
+    }
+  }
+
   private addCar(carData: { name: string; color: string }): void {
     console.log('add');
     if (!carData.name || !carData.color) {
-      alert('Please fill all fields');
       return;
     }
     console.log('add2');
@@ -184,5 +209,30 @@ export default class GarageView extends View implements IView {
       .catch((error) => {
         console.error('Failed to add car:', error);
       });
+  }
+
+  private async handleUpdateCar(carData: {
+    name: string;
+    color: string;
+  }): Promise<void> {
+    const updateForm = this.forms[1];
+    const carId = updateForm.element?.dataset.carId;
+
+    if (!carId || !carData.name || !carData.color) {
+      return;
+    }
+
+    try {
+      await ApiClient.updateCar(
+        Number.parseInt(carId),
+        carData.name,
+        carData.color
+      );
+
+      this.updateCarList();
+      updateForm.element?.classList.add('disabled');
+    } catch (error) {
+      console.error('Failed to update car:', error);
+    }
   }
 }

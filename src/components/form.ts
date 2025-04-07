@@ -40,7 +40,9 @@ export default class FormCreator extends ElementCreator {
     this.inputs = [];
     this.createElement(parameters, onSubmit);
   }
-
+  public getInputs(): HTMLInputElement[] {
+    return this.inputs;
+  }
   public createElement(
     parameters: IElementParameters,
     onSubmit?: FormSubmitCallback

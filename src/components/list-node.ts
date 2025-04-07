@@ -86,6 +86,12 @@ export default class ListNodeCreator
       classNames: [CssClasses.Select],
       textContent: 'SELECT',
       value: elementInfo.id.toString(),
+      callback: (event: Event): void => {
+        event.preventDefault();
+        if (this.parent) {
+          this.parent.fillUpdateForm(elementInfo);
+        }
+      },
     };
 
     this.selectBtn = new ButtonCreator(bthSelectParameters);
