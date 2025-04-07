@@ -1,6 +1,7 @@
 import View from '../../components/view';
 import { CssClasses, CssTags, Pages } from '../../lib/types/enums';
 import type { IHeaderView, IRouter } from '../../lib/types/interfaces';
+import './header.scss';
 
 const buttonsInfo = [
   {
@@ -44,8 +45,7 @@ export default class HeaderView extends View implements IHeaderView {
   }
 
   public static isValidPage(value: string): value is Pages {
-    const result = !!Object.values(Pages).includes(value);
-    return result;
+    return Object.values<string>(Pages).includes(value);
   }
 
   public configureView(router: IRouter): void {

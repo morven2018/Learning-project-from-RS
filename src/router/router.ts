@@ -21,7 +21,7 @@ export default class Router implements IRouter {
   public get validRoutes(): string[] | undefined {
     const result = Object.keys(this.routeMap)
       .filter((route) => route !== '')
-      .map((route) => this.normalizePath(route))
+      .map((route) => Router.normalizePath(route))
       .filter((value, index, self) => self.indexOf(value) === index);
     if (
       Array.isArray(result) &&
