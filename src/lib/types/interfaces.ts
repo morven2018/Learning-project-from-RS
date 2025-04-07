@@ -5,7 +5,7 @@ export interface IElementParameters {
   tag: string;
   classNames: Array<string>;
   textContent: string;
-  callback?: (event: Event) => void;
+  callback?: (event: Event, id?: number) => void;
   imageURL?: string;
   imageAlt?: string;
   title?: string;

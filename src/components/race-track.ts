@@ -98,6 +98,8 @@ export default class RaceCreator extends ElementCreator {
   public startAnimation(): void {
     if (this.animationState.isRunning) return;
 
+    this.resetStopImage();
+
     this.animationState.isRunning = true;
     this.car.state.isMoving = true;
     this.animateFrame();
@@ -111,15 +113,15 @@ export default class RaceCreator extends ElementCreator {
   }
 
   public resetCarPosition(): void {
-    this.car.state.isMoving = false; //Stop the car
-    this.car.position = 0; // Reset the car position
+    this.car.state.isMoving = false;
+    this.car.position = 0;
     this.resetAnimationState();
   }
 
   public async showStopImage(): Promise<void> {
-    this.showStopImageUntil = Date.now() + delay; // Set the duration
-    await this.loadStopImage(); // Load the image
-    this.renderFrame(); // Trigger rendering
+    this.showStopImageUntil = Date.now() + delay;
+    await this.loadStopImage();
+    this.renderFrame();
   }
 
   public resetAnimationState(): void {
@@ -134,13 +136,6 @@ export default class RaceCreator extends ElementCreator {
     };
   }
 
-  public stopAnimation() {
-    if (!this.animationState.isRunning) return;
-
-    this.animationState.isRunning = false;
-    this.car.state.isMoving = false;
-  }
-
   public async brokeCar(): Promise<void> {
     this.stopAnimation();
     this.showStopImageUntil = Date.now() + delay;
@@ -148,6 +143,7 @@ export default class RaceCreator extends ElementCreator {
     await this.loadStopImage();
     this.animateFrame();
     this.renderFrame();
+    setTimeout(this.resetStopImage.bind(this), delay);
   }
 
   public stopCar(): void {
@@ -170,7 +166,10 @@ export default class RaceCreator extends ElementCreator {
 
     this.renderFrame();
   }
-
+  public resetStopImage(): void {
+    this.showStopImageUntil = 0;
+    this.renderFrame();
+  }
   private async loadAndDraw(elementInfo: ICar): Promise<void> {
     try {
       await this.loadCarAssets(elementInfo.color);
@@ -181,7 +180,7 @@ export default class RaceCreator extends ElementCreator {
     }
   }
 
-  private drawStopImage(carX: number, carY: number, carWidth: number): void {
+  private drawStopImage(carX: number, carY: number): void {
     console.log('this.stopImage && Date.now() <= this.showStopImageUntil');
     if (this.element instanceof HTMLCanvasElement && this.context) {
       if (!this.context || !this.stopImage) return;
@@ -326,7 +325,7 @@ export default class RaceCreator extends ElementCreator {
       this.car.position = Math.min(1, this.car.position + this.car.state.speed);
     }
     if (this.car.position >= 1) {
-      this.stopAnimation().catch(console.error);
+      this.stopAnimation();
     }
   }
   private renderFrame(): void {
@@ -346,7 +345,7 @@ export default class RaceCreator extends ElementCreator {
         const carX = Track.Padding + this.car.position * trackWidth;
         const carY =
           this.element.height - Track.Padding - ((width * 2) / 3) * 0.85;
-        this.drawStopImage(carX, carY, width);
+        this.drawStopImage(carX, carY);
       }
     }
   }

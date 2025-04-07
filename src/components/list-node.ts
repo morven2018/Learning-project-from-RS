@@ -10,6 +10,7 @@ import ElementCreator from './element-creator';
 import startIcon from '../assets/icon/start.png';
 import stopIcon from '../assets/icon/stop.png';
 import RaceCreator from './race-track';
+import { ApiClient } from '../lib/utils/api-client';
 
 const mainPaddingPx = 30;
 const raceParameters = {
@@ -72,6 +73,7 @@ export default class ListNodeCreator
       classNames: [CssClasses.Delete],
       textContent: 'Delete',
       value: elementInfo.id.toString(),
+      callback: this.deleteCar.bind(this, elementInfo.id),
     };
 
     this.deleteBtn = new ButtonCreator(bthDeleteParameters);
@@ -159,5 +161,13 @@ export default class ListNodeCreator
   }
   private stopCar(): void {
     this.raceTrack?.brokeCar().catch(console.error);
+  }
+  private deleteCar(id: number): void {
+    if (Number.isFinite(id))
+      ApiClient.deleteCar(id)
+        .then(() => {
+          if (this.element instanceof HTMLElement) this.element.remove();
+        })
+        .catch(console.error);
   }
 }
