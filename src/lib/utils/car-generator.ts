@@ -10,7 +10,7 @@ export default class CarGenerator {
   public static generateCar(): ICarCreate {
     const carName = CarGenerator.generateCarName();
     const carColor = CarGenerator.generateColor();
-    console.log(carName, carColor);
+    // console.log(carName, carColor);
     return {
       name: carName || 'no-name',
       color: carColor,
@@ -19,7 +19,6 @@ export default class CarGenerator {
 
   private static generateCarName(): string | undefined {
     const modelList = CarGenerator.loadData();
-    console.log('modelList', modelList);
     if (modelList) {
       const brandItem = Math.floor(Math.random() * modelList.length);
       const markList = modelList[brandItem];
@@ -48,16 +47,10 @@ export default class CarGenerator {
 
   private static loadData(): JsonModels | void {
     try {
-      console.log(
-        'dfdfggbngbn',
-        Array.isArray(data) &&
-          data.every((item) => CarGenerator.isJsonCarInfo(item))
-      );
       if (
         Array.isArray(data) &&
         data.every((item) => CarGenerator.isJsonCarInfo(item))
       ) {
-        console.log(data);
         return data;
       }
 
@@ -68,8 +61,6 @@ export default class CarGenerator {
   }
 
   private static isJsonCarInfoItem(item: unknown): item is IJsonCarInfoItem {
-    // console.log('dfvdf', item);
-
     const result =
       item &&
       typeof item === 'object' &&

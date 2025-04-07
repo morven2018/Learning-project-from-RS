@@ -109,7 +109,6 @@ export default class FormCreator extends ElementCreator {
       name: nameInput.value.trim(),
       color: colorInput.value,
     };
-
-    this.onSubmit(carData);
+    if (this.onSubmit) this.onSubmit(carData);
   }
 }

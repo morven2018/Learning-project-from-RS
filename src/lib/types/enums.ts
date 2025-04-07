@@ -21,10 +21,14 @@ export enum CssClasses {
   Delete = 'delete-bth',
   NameArea = 'name-of-car',
   RaceArea = 'race-area',
-  RaceButton = 'race-bths',
+  RaceButton = 'race-btns',
   Start = 'start-btn',
   Stop = 'stop-btn',
   RaceTrack = 'race-track',
+  Pagination = 'pagination',
+  PaginationButton = 'pagination-btn',
+  PaginationEllipsis = 'pagination-ellipsis',
+  ActivePage = 'current-page',
 }
 
 export enum CssTags {
@@ -39,6 +43,7 @@ export enum CssTags {
   Li = 'li',
   Div = 'div',
   Race = 'canvas',
+  Span = 'span',
 }
 
 export enum Pages {
@@ -77,4 +82,10 @@ export enum Car {
   DefaultCarSpeed = 0.002,
   WheelSizeRatio = 0.13,
   BrokeSize = 15,
+}
+
+export enum PaginationButtons {
+  Previous = '←',
+  Next = '→',
+  Ellipsis = '...',
 }

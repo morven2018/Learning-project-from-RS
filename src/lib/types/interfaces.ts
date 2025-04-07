@@ -193,3 +193,8 @@ export interface IJsonCarInfoItem {
     'mark-id': string;
   };
 }
+export interface IPagination {
+  current: number;
+  total: number;
+  perPage: number;
+}
