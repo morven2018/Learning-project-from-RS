@@ -124,7 +124,12 @@ export default class RaceCreator extends ElementCreator {
   }
 
   public async startCar(): Promise<void> {
-    if (this.animationState.isRunning || !this.parent?.element?.id) return;
+    if (
+      this.animationState.isRunning ||
+      !this.parent?.element?.id ||
+      this.isStarting
+    )
+      return;
     this.isStarting = true;
 
     try {
@@ -159,7 +164,7 @@ export default class RaceCreator extends ElementCreator {
       } else throw new Error('Invalid engine parameters received');
     } catch (error: unknown) {
       console.error('Engine start failed:', error);
-      if (error instanceof Error && error.message.includes('500'))) {
+      if (error instanceof Error && error.message.includes('500')) {
         await this.handleEngineFailure();
       }
     } finally {
@@ -257,12 +262,16 @@ export default class RaceCreator extends ElementCreator {
     try {
       await ApiClient.switchToDrive(Number.parseInt(this.parent.element.id));
     } catch (error) {
+      console.log(error);
       if (error instanceof Error) {
         if (error.message.includes('429')) {
           console.log('Ignoring 429 (Too Many Requests)');
           return;
         }
-        if (error.message.includes('500')) {
+        if (
+          error.message.includes('500') ||
+          error.message.includes('Internal Server')
+        ) {
           console.error('Engine broken (500 error):', error);
           await this.handleEngineFailure();
           return;
