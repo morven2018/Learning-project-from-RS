@@ -1,4 +1,8 @@
-import type { ICar, IPaginationParameters } from '../types/api-interfaces';
+import type {
+  ICar,
+  IPaginationParameters,
+  ICarRaceParameters,
+} from '../types/api-interfaces';
 import { HttpMethod } from '../types/enums';
 
 const baseURL = 'http://127.0.0.1:3000';
@@ -140,5 +144,57 @@ export default class ApiClient {
       }
     }
     return url;
+  }
+
+  public static async toggleEngine(
+    id: number,
+    status: 'started' | 'stopped'
+  ): Promise<ICarRaceParameters> {
+    const url = new URL(`${baseURL}/engine`);
+    url.searchParams.append('id', id.toString());
+    url.searchParams.append('status', status);
+
+    const response = await fetch(url.toString(), {
+      method: HttpMethod.Patch,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to ${status} engine: ${response.statusText}`);
+    }
+
+    const engineData: unknown = await response.json();
+
+    if (!ApiClient.isIEngineParameters(engineData)) {
+      throw new Error('Invalid engine data received from server');
+    }
+
+    return engineData;
+  }
+
+  public static async switchToDrive(id: number): Promise<void> {
+    const response = await fetch(`${baseURL}/engine?id=${id}&status=drive`, {
+      method: 'PATCH',
+    });
+
+    if (response.status === 429) {
+      throw new Error('429: Too Many Requests');
+    }
+    if (!response.ok) {
+      throw new Error(`Failed to switch to drive: ${response.statusText}`);
+    }
+  }
+
+  private static isIEngineParameters(
+    data: unknown
+  ): data is ICarRaceParameters {
+    if (typeof data !== 'object' || data === null) {
+      return false;
+    }
+    return (
+      'velocity' in data &&
+      typeof data.velocity === 'number' &&
+      'distance' in data &&
+      typeof data.distance === 'number'
+    );
   }
 }

@@ -16,13 +16,12 @@ export default class Pagination extends ElementCreator {
 
   constructor(parameters: IElementParameters, config: IPaginationConfig) {
     super(parameters);
-    console.log('f211');
+
     this.config = config;
-    console.log('f311');
+
     this.createElement(parameters);
-    console.log('f411');
+
     this.renderPagination();
-    console.log('f151');
   }
 
   public updateConfig(newConfig: Partial<IPaginationConfig>): void {
@@ -31,31 +30,25 @@ export default class Pagination extends ElementCreator {
   }
 
   private renderPagination(): void {
-    console.log('f1517');
     this.clearInnerElements();
     const { currentPage, totalItems, itemsPerPage, onPageChange } = this.config;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
-    console.log('f1518');
+
     this.addPaginationButton(PaginationButtons.Previous, currentPage > 1, () =>
       onPageChange(currentPage - 1)
     );
-    console.log('f7151');
     if (totalPages <= maxTotalPagesFull) {
       for (let index = 1; index <= totalPages; index++) {
-        console.log('f15189');
         this.addPageButton(index, currentPage === index, onPageChange);
       }
     } else {
-      console.log('f15188');
       this.addComplexPagination(currentPage, totalPages, onPageChange);
     }
-    console.log('f15188887');
     this.addPaginationButton(
       PaginationButtons.Next,
       currentPage < totalPages,
       () => onPageChange(currentPage + 1)
     );
-    console.log('f1519989222');
   }
 
   private addComplexPagination(

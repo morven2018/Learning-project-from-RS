@@ -12,3 +12,12 @@ export interface ICarCreate {
   name: string;
   color: string;
 }
+export interface ICarAnimationState {
+  isRunning: boolean;
+  progress: number;
+  startTime: number | null;
+}
+export interface ICarRaceParameters {
+  velocity: number;
+  distance: number;
+}

@@ -38,6 +38,7 @@ export default class ListNodeCreator
   public raceTrack: RaceCreator | undefined;
   public stopBth: ButtonCreator | undefined;
   public name: ElementCreator | undefined;
+  public elementInfo?: ICar;
 
   constructor(
     parameters: IElementParameters,
@@ -47,6 +48,10 @@ export default class ListNodeCreator
     super(parameters);
     this.createElement(parameters, elementInfo);
     if (parent) this.parent = parent;
+  }
+
+  public get carName(): string {
+    return this.name?.element?.textContent || '';
   }
 
   public static getWidth(): number {
@@ -194,11 +199,12 @@ export default class ListNodeCreator
     }
   }
   private startCar(): void {
-    this.raceTrack?.startAnimation();
+    this.raceTrack?.startCar().catch(console.error);
   }
 
   private stopCar(): void {
-    this.raceTrack?.stopCar();
+    this.raceTrack?.stopCar().catch(console.error);
+    this.raceTrack?.resetCar();
   }
   private deleteCar(id: number): void {
     if (Number.isFinite(id))

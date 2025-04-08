@@ -12,7 +12,7 @@ import Pagination from '../../components/pagination';
 import './garage.scss';
 
 //const NAME_OF_APP = 'Decision Making Tool';
-const numberOfGeneratedCars = 1;
+const numberOfGeneratedCars = 100;
 const parameters = {
   tag: CssTags.Section,
   classNames: [CssClasses.Garage],
@@ -197,13 +197,13 @@ export default class GarageView extends View implements IView {
 
   public resetAllCars(): void {
     for (const raceCreator of this.raceCreators) {
-      raceCreator.stopCar();
+      raceCreator.stopCar().catch(console.error);
     }
   }
 
   public raceAllCars(): void {
     for (const raceCreator of this.raceCreators) {
-      raceCreator.startAnimation();
+      raceCreator.startCar().catch(console.error);
     }
   }
 
