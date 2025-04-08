@@ -457,6 +457,11 @@ export default class RaceCreator extends ElementCreator {
         if (RaceCreator.winnerId === undefined) {
           RaceCreator.winnerId = Number(this.parent?.element?.id);
           this.showFinishModal();
+
+          const winnerTime = this.raceDuration;
+          ApiClient.saveRaceResult(RaceCreator.winnerId, winnerTime).catch(
+            console.error
+          );
         }
       }
 
@@ -465,7 +470,6 @@ export default class RaceCreator extends ElementCreator {
       if (this.car.assets.body && this.car.assets.wheels) {
         this.drawCar();
       }
-      // const shouldShowStopImage = this.stopImage;
       if (this.stopImage && Date.now() <= this.showStopImageUntil) {
         const width = Math.min(Car.CarWidth, this.element.width * 0.2);
         const trackWidth = this.element.width - Track.Padding * 2;
