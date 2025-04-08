@@ -77,51 +77,31 @@ ul {
   }
 }
 
-$background-color: #1e1e1e;
-$text-color-primary: #ffffff;
-$text-color-secondary: #bdbdbd;
-$accent-color-highlight: #ffd700; // Yellow (Gold)
-$accent-color-secondary: #ffa500; // Orange
-$accent-color-tertiary: #ff8c00; // Dark Orange
-$error-color: #ff0000; // Red (Use sparingly)
-$primary-button-color: #3498db; // Blue
-$secondary-button-color: #2c3e50; // Dark Blue
-$divider-color: #343434; // Slightly Lighter Dark Grey
-
 .finish-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 
   .finish-modal {
-    background: $text-color-primary;
+    background: transparent;
     padding: 20px;
-    border-radius: 8px;
     max-width: 80%;
     text-align: center;
+    color: styles.$accent-text;
 
-    .finish-modal-car-image {
-      width: 100px;
+    font-size: styles.$text-header;
+
+    .finish-modal-winner-image {
+      width: 150px;
       height: auto;
-      margin-bottom: 10px;
-    }
-
-    .finish-modal-car-name {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .finish-modal-time {
-      font-size: 1rem;
-      color: #555;
+      margin-bottom: styles.$padding-small;
     }
   }
 }

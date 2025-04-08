@@ -12,10 +12,12 @@ import fail from '../assets/images/fail.png';
 import { Car, Colors, Track } from '../lib/types/enums';
 import type ListNodeCreator from './list-node';
 import ApiClient from '../lib/utils/api-client';
+import winner from '../assets/images/win.png';
 
 const delay = 50_000;
 
 export default class RaceCreator extends ElementCreator {
+  private static winnerId: number | undefined = undefined;
   public context: CanvasRenderingContext2D | undefined = undefined;
   // private wheelAngle = 0;
   private finishImage: HTMLImageElement | undefined = undefined;
@@ -31,7 +33,6 @@ export default class RaceCreator extends ElementCreator {
   private raceDuration: number = 1;
   private currentColor: string = '#000000';
   private isStarting: boolean = false;
-  private static winnerId: number | null = null;
 
   private animationState: IAnimationState = {
     id: undefined,
@@ -66,7 +67,7 @@ export default class RaceCreator extends ElementCreator {
     // this.loadStopImage().catch(console.error);
   }
   public static resetWinner(): void {
-    RaceCreator.winnerId = null;
+    RaceCreator.winnerId = undefined;
   }
   private static async loadImage(source: string): Promise<HTMLImageElement> {
     return new Promise((resolve) => {
@@ -127,7 +128,7 @@ export default class RaceCreator extends ElementCreator {
   }
 
   public async startCar(): Promise<void> {
-    RaceCreator.winnerId = null;
+    RaceCreator.winnerId = undefined;
 
     if (
       this.animationState.isRunning ||
@@ -453,7 +454,7 @@ export default class RaceCreator extends ElementCreator {
 
       if (Math.abs(this.car.position - finishPosition) < 0.01) {
         this.stopAnimation();
-        if (RaceCreator.winnerId === null) {
+        if (RaceCreator.winnerId === undefined) {
           RaceCreator.winnerId = Number(this.parent?.element?.id);
           this.showFinishModal();
         }
@@ -487,12 +488,6 @@ export default class RaceCreator extends ElementCreator {
       }
     }
   }
-  private isWinner(): boolean {
-    return (
-      this.parent?.element?.id !== undefined &&
-      Number(this.parent.element.id) === RaceCreator.winnerId
-    );
-  }
 
   private showFinishModal(): void {
     console.log('modal');
@@ -507,20 +502,20 @@ export default class RaceCreator extends ElementCreator {
     const content = document.createElement('div');
     content.className = 'finish-modal-content';
 
-    const carImg = document.createElement('img');
-    carImg.className = 'finish-modal-car-image';
-    carImg.src = body;
+    const winnerImg = document.createElement('img');
+    winnerImg.className = 'finish-modal-winner-image';
+    winnerImg.src = winner;
+    winnerImg.alt = 'Winner';
 
     const carName = document.createElement('div');
     carName.className = 'finish-modal-car-name';
-    carName.textContent =
-      this.parent.name?.element?.textContent || 'Unknown car';
+    carName.textContent = `Race win ${this.parent.name?.element?.textContent || 'Unknown car'}`;
 
     const time = document.createElement('div');
     time.className = 'finish-modal-time';
-    time.textContent = `${this.raceDuration.toFixed(2)}s`;
+    time.textContent = `With time: ${this.raceDuration.toFixed(2)}s`;
 
-    content.append(carImg);
+    content.append(winnerImg);
     content.append(carName);
     content.append(time);
     modalContent.append(content);
@@ -546,20 +541,6 @@ export default class RaceCreator extends ElementCreator {
     if (this.car.state.isMoving && !this.isEngineBroken) {
       const elapsed = (performance.now() - this.raceStartTime) / 1000;
       this.car.position = Math.min(elapsed / this.raceDuration, 1);
-
-      /*if (this.car.position >= 0.9) {
-        if (RaceCreator.winnerId === null) {
-          RaceCreator.winnerId = Number(this.parent?.element?.id);
-          console.log(`Winner detected: ${RaceCreator.winnerId}`);
-          this.stopAnimation();
-          this.showFinishModal();
-        } else if (this.isWinner()) {
-          this.stopAnimation();
-          this.showFinishModal();
-        } else {
-          this.stopAnimation();
-        }
-      }*/
     }
   }
 
