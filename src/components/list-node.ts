@@ -26,7 +26,7 @@ const raceBtnsParameters = {
   textContent: '',
 };
 
-const trackHeight = 80;
+const trackHeight = 60;
 export default class ListNodeCreator
   extends ElementCreator
   implements IListNodeCreator

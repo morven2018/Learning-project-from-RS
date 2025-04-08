@@ -6,7 +6,7 @@ import { CssClasses, CssTags } from '../../lib/types/enums';
 import type { IElementCreator, IView } from '../../lib/types/interfaces';
 import ApiClient from '../../lib/utils/api-client';
 import CarCreator from '../../lib/utils/car-creator';
-import type RaceCreator from '../../components/race-track';
+import RaceCreator from '../../components/race-track';
 import type { ICar, ICarCreate } from '../../lib/types/api-interfaces';
 import Pagination from '../../components/pagination';
 import './garage.scss';
@@ -196,12 +196,14 @@ export default class GarageView extends View implements IView {
   }
 
   public resetAllCars(): void {
+    RaceCreator.resetWinner();
     for (const raceCreator of this.raceCreators) {
       raceCreator.stopCar().catch(console.error);
     }
   }
 
   public raceAllCars(): void {
+    RaceCreator.resetWinner();
     for (const raceCreator of this.raceCreators) {
       raceCreator.startCar().catch(console.error);
     }

@@ -30,7 +30,6 @@ export default class HeaderView extends View implements IHeaderView {
     };
     super(parameters);
     this.configureView(router);
-    console.log(this.buttons);
     const currentPath = HeaderView.getNormalizedPath() || Pages.Garage;
     this.updateActiveState(currentPath);
   }
