@@ -2,6 +2,9 @@ import type {
   ICar,
   IPaginationParameters,
   ICarRaceParameters,
+  IWinner,
+  IWinnerUpdate,
+  IWinnerCreate,
 } from '../types/api-interfaces';
 import { HttpMethod } from '../types/enums';
 
@@ -184,10 +187,132 @@ export default class ApiClient {
     }
   }
 
+  public static async getWinners(
+    parameters?: IPaginationParameters & {
+      _sort?: 'id' | 'wins' | 'time';
+      _order?: 'ASC' | 'DESC';
+    }
+  ): Promise<{ winners: IWinner[]; totalCount: number }> {
+    let url = new URL(`${baseURL}/winners`);
+    url = ApiClient.addSearchParams(url, parameters);
+
+    const response = await fetch(url);
+    const totalCount = Number(response.headers.get('X-Total-Count') || '0');
+    const winners: unknown = await response.json();
+
+    if (
+      !Array.isArray(winners) ||
+      !winners.every((winner) => this.isIWinner(winner))
+    ) {
+      throw new Error('Invalid winners data received from server');
+    }
+
+    return { winners, totalCount };
+  }
+
+  public static async getWinner(id: number): Promise<IWinner> {
+    const url = `${baseURL}/winners/${id}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Winner not found (status: ${response.status})`);
+    }
+
+    const winner: unknown = await response.json();
+    if (!ApiClient.isIWinner(winner)) {
+      throw new Error('Invalid winner data received from server');
+    }
+
+    return winner;
+  }
+
+  public static async createWinner(
+    winnerData: IWinnerCreate
+  ): Promise<IWinner> {
+    const url = `${baseURL}/winners`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(winnerData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create winner: ${response.statusText}`);
+    }
+
+    const createdWinner: unknown = await response.json();
+    if (!ApiClient.isIWinner(createdWinner)) {
+      throw new Error('Invalid winner data received from server');
+    }
+
+    return createdWinner;
+  }
+
+  public static async updateWinner(
+    id: number,
+    winnerData: IWinnerUpdate
+  ): Promise<IWinner> {
+    const url = `${baseURL}/winners/${id}`;
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(winnerData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update winner: ${response.statusText}`);
+    }
+
+    const updatedWinner: unknown = await response.json();
+    if (!ApiClient.isIWinner(updatedWinner)) {
+      throw new Error('Invalid winner data received from server');
+    }
+
+    return updatedWinner;
+  }
+
+  public static async deleteWinner(id: number): Promise<void> {
+    const url = `${baseURL}/winners/${id}`;
+    const response = await fetch(url, { method: 'DELETE' });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete winner: ${response.statusText}`);
+    }
+  }
+
+  public static async saveRaceResult(
+    winnerId: number,
+    winnerTime: number
+  ): Promise<IWinner> {
+    try {
+      const existingWinner = await ApiClient.getWinner(winnerId);
+      const bestTime = Math.min(existingWinner.time, winnerTime);
+
+      return await ApiClient.updateWinner(winnerId, {
+        wins: existingWinner.wins + 1,
+        time: bestTime,
+      });
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('404')) {
+        return await ApiClient.createWinner({
+          id: winnerId,
+          wins: 1,
+          time: winnerTime,
+        });
+      }
+      throw error;
+    }
+  }
+
+  private static isIWinner(winner: unknown): winner is IWinner {
+    if (typeof winner !== 'object' || !winner) return false;
+    return 'id' in winner && 'wins' in winner && 'time' in winner;
+  }
+
   private static isIEngineParameters(
     data: unknown
   ): data is ICarRaceParameters {
-    if (typeof data !== 'object' || data === null) {
+    if (typeof data !== 'object' || !data) {
       return false;
     }
     return (

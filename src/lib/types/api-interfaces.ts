@@ -21,3 +21,20 @@ export interface ICarRaceParameters {
   velocity: number;
   distance: number;
 }
+
+export interface IWinner {
+  id: number;
+  wins: number;
+  time: number;
+}
+
+export interface IWinnerCreate {
+  id: number;
+  wins: number;
+  time: number;
+}
+
+export interface IWinnerUpdate {
+  wins?: number;
+  time?: number;
+}
