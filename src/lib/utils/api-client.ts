@@ -99,6 +99,15 @@ export default class ApiClient {
     const response = await fetch(url, fetchParameters);
     if (!response.ok)
       throw new Error(`Car not found (status: ${response.status})`);
+
+    try {
+      await this.deleteWinner(id);
+    } catch (error) {
+      if (!(error instanceof Error && error.message.includes('404'))) {
+        console.error(`Winner not found`, error);
+      }
+    }
+
     return true;
   }
 
