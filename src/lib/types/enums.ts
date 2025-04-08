@@ -29,6 +29,12 @@ export enum CssClasses {
   PaginationButton = 'pagination-btn',
   PaginationEllipsis = 'pagination-ellipsis',
   ActivePage = 'current-page',
+  Table = 'winner-table',
+  Caption = 'page',
+  Tr = 'table-row',
+  Th = 'table-header-element',
+  Thead = 'table-header',
+  Tbody = 'table-content',
 }
 
 export enum CssTags {
@@ -44,6 +50,13 @@ export enum CssTags {
   Div = 'div',
   Race = 'canvas',
   Span = 'span',
+  Table = 'table',
+  Caption = 'caption',
+  Tr = 'tr',
+  Thead = 'thead',
+  Th = 'th',
+  Tbody = 'tbody',
+  Td = 'td',
 }
 
 export enum Pages {
@@ -88,4 +101,24 @@ export enum PaginationButtons {
   Previous = '←',
   Next = '→',
   Ellipsis = '...',
+}
+
+export enum TableHeader {
+  Id = '#ID',
+  IdClass = 'id',
+  Car = 'CAR',
+  Wins = 'WINS🏆',
+  WinsClass = 'wins',
+  Time = 'BEST TIME⌛ (sec)',
+  TimeClass = 'time',
+}
+
+export enum SortBy {
+  Id = 'id',
+  Wins = 'wins',
+  Time = 'time',
+}
+export enum SortDirection {
+  Asc = 'ASC',
+  Desc = 'DESC',
 }
