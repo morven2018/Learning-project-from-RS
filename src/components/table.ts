@@ -66,13 +66,19 @@ const miniatureParameters = {
   },
 };
 
+const sortAsc = ' ↑';
+const sortDesc = ' ↓';
+
 export default class TableCreator extends ElementCreator {
   public page: number = 1;
   public sortDirection: SortDirection = SortDirection.Asc;
   public sortValue: SortBy = SortBy.Id;
+  public onPageChange?: (newPage: number) => void;
+  public onSortChange?: () => void;
   private winners: IWinner[] = [];
   private caption: ElementCreator | undefined = undefined;
   private body: ElementCreator | undefined = undefined;
+  private headerElements: ElementCreator[] = [];
 
   constructor(parameters: IElementParameters, page?: number) {
     super(parameters);
@@ -118,6 +124,63 @@ export default class TableCreator extends ElementCreator {
     return container;
   }
 
+  private static async createTableRow(
+    winner: IWinner
+  ): Promise<ElementCreator> {
+    const row = new ElementCreator(rowParameters);
+    const car = await ApiClient.getCar(winner.id);
+
+    row.addInnerElement(TableCreator.createIdCell(winner));
+    row.addInnerElement(TableCreator.createCarCell(car));
+    row.addInnerElement(TableCreator.createWinsCell(winner));
+    row.addInnerElement(TableCreator.createTimeCell(winner));
+
+    return row;
+  }
+  private static createIdCell(winner: IWinner): ElementCreator {
+    return new ElementCreator({
+      tag: CssTags.Td,
+      classNames: [headerClasses[0]],
+      textContent: winner.id.toString(),
+    });
+  }
+
+  private static createCarCell(car: ICar): ElementCreator {
+    const carCell = new ElementCreator({
+      tag: CssTags.Td,
+      classNames: [headerClasses[1]],
+      textContent: '',
+    });
+
+    const carMiniature = TableCreator.createRaceCreatorMiniature(car);
+    carCell.addInnerElement(carMiniature);
+
+    const carName = new ElementCreator({
+      tag: CssTags.Span,
+      classNames: [],
+      textContent: car.name,
+    });
+    carCell.addInnerElement(carName);
+
+    return carCell;
+  }
+
+  private static createWinsCell(winner: IWinner): ElementCreator {
+    return new ElementCreator({
+      tag: CssTags.Td,
+      classNames: [headerClasses[2]],
+      textContent: winner.wins.toString(),
+    });
+  }
+
+  private static createTimeCell(winner: IWinner): ElementCreator {
+    return new ElementCreator({
+      tag: CssTags.Td,
+      classNames: [headerClasses[3]],
+      textContent: `${winner.time.toFixed(2)}s`,
+    });
+  }
+
   public createElement(parameters: IElementParameters): void {
     super.createElement(parameters);
     this.createCaption();
@@ -144,6 +207,24 @@ export default class TableCreator extends ElementCreator {
     this.loadTableData().catch(console.error);
   }
 
+  public async fillTable(winners?: IWinner[]): Promise<void> {
+    if (winners) this.winners = winners;
+
+    if (this.caption?.element)
+      this.caption.element.textContent = `Page: ${this.page}`;
+
+    if (this.body?.element instanceof HTMLElement)
+      this.body.element.replaceChildren();
+
+    try {
+      for (const winner of this.winners) {
+        const row = await TableCreator.createTableRow(winner);
+        this.body?.addInnerElement(row);
+      }
+    } catch (error) {
+      console.error('Error filling table:', error);
+    }
+  }
   private createCaption(): void {
     captionParameters.textContent = `Page: ${this.page}`;
     this.caption = new ElementCreator(captionParameters);
@@ -156,6 +237,8 @@ export default class TableCreator extends ElementCreator {
     const row = new ElementCreator(rowParameters);
     header.addInnerElement(row);
 
+    this.headerElements = [];
+
     const column = headerClasses.length;
     for (let index = 0; index < column; index += 1) {
       const parameters = {
@@ -164,74 +247,91 @@ export default class TableCreator extends ElementCreator {
         textContent: headerText[index],
       };
       const element = new ElementCreator(parameters);
+      this.headerElements.push(element);
+      if (index !== 1) {
+        element.element?.style.setProperty('position', 'relative');
+        element.element?.style.setProperty('z-index', '2');
+        element.element?.addEventListener('click', () => {
+          console.log(
+            `Clicked on column ${headerText[index]} (index ${index})`
+          );
+          this.handleHeaderClick(index);
+        });
+      }
       row.addInnerElement(element);
+      this.updateSortUI();
     }
   }
 
+  private updateSortUI(): void {
+    for (const [index, header] of this.headerElements.entries()) {
+      if (index === 1) continue;
+
+      const currentText = header.element?.textContent;
+      if (currentText) {
+        const textWithoutArrows = currentText
+          .replace(sortAsc, '')
+          .replace(sortDesc, '');
+
+        header.setTextContent(textWithoutArrows);
+
+        if (
+          (index === 0 && this.sortValue === SortBy.Id) ||
+          (index === 2 && this.sortValue === SortBy.Wins) ||
+          (index === 3 && this.sortValue === SortBy.Time)
+        ) {
+          const arrow =
+            this.sortDirection === SortDirection.Asc ? sortAsc : sortDesc;
+          header.setTextContent(textWithoutArrows + arrow);
+        }
+      }
+    }
+  }
+
+  private handleHeaderClick(columnIndex: number): void {
+    let newSortValue: SortBy;
+    console.log(columnIndex);
+    switch (columnIndex) {
+      case 0: {
+        newSortValue = SortBy.Id;
+        break;
+      }
+      case 2: {
+        newSortValue = SortBy.Wins;
+        break;
+      }
+      case 3: {
+        newSortValue = SortBy.Time;
+        break;
+      }
+      default: {
+        return;
+      }
+    }
+    console.log(this.sortValue, this.sortDirection);
+
+    if (this.sortValue === newSortValue) {
+      this.sortDirection =
+        this.sortDirection === SortDirection.Asc
+          ? SortDirection.Desc
+          : SortDirection.Asc;
+    } else {
+      this.sortValue = newSortValue;
+      this.sortDirection = SortDirection.Asc;
+    }
+
+    this.updateSortUI();
+    if (this.onSortChange) {
+      this.onSortChange();
+    }
+    /* this.loadTableData().catch(console.error);
+
+    if (this.onPageChange) {
+      this.onPageChange(this.page);
+    } */
+  }
   private createBody(): void {
     this.body = new ElementCreator(tableBodyParameters);
     this.addInnerElement(this.body);
-  }
-
-  private async fillTable(): Promise<void> {
-    if (this.caption?.element)
-      this.caption.element.textContent = `Page: ${this.page}`;
-
-    if (this.body?.element instanceof HTMLElement)
-      this.body.element.replaceChildren();
-
-    for (const winner of this.winners) {
-      const car = await ApiClient.getCar(winner.id);
-      const row = new ElementCreator(rowParameters);
-
-      const idCellParameters = {
-        tag: CssTags.Td,
-        classNames: [headerClasses[0]],
-        textContent: winner.id.toString(),
-      };
-
-      const idCell = new ElementCreator(idCellParameters);
-      row.addInnerElement(idCell);
-
-      const carCellParameters = {
-        tag: CssTags.Td,
-        classNames: [headerClasses[1]],
-        textContent: '',
-      };
-      const carCell = new ElementCreator(carCellParameters);
-      row.addInnerElement(carCell);
-
-      const carMiniature = TableCreator.createRaceCreatorMiniature(car);
-      carCell.addInnerElement(carMiniature);
-
-      const carParameters = {
-        tag: CssTags.Span,
-        classNames: [],
-        textContent: car.name,
-      };
-
-      const carName = new ElementCreator(carParameters);
-      carCell.addInnerElement(carName);
-
-      const winCellParameters = {
-        tag: CssTags.Td,
-        classNames: [headerClasses[2]],
-        textContent: winner.wins.toString(),
-      };
-
-      const winsCell = new ElementCreator(winCellParameters);
-      row.addInnerElement(winsCell);
-
-      const timeCellParameters = {
-        tag: CssTags.Td,
-        classNames: [headerClasses[3]],
-        textContent: `${winner.time.toFixed(2)}s`,
-      };
-
-      const timeCell = new ElementCreator(timeCellParameters);
-      row.addInnerElement(timeCell);
-
-      this.body?.addInnerElement(row);
-    }
   }
 }
