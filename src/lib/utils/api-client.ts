@@ -6,6 +6,7 @@ import type {
   IWinnerUpdate,
   IWinnerCreate,
 } from '../types/api-interfaces';
+import type { SortBy, SortDirection } from '../types/enums';
 import { HttpMethod } from '../types/enums';
 
 const baseURL = 'http://127.0.0.1:3000';
@@ -137,6 +138,18 @@ export default class ApiClient {
 
     const updatedCar: unknown = await response.json();
 
+    try {
+      const existingWinner = await this.getWinner(id);
+      await this.updateWinner(id, {
+        wins: existingWinner.wins,
+        time: existingWinner.time,
+      });
+    } catch (error) {
+      if (!(error instanceof Error && error.message.includes('404'))) {
+        throw error;
+      }
+    }
+
     if (!ApiClient.isICar(updatedCar)) {
       throw new Error('Invalid car data received from server');
     }
@@ -185,7 +198,7 @@ export default class ApiClient {
 
   public static async switchToDrive(id: number): Promise<void> {
     const response = await fetch(`${baseURL}/engine?id=${id}&status=drive`, {
-      method: 'PATCH',
+      method: HttpMethod.Patch,
     });
 
     if (response.status === 429) {
@@ -198,8 +211,8 @@ export default class ApiClient {
 
   public static async getWinners(
     parameters?: IPaginationParameters & {
-      _sort?: 'id' | 'wins' | 'time';
-      _order?: 'ASC' | 'DESC';
+      _sort?: SortBy;
+      _order?: SortDirection;
     }
   ): Promise<{ winners: IWinner[]; totalCount: number }> {
     let url = new URL(`${baseURL}/winners`);
@@ -282,7 +295,7 @@ export default class ApiClient {
 
   public static async deleteWinner(id: number): Promise<void> {
     const url = `${baseURL}/winners/${id}`;
-    const response = await fetch(url, { method: 'DELETE' });
+    const response = await fetch(url, { method: HttpMethod.Delete });
 
     if (!response.ok) {
       throw new Error(`Failed to delete winner: ${response.statusText}`);
