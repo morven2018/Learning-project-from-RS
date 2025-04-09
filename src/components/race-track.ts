@@ -18,6 +18,18 @@ const delay = 50_000;
 
 export default class RaceCreator extends ElementCreator {
   private static winnerId: number | undefined = undefined;
+  public car: ICarState = {
+    position: 0,
+    assets: {
+      body: undefined,
+      wheels: undefined,
+      color: '',
+    },
+    state: {
+      speed: Car.DefaultCarSpeed,
+      isMoving: false,
+    },
+  };
   public context: CanvasRenderingContext2D | undefined = undefined;
   // private wheelAngle = 0;
   private finishImage: HTMLImageElement | undefined = undefined;
@@ -38,19 +50,6 @@ export default class RaceCreator extends ElementCreator {
     id: undefined,
     isRunning: false,
     wheelAngle: 0,
-  };
-
-  private car: ICarState = {
-    position: 0,
-    assets: {
-      body: undefined,
-      wheels: undefined,
-      color: '',
-    },
-    state: {
-      speed: Car.DefaultCarSpeed,
-      isMoving: false,
-    },
   };
 
   constructor(
@@ -260,6 +259,26 @@ export default class RaceCreator extends ElementCreator {
   public resetStopImage(): void {
     this.showStopImageUntil = 0;
     this.renderFrame();
+  }
+
+  public drawCar(): void {
+    if (
+      this.element instanceof HTMLCanvasElement &&
+      this.context &&
+      this.car.assets.body &&
+      this.car.assets.wheels
+    ) {
+      const width = Math.min(Car.CarWidth, this.element.width * 0.2);
+      const height = (width * 2) / 3;
+      const trackWidth = this.element.width - Track.Padding * 2;
+
+      const carX = Track.Padding + this.car.position * trackWidth;
+      const carY = this.element.height - Track.Padding - height * 0.85;
+
+      this.context.drawImage(this.car.assets.body, carX, carY, width, height);
+
+      this.drawWheels(carX, carY, Car.CarWidth);
+    }
   }
 
   private async monitorEngineStatus(): Promise<void> {
@@ -545,26 +564,6 @@ export default class RaceCreator extends ElementCreator {
     if (this.car.state.isMoving && !this.isEngineBroken) {
       const elapsed = (performance.now() - this.raceStartTime) / 1000;
       this.car.position = Math.min(elapsed / this.raceDuration, 1);
-    }
-  }
-
-  private drawCar(): void {
-    if (
-      this.element instanceof HTMLCanvasElement &&
-      this.context &&
-      this.car.assets.body &&
-      this.car.assets.wheels
-    ) {
-      const width = Math.min(Car.CarWidth, this.element.width * 0.2);
-      const height = (width * 2) / 3;
-      const trackWidth = this.element.width - Track.Padding * 2;
-
-      const carX = Track.Padding + this.car.position * trackWidth;
-      const carY = this.element.height - Track.Padding - height * 0.85;
-
-      this.context.drawImage(this.car.assets.body, carX, carY, width, height);
-
-      this.drawWheels(carX, carY, Car.CarWidth);
     }
   }
 

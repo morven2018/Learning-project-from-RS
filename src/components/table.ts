@@ -4,6 +4,8 @@ import { CssClasses, CssTags, TableHeader } from '../lib/types/enums';
 import type { IElementParameters } from '../lib/types/interfaces';
 import ApiClient from '../lib/utils/api-client';
 import ElementCreator from './element-creator';
+import RaceCreator from './race-track';
+import type { ICar } from '../lib/types/api-interfaces';
 
 const pageElements = 10;
 const captionParameters = {
@@ -43,12 +45,32 @@ const headerText = [
   TableHeader.Time,
 ];
 
+const raceCreatorParameters = {
+  tag: CssTags.Race,
+  classNames: [],
+  textContent: '',
+  options: {
+    width: 500,
+    height: 200,
+  },
+};
+
+const miniatureParameters = {
+  tag: CssTags.Div,
+  classNames: ['car-miniature-container'],
+  textContent: '',
+  options: {
+    style:
+      'display: inline-block; width: 400px; height: 200px; position: relative;' +
+      'margin-left: -200px; margin-top: -120px; overflow: hidden;',
+  },
+};
+
 export default class TableCreator extends ElementCreator {
   public page: number = 1;
   public sortDirection: SortDirection = SortDirection.Asc;
   public sortValue: SortBy = SortBy.Id;
   private winners: IWinner[] = [];
-  // private totalCount: number = 0;
   private caption: ElementCreator | undefined = undefined;
   private body: ElementCreator | undefined = undefined;
 
@@ -66,6 +88,34 @@ export default class TableCreator extends ElementCreator {
       }
     }
     return [...unique.values()];
+  }
+
+  private static createRaceCreatorMiniature(car: ICar): ElementCreator {
+    const container = new ElementCreator(miniatureParameters);
+    container.element?.setAttribute('style', miniatureParameters.options.style);
+
+    const raceCreator = new RaceCreator(raceCreatorParameters, car);
+
+    raceCreator['car'].position = 0.5;
+    raceCreator.updateCarColor(car.color);
+
+    raceCreator['drawTrack'] = (): void => {};
+    raceCreator['drawFinish'] = (): void => {};
+
+    raceCreator['renderFrame'] = function (): void {
+      if (this.element instanceof HTMLCanvasElement && this.context) {
+        this.context.clearRect(0, 0, this.element.width, this.element.height);
+        if (this.car.assets.body && this.car.assets.wheels) {
+          this.drawCar();
+        }
+      }
+    };
+
+    if (raceCreator.element) {
+      container.addInnerElement(raceCreator);
+    }
+
+    return container;
   }
 
   public createElement(parameters: IElementParameters): void {
@@ -146,10 +196,22 @@ export default class TableCreator extends ElementCreator {
       const carCellParameters = {
         tag: CssTags.Td,
         classNames: [headerClasses[1]],
-        textContent: car.name,
+        textContent: '',
       };
       const carCell = new ElementCreator(carCellParameters);
       row.addInnerElement(carCell);
+
+      const carMiniature = TableCreator.createRaceCreatorMiniature(car);
+      carCell.addInnerElement(carMiniature);
+
+      const carParameters = {
+        tag: CssTags.Span,
+        classNames: [],
+        textContent: car.name,
+      };
+
+      const carName = new ElementCreator(carParameters);
+      carCell.addInnerElement(carName);
 
       const winCellParameters = {
         tag: CssTags.Td,

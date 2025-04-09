@@ -6,6 +6,7 @@ import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
 import type { IView } from '../../lib/types/interfaces';
 import ApiClient from '../../lib/utils/api-client';
+import './winners.scss';
 
 const pageElements = 10;
 

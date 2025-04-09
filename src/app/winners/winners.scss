@@ -1,0 +1,33 @@
+@use '../styles.scss';
+
+caption {
+  text-align: left;
+}
+.winners-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: none;
+  width: 100%;
+}
+th,
+td {
+  margin: 0;
+  border: 1px solid styles.$text-color;
+  text-align: center;
+  padding: styles.$padding-small;
+}
+td.CAR {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 0 styles.$padding-big 0 0;
+}
+
+.table-content tr:nth-child(even) {
+  background-color: styles.$input-color;
+}
+
+.table-content tr:nth-child(odd) {
+  background-color: styles.$button-color;
+}
