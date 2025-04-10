@@ -6,11 +6,14 @@ import type {
 } from '../types/interfaces';
 import type { ICarCreate } from '../types/api-interfaces';
 
+const hex = 16;
+const maxColorValue = 256;
+const digitsAfterDot = 2;
+
 export default class CarGenerator {
   public static generateCar(): ICarCreate {
     const carName = CarGenerator.generateCarName();
     const carColor = CarGenerator.generateColor();
-    // console.log(carName, carColor);
     return {
       name: carName || 'no-name',
       color: carColor,
@@ -33,15 +36,15 @@ export default class CarGenerator {
   }
 
   private static generateColor(): string {
-    const r = Math.floor(Math.random() * 256)
-      .toString(16)
-      .padStart(2, '0');
-    const g = Math.floor(Math.random() * 256)
-      .toString(16)
-      .padStart(2, '0');
-    const b = Math.floor(Math.random() * 256)
-      .toString(16)
-      .padStart(2, '0');
+    const r = Math.floor(Math.random() * maxColorValue)
+      .toString(hex)
+      .padStart(digitsAfterDot, '0');
+    const g = Math.floor(Math.random() * maxColorValue)
+      .toString(hex)
+      .padStart(digitsAfterDot, '0');
+    const b = Math.floor(Math.random() * maxColorValue)
+      .toString(hex)
+      .padStart(digitsAfterDot, '0');
     return `#${r}${g}${b}`.toUpperCase();
   }
 
@@ -68,13 +71,11 @@ export default class CarGenerator {
       typeof item.id === 'string' &&
       'name' in item &&
       typeof item.name === 'string';
-    // console.log('result', result);
     if (typeof result === 'boolean') return result;
     return false;
   }
 
   private static isJsonCarInfo(car: unknown): car is IJsonCarInfo {
-    // console.log('car', car);
     const result =
       car &&
       typeof car === 'object' &&
@@ -91,7 +92,6 @@ export default class CarGenerator {
       'models' in car &&
       Array.isArray(car.models) &&
       car.models.every((element) => CarGenerator.isJsonCarInfoItem(element));
-    // console.log('result', result);
     if (typeof result === 'boolean') return result;
     return false;
   }

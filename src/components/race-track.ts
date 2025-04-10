@@ -1,8 +1,9 @@
-import type { ICar } from '../lib/types/api-interfaces';
+import type { ICar, ICarRaceParameters } from '../lib/types/api-interfaces';
 import type {
   IElementParameters,
   ICarState,
   IAnimationState,
+  IRaceCreator,
 } from '../lib/types/interfaces';
 import ElementCreator from './element-creator';
 import finish from '../assets/images/finish.png';
@@ -16,7 +17,10 @@ import winner from '../assets/images/win.png';
 
 const delay = 50_000;
 
-export default class RaceCreator extends ElementCreator {
+export default class RaceCreator
+  extends ElementCreator
+  implements IRaceCreator
+{
   private static winnerId: number | undefined = undefined;
   public car: ICarState = {
     position: 0,
@@ -33,11 +37,7 @@ export default class RaceCreator extends ElementCreator {
   public context: CanvasRenderingContext2D | undefined = undefined;
   public raceStartTime: number = 0;
   public raceDuration: number = 1;
-  // private wheelAngle = 0;
   private finishImage: HTMLImageElement | undefined = undefined;
-  // private wheelImage: HTMLImageElement | undefined = undefined;
-  // private animationId: number | undefined = undefined;
-  // private isAnimating = false;
   private stopImage: HTMLImageElement | undefined = undefined;
   private showStopImageUntil: number = 0;
   private isStopImageLoading: boolean = false;
@@ -66,11 +66,12 @@ export default class RaceCreator extends ElementCreator {
     if (elementInfo?.color) {
       this.currentColor = elementInfo.color;
     }
-    // this.loadStopImage().catch(console.error);
   }
+
   public static resetWinner(): void {
     RaceCreator.winnerId = undefined;
   }
+
   private static async loadImage(source: string): Promise<HTMLImageElement> {
     return new Promise((resolve) => {
       const img = new Image();
@@ -96,6 +97,21 @@ export default class RaceCreator extends ElementCreator {
 
   private static async loadWheels(): Promise<HTMLImageElement> {
     return RaceCreator.loadImage(wheels);
+  }
+
+  private static isICarRaceParameters(
+    value: unknown
+  ): value is ICarRaceParameters {
+    if (!value || typeof value !== 'object') return false;
+
+    if (
+      'velocity' in value &&
+      typeof value.velocity === 'number' &&
+      'distance' in value &&
+      typeof value.distance === 'number'
+    )
+      return true;
+    return false;
   }
 
   public updateCarColor(color: string): void {
@@ -125,7 +141,6 @@ export default class RaceCreator extends ElementCreator {
       if (context) this.context = context;
       this.loadFinishImage().catch(console.error);
       this.loadAndDraw(elementInfo).catch(console.error);
-      // this.loadStopImage(elementInfo).catch(console.error);
     }
   }
 
@@ -152,15 +167,7 @@ export default class RaceCreator extends ElementCreator {
 
       await this.loadCarAssets(this.currentColor);
 
-      if (!engineParameters || typeof engineParameters !== 'object') {
-        throw new Error('Invalid engine parameters received');
-      }
-      if (
-        'velocity' in engineParameters &&
-        typeof engineParameters.velocity === 'number' &&
-        'distance' in engineParameters &&
-        typeof engineParameters.distance === 'number'
-      ) {
+      if (RaceCreator.isICarRaceParameters(engineParameters)) {
         const { velocity, distance } = engineParameters;
 
         this.raceDuration = distance / (1000 * velocity);
@@ -490,9 +497,8 @@ export default class RaceCreator extends ElementCreator {
 
       this.drawStaticElements();
 
-      if (this.car.assets.body && this.car.assets.wheels) {
-        this.drawCar();
-      }
+      if (this.car.assets.body && this.car.assets.wheels) this.drawCar();
+
       if (this.stopImage && Date.now() <= this.showStopImageUntil) {
         const width = Math.min(Car.CarWidth, this.element.width * 0.2);
         const trackWidth = this.element.width - Track.Padding * 2;

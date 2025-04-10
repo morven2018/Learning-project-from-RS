@@ -1,18 +1,23 @@
 @use '../styles.scss';
 
 form {
-  padding: styles.$padding-big;
-  border-radius: styles.$border-radius;
   display: grid;
+
   grid-template-columns: 4fr 1fr 1fr;
-  margin: styles.$padding-small 0;
   gap: min(styles.$gap, 5%);
+
   max-width: 700px;
 
+  padding: styles.$padding-big;
+  margin: styles.$padding-small 0;
+
+  border-radius: styles.$border-radius;
+
   &.disabled {
-    pointer-events: none;
     opacity: 0.7;
+    pointer-events: none;
   }
+
   &.form-add-car {
     border: 1px solid styles.$accent-text;
   }
@@ -20,15 +25,17 @@ form {
   &.form-update-car {
     border: 1px solid styles.$accent-color;
   }
+
   button {
     max-width: styles.$button-max;
     padding: styles.$padding-small;
   }
 
   input {
-    background-color: styles.$text-color;
-    border-radius: inherit;
     border: none;
+    border-radius: inherit;
+
+    background-color: styles.$text-color;
 
     &:focus {
       outline: 2px solid styles.$accent;
@@ -42,14 +49,14 @@ form {
 
     &[type='color'] {
       padding: 0;
-      border-radius: 0;
       border: none;
+      border-radius: 0;
     }
 
     &[type='color' i]::-webkit-color-swatch-wrapper {
       padding: 0;
-      border-radius: 0;
       border: none;
+      border-radius: 0;
     }
   }
 }
@@ -62,17 +69,20 @@ ul {
 
   .start-btn,
   .stop-btn {
-    padding: 0;
-    background-color: transparent;
-    min-width: styles.$button-image;
     width: styles.$button-image;
     height: styles.$button-image;
+    min-width: styles.$button-image;
+
+    padding: 0;
+
+    background-color: transparent;
   }
 }
 
 .pagination {
   button {
     min-width: styles.$button-width / 2;
+
     margin: styles.$padding-small;
   }
 }
@@ -83,24 +93,29 @@ ul {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+
+  background: rgba(0, 0, 0, 0.3);
 
   .finish-modal {
-    background: transparent;
-    padding: 20px;
     max-width: 80%;
+
+    padding: 20px;
+
     text-align: center;
     color: styles.$accent-text;
-
     font-size: styles.$text-header;
+
+    background: transparent;
 
     .finish-modal-winner-image {
       width: 150px;
       height: auto;
+
       margin-bottom: styles.$padding-small;
     }
   }

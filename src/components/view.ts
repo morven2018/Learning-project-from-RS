@@ -39,10 +39,9 @@ export default class View implements IView {
         if (imageParameters.imageURL)
           imgElement.setAttribute('src', imageParameters.imageURL);
         imgElement.setAttribute('alt', '404 Not Found');
-        // console.log(img, this.viewElementCreator);
         this.viewElementCreator.addInnerElement(img);
       } else {
-        console.error('img problem');
+        console.error('image problem');
       }
     }
   }

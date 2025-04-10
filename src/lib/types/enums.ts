@@ -122,3 +122,10 @@ export enum SortDirection {
   Asc = 'ASC',
   Desc = 'DESC',
 }
+
+export enum TableColumn {
+  Id = 0,
+  Name = 1,
+  Wins = 2,
+  Time = 3,
+}

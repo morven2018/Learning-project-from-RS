@@ -2,8 +2,12 @@ import type { ICar } from '../lib/types/api-interfaces';
 import { CssClasses, CssTags } from '../lib/types/enums';
 import type GarageView from '../app/garage/garage-view';
 import type {
+  IButtonCreator,
+  IElementCreator,
   IElementParameters,
+  IGarageView,
   IListNodeCreator,
+  IRaceCreator,
 } from '../lib/types/interfaces';
 import ButtonCreator from './button';
 import ElementCreator from './element-creator';
@@ -25,19 +29,22 @@ const raceBtnsParameters = {
   classNames: [CssClasses.RaceButton],
   textContent: '',
 };
+const basicWidth = 400;
+const paddingWidthCoefficient = 0.02;
+const widthCoefficient = 2;
 
 const trackHeight = 60;
 export default class ListNodeCreator
   extends ElementCreator
   implements IListNodeCreator
 {
-  public parent: GarageView | undefined = undefined;
-  public selectBtn: ButtonCreator | undefined;
-  public deleteBtn: ButtonCreator | undefined;
-  public startBth: ButtonCreator | undefined;
-  public raceTrack: RaceCreator | undefined;
-  public stopBth: ButtonCreator | undefined;
-  public name: ElementCreator | undefined;
+  public parent: IGarageView | undefined = undefined;
+  public selectBtn: IButtonCreator | undefined;
+  public deleteBtn: IButtonCreator | undefined;
+  public startBth: IButtonCreator | undefined;
+  public raceTrack: IRaceCreator | undefined;
+  public stopBth: IButtonCreator | undefined;
+  public name: IElementCreator | undefined;
   public elementInfo?: ICar;
 
   constructor(
@@ -56,14 +63,15 @@ export default class ListNodeCreator
 
   public static getWidth(): number {
     const width = document.documentElement.clientWidth;
-    const padding = Math.max(mainPaddingPx, width * 0.02);
-    return width - 2 * padding;
+    const padding = Math.max(mainPaddingPx, width * paddingWidthCoefficient);
+    return width - widthCoefficient * padding;
   }
+
   public static addRaceArea(
     elementInfo: ICar,
-    parentNode: ListNodeCreator
-  ): RaceCreator {
-    const width = ListNodeCreator.getWidth() || 400;
+    parentNode: IListNodeCreator
+  ): IRaceCreator {
+    const width = ListNodeCreator.getWidth() || basicWidth;
     const raceParameters = {
       tag: CssTags.Race,
       classNames: [CssClasses.RaceTrack],
@@ -85,35 +93,14 @@ export default class ListNodeCreator
   ): void {
     super.createElement(parameters);
 
-    /* const callback = (event: Event): void => {
-      event.preventDefault();
-      if (this.parent) {
-        this.parent.setSelectedCarId(elementInfo.id);
-        this.parent.fillUpdateForm(elementInfo);
-      }
-    }; */
-
     if (!elementInfo) return;
 
     if (this.element) this.element.id = elementInfo.id.toString();
 
-    const bthSelectParameters = {
-      tag: CssTags.Button,
-      classNames: [CssClasses.Select],
-      textContent: 'SELECT',
-      value: elementInfo.id.toString(),
-      callback: (event: Event): void => {
-        event.preventDefault();
-        if (this.parent && elementInfo) {
-          this.parent.setSelectedCarId(elementInfo.id);
-          this.parent.fillUpdateForm(elementInfo);
-        }
-      },
-    };
+    const bthSelectParameters = this.getSelectButtonParameters(elementInfo);
 
-    if (this.selectBtn) {
-      this.selectBtn.update(bthSelectParameters);
-    } else {
+    if (this.selectBtn) this.selectBtn.update(bthSelectParameters);
+    else {
       this.selectBtn = new ButtonCreator(bthSelectParameters);
       this.addInnerElement(this.selectBtn);
     }
@@ -140,23 +127,21 @@ export default class ListNodeCreator
 
     const raceArea = this.createRaceArea(elementInfo);
     this.addInnerElement(raceArea);
-
-    // console.log(this, raceArea);
   }
 
-  public createRaceArea(elementInfo: ICar): ElementCreator {
+  public createRaceArea(elementInfo: ICar): IElementCreator {
     const area = new ElementCreator(raceParameters);
 
     const buttonArea = this.addButtons(elementInfo);
     area.addInnerElement(buttonArea);
 
     this.raceTrack = ListNodeCreator.addRaceArea(elementInfo, this);
-    area.addInnerElement(this.raceTrack);
+    if (this.raceTrack) area.addInnerElement(this.raceTrack);
 
     return area;
   }
 
-  public addButtons(elementInfo: ICar): ElementCreator {
+  public addButtons(elementInfo: ICar): IElementCreator {
     const buttonArea = new ElementCreator(raceBtnsParameters);
 
     const startButtonParameters = {
@@ -198,6 +183,23 @@ export default class ListNodeCreator
       nameElement.textContent = name;
     }
   }
+
+  private getSelectButtonParameters(elementInfo: ICar): IElementParameters {
+    return {
+      tag: CssTags.Button,
+      classNames: [CssClasses.Select],
+      textContent: 'SELECT',
+      value: elementInfo.id.toString(),
+      callback: (event: Event): void => {
+        event.preventDefault();
+        if (this.parent && elementInfo) {
+          this.parent.setSelectedCarId(elementInfo.id);
+          this.parent.fillUpdateForm(elementInfo);
+        }
+      },
+    };
+  }
+
   private startCar(): void {
     this.raceTrack?.startCar(false).catch(console.error);
   }
@@ -206,6 +208,7 @@ export default class ListNodeCreator
     this.raceTrack?.stopCar().catch(console.error);
     this.raceTrack?.resetCar();
   }
+
   private deleteCar(id: number): void {
     if (Number.isFinite(id))
       ApiClient.deleteCar(id)

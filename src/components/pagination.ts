@@ -1,17 +1,14 @@
 import ElementCreator from './element-creator';
 import { CssClasses, CssTags, PaginationButtons } from '../lib/types/enums';
-import type { IElementParameters } from '../lib/types/interfaces';
+import type {
+  IElementParameters,
+  IPagination,
+  IPaginationConfig,
+} from '../lib/types/interfaces';
 
 const maxTotalPagesFull = 7;
 
-export interface IPaginationConfig {
-  currentPage: number;
-  totalItems: number;
-  itemsPerPage: number;
-  onPageChange: (page: number) => void;
-}
-
-export default class Pagination extends ElementCreator {
+export default class Pagination extends ElementCreator implements IPagination {
   private config: IPaginationConfig;
 
   constructor(parameters: IElementParameters, config: IPaginationConfig) {

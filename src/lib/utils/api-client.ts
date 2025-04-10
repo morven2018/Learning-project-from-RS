@@ -10,6 +10,8 @@ import type { SortBy, SortDirection } from '../types/enums';
 import { HttpMethod } from '../types/enums';
 
 const baseURL = 'http://127.0.0.1:3000';
+const notFound = 404;
+const tooManyRequest = 429;
 
 export default class ApiClient {
   public static async getCars(
@@ -91,25 +93,34 @@ export default class ApiClient {
     return createdCar;
   }
 
-  public static async deleteCar(id: number): Promise<boolean> {
+  public static async deleteCar(id: number): Promise<void> {
     const url = `${baseURL}/garage/${id}`;
 
-    const fetchParameters = {
-      method: HttpMethod.Delete,
-    };
-    const response = await fetch(url, fetchParameters);
-    if (!response.ok)
-      throw new Error(`Car not found (status: ${response.status})`);
-
     try {
-      await this.deleteWinner(id);
-    } catch (error) {
-      if (!(error instanceof Error && error.message.includes('404'))) {
-        console.error(`Winner not found`, error);
-      }
-    }
+      const response = await fetch(url, { method: HttpMethod.Delete });
 
-    return true;
+      if (response.status === notFound) return;
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete car (status: ${response.status})`);
+      }
+
+      try {
+        await this.deleteWinner(id);
+      } catch (error) {
+        if (
+          !(
+            error instanceof Error &&
+            error.message.includes(notFound.toString())
+          )
+        ) {
+          console.error(`Error deleting winner:`, error);
+        }
+      }
+    } catch (error) {
+      console.error(`Error deleting car with id ${id}:`, error);
+      throw error;
+    }
   }
 
   public static async updateCar(
@@ -145,7 +156,9 @@ export default class ApiClient {
         time: existingWinner.time,
       });
     } catch (error) {
-      if (!(error instanceof Error && error.message.includes('404'))) {
+      if (
+        !(error instanceof Error && error.message.includes(notFound.toString()))
+      ) {
         throw error;
       }
     }
@@ -201,7 +214,7 @@ export default class ApiClient {
       method: HttpMethod.Patch,
     });
 
-    if (response.status === 429) {
+    if (response.status === tooManyRequest) {
       throw new Error('429: Too Many Requests');
     }
     if (!response.ok) {
@@ -293,12 +306,22 @@ export default class ApiClient {
     return updatedWinner;
   }
 
-  public static async deleteWinner(id: number): Promise<void> {
+  public static async deleteWinner(id: number): Promise<boolean> {
     const url = `${baseURL}/winners/${id}`;
-    const response = await fetch(url, { method: HttpMethod.Delete });
 
-    if (!response.ok) {
-      throw new Error(`Failed to delete winner: ${response.statusText}`);
+    try {
+      const response = await fetch(url, { method: HttpMethod.Delete });
+
+      if (response.status === notFound) return false;
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete winner (status: ${response.status})`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`Error deleting winner with id ${id}:`, error);
+      return false;
     }
   }
 
@@ -315,7 +338,10 @@ export default class ApiClient {
         time: bestTime,
       });
     } catch (error) {
-      if (error instanceof Error && error.message.includes('404')) {
+      if (
+        error instanceof Error &&
+        error.message.includes(notFound.toString())
+      ) {
         return await ApiClient.createWinner({
           id: winnerId,
           wins: 1,

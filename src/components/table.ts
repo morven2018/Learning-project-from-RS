@@ -1,7 +1,11 @@
 import type { IWinner } from '../lib/types/api-interfaces';
-import { SortBy, SortDirection } from '../lib/types/enums';
+import { SortBy, SortDirection, TableColumn } from '../lib/types/enums';
 import { CssClasses, CssTags, TableHeader } from '../lib/types/enums';
-import type { IElementParameters } from '../lib/types/interfaces';
+import type {
+  IElementCreator,
+  IElementParameters,
+  ITableCreator,
+} from '../lib/types/interfaces';
 import ApiClient from '../lib/utils/api-client';
 import ElementCreator from './element-creator';
 import RaceCreator from './race-track';
@@ -69,21 +73,42 @@ const miniatureParameters = {
 const sortAsc = ' ↑';
 const sortDesc = ' ↓';
 
-export default class TableCreator extends ElementCreator {
+const digitsAfterDot = 2;
+const wins = 2;
+const time = 3;
+const id = 0;
+
+export default class TableCreator
+  extends ElementCreator
+  implements ITableCreator
+{
   public page: number = 1;
   public sortDirection: SortDirection = SortDirection.Asc;
   public sortValue: SortBy = SortBy.Id;
   public onPageChange?: (newPage: number) => void;
   public onSortChange?: () => void;
   private winners: IWinner[] = [];
-  private caption: ElementCreator | undefined = undefined;
-  private body: ElementCreator | undefined = undefined;
-  private headerElements: ElementCreator[] = [];
+  private caption: IElementCreator | undefined = undefined;
+  private body: IElementCreator | undefined = undefined;
+  private headerElements: IElementCreator[] = [];
 
   constructor(parameters: IElementParameters, page?: number) {
     super(parameters);
     if (page) this.page = page;
     this.createElement(parameters);
+    setTimeout(() => {
+      this.updateSortUI();
+    }, 0);
+  }
+
+  private static isValidTableColumn(
+    columnIndex: number
+  ): columnIndex is TableColumn {
+    return Object.values(TableColumn).includes(columnIndex);
+  }
+
+  private static isValidSortBy(value: string): value is SortBy {
+    return value === 'id' || value === 'wins' || value === 'time';
   }
 
   private static removeDuplicates(winners: IWinner[]): IWinner[] {
@@ -148,7 +173,7 @@ export default class TableCreator extends ElementCreator {
   private static createCarCell(car: ICar): ElementCreator {
     const carCell = new ElementCreator({
       tag: CssTags.Td,
-      classNames: [headerClasses[1]],
+      classNames: [headerClasses[TableColumn.Name]],
       textContent: '',
     });
 
@@ -168,7 +193,7 @@ export default class TableCreator extends ElementCreator {
   private static createWinsCell(winner: IWinner): ElementCreator {
     return new ElementCreator({
       tag: CssTags.Td,
-      classNames: [headerClasses[2]],
+      classNames: [headerClasses[TableColumn.Wins]],
       textContent: winner.wins.toString(),
     });
   }
@@ -176,8 +201,8 @@ export default class TableCreator extends ElementCreator {
   private static createTimeCell(winner: IWinner): ElementCreator {
     return new ElementCreator({
       tag: CssTags.Td,
-      classNames: [headerClasses[3]],
-      textContent: `${winner.time.toFixed(2)}s`,
+      classNames: [headerClasses[TableColumn.Time]],
+      textContent: `${winner.time.toFixed(digitsAfterDot)}s`,
     });
   }
 
@@ -187,6 +212,7 @@ export default class TableCreator extends ElementCreator {
     this.createHeader();
     this.createBody();
   }
+
   public async loadTableData(): Promise<void> {
     try {
       const response = await ApiClient.getWinners({
@@ -202,6 +228,7 @@ export default class TableCreator extends ElementCreator {
       console.error('Failed to load winners:', error);
     }
   }
+
   public updatePage(newPage: number): void {
     this.page = newPage;
     this.loadTableData().catch(console.error);
@@ -225,6 +252,7 @@ export default class TableCreator extends ElementCreator {
       console.error('Error filling table:', error);
     }
   }
+
   private createCaption(): void {
     captionParameters.textContent = `Page: ${this.page}`;
     this.caption = new ElementCreator(captionParameters);
@@ -252,9 +280,6 @@ export default class TableCreator extends ElementCreator {
         element.element?.style.setProperty('position', 'relative');
         element.element?.style.setProperty('z-index', '2');
         element.element?.addEventListener('click', () => {
-          console.log(
-            `Clicked on column ${headerText[index]} (index ${index})`
-          );
           this.handleHeaderClick(index);
         });
       }
@@ -276,9 +301,9 @@ export default class TableCreator extends ElementCreator {
         header.setTextContent(textWithoutArrows);
 
         if (
-          (index === 0 && this.sortValue === SortBy.Id) ||
-          (index === 2 && this.sortValue === SortBy.Wins) ||
-          (index === 3 && this.sortValue === SortBy.Time)
+          (index === id && this.sortValue === SortBy.Id) ||
+          (index === wins && this.sortValue === SortBy.Wins) ||
+          (index === time && this.sortValue === SortBy.Time)
         ) {
           const arrow =
             this.sortDirection === SortDirection.Asc ? sortAsc : sortDesc;
@@ -290,46 +315,50 @@ export default class TableCreator extends ElementCreator {
 
   private handleHeaderClick(columnIndex: number): void {
     let newSortValue: SortBy;
-    console.log(columnIndex);
-    switch (columnIndex) {
-      case 0: {
-        newSortValue = SortBy.Id;
-        break;
+    if (TableCreator.isValidTableColumn(columnIndex)) {
+      switch (columnIndex) {
+        case TableColumn.Id: {
+          newSortValue = SortBy.Id;
+          break;
+        }
+        case TableColumn.Wins: {
+          newSortValue = SortBy.Wins;
+          break;
+        }
+        case TableColumn.Time: {
+          newSortValue = SortBy.Time;
+          break;
+        }
+        default: {
+          return;
+        }
       }
-      case 2: {
-        newSortValue = SortBy.Wins;
-        break;
-      }
-      case 3: {
-        newSortValue = SortBy.Time;
-        break;
-      }
-      default: {
-        return;
-      }
-    }
-    console.log(this.sortValue, this.sortDirection);
 
-    if (this.sortValue === newSortValue) {
-      this.sortDirection =
-        this.sortDirection === SortDirection.Asc
-          ? SortDirection.Desc
-          : SortDirection.Asc;
-    } else {
-      this.sortValue = newSortValue;
-      this.sortDirection = SortDirection.Asc;
-    }
+      if (
+        TableCreator.isValidSortBy(newSortValue) &&
+        this.sortValue === newSortValue
+      ) {
+        this.sortDirection =
+          this.sortDirection === SortDirection.Asc
+            ? SortDirection.Desc
+            : SortDirection.Asc;
+      } else {
+        this.sortValue = newSortValue;
+        this.sortDirection = SortDirection.Asc;
+      }
 
-    this.updateSortUI();
-    if (this.onSortChange) {
-      this.onSortChange();
-    }
-    /* this.loadTableData().catch(console.error);
+      this.updateSortUI();
+      if (this.onSortChange) {
+        this.onSortChange();
+      }
+      /* this.loadTableData().catch(console.error);
 
     if (this.onPageChange) {
       this.onPageChange(this.page);
     } */
+    }
   }
+
   private createBody(): void {
     this.body = new ElementCreator(tableBodyParameters);
     this.addInnerElement(this.body);

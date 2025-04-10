@@ -2,13 +2,22 @@ import ElementCreator from '../../components/element-creator';
 import FormCreator from '../../components/form';
 import ListNodeCreator from '../../components/list-node';
 import View from '../../components/view';
-import { CssClasses, CssTags } from '../../lib/types/enums';
-import type { IElementCreator, IView } from '../../lib/types/interfaces';
 import ApiClient from '../../lib/utils/api-client';
 import CarCreator from '../../lib/utils/car-creator';
 import RaceCreator from '../../components/race-track';
-import type { ICar, ICarCreate } from '../../lib/types/api-interfaces';
 import Pagination from '../../components/pagination';
+
+import { CssClasses, CssTags } from '../../lib/types/enums';
+import type {
+  IElementCreator,
+  IElementParameters,
+  IFormCreator,
+  IGarageView,
+  IPagination,
+  IRaceCreator,
+} from '../../lib/types/interfaces';
+import type { ICar, ICarCreate } from '../../lib/types/api-interfaces';
+
 import './garage.scss';
 
 const numberOfGeneratedCars = 100;
@@ -44,27 +53,40 @@ const baseLiParameters = {
   textContent: '',
 };
 
-export default class GarageView extends View implements IView {
+export default class GarageView extends View implements IGarageView {
   public buttons: HTMLButtonElement[] = [];
   public page: number = 1;
   public limit: number;
-  public forms: FormCreator[] = [];
-  public raceCreators: RaceCreator[] = [];
-  private list: ElementCreator | undefined = undefined;
-  private header: ElementCreator | undefined = undefined;
+  public forms: IFormCreator[] = [];
+  public raceCreators: IRaceCreator[] = [];
+  private list: IElementCreator | undefined = undefined;
+  private header: IElementCreator | undefined = undefined;
   private selectedCarId: number | undefined = undefined;
-  private pagination: Pagination | undefined = undefined;
+  private pagination: IPagination | undefined = undefined;
   private total: number = 0;
 
   constructor() {
     super(parameters);
+
     this.buttons = [];
     const page = GarageView.loadPageState();
+
     if (typeof page === 'number') this.page = page;
+
     this.limit = 7;
     this.configureView().catch((error) => {
       console.error('Failed to configure view:', error);
     });
+  }
+
+  private static isStringRecord(
+    value: unknown
+  ): value is Record<string, string> {
+    return (
+      typeof value === 'object' &&
+      value !== null &&
+      Object.values(value).every((v) => typeof v === 'string')
+    );
   }
 
   private static getFormData(form?: FormCreator): Record<string, string> {
@@ -80,7 +102,7 @@ export default class GarageView extends View implements IView {
 
   private static loadPageState(): number | undefined {
     try {
-      const savedState = localStorage.getItem('garageState');
+      const savedState = sessionStorage.getItem('garageState');
       if (savedState) {
         const parsed: unknown = JSON.parse(savedState);
         if (
@@ -98,25 +120,6 @@ export default class GarageView extends View implements IView {
     return undefined;
   }
 
-  private static restoreForm(
-    form: FormCreator,
-    formData: Record<string, string>
-  ): void {
-    for (const input of form.getInputs()) {
-      if (input.id in formData) {
-        input.value = formData[input.id];
-      }
-    }
-  }
-  private static isStringRecord(
-    value: unknown
-  ): value is Record<string, string> {
-    return (
-      typeof value === 'object' &&
-      value !== null &&
-      Object.values(value).every((v) => typeof v === 'string')
-    );
-  }
   public updatePage(newPage: number): void {
     this.page = newPage;
     this.saveState();
@@ -126,26 +129,7 @@ export default class GarageView extends View implements IView {
 
   public async configureView(): Promise<void> {
     if (this.viewElementCreator) {
-      const buttonParameters = [
-        {
-          tag: CssTags.Button,
-          classNames: [CssClasses.Race],
-          textContent: 'RACE',
-          callback: this.raceAllCars.bind(this),
-        },
-        {
-          tag: CssTags.Button,
-          classNames: [CssClasses.Reset],
-          textContent: 'RESET',
-          callback: this.resetAllCars.bind(this),
-        },
-        {
-          tag: CssTags.Button,
-          classNames: [CssClasses.Generate],
-          textContent: 'GENERATE CARS',
-          callback: this.generateHandler.bind(this),
-        },
-      ];
+      const buttonParameters = this.getButtonParameters();
 
       const addForm = new FormCreator(formParameters[0], (carData) =>
         this.addCar(carData)
@@ -155,13 +139,7 @@ export default class GarageView extends View implements IView {
 
       const updateForm = new FormCreator(
         formParameters[1],
-        (carData: ICarCreate): void => {
-          (async (): Promise<void> => {
-            await this.handleUpdateCar(carData);
-          })().catch((error) => {
-            console.error('Update error:', error);
-          });
-        }
+        this.getFromCallback()
       );
 
       this.forms.push(updateForm);
@@ -222,7 +200,6 @@ export default class GarageView extends View implements IView {
       if (this.header) {
         this.header.setTextContent(`Garage: ${this.total}`);
       }
-      // console.log(cars);
       for (const car of response.cars) {
         const carNode = new ListNodeCreator(baseLiParameters, car, this);
         parent.addInnerElement(carNode);
@@ -236,11 +213,13 @@ export default class GarageView extends View implements IView {
       throw error;
     }
   }
-  public async generateHandler(event: Event): Promise<void> {
+
+  public generateHandler(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    await CarCreator.createNCars(numberOfGeneratedCars);
-    this.updateCarList();
+    void CarCreator.createNCars(numberOfGeneratedCars).then(() =>
+      this.updateCarList()
+    );
   }
 
   public updateCarList(): void {
@@ -252,20 +231,6 @@ export default class GarageView extends View implements IView {
       this.generateNodes(this.list).catch((error) => {
         console.error('Failed to generate car nodes:', error);
       });
-    }
-  }
-
-  public resetAllCars(): void {
-    RaceCreator.resetWinner();
-    for (const raceCreator of this.raceCreators) {
-      raceCreator.stopCar().catch(console.error);
-    }
-  }
-
-  public raceAllCars(): void {
-    RaceCreator.resetWinner();
-    for (const raceCreator of this.raceCreators) {
-      raceCreator.startCar(true).catch(console.error);
     }
   }
 
@@ -289,7 +254,7 @@ export default class GarageView extends View implements IView {
         updateForm.element.dataset.carId = carInfo.id.toString();
       }
 
-      localStorage.setItem('garageUpdateCarId', carInfo.id.toString());
+      sessionStorage.setItem('garageUpdateCarId', carInfo.id.toString());
     }
   }
 
@@ -297,21 +262,18 @@ export default class GarageView extends View implements IView {
     this.selectedCarId = id;
   }
 
-  private addCar(carData: { name: string; color: string }): void {
-    if (!carData.name || !carData.color) {
-      return;
+  public resetAllCars(): void {
+    RaceCreator.resetWinner();
+    for (const raceCreator of this.raceCreators) {
+      raceCreator.stopCar().catch(console.error);
     }
-    // console.log('add2');
-    ApiClient.createCar(carData.name, carData.color)
-      .then(() => {
-        const addForm = this.forms[0];
-        addForm.resetForm();
-        this.saveState();
-        this.updateCarList();
-      })
-      .catch((error) => {
-        console.error('Failed to add car:', error);
-      });
+  }
+
+  public raceAllCars(): void {
+    RaceCreator.resetWinner();
+    for (const raceCreator of this.raceCreators) {
+      raceCreator.startCar(true).catch(console.error);
+    }
   }
 
   private initPagination(): void {
@@ -338,6 +300,62 @@ export default class GarageView extends View implements IView {
     }
   }
 
+  private getButtonParameters(): IElementParameters[] {
+    return [
+      {
+        tag: CssTags.Button,
+        classNames: [CssClasses.Race],
+        textContent: 'RACE',
+        callback: this.raceAllCars.bind(this),
+      },
+      {
+        tag: CssTags.Button,
+        classNames: [CssClasses.Reset],
+        textContent: 'RESET',
+        callback: this.resetAllCars.bind(this),
+      },
+      {
+        tag: CssTags.Button,
+        classNames: [CssClasses.Generate],
+        textContent: 'GENERATE CARS',
+        callback: this.generateHandler.bind(this),
+      },
+    ];
+  }
+
+  private getFromCallback(): (carData: ICarCreate) => void {
+    return (carData: ICarCreate): void => {
+      (async (): Promise<void> => {
+        await this.handleUpdateCar(carData);
+      })().catch((error) => {
+        console.error('Update error:', error);
+      });
+    };
+  }
+
+  private addCar(carData: { name: string; color: string }): void {
+    if (!carData.name || !carData.color) {
+      return;
+    }
+
+    ApiClient.createCar(carData.name, carData.color)
+      .then(() => {
+        const addForm = this.forms[0];
+        addForm.resetForm();
+        this.saveState();
+        this.updateCarList();
+      })
+      .catch((error) => {
+        console.error('Failed to add car:', error);
+      });
+  }
+
+  private findCarNode(carId: number): IRaceCreator | undefined {
+    return this.raceCreators.find(
+      (creator) => creator.element?.id === carId.toString()
+    );
+  }
+
   private async handleUpdateCar(carData: {
     name: string;
     color: string;
@@ -362,18 +380,12 @@ export default class GarageView extends View implements IView {
 
       this.forms[1].resetForm();
       this.forms[1].element?.classList.add('disabled');
-      localStorage.removeItem('garageUpdateCarId');
+      sessionStorage.removeItem('garageUpdateCarId');
 
       this.saveState();
     } catch (error) {
       console.error('Update failed:', error);
     }
-  }
-
-  private findCarNode(carId: number): RaceCreator | undefined {
-    return this.raceCreators.find(
-      (creator) => creator.element?.id === carId.toString()
-    );
   }
 
   private updatePageInfo(): void {
@@ -382,61 +394,21 @@ export default class GarageView extends View implements IView {
     }
   }
 
-  /* private restoreRaceStates(raceStates: IRaceState[] = []): void {
-    for (const savedState of raceStates) {
-      try {
-        if (!savedState?.id) continue;
-
-        const raceCreator = this.raceCreators.find(
-          (rc) => rc.element?.id === savedState.id
-        );
-        if (!raceCreator) continue;
-
-        if (typeof savedState.position === 'number') {
-          raceCreator.car.position = savedState.position;
-        }
-
-        if (
-          savedState.isMoving &&
-          typeof savedState.startTime === 'number' &&
-          typeof savedState.duration === 'number'
-        ) {
-          raceCreator.car.state.isMoving = true;
-          raceCreator.raceStartTime =
-            performance.now() -
-            savedState.duration * (savedState.position || 0) * 1000;
-          raceCreator.raceDuration = savedState.duration;
-          raceCreator.startAnimation();
-        }
-      } catch (error) {
-        console.error(
-          'Error restoring race state:',
-          error instanceof Error ? error.message : error
-        );
-      }
-    }
-  }
-*/
   private loadFormState(): void {
     try {
-      const savedAddForm = localStorage.getItem('garageStateAddForm');
+      const savedAddForm = sessionStorage.getItem('garageStateAddForm');
       if (savedAddForm && this.forms[0]) {
         const parsedAddForm: unknown = JSON.parse(savedAddForm);
 
         if (GarageView.isStringRecord(parsedAddForm)) {
           this.forms[0].setFormData(parsedAddForm);
 
-          if (
-            Object.values(parsedAddForm).some((value) => value.trim() !== '')
-          ) {
+          if (Object.values(parsedAddForm).some((value) => value.trim() !== ''))
             this.forms[0].element?.classList.remove('disabled');
-          }
-        } else {
-          console.warn('Invalid data structure in garageStateAddForm');
-        }
+        } else console.warn('Invalid data structure in garageStateAddForm');
       }
 
-      const savedUpdateForm = localStorage.getItem('garageStateUpdateForm');
+      const savedUpdateForm = sessionStorage.getItem('garageStateUpdateForm');
       if (savedUpdateForm && this.forms[1]) {
         const parsedUpdateForm: unknown = JSON.parse(savedUpdateForm);
 
@@ -449,17 +421,13 @@ export default class GarageView extends View implements IView {
 
           if (carNameInput?.value.trim()) {
             this.forms[1].element?.classList.remove('disabled');
-            const savedCarId = localStorage.getItem('garageUpdateCarId');
+            const savedCarId = sessionStorage.getItem('garageUpdateCarId');
             if (savedCarId && this.forms[1].element) {
               this.forms[1].element.dataset.carId = savedCarId;
               this.selectedCarId = Number.parseInt(savedCarId, 10);
             }
-          } else {
-            this.forms[1].element?.classList.add('disabled');
-          }
-        } else {
-          console.warn('Invalid data structure in garageStateUpdateForm');
-        }
+          } else this.forms[1].element?.classList.add('disabled');
+        } else console.warn('Invalid data structure in garageStateUpdateForm');
       }
     } catch (error) {
       console.error('Failed to load form state:', error);
@@ -473,6 +441,6 @@ export default class GarageView extends View implements IView {
       updateForm: GarageView.getFormData(this.forms[1]),
     };
 
-    localStorage.setItem('garageState', JSON.stringify(stateToSave));
+    sessionStorage.setItem('garageState', JSON.stringify(stateToSave));
   }
 }

@@ -19,9 +19,7 @@ const buttonsInfo = [
 ];
 
 export default class HeaderView extends View implements IHeaderView {
-  //public router: IRouter;
   private buttons: HTMLElement[] = [];
-  // private currentRoute: string = Pages.Notfound;
 
   constructor(router: IRouter) {
     const parameters = {
@@ -69,7 +67,6 @@ export default class HeaderView extends View implements IHeaderView {
         const isCurrent = isRouteValid && buttonRoute === currentRoute;
 
         button.classList.toggle(CssClasses.Disable, isCurrent);
-        //  button.toggleAttribute('disabled', isCurrent);
       }
     }
   }

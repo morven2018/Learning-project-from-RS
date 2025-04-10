@@ -1,9 +1,15 @@
-import { CssClasses, CssTags } from '../lib/types/enums';
-import type { IElementParameters, IFormState } from '../lib/types/interfaces';
-import type { FormSubmitCallback } from '../lib/types/types';
 import ButtonCreator from './button';
 import ElementCreator from './element-creator';
 import InputCreator from './input';
+
+import { CssClasses, CssTags } from '../lib/types/enums';
+import type {
+  IButtonCreator,
+  IElementParameters,
+  IFormCreator,
+  IFormState,
+} from '../lib/types/interfaces';
+import type { FormSubmitCallback } from '../lib/types/types';
 
 const inputParameters = [
   {
@@ -30,9 +36,12 @@ const inputParameters = [
   },
 ];
 
-export default class FormCreator extends ElementCreator {
+export default class FormCreator
+  extends ElementCreator
+  implements IFormCreator
+{
   public inputs: HTMLInputElement[] = [];
-  public btn: ButtonCreator | undefined;
+  public btn: IButtonCreator | undefined;
   private onSubmit: FormSubmitCallback | undefined;
 
   constructor(parameters: IElementParameters, onSubmit?: FormSubmitCallback) {
@@ -56,6 +65,7 @@ export default class FormCreator extends ElementCreator {
   public getInputs(): HTMLInputElement[] {
     return this.inputs;
   }
+
   public setFormData(formData: Record<string, string>): void {
     for (const input of this.getInputs()) {
       if (input.id in formData) {
@@ -63,6 +73,7 @@ export default class FormCreator extends ElementCreator {
       }
     }
   }
+
   public getFormData(): Record<string, string> {
     const result: Record<string, string> = {};
     for (const input of this.getInputs()) {
@@ -70,6 +81,7 @@ export default class FormCreator extends ElementCreator {
     }
     return result;
   }
+
   public createElement(
     parameters: IElementParameters,
     onSubmit?: FormSubmitCallback
@@ -104,10 +116,6 @@ export default class FormCreator extends ElementCreator {
     this.btn = new ButtonCreator(buttonParameters);
     this.addInnerElement(this.btn);
     this.btn.element?.setAttribute('type', 'submit');
-  }
-
-  public getInput(): HTMLInputElement[] {
-    return this.inputs;
   }
 
   public resetForm(): void {
@@ -155,7 +163,7 @@ export default class FormCreator extends ElementCreator {
       ? 'AddForm'
       : 'UpdateForm';
     const state = 'garageState' + formType;
-    localStorage.setItem(state, JSON.stringify(formData));
+    sessionStorage.setItem(state, JSON.stringify(formData));
   }
 
   private checkFormDisabledState(): void {

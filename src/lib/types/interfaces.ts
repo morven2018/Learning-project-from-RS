@@ -1,5 +1,11 @@
-import type { ICar } from './api-interfaces.js';
-import type { VoidMethodType, CallbackType, OptionType } from './types.ts';
+import type { ICar, IWinner } from './api-interfaces.js';
+import type { SortBy, SortDirection } from './enums.js';
+import type {
+  VoidMethodType,
+  CallbackType,
+  OptionType,
+  FormSubmitCallback,
+} from './types.ts';
 
 export interface IElementParameters {
   tag: string;
@@ -23,12 +29,26 @@ export interface IElementCreator {
   setCssClasses: (cssClasses: Array<string>) => void;
   setTextContent: (text: string) => void;
   setCallback: (callback: CallbackType) => void;
+  clearInnerElements: VoidMethodType;
+  update: (parameters: {
+    tag?: string;
+    classNames?: string[];
+    textContent?: string;
+  }) => void;
 }
 export interface IListNodeCreator extends IElementCreator {
+  parent: IGarageView | undefined;
+  selectBtn: IButtonCreator | undefined;
+  deleteBtn: IButtonCreator | undefined;
+  startBth: IButtonCreator | undefined;
+  raceTrack: IRaceCreator | undefined;
+  stopBth: IButtonCreator | undefined;
+  name: IElementCreator | undefined;
+  elementInfo?: ICar;
+  updateCarAppearance: (color: string, name: string) => void;
   createElement: (parameters: IElementParameters, elementInfo?: ICar) => void;
-}
-export interface IFormCreator extends IElementCreator {
-  getInput: () => HTMLInputElement[];
+  createRaceArea: (elementInfo: ICar) => IElementCreator;
+  addButtons(elementInfo: ICar): IElementCreator;
 }
 
 export type IViewParameters = Pick<IElementParameters, 'tag' | 'classNames'>;
@@ -44,31 +64,29 @@ export interface IHeaderView extends IView {
   updateActiveState: (currentRoute: string) => void;
 }
 
-export interface IMainView {
-  // state: IState;
+export interface IMainView extends IView {
   setContent: (content: IView) => void;
 }
 
-export interface IIndexView {
-  list: IListCreator | undefined;
-  configureView: VoidMethodType;
-  isEnoughItem: VoidMethodType;
-  saveJSON: VoidMethodType;
-  uploadJSON: VoidMethodType;
+export interface IGarageView extends IView {
+  buttons: HTMLButtonElement[];
+  page: number;
+  limit: number;
+  forms: IFormCreator[];
+  raceCreators: IRaceCreator[];
+  updatePage: (newPage: number) => void;
+  configureView: () => Promise<void>;
+  generateNodes: (parent: IElementCreator) => Promise<void>;
+  generateHandler: (event: Event) => void;
+  updateCarList: VoidMethodType;
+  fillUpdateForm: (carInfo: ICar) => void;
+  setSelectedCarId: (id: number) => void;
+  resetAllCars: VoidMethodType;
+  raceAllCars: VoidMethodType;
 }
 
-export interface IPickerView extends IView {
-  audio: HTMLAudioElement;
-  addButtonSound: (parameters: IPickerParameters) => HTMLElement | undefined;
-}
-
-export interface IPickerParameters {
-  tag: string;
-  classNames: string[];
-  textContent: string;
-  title: string;
-  callback: () => void;
-  imageURL: string;
+export interface IWinnersView extends IView {
+  configureView: () => Promise<void>;
 }
 
 export interface IState {
@@ -102,7 +120,7 @@ export interface IElementInfo {
 export interface IValueList {
   [key: string]: number;
 }
-
+/*
 export interface IListCreator extends IElementCreator {
   nextId: number;
   elements: HTMLElement[];
@@ -117,42 +135,60 @@ export interface IListCreator extends IElementCreator {
   removeElementById: (id: string) => void;
   clearList: (click?: boolean) => void;
   setOnInputChangeCallback(callback: () => void): void;
-}
-
-export interface IFormView {
-  onClose: VoidMethodType;
-  configureView: (message?: string) => void;
-}
-
-export interface IMessageFormView extends IFormView {
-  addButtons: VoidMethodType;
-}
-
-export interface IPasteFormView extends IFormView {
-  onSubmit: (items: string[]) => void;
-  showModal: VoidMethodType;
-}
-
-export interface IBaseFormOptions {
-  message: string;
-  onClose: () => void;
-}
+} */
 
 export interface IButtonCreator extends IElementCreator {
   createElement: (parameters: IElementParameters) => void;
+  update: (parameters: {
+    tag?: string;
+    classNames?: string[];
+    textContent?: string;
+    value?: string;
+    callback?: (event: Event) => void;
+  }) => void;
 }
 
-export interface ITimerCreator {
-  createElement: (parameters: IElementParameters) => void;
-  setTimerValue: (value: string) => void;
-  getTimerValue: () => number;
-  disableInput: VoidMethodType;
-  enableInput: VoidMethodType;
+export interface IFormCreator extends IElementCreator {
+  inputs: HTMLInputElement[];
+  btn: IButtonCreator | undefined;
+  getInputs: () => HTMLInputElement[];
+  setFormData: (formData: Record<string, string>) => void;
+  getFormData: () => Record<string, string>;
+  createElement: (
+    parameters: IElementParameters,
+    onSubmit?: FormSubmitCallback
+  ) => void;
+  resetForm: VoidMethodType;
 }
-
-export interface IWheelCreator {
-  valueList: IValueList;
+export interface IRaceCreator extends IElementCreator {
+  car: ICarState;
+  context: CanvasRenderingContext2D | undefined;
+  raceStartTime: number;
+  raceDuration: number;
+  updateCarColor: (color: string) => void;
+  updateCarAppearance: (color: string, name: string) => void;
+  createElement: (parameters: IElementParameters, elementInfo?: ICar) => void;
+  startCar: (isRaceMode: boolean) => Promise<void>;
   startAnimation: VoidMethodType;
+  stopAnimation: VoidMethodType;
+  resetCar: VoidMethodType;
+  showStopImage: () => Promise<void>;
+  resetAnimationState: VoidMethodType;
+  brokeCar: () => Promise<void>;
+  stopCar: () => Promise<void>;
+  resetStopImage: VoidMethodType;
+  drawCar: VoidMethodType;
+}
+
+export interface IPagination extends IElementCreator {
+  updateConfig: (newConfig: Partial<IPaginationConfig>) => void;
+}
+
+export interface IPaginationConfig {
+  currentPage: number;
+  totalItems: number;
+  itemsPerPage: number;
+  onPageChange: (page: number) => void;
 }
 
 export interface ICarState {
@@ -197,11 +233,6 @@ export interface IJsonCarInfoItem {
     'mark-id': string;
   };
 }
-export interface IPagination {
-  current: number;
-  total: number;
-  perPage: number;
-}
 
 export interface IRaceState {
   id?: string;
@@ -225,4 +256,16 @@ export interface IFormState {
   addForm?: Record<string, string>;
   updateForm?: Record<string, string>;
   page?: number;
+}
+
+export interface ITableCreator extends IElementCreator {
+  page: number;
+  sortDirection: SortDirection;
+  sortValue: SortBy;
+  onPageChange?: (newPage: number) => void;
+  onSortChange?: () => void;
+  createElement: (parameters: IElementParameters) => void;
+  loadTableData: () => Promise<void>;
+  updatePage: (newPage: number) => void;
+  fillTable: (winners?: IWinner[]) => Promise<void>;
 }

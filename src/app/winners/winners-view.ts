@@ -1,12 +1,18 @@
 import ElementCreator from '../../components/element-creator';
 import Pagination from '../../components/pagination';
-import type { IPaginationConfig } from '../../components/pagination';
 import TableCreator from '../../components/table';
 import View from '../../components/view';
-// import type { IWinner } from '../../lib/types/api-interfaces';
-import { CssClasses, CssTags } from '../../lib/types/enums';
-import type { IView } from '../../lib/types/interfaces';
 import ApiClient from '../../lib/utils/api-client';
+
+import {
+  CssClasses,
+  CssTags,
+  SortBy,
+  SortDirection,
+} from '../../lib/types/enums';
+
+import type { IWinnersView } from '../../lib/types/interfaces';
+
 import './winners.scss';
 
 const pageElements = 10;
@@ -34,7 +40,7 @@ const paginationParameters = {
   textContent: '',
 };
 
-export default class WinnersView extends View implements IView {
+export default class WinnersView extends View implements IWinnersView {
   private total: number = 0;
   private page: number = 1;
   private header: ElementCreator | undefined = undefined;
@@ -43,6 +49,7 @@ export default class WinnersView extends View implements IView {
 
   constructor() {
     super(parameters);
+    this.loadState();
     this.configureView().catch(console.error);
   }
 
@@ -57,14 +64,17 @@ export default class WinnersView extends View implements IView {
         this.viewElementCreator?.addInnerElement(this.header);
 
         this.table = new TableCreator(tableParameters, this.page);
+        this.loadState();
         this.table.onPageChange = (newPage: number): void => {
           this.page = newPage;
           this.pagination?.updateConfig({ currentPage: newPage });
+          this.saveState();
           this.loadTableData().catch(console.error);
         };
 
         this.table.onSortChange = (): void => {
           this.pagination?.updateConfig({ currentPage: this.page });
+          this.saveState();
           this.loadTableData().catch(console.error);
         };
         this.viewElementCreator?.addInnerElement(this.table);
@@ -76,6 +86,41 @@ export default class WinnersView extends View implements IView {
         console.error(error);
       }
   }
+
+  private saveState(): void {
+    sessionStorage.setItem(
+      'winnersViewState',
+      JSON.stringify({
+        page: this.page,
+        sortValue: this.table?.sortValue,
+        sortDirection: this.table?.sortDirection,
+      })
+    );
+  }
+
+  private loadState(): void {
+    const savedState = sessionStorage.getItem('winnersViewState');
+    if (savedState) {
+      const state: unknown = JSON.parse(savedState);
+      if (state && typeof state === 'object') {
+        if ('page' in state) this.page = Number(state.page) || this.page;
+        if (
+          this.table &&
+          'sortValue' in state &&
+          (state.sortValue === SortBy.Id ||
+            state.sortValue === SortBy.Time ||
+            state.sortValue === SortBy.Wins) &&
+          'sortDirection' in state &&
+          (state.sortDirection === SortDirection.Asc ||
+            state.sortDirection === SortDirection.Desc)
+        ) {
+          this.table.sortValue = state.sortValue || SortBy.Id;
+          this.table.sortDirection = state.sortDirection || SortDirection.Asc;
+        }
+      }
+    }
+  }
+
   private initPagination(): void {
     const paginationConfig: IPaginationConfig = {
       currentPage: this.page,
@@ -113,7 +158,6 @@ export default class WinnersView extends View implements IView {
         _limit: pageElements,
       };
 
-      // console.log(sortParameters);
       const response = await ApiClient.getWinners(sortParameters);
       this.total = response.totalCount;
 

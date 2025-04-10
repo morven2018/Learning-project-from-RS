@@ -8,7 +8,6 @@ export default class App {
   private header: HeaderView;
   private main: MainView | undefined;
   private router: Router;
-  // private state: State;
 
   constructor() {
     this.main = new MainView();
