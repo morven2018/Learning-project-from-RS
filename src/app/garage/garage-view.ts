@@ -11,7 +11,6 @@ import type { ICar, ICarCreate } from '../../lib/types/api-interfaces';
 import Pagination from '../../components/pagination';
 import './garage.scss';
 
-//const NAME_OF_APP = 'Decision Making Tool';
 const numberOfGeneratedCars = 100;
 const parameters = {
   tag: CssTags.Section,
@@ -47,7 +46,7 @@ const baseLiParameters = {
 
 export default class GarageView extends View implements IView {
   public buttons: HTMLButtonElement[] = [];
-  public page: number;
+  public page: number = 1;
   public limit: number;
   public forms: FormCreator[] = [];
   public raceCreators: RaceCreator[] = [];
@@ -60,11 +59,69 @@ export default class GarageView extends View implements IView {
   constructor() {
     super(parameters);
     this.buttons = [];
-    this.page = 1;
+    const page = GarageView.loadPageState();
+    if (typeof page === 'number') this.page = page;
     this.limit = 7;
     this.configureView().catch((error) => {
       console.error('Failed to configure view:', error);
     });
+  }
+
+  private static getFormData(form?: FormCreator): Record<string, string> {
+    const result: Record<string, string> = {};
+    if (form?.getInputs() && Array.isArray(form.getInputs()))
+      for (const input of form.getInputs()) {
+        if (typeof input.value === 'string') {
+          result[input.id] = input.value;
+        }
+      }
+    return result;
+  }
+
+  private static loadPageState(): number | undefined {
+    try {
+      const savedState = localStorage.getItem('garageState');
+      if (savedState) {
+        const parsed: unknown = JSON.parse(savedState);
+        if (
+          parsed &&
+          typeof parsed === 'object' &&
+          'page' in parsed &&
+          typeof parsed.page === 'number'
+        )
+          return parsed.page;
+        return undefined;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return undefined;
+  }
+
+  private static restoreForm(
+    form: FormCreator,
+    formData: Record<string, string>
+  ): void {
+    for (const input of form.getInputs()) {
+      if (input.id in formData) {
+        input.value = formData[input.id];
+      }
+    }
+  }
+  private static isStringRecord(
+    value: unknown
+  ): value is Record<string, string> {
+    return (
+      typeof value === 'object' &&
+      value !== null &&
+      Object.values(value).every((v) => typeof v === 'string')
+    );
+  }
+  public updatePage(newPage: number): void {
+    this.page = newPage;
+    this.saveState();
+    this.updatePageInfo();
+    this.updateCarList();
   }
 
   public async configureView(): Promise<void> {
@@ -95,7 +152,6 @@ export default class GarageView extends View implements IView {
       );
 
       this.forms.push(addForm);
-      this.viewElementCreator.addInnerElement(addForm);
 
       const updateForm = new FormCreator(
         formParameters[1],
@@ -109,6 +165,9 @@ export default class GarageView extends View implements IView {
       );
 
       this.forms.push(updateForm);
+
+      this.loadFormState();
+      this.viewElementCreator.addInnerElement(addForm);
       this.viewElementCreator.addInnerElement(updateForm);
 
       for (const parameters of buttonParameters) this.addButton(parameters);
@@ -185,6 +244,7 @@ export default class GarageView extends View implements IView {
   }
 
   public updateCarList(): void {
+    this.saveState();
     this.raceCreators = [];
     if (this.list) {
       this.list.clearInnerElements();
@@ -228,6 +288,8 @@ export default class GarageView extends View implements IView {
       if (updateForm.element) {
         updateForm.element.dataset.carId = carInfo.id.toString();
       }
+
+      localStorage.setItem('garageUpdateCarId', carInfo.id.toString());
     }
   }
 
@@ -236,7 +298,6 @@ export default class GarageView extends View implements IView {
   }
 
   private addCar(carData: { name: string; color: string }): void {
-    // console.log('add');
     if (!carData.name || !carData.color) {
       return;
     }
@@ -245,6 +306,7 @@ export default class GarageView extends View implements IView {
       .then(() => {
         const addForm = this.forms[0];
         addForm.resetForm();
+        this.saveState();
         this.updateCarList();
       })
       .catch((error) => {
@@ -265,6 +327,7 @@ export default class GarageView extends View implements IView {
       itemsPerPage: this.limit,
       onPageChange: (newPage: number): void => {
         this.page = newPage;
+        this.saveState();
         this.updatePageInfo();
         this.updateCarList();
       },
@@ -299,6 +362,9 @@ export default class GarageView extends View implements IView {
 
       this.forms[1].resetForm();
       this.forms[1].element?.classList.add('disabled');
+      localStorage.removeItem('garageUpdateCarId');
+
+      this.saveState();
     } catch (error) {
       console.error('Update failed:', error);
     }
@@ -314,5 +380,99 @@ export default class GarageView extends View implements IView {
     if (this.list) {
       this.list.setTextContent(`Page #${this.page}`);
     }
+  }
+
+  /* private restoreRaceStates(raceStates: IRaceState[] = []): void {
+    for (const savedState of raceStates) {
+      try {
+        if (!savedState?.id) continue;
+
+        const raceCreator = this.raceCreators.find(
+          (rc) => rc.element?.id === savedState.id
+        );
+        if (!raceCreator) continue;
+
+        if (typeof savedState.position === 'number') {
+          raceCreator.car.position = savedState.position;
+        }
+
+        if (
+          savedState.isMoving &&
+          typeof savedState.startTime === 'number' &&
+          typeof savedState.duration === 'number'
+        ) {
+          raceCreator.car.state.isMoving = true;
+          raceCreator.raceStartTime =
+            performance.now() -
+            savedState.duration * (savedState.position || 0) * 1000;
+          raceCreator.raceDuration = savedState.duration;
+          raceCreator.startAnimation();
+        }
+      } catch (error) {
+        console.error(
+          'Error restoring race state:',
+          error instanceof Error ? error.message : error
+        );
+      }
+    }
+  }
+*/
+  private loadFormState(): void {
+    try {
+      const savedAddForm = localStorage.getItem('garageStateAddForm');
+      if (savedAddForm && this.forms[0]) {
+        const parsedAddForm: unknown = JSON.parse(savedAddForm);
+
+        if (GarageView.isStringRecord(parsedAddForm)) {
+          this.forms[0].setFormData(parsedAddForm);
+
+          if (
+            Object.values(parsedAddForm).some((value) => value.trim() !== '')
+          ) {
+            this.forms[0].element?.classList.remove('disabled');
+          }
+        } else {
+          console.warn('Invalid data structure in garageStateAddForm');
+        }
+      }
+
+      const savedUpdateForm = localStorage.getItem('garageStateUpdateForm');
+      if (savedUpdateForm && this.forms[1]) {
+        const parsedUpdateForm: unknown = JSON.parse(savedUpdateForm);
+
+        if (GarageView.isStringRecord(parsedUpdateForm)) {
+          this.forms[1].setFormData(parsedUpdateForm);
+
+          const carNameInput = this.forms[1]
+            .getInputs()
+            .find((input) => input.id.includes('car-name'));
+
+          if (carNameInput?.value.trim()) {
+            this.forms[1].element?.classList.remove('disabled');
+            const savedCarId = localStorage.getItem('garageUpdateCarId');
+            if (savedCarId && this.forms[1].element) {
+              this.forms[1].element.dataset.carId = savedCarId;
+              this.selectedCarId = Number.parseInt(savedCarId, 10);
+            }
+          } else {
+            this.forms[1].element?.classList.add('disabled');
+          }
+        } else {
+          console.warn('Invalid data structure in garageStateUpdateForm');
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load form state:', error);
+    }
+  }
+
+  private saveState(): void {
+    const stateToSave = {
+      page: this.page,
+      addForm: GarageView.getFormData(this.forms[0]),
+      updateForm: GarageView.getFormData(this.forms[1]),
+    };
+
+    localStorage.setItem('garageState', JSON.stringify(stateToSave));
   }
 }

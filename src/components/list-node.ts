@@ -198,8 +198,8 @@ export default class ListNodeCreator
       nameElement.textContent = name;
     }
   }
-  private startCar(false): void {
-    this.raceTrack?.startCar().catch(console.error);
+  private startCar(): void {
+    this.raceTrack?.startCar(false).catch(console.error);
   }
 
   private stopCar(): void {

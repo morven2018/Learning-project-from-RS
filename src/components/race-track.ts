@@ -31,6 +31,8 @@ export default class RaceCreator extends ElementCreator {
     },
   };
   public context: CanvasRenderingContext2D | undefined = undefined;
+  public raceStartTime: number = 0;
+  public raceDuration: number = 1;
   // private wheelAngle = 0;
   private finishImage: HTMLImageElement | undefined = undefined;
   // private wheelImage: HTMLImageElement | undefined = undefined;
@@ -40,9 +42,9 @@ export default class RaceCreator extends ElementCreator {
   private showStopImageUntil: number = 0;
   private isStopImageLoading: boolean = false;
   private parent: ListNodeCreator | undefined = undefined;
-  private raceStartTime: number = 0;
+
   private isEngineBroken: boolean = false;
-  private raceDuration: number = 1;
+
   private currentColor: string = '#000000';
   private isStarting: boolean = false;
   private isRaceMode: boolean = false;

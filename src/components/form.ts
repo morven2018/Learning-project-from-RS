@@ -1,5 +1,5 @@
 import { CssClasses, CssTags } from '../lib/types/enums';
-import type { IElementParameters } from '../lib/types/interfaces';
+import type { IElementParameters, IFormState } from '../lib/types/interfaces';
 import type { FormSubmitCallback } from '../lib/types/types';
 import ButtonCreator from './button';
 import ElementCreator from './element-creator';
@@ -39,9 +39,36 @@ export default class FormCreator extends ElementCreator {
     super(parameters);
     this.inputs = [];
     this.createElement(parameters, onSubmit);
+    this.setupInputListeners();
   }
+
+  public static isGarageState(value: unknown): value is IFormState {
+    if (!value || typeof value !== 'object') return false;
+
+    if (!('addForm' in value) || !('updateForm' in value)) return false;
+
+    const result =
+      (value.addForm === undefined || typeof value.addForm === 'string') &&
+      (value.updateForm === undefined || typeof value.updateForm === 'string');
+    return result;
+  }
+
   public getInputs(): HTMLInputElement[] {
     return this.inputs;
+  }
+  public setFormData(formData: Record<string, string>): void {
+    for (const input of this.getInputs()) {
+      if (input.id in formData) {
+        input.value = formData[input.id];
+      }
+    }
+  }
+  public getFormData(): Record<string, string> {
+    const result: Record<string, string> = {};
+    for (const input of this.getInputs()) {
+      result[input.id] = input.value;
+    }
+    return result;
   }
   public createElement(
     parameters: IElementParameters,
@@ -110,5 +137,33 @@ export default class FormCreator extends ElementCreator {
       color: colorInput.value,
     };
     if (this.onSubmit) this.onSubmit(carData);
+  }
+
+  private setupInputListeners(): void {
+    for (const input of this.getInputs()) {
+      input.addEventListener('input', () => {
+        this.saveFormState();
+        this.checkFormDisabledState();
+      });
+    }
+  }
+
+  private saveFormState(): void {
+    const formData = this.getFormData();
+
+    const formType = this.element?.classList.contains('form-add-car')
+      ? 'AddForm'
+      : 'UpdateForm';
+    const state = 'garageState' + formType;
+    localStorage.setItem(state, JSON.stringify(formData));
+  }
+
+  private checkFormDisabledState(): void {
+    const isFilled = this.getInputs().some(
+      (input) => input.value.trim() !== ''
+    );
+    if (isFilled) {
+      this.element?.classList.remove('disabled');
+    }
   }
 }

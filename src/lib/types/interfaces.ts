@@ -72,13 +72,17 @@ export interface IPickerParameters {
 }
 
 export interface IState {
-  fields: Map<string, string>;
+  fields: Map<string, unknown>;
   // setListCreator: (listCreator: IListCreator) => void;
   // getElements: () => HTMLElement[] | undefined;
   // getNextId: () => number | undefined;
-  // saveState: VoidMethodType;
-  setField: (name: string, value: string) => void;
-  getField: (name: string) => string;
+  saveState: VoidMethodType;
+  setField<T>(name: string, value: T): void;
+  getField(name: string): unknown;
+  getFieldWithTypeCheck<T>(
+    name: string,
+    typeCheck: (value: unknown) => value is T
+  ): T | undefined;
 }
 
 export interface IRouter {
@@ -197,4 +201,28 @@ export interface IPagination {
   current: number;
   total: number;
   perPage: number;
+}
+
+export interface IRaceState {
+  id?: string;
+  position?: number;
+  isMoving?: boolean;
+  startTime?: number;
+  duration?: number;
+}
+
+export interface IGarageFormData {
+  addForm?: Record<string, string>;
+  updateForm?: Record<string, string>;
+}
+
+export interface IGarageState {
+  page?: number;
+  formData?: IGarageFormData;
+  raceStates?: IRaceState[];
+}
+export interface IFormState {
+  addForm?: Record<string, string>;
+  updateForm?: Record<string, string>;
+  page?: number;
 }
