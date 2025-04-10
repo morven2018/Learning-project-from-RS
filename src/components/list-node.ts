@@ -198,7 +198,7 @@ export default class ListNodeCreator
       nameElement.textContent = name;
     }
   }
-  private startCar(): void {
+  private startCar(false): void {
     this.raceTrack?.startCar().catch(console.error);
   }
 

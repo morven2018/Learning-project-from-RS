@@ -205,7 +205,7 @@ export default class GarageView extends View implements IView {
   public raceAllCars(): void {
     RaceCreator.resetWinner();
     for (const raceCreator of this.raceCreators) {
-      raceCreator.startCar().catch(console.error);
+      raceCreator.startCar(true).catch(console.error);
     }
   }
 

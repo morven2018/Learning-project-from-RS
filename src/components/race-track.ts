@@ -45,6 +45,7 @@ export default class RaceCreator extends ElementCreator {
   private raceDuration: number = 1;
   private currentColor: string = '#000000';
   private isStarting: boolean = false;
+  private isRaceMode: boolean = false;
 
   private animationState: IAnimationState = {
     id: undefined,
@@ -126,8 +127,9 @@ export default class RaceCreator extends ElementCreator {
     }
   }
 
-  public async startCar(): Promise<void> {
-    RaceCreator.winnerId = undefined;
+  public async startCar(isRaceMode: boolean = false): Promise<void> {
+    this.isRaceMode = isRaceMode;
+    if (isRaceMode) RaceCreator.winnerId = undefined;
 
     if (
       this.animationState.isRunning ||
@@ -473,7 +475,7 @@ export default class RaceCreator extends ElementCreator {
 
       if (Math.abs(this.car.position - finishPosition) < 0.01) {
         this.stopAnimation();
-        if (RaceCreator.winnerId === undefined) {
+        if (this.isRaceMode && RaceCreator.winnerId === undefined) {
           RaceCreator.winnerId = Number(this.parent?.element?.id);
           this.showFinishModal();
 
