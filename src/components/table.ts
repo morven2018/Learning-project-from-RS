@@ -38,7 +38,7 @@ const tableBodyParameters = {
 
 const headerClasses = [
   TableHeader.IdClass,
-  TableHeader.Car,
+  TableHeader.Car.toLowerCase(),
   TableHeader.WinsClass,
   TableHeader.TimeClass,
 ];
@@ -351,11 +351,6 @@ export default class TableCreator
       if (this.onSortChange) {
         this.onSortChange();
       }
-      /* this.loadTableData().catch(console.error);
-
-    if (this.onPageChange) {
-      this.onPageChange(this.page);
-    } */
     }
   }
 

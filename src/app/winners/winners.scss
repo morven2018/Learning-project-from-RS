@@ -1,32 +1,28 @@
-@use '../styles.scss';
+@use '../styles';
 
 caption {
   text-align: left;
 }
-.winners-table {
-  width: 100%;
 
-  border: none;
-  border-collapse: separate;
+.winners-table {
   border-spacing: 0;
+  border-collapse: separate;
+  width: 100%;
+  border: none;
 }
 
 th,
 td {
   margin: 0;
   padding: styles.$padding-small;
-
   border: 1px solid styles.$text-color;
-
   text-align: center;
 }
 
-td.CAR {
+td.car {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   align-items: center;
-
   padding: 0 styles.$padding-big 0 0;
 }
 

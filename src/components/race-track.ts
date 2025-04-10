@@ -16,6 +16,21 @@ import ApiClient from '../lib/utils/api-client';
 import winner from '../assets/images/win.png';
 
 const delay = 50_000;
+const toSeconds = 1000;
+const carWidthToSmallPages = 0.2;
+const doublePadding = 2;
+const widthHeightCoefficient = 0.66;
+const delayY = 0.85;
+const correctionX = 0.7;
+const colorTransitionalPoint = 0.5;
+const actualDash = 2;
+const numberAfterPoint = 2;
+const delta = 0.01;
+const rightWheelCorrection = 0.8;
+const leftWheelCorrection = 0.25;
+const half = 2;
+const deltaY = 5;
+const round = 2;
 
 export default class RaceCreator
   extends ElementCreator
@@ -170,7 +185,7 @@ export default class RaceCreator
       if (RaceCreator.isICarRaceParameters(engineParameters)) {
         const { velocity, distance } = engineParameters;
 
-        this.raceDuration = distance / (1000 * velocity);
+        this.raceDuration = distance / (toSeconds * velocity);
         this.raceStartTime = performance.now();
 
         await this.loadCarAssets(this.currentColor);
@@ -279,12 +294,15 @@ export default class RaceCreator
       this.car.assets.body &&
       this.car.assets.wheels
     ) {
-      const width = Math.min(Car.CarWidth, this.element.width * 0.2);
-      const height = (width * 2) / 3;
-      const trackWidth = this.element.width - Track.Padding * 2;
+      const width = Math.min(
+        Car.CarWidth,
+        this.element.width * carWidthToSmallPages
+      );
+      const height = width * widthHeightCoefficient;
+      const trackWidth = this.element.width - Track.Padding * doublePadding;
 
       const carX = Track.Padding + this.car.position * trackWidth;
-      const carY = this.element.height - Track.Padding - height * 0.85;
+      const carY = this.element.height - Track.Padding - height * delayY;
 
       this.context.drawImage(this.car.assets.body, carX, carY, width, height);
 
@@ -338,7 +356,7 @@ export default class RaceCreator
 
     this.context.drawImage(
       this.stopImage,
-      carX + Car.CarWidth * 0.7,
+      carX + Car.CarWidth * correctionX,
       carY + Car.BrokeSize,
       Car.BrokeSize,
       Car.BrokeSize
@@ -352,7 +370,7 @@ export default class RaceCreator
         Track.Padding -
         Track.FinishLine +
         Track.FinishDelta;
-      const trackWidth = this.element.width - 2 * Track.Padding;
+      const trackWidth = this.element.width - doublePadding * Track.Padding;
       return (finishX - Track.Padding) / trackWidth;
     }
     return 1;
@@ -412,7 +430,7 @@ export default class RaceCreator
 
       const gradient = this.context.createLinearGradient(0, y, width, y);
       gradient.addColorStop(0, Colors.Yellow);
-      gradient.addColorStop(0.5, Colors.Orange);
+      gradient.addColorStop(colorTransitionalPoint, Colors.Orange);
       gradient.addColorStop(1, Colors.Ochre);
 
       this.context.strokeStyle = gradient;
@@ -442,7 +460,7 @@ export default class RaceCreator
         this.element.height -
         Track.Padding -
         Track.FinishSize -
-        Track.DashHeight / 2;
+        Track.DashHeight / actualDash;
 
       if (this.finishImage) {
         this.context.drawImage(
@@ -482,7 +500,7 @@ export default class RaceCreator
 
       this.context.clearRect(0, 0, this.element.width, this.element.height);
 
-      if (Math.abs(this.car.position - finishPosition) < 0.01) {
+      if (Math.abs(this.car.position - finishPosition) < delta) {
         this.stopAnimation();
         if (this.isRaceMode && RaceCreator.winnerId === undefined) {
           RaceCreator.winnerId = Number(this.parent?.element?.id);
@@ -500,11 +518,10 @@ export default class RaceCreator
       if (this.car.assets.body && this.car.assets.wheels) this.drawCar();
 
       if (this.stopImage && Date.now() <= this.showStopImageUntil) {
-        const width = Math.min(Car.CarWidth, this.element.width * 0.2);
-        const trackWidth = this.element.width - Track.Padding * 2;
+        const width = this.getWidth();
+        const trackWidth = this.element.width - Track.Padding * doublePadding;
         const carX = Track.Padding + this.car.position * trackWidth;
-        const carY =
-          this.element.height - Track.Padding - ((width * 2) / 3) * 0.85;
+        const carY = this.getCarY(width);
         this.drawStopImage(carX, carY);
       }
       if (
@@ -512,14 +529,26 @@ export default class RaceCreator
         this.stopImage &&
         Date.now() <= this.showStopImageUntil
       ) {
-        const width = Math.min(Car.CarWidth, this.element.width * 0.2);
-        const trackWidth = this.element.width - Track.Padding * 2;
+        const width = this.getWidth();
+        const trackWidth = this.element.width - Track.Padding * doublePadding;
         const carX = Track.Padding + this.car.position * trackWidth;
-        const carY =
-          this.element.height - Track.Padding - ((width * 2) / 3) * 0.85;
+        const carY = this.getCarY(width);
         this.drawStopImage(carX, carY);
       }
     }
+  }
+  private getCarY(width: number): number {
+    return this.element instanceof HTMLCanvasElement
+      ? this.element.height -
+          Track.Padding -
+          width * widthHeightCoefficient * delayY
+      : 0;
+  }
+
+  private getWidth(): number {
+    return this.element instanceof HTMLCanvasElement
+      ? Math.min(Car.CarWidth, this.element.width * carWidthToSmallPages)
+      : 0;
   }
 
   private showFinishModal(): void {
@@ -546,7 +575,7 @@ export default class RaceCreator
 
     const time = document.createElement('div');
     time.className = 'finish-modal-time';
-    time.textContent = `With time: ${this.raceDuration.toFixed(2)}s`;
+    time.textContent = `With time: ${this.raceDuration.toFixed(numberAfterPoint)}s`;
 
     content.append(winnerImg);
     content.append(carName);
@@ -567,12 +596,12 @@ export default class RaceCreator
     if (!this.animationState.isRunning) return;
 
     this.animationState.wheelAngle += 0.1;
-    if (this.animationState.wheelAngle > Math.PI * 2) {
+    if (this.animationState.wheelAngle > Math.PI * round) {
       this.animationState.wheelAngle = 0;
     }
 
     if (this.car.state.isMoving && !this.isEngineBroken) {
-      const elapsed = (performance.now() - this.raceStartTime) / 1000;
+      const elapsed = (performance.now() - this.raceStartTime) / toSeconds;
       this.car.position = Math.min(elapsed / this.raceDuration, 1);
     }
   }
@@ -581,11 +610,19 @@ export default class RaceCreator
     if (!this.context || !this.car.assets.wheels) return;
 
     const wheelSize = carWidth * Car.WheelSizeRatio;
-    const wheelY = carY + carWidth / 2 - 5;
+    const wheelY = carY + carWidth / half - deltaY;
 
-    this.drawWheel(carX + carWidth * 0.8 - Car.WheelOffset, wheelY, wheelSize);
+    this.drawWheel(
+      carX + carWidth * rightWheelCorrection - Car.WheelOffset,
+      wheelY,
+      wheelSize
+    );
 
-    this.drawWheel(carX + carWidth * 0.25 - Car.WheelOffset, wheelY, wheelSize);
+    this.drawWheel(
+      carX + carWidth * leftWheelCorrection - Car.WheelOffset,
+      wheelY,
+      wheelSize
+    );
   }
 
   private drawWheel(x: number, y: number, size: number): void {
@@ -596,8 +633,8 @@ export default class RaceCreator
     this.context.rotate(this.animationState.wheelAngle);
     this.context.drawImage(
       this.car.assets.wheels,
-      -size / 2,
-      -size / 2,
+      -size / half,
+      -size / half,
       size,
       size
     );

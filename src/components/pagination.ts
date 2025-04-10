@@ -7,6 +7,9 @@ import type {
 } from '../lib/types/interfaces';
 
 const maxTotalPagesFull = 7;
+const minPageToUseEllipsis = 3;
+const startPagination = 2;
+const delta = 2;
 
 export default class Pagination extends ElementCreator implements IPagination {
   private config: IPaginationConfig;
@@ -55,18 +58,18 @@ export default class Pagination extends ElementCreator implements IPagination {
   ): void {
     this.addPageButton(1, currentPage === 1, onPageChange);
 
-    if (currentPage > 3) {
+    if (currentPage > minPageToUseEllipsis) {
       this.addEllipsis();
     }
 
-    const start = Math.max(2, currentPage - 1);
+    const start = Math.max(startPagination, currentPage - 1);
     const end = Math.min(totalPages - 1, currentPage + 1);
 
     for (let index = start; index <= end; index++) {
       this.addPageButton(index, index === currentPage, onPageChange);
     }
 
-    if (currentPage < totalPages - 2) {
+    if (currentPage < totalPages - delta) {
       this.addEllipsis();
     }
 

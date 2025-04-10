@@ -49,7 +49,7 @@ export default [
 
       semi: 'error',
       'prefer-const': 'error',
-      'no-console': 'warn',
+      // 'no-console': 'warn',
 
       '@typescript-eslint/consistent-type-assertions': [
         'error',

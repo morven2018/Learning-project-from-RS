@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap');
+@import 'https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap';
 
 $background-color: #1e1e1e;
 $text-color: #f8c4b1;
@@ -26,11 +26,11 @@ $button-image: 24px;
 $button-max: 120px;
 
 @mixin teko($weight: 400) {
-  font-family: 'Teko', sans-serif;
+  font-family: Teko, sans-serif;
+  font-variation-settings: 'wdth' 100;
   font-optical-sizing: auto;
   font-weight: $weight;
   font-style: normal;
-  font-variation-settings: 'wdth' 100;
 }
 
 $teko-weights: (
@@ -49,11 +49,11 @@ $teko-weights: (
 
 :root {
   margin: 0 auto;
+  font-size: $info-text;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
 
   @include teko(400);
-  font-size: $info-text;
-  letter-spacing: 0.1rem;
-  text-transform: uppercase;
 }
 
 body {
@@ -63,15 +63,14 @@ body {
 }
 
 button {
-  height: $button-height;
   min-width: $button-width;
-
+  height: $button-height;
   padding: $padding-small;
-
   border: none;
   border-radius: $border-radius;
 
   color: $text-color-button;
+
   background-color: $button-color;
 
   &:hover {
@@ -80,8 +79,8 @@ button {
 
   &:disabled,
   &.disable {
-    background-color: $button-disable;
     opacity: 0.7;
+    background-color: $button-disable;
   }
 
   img {
@@ -94,6 +93,5 @@ button {
 ul {
   margin: 0;
   padding: 0;
-
   list-style-type: none;
 }

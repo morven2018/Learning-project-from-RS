@@ -1,10 +1,8 @@
-@use '../styles.scss';
+@use '../styles';
 
 .header {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   gap: styles.$gap / 2;
-
   padding: styles.$padding-small styles.$padding-big;
 }
