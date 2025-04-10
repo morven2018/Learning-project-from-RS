@@ -11,7 +11,10 @@ import {
   SortDirection,
 } from '../../lib/types/enums';
 
-import type { IWinnersView } from '../../lib/types/interfaces';
+import type {
+  IPaginationConfig,
+  IWinnersView,
+} from '../../lib/types/interfaces';
 
 import './winners.scss';
 

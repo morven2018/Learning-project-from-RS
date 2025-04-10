@@ -45,8 +45,14 @@ export interface IListNodeCreator extends IElementCreator {
   stopBth: IButtonCreator | undefined;
   name: IElementCreator | undefined;
   elementInfo?: ICar;
+  carName: string;
   updateCarAppearance: (color: string, name: string) => void;
+  getSelectButtonParameters: (elementInfo: ICar) => IElementParameters;
   createElement: (parameters: IElementParameters, elementInfo?: ICar) => void;
+
+  startCar: VoidMethodType;
+  stopCar: VoidMethodType;
+  deleteCar: (id: number) => void;
   createRaceArea: (elementInfo: ICar) => IElementCreator;
   addButtons(elementInfo: ICar): IElementCreator;
 }
@@ -120,22 +126,6 @@ export interface IElementInfo {
 export interface IValueList {
   [key: string]: number;
 }
-/*
-export interface IListCreator extends IElementCreator {
-  nextId: number;
-  elements: HTMLElement[];
-  state: IState;
-  loadFromLocalStorage: VoidMethodType;
-  getElements: () => HTMLElement[];
-  createElement: (parameters: IElementParameters) => void;
-  addElement: (
-    info: IElementInfo,
-    newElement?: boolean
-  ) => HTMLElement | undefined;
-  removeElementById: (id: string) => void;
-  clearList: (click?: boolean) => void;
-  setOnInputChangeCallback(callback: () => void): void;
-} */
 
 export interface IButtonCreator extends IElementCreator {
   createElement: (parameters: IElementParameters) => void;
@@ -151,6 +141,7 @@ export interface IButtonCreator extends IElementCreator {
 export interface IFormCreator extends IElementCreator {
   inputs: HTMLInputElement[];
   btn: IButtonCreator | undefined;
+  onSubmit: FormSubmitCallback | undefined;
   getInputs: () => HTMLInputElement[];
   setFormData: (formData: Record<string, string>) => void;
   getFormData: () => Record<string, string>;
@@ -158,8 +149,25 @@ export interface IFormCreator extends IElementCreator {
     parameters: IElementParameters,
     onSubmit?: FormSubmitCallback
   ) => void;
-  resetForm: VoidMethodType;
+  handleSubmit: (event: Event) => void;
+  setupInputListeners: VoidMethodType;
+  saveFormState: VoidMethodType;
+  checkFormDisabledState: VoidMethodType;
 }
+
+export interface IFormCreator extends IElementCreator {
+  inputs: HTMLInputElement[];
+  btn: IButtonCreator | undefined;
+  getInputs: () => HTMLInputElement[];
+  setFormData: (formData: Record<string, string>) => void;
+  getFormData: () => Record<string, string>;
+  createElement: (
+    parameters: IElementParameters,
+    onSubmit?: FormSubmitCallback
+  ) => void;
+  resetForm: () => void;
+}
+
 export interface IRaceCreator extends IElementCreator {
   car: ICarState;
   context: CanvasRenderingContext2D | undefined;

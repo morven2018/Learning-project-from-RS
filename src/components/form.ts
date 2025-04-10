@@ -42,7 +42,7 @@ export default class FormCreator
 {
   public inputs: HTMLInputElement[] = [];
   public btn: IButtonCreator | undefined;
-  private onSubmit: FormSubmitCallback | undefined;
+  public onSubmit: FormSubmitCallback | undefined;
 
   constructor(parameters: IElementParameters, onSubmit?: FormSubmitCallback) {
     super(parameters);
@@ -128,7 +128,7 @@ export default class FormCreator
     }
   }
 
-  private handleSubmit(event: Event): void {
+  public handleSubmit(event: Event): void {
     event.preventDefault();
 
     const nameInput = this.inputs.find((input) =>
@@ -147,7 +147,7 @@ export default class FormCreator
     if (this.onSubmit) this.onSubmit(carData);
   }
 
-  private setupInputListeners(): void {
+  public setupInputListeners(): void {
     for (const input of this.getInputs()) {
       input.addEventListener('input', () => {
         this.saveFormState();
@@ -156,7 +156,7 @@ export default class FormCreator
     }
   }
 
-  private saveFormState(): void {
+  public saveFormState(): void {
     const formData = this.getFormData();
 
     const formType = this.element?.classList.contains('form-add-car')
@@ -166,7 +166,7 @@ export default class FormCreator
     sessionStorage.setItem(state, JSON.stringify(formData));
   }
 
-  private checkFormDisabledState(): void {
+  public checkFormDisabledState(): void {
     const isFilled = this.getInputs().some(
       (input) => input.value.trim() !== ''
     );

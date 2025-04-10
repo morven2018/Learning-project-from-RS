@@ -184,7 +184,7 @@ export default class ListNodeCreator
     }
   }
 
-  private getSelectButtonParameters(elementInfo: ICar): IElementParameters {
+  public getSelectButtonParameters(elementInfo: ICar): IElementParameters {
     return {
       tag: CssTags.Button,
       classNames: [CssClasses.Select],
@@ -200,16 +200,16 @@ export default class ListNodeCreator
     };
   }
 
-  private startCar(): void {
+  public startCar(): void {
     this.raceTrack?.startCar(false).catch(console.error);
   }
 
-  private stopCar(): void {
+  public stopCar(): void {
     this.raceTrack?.stopCar().catch(console.error);
     this.raceTrack?.resetCar();
   }
 
-  private deleteCar(id: number): void {
+  public deleteCar(id: number): void {
     if (Number.isFinite(id))
       ApiClient.deleteCar(id)
         .then(() => {
