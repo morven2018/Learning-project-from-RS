@@ -29,7 +29,12 @@ export interface IElementCreator {
     textContent?: string;
   }) => void;
 }
-
+export interface IState {
+  isAuthenticated: boolean;
+  user: IUserData | undefined;
+  login: (userData: IUserData) => void;
+  logout: VoidMethodType;
+}
 export interface IUserData {
   login: string;
   password?: string;

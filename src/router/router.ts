@@ -3,16 +3,14 @@ import ChatView from '../app/chat/chat.View';
 import LoginView from '../app/login/loginView';
 import NotFoundView from '../app/not-found/not-found';
 
-import { State } from '../lib/state';
-
-import type { IMainView } from '../lib/types/interfaces';
+import type { IMainView, IState } from '../lib/types/interfaces';
 
 export default class Router /* implements IRouter */ {
   private mainView: IMainView;
   private readonly routeMap: Record<string, () => void>;
-  private state: State | undefined;
+  private state: IState | undefined;
 
-  constructor(mainView: IMainView, state: State) {
+  constructor(mainView: IMainView, state: IState) {
     this.mainView = mainView;
     this.state = state;
     this.routeMap = this.buildRouteMap(this.state);
@@ -53,7 +51,7 @@ export default class Router /* implements IRouter */ {
     else this.showNotFound();
   }
 
-  private buildRouteMap(state: State): Record<string, () => void> {
+  private buildRouteMap(state: IState): Record<string, () => void> {
     if (state.isAuthenticated)
       return {
         '#/login': () => this.mainView.setContent(new LoginView()),
