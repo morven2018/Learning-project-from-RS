@@ -54,3 +54,7 @@ export interface IButtonCreator extends IElementCreator {
     callback?: (event: Event) => void;
   }) => void;
 }
+
+export interface IMainView extends IView {
+  setContent(content: IView): void;
+}

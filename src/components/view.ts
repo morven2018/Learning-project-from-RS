@@ -1,5 +1,6 @@
 import type {
   IElementParameters,
+  IView,
   IViewParameters,
 } from '../lib/types/interfaces';
 import ButtonCreator from './button';

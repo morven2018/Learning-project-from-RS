@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["codepaths", "commitlint"]
+  "cSpell.words": [
+    "codepaths",
+    "commitlint",
+    "dotenv",
+    "eslintcache",
+    "jscoverage",
+    "Logined",
+    "Microbundle",
+    "Nuxt",
+    "vuepress",
+    "wscript"
+  ]
 }
