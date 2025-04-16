@@ -1,1 +1,3 @@
-document.body.textContent = 'check;';
+import App from './src/app/app';
+
+new App();

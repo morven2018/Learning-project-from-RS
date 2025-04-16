@@ -1,17 +1,21 @@
-import GarageView from '../app/garage/garage-view';
-import NotFoundView from '../app/not-found/not-found-view';
-import WinnersView from '../app/winners/winners-view';
+import AboutView from '../app/about/about';
+import ChatView from '../app/chat/chat.View';
+import LoginView from '../app/login/loginView';
+import NotFoundView from '../app/not-found/not-found';
 
-import type { IHeaderView, IMainView, IRouter } from '../lib/types/interfaces';
+import { State } from '../lib/state';
 
-export default class Router implements IRouter {
+import type { IMainView } from '../lib/types/interfaces';
+
+export default class Router /* implements IRouter */ {
   private mainView: IMainView;
   private readonly routeMap: Record<string, () => void>;
-  private headerView: IHeaderView | undefined = undefined;
+  private state: State | undefined;
 
-  constructor(mainView: IMainView) {
+  constructor(mainView: IMainView, state: State) {
     this.mainView = mainView;
-    this.routeMap = this.buildRouteMap();
+    this.state = state;
+    this.routeMap = this.buildRouteMap(this.state);
     this.setupRouting();
   }
 
@@ -29,65 +33,81 @@ export default class Router implements IRouter {
   }
 
   public static normalizePath(path: string): string {
-    return path.replaceAll(/^#\/?/g, '').replaceAll(/\/$/g, '').toLowerCase();
-  }
-
-  public setHeaderView(headerView: IHeaderView): void {
-    this.headerView = headerView;
+    return path
+      .replace(/^[#/]\s*/g, '')
+      .replace(/\/$/g, '')
+      .toLowerCase();
   }
 
   public navigateTo(path: string): void {
     const normalizedPath = Router.normalizePath(path);
+    const hashPath = `#/${normalizedPath}`;
+
     if (
       this.routeMap[normalizedPath] ||
-      this.routeMap[`#/${normalizedPath}`] ||
-      this.routeMap[`/${normalizedPath}`]
-    ) {
-      globalThis.location.hash = `#/${normalizedPath}`;
-    } else {
-      this.showNotFound();
-    }
+      this.routeMap[hashPath] ||
+      this.routeMap[`/${normalizedPath}`] ||
+      this.routeMap[`#${normalizedPath}`]
+    )
+      globalThis.location.hash = hashPath;
+    else this.showNotFound();
   }
 
-  private buildRouteMap(): Record<string, () => void> {
-    return {
-      '#/winners': () => this.mainView.setContent(new WinnersView()),
-      winners: () => this.mainView.setContent(new WinnersView()),
-      '/winners': () => this.mainView.setContent(new WinnersView()),
-      '#/': () => this.mainView.setContent(new GarageView()),
-      '#/index': () => this.mainView.setContent(new GarageView()),
-      '#/garage': () => this.mainView.setContent(new GarageView()),
-      '': () => this.mainView.setContent(new GarageView()),
-      '/': () => this.mainView.setContent(new GarageView()),
-    };
+  private buildRouteMap(state: State): Record<string, () => void> {
+    if (state.isAuthenticated)
+      return {
+        '#/login': () => this.mainView.setContent(new LoginView()),
+        login: () => this.mainView.setContent(new LoginView()),
+        '/login': () => this.mainView.setContent(new LoginView()),
+        '#/chat': () => this.mainView.setContent(new ChatView()),
+        chat: () => this.mainView.setContent(new ChatView()),
+        '/chat': () => this.mainView.setContent(new ChatView()),
+        '#/about': () => this.mainView.setContent(new AboutView()),
+        about: () => this.mainView.setContent(new AboutView()),
+        '/about': () => this.mainView.setContent(new AboutView()),
+        '#/': () => this.mainView.setContent(new ChatView()),
+        '#/index': () => this.mainView.setContent(new ChatView()),
+        '': () => this.mainView.setContent(new ChatView()),
+        '/': () => this.mainView.setContent(new ChatView()),
+      };
+    else
+      return {
+        '#/login': () => this.mainView.setContent(new LoginView()),
+        login: () => this.mainView.setContent(new LoginView()),
+        '/login': () => this.mainView.setContent(new LoginView()),
+        '#/chat': () => this.mainView.setContent(new ChatView()),
+        chat: () => this.mainView.setContent(new ChatView()),
+        '/chat': () => this.mainView.setContent(new ChatView()),
+        '#/about': () => this.mainView.setContent(new AboutView()),
+        about: () => this.mainView.setContent(new AboutView()),
+        '/about': () => this.mainView.setContent(new AboutView()),
+        '#/': () => this.mainView.setContent(new LoginView()),
+        '#/index': () => this.mainView.setContent(new LoginView()),
+        '': () => this.mainView.setContent(new LoginView()),
+        '/': () => this.mainView.setContent(new LoginView()),
+      };
   }
 
   private setupRouting(): void {
     globalThis.addEventListener('hashchange', () => {
-      // this.saveState();
       this.handleRoute();
     });
     this.handleRoute();
   }
 
   private handleRoute(): void {
-    const hash = globalThis.location.hash;
-    const normalizedPath = Router.normalizePath(hash);
+    const { hash, pathname } = globalThis.location;
+    const routePath = hash || pathname;
+    const normalizedPath = Router.normalizePath(routePath);
     const routeHandler =
-      this.routeMap[hash] ||
-      this.routeMap[hash.slice(1)] ||
-      this.routeMap[`/${hash.slice(1)}`];
+      this.routeMap[routePath] ||
+      this.routeMap[normalizedPath] ||
+      this.routeMap[`#/${normalizedPath}`] ||
+      this.routeMap[`/${normalizedPath}`] ||
+      this.routeMap[`#${normalizedPath}`];
 
-    // const currentRoute = hash ? this.normalizePath(hash) : 'garage';
-
-    if (routeHandler) {
-      routeHandler();
-      if (this.headerView) {
-        this.headerView.updateActiveState(normalizedPath);
-      }
-    } else {
-      this.showNotFound();
-    }
+    if (routeHandler) routeHandler();
+    else this.showNotFound();
   }
 
   private showNotFound(): void {
