@@ -1,16 +1,17 @@
 import View from '../../components/view';
+import { notFoundParameters } from '../../lib/types/consts';
 import { CssClasses, CssTags } from '../../lib/types/enums';
 import { IView, IViewParameters } from '../../lib/types/interfaces';
-
-const defaultParameters = {
-  tag: CssTags.Section,
-  classNames: [CssClasses.NotFound],
-};
+import Router from '../../router/router';
 
 export default class NotFoundView extends View implements IView {
-  constructor(parameters: IViewParameters = defaultParameters) {
+  public router: Router | undefined;
+  constructor(
+    parameters: IViewParameters = notFoundParameters
+    /*  router: Router*/
+  ) {
     super(parameters);
-
+    // this.router = router;
     this.configureView();
   }
 
@@ -20,5 +21,14 @@ export default class NotFoundView extends View implements IView {
       classNames: [CssClasses.NotFound],
       textContent: 'Not found',
     });
+
+    const backBtnParameters = {
+      tag: CssTags.Button,
+      classNames: [CssClasses.Back],
+      textContent: '<',
+      callback: () => window.history.back(),
+    };
+
+    this.addButton(backBtnParameters);
   }
 }
