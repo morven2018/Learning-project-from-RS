@@ -2,6 +2,12 @@ import AboutView from '../app/about/about';
 import ChatView from '../app/chat/chat.View';
 import LoginView from '../app/login/loginView';
 import NotFoundView from '../app/not-found/not-found';
+import {
+  aboutParameters,
+  chatParameters,
+  loginParameters,
+  notFoundParameters,
+} from '../lib/types/consts';
 
 import type { IMainView, IState } from '../lib/types/interfaces';
 
@@ -13,7 +19,7 @@ export default class Router /* implements IRouter */ {
   constructor(mainView: IMainView, state: IState) {
     this.mainView = mainView;
     this.state = state;
-    this.routeMap = this.buildRouteMap(this.state);
+    this.routeMap = this.buildRouteMap();
     this.setupRouting();
   }
 
@@ -51,39 +57,20 @@ export default class Router /* implements IRouter */ {
     else this.showNotFound();
   }
 
-  private buildRouteMap(state: IState): Record<string, () => void> {
-    if (state.isAuthenticated)
-      return {
-        '#/login': () => this.mainView.setContent(new LoginView()),
-        login: () => this.mainView.setContent(new LoginView()),
-        '/login': () => this.mainView.setContent(new LoginView()),
-        '#/chat': () => this.mainView.setContent(new ChatView()),
-        chat: () => this.mainView.setContent(new ChatView()),
-        '/chat': () => this.mainView.setContent(new ChatView()),
-        '#/about': () => this.mainView.setContent(new AboutView()),
-        about: () => this.mainView.setContent(new AboutView()),
-        '/about': () => this.mainView.setContent(new AboutView()),
-        '#/': () => this.mainView.setContent(new ChatView()),
-        '#/index': () => this.mainView.setContent(new ChatView()),
-        '': () => this.mainView.setContent(new ChatView()),
-        '/': () => this.mainView.setContent(new ChatView()),
-      };
-    else
-      return {
-        '#/login': () => this.mainView.setContent(new LoginView()),
-        login: () => this.mainView.setContent(new LoginView()),
-        '/login': () => this.mainView.setContent(new LoginView()),
-        '#/chat': () => this.mainView.setContent(new ChatView()),
-        chat: () => this.mainView.setContent(new ChatView()),
-        '/chat': () => this.mainView.setContent(new ChatView()),
-        '#/about': () => this.mainView.setContent(new AboutView()),
-        about: () => this.mainView.setContent(new AboutView()),
-        '/about': () => this.mainView.setContent(new AboutView()),
-        '#/': () => this.mainView.setContent(new LoginView()),
-        '#/index': () => this.mainView.setContent(new LoginView()),
-        '': () => this.mainView.setContent(new LoginView()),
-        '/': () => this.mainView.setContent(new LoginView()),
-      };
+  private buildRouteMap(): Record<string, () => void> {
+    return {
+      '': () => {
+        if (this.state?.isAuthenticated) {
+          this.mainView.setContent(new ChatView(chatParameters));
+        } else {
+          this.mainView.setContent(new LoginView(loginParameters));
+        }
+      },
+      login: () => this.mainView.setContent(new LoginView(loginParameters)),
+      chat: () => this.mainView.setContent(new ChatView(chatParameters)),
+      about: () => this.mainView.setContent(new AboutView(aboutParameters)),
+      'not-found': () => {},
+    };
   }
 
   private setupRouting(): void {
@@ -109,6 +96,7 @@ export default class Router /* implements IRouter */ {
   }
 
   private showNotFound(): void {
-    this.mainView.setContent(new NotFoundView());
+    this.mainView.setContent(new NotFoundView(notFoundParameters));
+    window.history.replaceState({}, '', '/not-found');
   }
 }
