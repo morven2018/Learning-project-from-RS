@@ -4,6 +4,7 @@ export interface IElementParameters {
   tag: string;
   classNames: Array<string>;
   textContent: string;
+  href?: string;
   callback?: (event: Event, id?: number) => void;
   imageURL?: string;
   imageAlt?: string;
@@ -46,11 +47,10 @@ export type IViewParameters = Pick<IElementParameters, 'tag' | 'classNames'>;
 export interface IView {
   viewElementCreator: IElementCreator | undefined;
   getHtmlElement: () => HTMLElement | undefined;
-  createView(parameters: IViewParameters): IElementCreator;
+  createView(parameters: IViewParameters): IElementCreator | undefined;
 }
 
 export interface IButtonCreator extends IElementCreator {
-  createElement: (parameters: IElementParameters) => void;
   update: (parameters: {
     tag?: string;
     classNames?: string[];
@@ -60,6 +60,14 @@ export interface IButtonCreator extends IElementCreator {
   }) => void;
 }
 
+export interface IImageParameters extends IElementParameters {
+  imageURL: string;
+  imageAlt: string;
+}
+
+export interface IImageCreator extends IElementCreator {
+  update(newParameters: Partial<IImageParameters>): void;
+}
 export interface IMainView extends IView {
   setContent(content: IView): void;
 }

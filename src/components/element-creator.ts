@@ -14,12 +14,19 @@ export default class ElementCreator implements IElementCreator {
     return undefined;
   }
 
-  public addInnerElement(element: HTMLElement | IElementCreator): void {
+  public addInnerElement(
+    element: HTMLElement | IElementCreator,
+    after = true
+  ): void {
     if (element instanceof ElementCreator) {
       const oneElement = element.getElement();
-      if (oneElement && this.element) this.element.append(oneElement);
+      if (oneElement && this.element) {
+        if (after) this.element.append(oneElement);
+        else this.element.prepend(oneElement);
+      }
     } else if (element instanceof HTMLElement && this.element)
-      this.element.append(element);
+      if (after) this.element.append(element);
+      else this.element.prepend(element);
   }
 
   public createElement(parameters: IElementParameters): void {

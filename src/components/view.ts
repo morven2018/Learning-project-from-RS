@@ -8,9 +8,9 @@ import ElementCreator from './element-creator';
 
 export default class View implements IView {
   public viewElementCreator: ElementCreator | undefined;
-  private defaultParameters = { tag: 'div', classNames: [] };
+  //private defaultParameters = { tag: 'div', classNames: [] };
 
-  constructor(parameters: IViewParameters = this.defaultParameters) {
+  constructor(parameters: IViewParameters) {
     this.viewElementCreator = this.createView(parameters);
   }
 
@@ -19,16 +19,19 @@ export default class View implements IView {
     return undefined;
   }
 
-  public createView(parameters: IViewParameters): ElementCreator {
-    const elementParameters = {
-      tag: parameters.tag,
-      classNames: parameters.classNames,
-      textContent: '',
-      callback: undefined,
-    };
-    this.viewElementCreator = new ElementCreator(elementParameters);
+  public createView(parameters: IViewParameters): ElementCreator | undefined {
+    if (parameters.tag) {
+      const elementParameters = {
+        tag: parameters.tag,
+        classNames: parameters.classNames,
+        textContent: '',
+        callback: undefined,
+      };
+      this.viewElementCreator = new ElementCreator(elementParameters);
 
-    return this.viewElementCreator;
+      return this.viewElementCreator;
+    }
+    return undefined;
   }
 
   public addImage(imageParameters: IElementParameters): void {
