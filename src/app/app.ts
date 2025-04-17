@@ -2,6 +2,7 @@ import { State } from '../lib/state';
 import { IMainView, IState } from '../lib/types/interfaces';
 import Router from '../router/router';
 import MainView from './main/main-view';
+import './styles.scss';
 
 export default class App {
   public state: IState;

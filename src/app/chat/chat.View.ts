@@ -1,16 +1,16 @@
 import View from '../../components/view';
+import { chatParameters } from '../../lib/types/consts';
 import { CssClasses, CssTags } from '../../lib/types/enums';
 import { IView, IViewParameters } from '../../lib/types/interfaces';
-
-const defaultParameters = {
-  tag: CssTags.Section,
-  classNames: [CssClasses.Chat],
-};
+import Router from '../../router/router';
 
 export default class ChatView extends View implements IView {
-  constructor(parameters: IViewParameters = defaultParameters) {
+  public router: Router | undefined;
+  constructor(
+    parameters: IViewParameters = chatParameters /*, router: Router*/
+  ) {
     super(parameters);
-
+    //this.router = router;
     this.configureView();
   }
 

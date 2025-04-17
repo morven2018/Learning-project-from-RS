@@ -6,6 +6,14 @@ export enum CssTags {
   Form = 'form',
   Input = 'input',
   Div = 'div',
+  H1 = 'h1',
+  Ul = 'ul',
+  Li = 'li',
+  Span = 'span',
+  P = 'p',
+  H3 = 'h3',
+  Link = 'a',
+  LinkIcon = 'img',
 }
 
 export enum CssClasses {
@@ -14,4 +22,13 @@ export enum CssClasses {
   Login = 'login-form',
   Chat = 'chat-page',
   About = 'about-page',
+  Back = 'back-button',
+  Header = 'header',
+  P = 'info',
+  SubHeader = 'subtitle',
+  ToUse = 'getting-started-list',
+  Item = 'item',
+  Span = 'highlighted',
+  Link = 'author-link',
+  LinkIcon = 'link-to-github',
 }
