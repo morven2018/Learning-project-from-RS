@@ -24,7 +24,6 @@ const baseConfig = {
           <title>Fun chat</title>
         </head>
         <body>
-          <div id="root"></div>
         </body>
       </html>
       `,
@@ -59,32 +58,14 @@ const baseConfig = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
-        type: 'src/asset/resource',
-        generator: {
-          filename: 'src/assets/[hash][ext][query]',
-        },
-      },
-      {
         test: /\.(png|jpe?g|gif|svg)$/i,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 28192,
-              name: './images/[name].[ext]',
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(mp3)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[path][name].[ext]',
-              outputPath: 'assets/sounds',
+              name: './asserts/[name].[ext]',
+              //name: './fun-chat/asserts/[name].[ext]',
             },
           },
         ],
