@@ -14,6 +14,7 @@ export enum CssTags {
   H3 = 'h3',
   Link = 'a',
   LinkIcon = 'img',
+  Image = 'img',
 }
 
 export enum CssClasses {
@@ -31,4 +32,5 @@ export enum CssClasses {
   Span = 'highlighted',
   Link = 'author-link',
   LinkIcon = 'link-to-github',
+  Image = 'picture',
 }
