@@ -71,3 +71,9 @@ export interface IImageCreator extends IElementCreator {
 export interface IMainView extends IView {
   setContent(content: IView): void;
 }
+
+export interface IMessage {
+  to: string;
+  text: string;
+  id?: string;
+}

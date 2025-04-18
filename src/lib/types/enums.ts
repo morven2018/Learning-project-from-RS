@@ -34,3 +34,23 @@ export enum CssClasses {
   LinkIcon = 'link-to-github',
   Image = 'picture',
 }
+
+export enum RequestTypes {
+  UserLogin = 'USER_LOGIN',
+  UserLogout = 'USER_LOGOUT',
+  UserActive = 'USER_ACTIVE',
+  UserInactive = 'USER_INACTIVE',
+  MessageFromUser = 'MSG_FROM_USER',
+  MessageSend = 'MSG_SEND',
+  MessageRead = 'MSG_READ',
+  MessageDelete = 'MSG_DELETE',
+  MessageEdit = 'MSG_EDIT',
+  UserExternalLogin = 'USER_EXTERNAL_LOGIN',
+  UserExternalLogout = 'USER_EXTERNAL_LOGOUT',
+  MessageReadFromServer = 'MSG_READED_FROM_SERVER',
+  MessageDeleteFromServer = 'MSG_DELETED_FROM_SERVER',
+  MessageEditFromServer = 'MSG_EDITED_FROM_SERVER',
+  MessageSendedFromServer = 'MSG_SENDED_FROM_SERVER',
+  MessageDelivered = 'MSG_DELIVER',
+  Error = 'ERROR',
+}
