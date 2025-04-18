@@ -2,15 +2,19 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  target: 'web',
   devtool: 'inline-source-map',
   devServer: {
-    open: true,
-    host: 'localhost',
+    historyApiFallback: true,
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
     port: 4200,
     hot: true,
-    static: path.resolve(__dirname, './dist'),
-    historyApiFallback: true,
-    client: { overlay: false },
+    open: true,
+  },
+  stats: {
+    children: true,
+    errorDetails: true,
   },
 };

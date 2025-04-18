@@ -36,6 +36,14 @@ export default class Router /* implements IRouter */ {
     return undefined;
   }
 
+  public goBack(): void {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      this.navigateTo('/');
+    }
+  }
+
   public static normalizePath(path: string): string {
     return path
       .replace(/^[#/]\s*/g, '')
@@ -45,16 +53,17 @@ export default class Router /* implements IRouter */ {
 
   public navigateTo(path: string): void {
     const normalizedPath = Router.normalizePath(path);
-    const hashPath = `#/${normalizedPath}`;
 
-    if (
-      this.routeMap[normalizedPath] ||
-      this.routeMap[hashPath] ||
-      this.routeMap[`/${normalizedPath}`] ||
-      this.routeMap[`#${normalizedPath}`]
-    )
-      globalThis.location.hash = hashPath;
-    else this.showNotFound();
+    if (this.routeMap[normalizedPath] || this.routeMap[`/${normalizedPath}`]) {
+      window.history.pushState(
+        { path: normalizedPath },
+        '',
+        `/${normalizedPath}`
+      );
+      this.handleRoute();
+    } else {
+      this.showNotFound();
+    }
   }
 
   private buildRouteMap(): Record<string, () => void> {
@@ -69,30 +78,27 @@ export default class Router /* implements IRouter */ {
       login: () => this.mainView.setContent(new LoginView(loginParameters)),
       chat: () => this.mainView.setContent(new ChatView(chatParameters)),
       about: () => this.mainView.setContent(new AboutView(aboutParameters)),
-      'not-found': () => {},
+      'not-found': () => this.showNotFound(),
     };
   }
 
   private setupRouting(): void {
-    globalThis.addEventListener('hashchange', () => {
-      this.handleRoute();
-    });
+    window.addEventListener('popstate', () => this.handleRoute());
+
+    window.addEventListener('load', () => this.handleRoute());
+
     this.handleRoute();
   }
 
   private handleRoute(): void {
-    const { hash, pathname } = globalThis.location;
-    const routePath = hash || pathname;
-    const normalizedPath = Router.normalizePath(routePath);
-    const routeHandler =
-      this.routeMap[routePath] ||
-      this.routeMap[normalizedPath] ||
-      this.routeMap[`#/${normalizedPath}`] ||
-      this.routeMap[`/${normalizedPath}`] ||
-      this.routeMap[`#${normalizedPath}`];
+    const path = Router.normalizePath(window.location.pathname);
+    const routeHandler = this.routeMap[path] || this.routeMap[`/${path}`];
 
-    if (routeHandler) routeHandler();
-    else this.showNotFound();
+    if (routeHandler) {
+      routeHandler();
+    } else {
+      this.showNotFound();
+    }
   }
 
   private showNotFound(): void {

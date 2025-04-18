@@ -16,7 +16,13 @@ const backBtnParameters = {
   tag: CssTags.Button,
   classNames: [CssClasses.NotFound, CssClasses.Back],
   textContent: 'Return',
-  callback: () => window.history.back(),
+  callback: () => {
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    iframe.contentWindow?.history.back();
+    setTimeout(() => document.body.removeChild(iframe), 1);
+  },
 };
 
 const imageParameters = {
@@ -39,6 +45,10 @@ export default class NotFoundView extends View implements IView {
   constructor(parameters: IViewParameters = notFoundParameters) {
     super(parameters);
     this.configureView();
+
+    if (!window.location.hash) {
+      window.history.replaceState({}, '', '#/not-found');
+    }
   }
 
   public configureView(): void {

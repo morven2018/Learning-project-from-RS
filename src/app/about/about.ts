@@ -31,13 +31,6 @@ const subHeaderParameters = {
   textContent: 'Getting Started',
 };
 
-const backBtnParameters = {
-  tag: CssTags.Button,
-  classNames: [CssClasses.About, CssClasses.Back],
-  textContent: 'Back to previous page',
-  callback: () => window.history.back(),
-};
-
 const ulParameters = {
   tag: CssTags.Ul,
   classNames: [CssClasses.ToUse],
@@ -76,6 +69,19 @@ const imageParameters = {
   textContent: '',
   imageURL: icon,
   title: 'GibHub',
+};
+
+const backBtnParameters = {
+  tag: CssTags.Button,
+  classNames: [CssClasses.About, CssClasses.Back],
+  textContent: 'Back to previous page',
+  callback: () => {
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    iframe.contentWindow?.history.back();
+    setTimeout(() => document.body.removeChild(iframe), 1);
+  },
 };
 
 export default class AboutView extends View implements IView {
@@ -118,7 +124,7 @@ export default class AboutView extends View implements IView {
 
     const image = new ImageCreator(imageParameters);
     link.addInnerElement(image, false);
-
+    // if (this.router) backBtnParameters.callback = () => this.router?.goBack();
     this.addButton(backBtnParameters);
   }
 }
