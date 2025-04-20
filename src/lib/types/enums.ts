@@ -15,12 +15,15 @@ export enum CssTags {
   Link = 'a',
   LinkIcon = 'img',
   Image = 'img',
+  FieldSet = 'fieldset',
+  Label = 'label',
 }
 
 export enum CssClasses {
   Main = 'root',
   NotFound = 'not-found',
-  Login = 'login-form',
+  Login = 'login-area',
+  Password = 'password-area',
   Chat = 'chat-page',
   About = 'about-page',
   Back = 'back-button',
@@ -33,6 +36,14 @@ export enum CssClasses {
   Link = 'author-link',
   LinkIcon = 'link-to-github',
   Image = 'picture',
+  AuthForm = 'auth-form',
+  Area = 'area',
+  Legend = 'title',
+  Label = 'label',
+  LoginInput = 'login-input',
+  PasswordInput = 'password-input',
+  Toggle = 'password-toggle',
+  PasswordWrapper = 'password-wrapper',
 }
 
 export enum RequestTypes {

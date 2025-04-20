@@ -12,6 +12,7 @@ module.exports = {
     port: 4200,
     hot: true,
     open: true,
+    client: { overlay: false },
   },
   stats: {
     children: true,

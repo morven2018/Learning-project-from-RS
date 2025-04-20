@@ -12,7 +12,7 @@ export const aboutParameters = {
 
 export const loginParameters = {
   tag: CssTags.Form,
-  classNames: [CssClasses.Login],
+  classNames: [CssClasses.AuthForm],
 };
 
 export const chatParameters = {

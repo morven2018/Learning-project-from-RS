@@ -13,6 +13,7 @@ export interface IElementParameters {
   route?: string;
   options?: OptionType;
   value?: string;
+  withToggle?: boolean;
 }
 
 export interface IElementCreator {

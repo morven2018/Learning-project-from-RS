@@ -9,6 +9,11 @@ export default class ButtonCreator
   extends ElementCreator
   implements IButtonCreator
 {
+  private imgElement: HTMLImageElement | undefined = undefined;
+  constructor(parameters: IElementParameters) {
+    super(parameters);
+    this.createElement(parameters);
+  }
   public createElement(parameters: IElementParameters): void {
     super.createElement(parameters);
     if (parameters.id)
@@ -25,12 +30,18 @@ export default class ButtonCreator
       imgElement.alt = parameters.title || 'Icon';
       this.element?.append(imgElement);
       imgElement.className = 'icon';
+      this.imgElement = imgElement;
     }
 
     if (parameters.value) this.element?.setAttribute('value', parameters.value);
 
     if (parameters.callback)
-      this.element?.addEventListener('click', parameters.callback);
+      this.element?.addEventListener('mouseup', (event: Event) => {
+        event.preventDefault();
+        console.log('click');
+        parameters.callback;
+      });
+    console.log(this.imgElement);
   }
 
   public update(parameters: {
@@ -52,5 +63,12 @@ export default class ButtonCreator
     if (parameters.callback) {
       this.setCallback(parameters.callback);
     }
+  }
+
+  public updateImage(newImageURL: string, altText: string): void {
+    if (!this.imgElement) return;
+
+    this.imgElement.src = newImageURL;
+    this.imgElement.alt = altText;
   }
 }
