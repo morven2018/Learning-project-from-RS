@@ -14,6 +14,12 @@ export default [
   eslint.configs.recommended,
   eslintPluginUnicorn.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
+  // ...tseslint.config(
+  //   eslint.configs.recommended,
+  // ...tseslint.configs.strictTypeChecked,
+  // ...tseslint.configs.stylisticTypeChecked,
+  // ),
+
   {
     languageOptions: {
       globals: globals.builtin,
@@ -23,10 +29,6 @@ export default [
         },
         tsconfigRootDir: import.meta.dirname,
         sourceType: 'module',
-      },
-      linterOptions: {
-        noInlineConfig: true,
-        reportUnusedDisableDirectives: true,
       },
     },
   },
@@ -63,25 +65,6 @@ export default [
       'class-methods-use-this': 'error',
 
       'unicorn/better-regex': 'warn',
-      'max-lines-per-function': [
-        'error',
-        { max: 40, skipBlankLines: true, skipComments: true },
-      ],
-      'no-magic-numbers': [
-        'warn',
-        {
-          detectObjects: false,
-          enforceConst: false,
-          ignore: [0, 1],
-          ignoreArrayIndexes: false,
-          ignoreClassFieldInitialValues: true,
-          ignoreDefaultValues: true,
-        },
-      ],
-      'unicorn/no-lonely-if': 'warn',
-      'unicorn/no-nested-ternary': 'warn',
-      'unicorn/no-useless-undefined': 'warn',
-      'unicorn/prefer-ternary': 'warn',
     },
 
     linterOptions: {
@@ -93,12 +76,7 @@ export default [
   {
     ignores: ['webpack.*.js', 'node_modules/', 'dist/', 'build/'],
   },
-  {
-    files: ['src/lib/types/enums.ts'],
-    rules: {
-      'no-magic-numbers': 'off',
-    },
-  },
+
   {
     files: ['eslint.config.mjs'],
     languageOptions: {
