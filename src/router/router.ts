@@ -19,38 +19,25 @@ const infoFormParameters = {
   tag: CssTags.Form,
   classNames: [CssClasses.ErrorForm],
 };
-
+const notAuthorized = 'the user was not authorized';
 export default class Router /* implements IRouter */ {
   private mainView: IMainView;
   public api: ApiClient;
-  private readonly routeMap: Record<string, () => void>;
-  private state: IState | undefined;
+  public state: IState | undefined;
+  private routeMap: Record<string, () => void>;
 
   constructor(mainView: IMainView, state: IState, api: ApiClient) {
     this.mainView = mainView;
     this.state = state;
     this.api = api;
 
-    const authData = localStorage.getItem('auth');
-    if (authData) {
-      const { login, password, isLogined } = JSON.parse(authData);
-      if (isLogined) {
-        this.state.login({ login, password, isLogined });
-        if (this.api.user) {
-          this.api.user.login = login;
-          this.api.user.password = password;
-          this.api.user.isLogined = true;
-        }
-        this.api.login({
-          login: login,
-          password: password,
-        });
-      }
-    }
+    this.restoreSession().finally(() => {
+      this.setupWebSocketHandlers();
+      this.routeMap = this.buildRouteMap();
+      this.setupRouting();
+    });
 
-    this.setupWebSocketHandlers();
     this.routeMap = this.buildRouteMap();
-    this.setupRouting();
   }
 
   public get validRoutes(): string[] | undefined {
@@ -161,6 +148,12 @@ export default class Router /* implements IRouter */ {
       'error' in message.payload &&
       typeof message.payload.error === 'string'
     ) {
+      if (message.payload.error === notAuthorized) {
+        this.state?.logout();
+        localStorage.removeItem('auth');
+        this.navigateTo('/login');
+        return;
+      }
       const form = new InfoForm({
         ...infoFormParameters,
         textContent: message.payload.error.toString(),
@@ -233,5 +226,46 @@ export default class Router /* implements IRouter */ {
   private showNotFound(): void {
     this.mainView.setContent(new NotFoundView(notFoundParameters));
     globalThis.history.replaceState({}, '', '/not-found');
+  }
+
+  private async restoreSession(): Promise<void> {
+    const authData = localStorage.getItem('auth');
+    if (!authData) return;
+
+    try {
+      const { login, password, expires } = JSON.parse(authData);
+
+      if (expires && expires < Date.now()) {
+        localStorage.removeItem('auth');
+        return;
+      }
+
+      if (login && password) {
+        this.state?.login({ login, password, isLogined: true });
+
+        if (this.api.user) {
+          this.api.user.login = login;
+          this.api.user.password = password;
+          this.api.user.isLogined = true;
+        }
+
+        const response = await this.api.login({ login, password });
+
+        if (response) {
+          const newAuthData = {
+            login,
+            password,
+            isLogined: true,
+            expires: Date.now() + 24 * 60 * 60 * 1000,
+          };
+          localStorage.setItem('auth', JSON.stringify(newAuthData));
+        } else {
+          throw new Error('Auto-login failed');
+        }
+      }
+    } catch (error) {
+      console.error('Session restore error:', error);
+      this.handleLogout({ type: RequestTypes.UserLogout, payload: {} });
+    }
   }
 }

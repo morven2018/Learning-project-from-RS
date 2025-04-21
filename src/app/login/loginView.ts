@@ -121,6 +121,10 @@ export default class LoginView extends View implements IView {
   }
 
   public configureView(): void {
+    if (this.router?.state?.isAuthenticated) {
+      this.router.navigateTo('/chat');
+      return;
+    }
     const header = new ElementCreator(headerParameters);
     this.viewElementCreator?.addInnerElement(header);
     this.configureFieldSet();
