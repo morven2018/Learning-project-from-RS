@@ -1,8 +1,8 @@
 import View from '../../components/view';
 import { notFoundParameters } from '../../lib/types/consts';
 import { CssClasses, CssTags } from '../../lib/types/enums';
-import { IView, IViewParameters } from '../../lib/types/interfaces';
-import Router from '../../router/router';
+import type { IView, IViewParameters } from '../../lib/types/interfaces';
+import type Router from '../../router/router';
 import picture from '../../assets/images/404.jpg';
 import ImageCreator from '../../components/image-creator';
 
@@ -12,16 +12,16 @@ const headerParameters = {
   textContent: 'The page is not found',
 };
 
-const backBtnParameters = {
+const backButtonParameters = {
   tag: CssTags.Button,
   classNames: [CssClasses.NotFound, CssClasses.Back],
   textContent: 'Return',
   callback: () => {
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    document.body.appendChild(iframe);
+    document.body.append(iframe);
     iframe.contentWindow?.history.back();
-    setTimeout(() => document.body.removeChild(iframe), 1);
+    setTimeout(() => iframe.remove(), 1);
   },
 };
 
@@ -37,7 +37,7 @@ const pParameters = {
   tag: CssTags.P,
   classNames: [CssClasses.NotFound, CssClasses.P],
   textContent: 'You can back to previous page: ',
-  callback: () => window.history.back(),
+  callback: () => globalThis.history.back(),
 };
 
 export default class NotFoundView extends View implements IView {
@@ -46,8 +46,8 @@ export default class NotFoundView extends View implements IView {
     super(parameters);
     this.configureView();
 
-    if (!window.location.hash) {
-      window.history.replaceState({}, '', '#/not-found');
+    if (!globalThis.location.hash) {
+      globalThis.history.replaceState({}, '', '#/not-found');
     }
   }
 
@@ -59,6 +59,6 @@ export default class NotFoundView extends View implements IView {
 
     this.addTextMessage(pParameters);
 
-    this.addButton(backBtnParameters);
+    this.addButton(backButtonParameters);
   }
 }

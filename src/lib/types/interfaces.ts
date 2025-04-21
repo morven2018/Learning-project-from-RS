@@ -78,3 +78,7 @@ export interface IMessage {
   text: string;
   id?: string;
 }
+export interface IValidatorAnswer {
+  isValid: boolean;
+  message: string;
+}

@@ -1,6 +1,6 @@
 import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
-import { IMainView, IViewParameters } from '../../lib/types/interfaces';
+import type { IMainView, IViewParameters } from '../../lib/types/interfaces';
 
 const defaultParameters = {
   tag: CssTags.Main,

@@ -44,8 +44,12 @@ export enum CssClasses {
   PasswordInput = 'password-input',
   Toggle = 'password-toggle',
   PasswordWrapper = 'password-wrapper',
+  LoginButton = 'login-button',
+  AboutButton = 'about-button',
+  Disable = 'disable',
+  ErrorValidation = 'error-validation',
+  Invalid = 'invalid',
 }
-
 export enum RequestTypes {
   UserLogin = 'USER_LOGIN',
   UserLogout = 'USER_LOGOUT',

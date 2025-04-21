@@ -41,7 +41,7 @@ export default class ButtonCreator
         console.log('click');
         parameters.callback;
       });
-    console.log(this.imgElement);
+    // console.log(this.imgElement);
   }
 
   public update(parameters: {
