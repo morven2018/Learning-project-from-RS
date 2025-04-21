@@ -5,6 +5,7 @@ import View from '../../components/view';
 import { CssClasses, CssTags } from '../../lib/types/enums';
 import type {
   IElementParameters,
+  IUserData,
   IValidatorAnswer,
   IView,
   IViewParameters,
@@ -108,9 +109,14 @@ export default class LoginView extends View implements IView {
   public router: Router | undefined;
   private inputValidators: Map<HTMLInputElement, () => void> = new Map();
   private inputs: InputCreator[] = [];
+  private savedValues: IUserData;
   constructor(parameters: IViewParameters, router: Router) {
     super(parameters);
     this.router = router;
+    this.savedValues = {
+      login: '',
+      password: '',
+    };
     this.configureView();
   }
 
@@ -142,6 +148,7 @@ export default class LoginView extends View implements IView {
           parameters.inputParameters
         );
     }
+    this.updateSubmitButtonState();
   }
 
   private addField(
@@ -157,6 +164,7 @@ export default class LoginView extends View implements IView {
     field.addInnerElement(label);
 
     const input = new InputCreator(inputParameters);
+    this.inputs.push(input);
     if (input.element instanceof HTMLInputElement) {
       const validateInput = this.validateInput(input.element);
 
@@ -173,7 +181,6 @@ export default class LoginView extends View implements IView {
 
         wrapper.addInnerElement(input);
         this.addPasswordToggle(wrapper, input);
-        this.inputs.push(input);
       } else field.addInnerElement(input);
     }
   }
@@ -252,7 +259,7 @@ export default class LoginView extends View implements IView {
       callback: () => {
         if (input.element instanceof HTMLInputElement) {
           const isPassword = input.element.type === 'password';
-          console.log('click', isPassword);
+          //  console.log('click', isPassword);
           input.element.type = isPassword ? 'text' : 'password';
           if (toggle.element) {
             toggle.updateImage(
@@ -270,8 +277,10 @@ export default class LoginView extends View implements IView {
   private addLoginButton(): void {
     const loginButton = new ButtonCreator({
       ...buttonLoginParameters,
-      callback: () => this.handleClick(),
     });
+    this.viewElementCreator?.addInnerElement(loginButton);
+    loginButton.element?.addEventListener('click', () => this.handleClick());
+
     if (
       this.inputs.every((item) => {
         if (item.element instanceof HTMLInputElement)
@@ -292,26 +301,46 @@ export default class LoginView extends View implements IView {
         }
       });
     } else loginButton.element?.classList.add(CssClasses.Disable);
-    console.log(loginButton);
-    this.viewElementCreator?.addInnerElement(loginButton);
   }
 
   private handleClick() {
-    if (
-      this.inputs[0].element instanceof HTMLInputElement &&
-      this.inputs[1].element instanceof HTMLInputElement
-    ) {
-      const login = this.inputs[0].element.value;
-      const password = this.inputs[0].element.value;
-      if (this.router?.api) {
-        const idRequest = this.router.api.login({
-          login: login,
-          password: password,
-        });
-        console.log(idRequest);
+    const loginInput = this.inputs[0].element;
+    const passwordInput = this.inputs[1].element;
 
-        setTimeout(() => {}, 50000);
-      }
+    if (
+      loginInput instanceof HTMLInputElement &&
+      passwordInput instanceof HTMLInputElement
+    ) {
+      this.savedValues = {
+        login: loginInput.value,
+        password: passwordInput.value,
+      };
+
+      this.setLoginButtonState(true);
+
+      this.router?.api.login({
+        login: this.savedValues.login,
+        password: this.savedValues.password,
+      });
+
+      requestAnimationFrame(() => {
+        loginInput.value = this.savedValues.login;
+        passwordInput.value = this.savedValues.password || '';
+        this.setLoginButtonState(false);
+        this.updateSubmitButtonState();
+      });
+    }
+  }
+
+  private setLoginButtonState(isLoading: boolean) {
+    const loginButton = this.viewElementCreator
+      ?.getElement()
+      ?.querySelector(`.${CssClasses.LoginButton}`);
+    if (loginButton instanceof HTMLButtonElement) {
+      loginButton.disabled = isLoading;
+      loginButton.textContent = isLoading
+        ? 'Signing in...'
+        : 'Log in to the app';
     }
   }
 }

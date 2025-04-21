@@ -27,6 +27,7 @@ const baseConfig = {
         </body>
       </html>
       `,
+      favicon: './src/assets/icons/icon.ico',
       filename: 'index.html',
     }),
     new CleanWebpackPlugin(),

@@ -82,3 +82,10 @@ export interface IValidatorAnswer {
   isValid: boolean;
   message: string;
 }
+export interface IUserResponse {
+  id: string;
+  type: string;
+  payload: {
+    user: IUserData;
+  };
+}

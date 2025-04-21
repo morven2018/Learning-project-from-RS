@@ -1,4 +1,4 @@
-import { IState, IUserData } from './types/interfaces';
+import type { IState, IUserData } from './types/interfaces';
 
 export class State implements IState {
   private _isAuthenticated: boolean;

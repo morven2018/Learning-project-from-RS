@@ -17,6 +17,7 @@ export enum CssTags {
   Image = 'img',
   FieldSet = 'fieldset',
   Label = 'label',
+  Aside = 'aside',
 }
 
 export enum CssClasses {
@@ -28,6 +29,7 @@ export enum CssClasses {
   About = 'about-page',
   Back = 'back-button',
   Header = 'header',
+  Footer = 'footer',
   P = 'info',
   SubHeader = 'subtitle',
   ToUse = 'getting-started-list',
@@ -49,6 +51,18 @@ export enum CssClasses {
   Disable = 'disable',
   ErrorValidation = 'error-validation',
   Invalid = 'invalid',
+  UserName = 'user-name',
+  Buttons = 'button-area',
+  CloseButton = 'close-button',
+  ErrorForm = 'info-form',
+  SchoolLink = 'link-to-school',
+  SchoolIcon = 'rs-icon',
+  Year = 'year-of-creation',
+  MainSection = 'chat-area',
+  ListArea = 'list-wrapper',
+  UserList = 'list-of-user',
+  Filter = 'user-filter',
+  User = 'user-list-item',
 }
 export enum RequestTypes {
   UserLogin = 'USER_LOGIN',

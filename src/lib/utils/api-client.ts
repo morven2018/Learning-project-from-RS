@@ -1,45 +1,55 @@
 import { RequestTypes } from '../types/enums';
-import { IMessage, IUserData } from '../types/interfaces';
+import type { IMessage, IUserData } from '../types/interfaces';
+// import { WebSocket } from 'ws';
 
-const baseURL = 'http://127.0.0.1:4000';
+const baseURL = 'ws://127.0.0.1:4000';
 
 export default class ApiClient {
-  private ws: WebSocket | undefined;
+  public user: IUserData | undefined;
+  public ws: WebSocket | undefined = undefined;
+  /* private authSuccessCallbacks: Map<string, (userData: IUserData) => void> =
+    new Map(); */
 
   constructor() {
-    ApiClient.isServerAvailable((isAvailable) => {
-      if (isAvailable) {
-        this.ws = new WebSocket(baseURL);
-      } else {
-        console.log(isAvailable, "server doesn't response");
-        // add info form
-      }
-    });
+    this.ws = new WebSocket(baseURL);
+    this.connect();
+  }
+  private connect(): void {
+    if (!this.ws) return;
+
+    this.ws.onopen = () => console.log('WebSocket connected!');
+
+    this.ws.onclose = () => console.log('WebSocket disconnected');
+
+    this.ws.onerror = (error) => console.error('WebSocket error:', error);
   }
 
-  public static isServerAvailable(
-    callback: (available: boolean) => void
-  ): void {
-    fetch(baseURL.replace('ws://', 'http://').replace('wss://', 'https://'))
-      .then((response) => callback(response.ok))
-      .catch(() => callback(false));
-  }
   public static generateId(): string {
     return crypto.randomUUID();
   }
 
+  public setMessageHandler(handler: (data: string) => void): void {
+    if (this.ws) {
+      this.ws.onmessage = (event) => handler(event.data);
+    }
+  }
+
   public login(userData: IUserData): string | void {
+    this.user = userData;
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN)
+      console.log('some problem. socket is not open');
+    //console.log('login start');
     if (userData.password) {
       const id = ApiClient.generateId();
       const message = {
         id: id,
         type: RequestTypes.UserLogin,
         payload: {
-          login: userData.login,
-          password: userData.password,
+          user: { login: userData.login, password: userData.password },
         },
       };
       this.ws?.send(JSON.stringify(message));
+      //console.log('login start', id);
       return id;
     }
   }
@@ -51,8 +61,7 @@ export default class ApiClient {
         id: id,
         type: RequestTypes.UserLogout,
         payload: {
-          login: userData.login,
-          password: userData.password,
+          user: { login: userData.login, password: userData.password },
         },
       };
       this.ws?.send(JSON.stringify(message));

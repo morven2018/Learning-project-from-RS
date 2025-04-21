@@ -2,8 +2,8 @@ import ElementCreator from '../../components/element-creator';
 import View from '../../components/view';
 import { aboutParameters } from '../../lib/types/consts';
 import { CssClasses, CssTags } from '../../lib/types/enums';
-import { IView, IViewParameters } from '../../lib/types/interfaces';
-import Router from '../../router/router';
+import type { IView, IViewParameters } from '../../lib/types/interfaces';
+import type Router from '../../router/router';
 import icon from '../../assets/icons/github.png';
 import ImageCreator from '../../components/image-creator';
 
@@ -59,7 +59,7 @@ const linkParameter = {
   tag: CssTags.Link,
   classNames: [CssClasses.Link],
   textContent: 'Alena Pudina',
-  href: 'https://github.com/rolling-scopes-school/morven2018-JSFE2024Q4',
+  href: 'https://github.com/morven2018',
   target: '_blank',
 };
 
@@ -71,14 +71,14 @@ const imageParameters = {
   title: 'GibHub',
 };
 
-const backBtnParameters = {
+const backButtonParameters = {
   tag: CssTags.Button,
   classNames: [CssClasses.About, CssClasses.Back],
   textContent: 'Back to previous page',
   callback: () => {
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    document.body.appendChild(iframe);
+    document.body.append(iframe);
     iframe.contentWindow?.history.back();
     setTimeout(() => document.body.removeChild(iframe), 1);
   },
@@ -100,11 +100,11 @@ export default class AboutView extends View implements IView {
     const list = new ElementCreator(ulParameters);
     this.viewElementCreator?.addInnerElement(list);
 
-    liTextContent.forEach((text) => {
+    for (const text of liTextContent) {
       liParameters.textContent = text;
       const listItem = new ElementCreator(liParameters);
       list.addInnerElement(listItem);
-    });
+    }
 
     pParameters.textContent = pTexts.note;
     const paragraph = new ElementCreator(pParameters);
@@ -125,6 +125,6 @@ export default class AboutView extends View implements IView {
     const image = new ImageCreator(imageParameters);
     link.addInnerElement(image, false);
     // if (this.router) backBtnParameters.callback = () => this.router?.goBack();
-    this.addButton(backBtnParameters);
+    this.addButton(backButtonParameters);
   }
 }
