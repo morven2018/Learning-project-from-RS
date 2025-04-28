@@ -7,33 +7,30 @@ Links
 ### Transcript 
 
 #### 1 
-Hello. today i'll want to tell you about Top 10 Security Risks by OWASP 
+Hello. today I'll want to tell you about Top 10 Security Risks by OWASP. 
 #### 2 
-First, let's figure out what OWASP is. 
-The Open Worldwide Application Security Project  (OWASP) is an online community that produces freely available 
-articles, is an open community dedicated to enabling organizations to design, develop, acquire, operate, and maintain software for secure applications that can be trusted. The OWASP provides free and open resources. It is leading by a non-profit foundation called The OWASP Foundation.
+First, let's figure out what OWASP is?
+The Open Worldwide Application Security Project  (OWASP) is an online community that produces freely available articles, is an open community dedicated to enabling organizations to design, develop, acquire, operate, and maintain software for secure applications that can be trusted. 
 #### 3 
 Why do we know this top 10. This list is 10 most common vulnerabilities of web applications, with is actual to date. So we can make our application more secure and minimize risk of possible consequences of a cyberattack. Let's see to the latest the OWASP Top 10!
 #### 4 
 Broken Access Control is a security flaw that occurs when the access control mechanisms within a web application have weaknesses, are misconfigured, or are disregarded, that allow unauthorized individuals gain unauthorized access to restricted resources or perform actions beyond their authorized privileges.
 This vulnerability usually occurs due to incorrect implementation authorization logic or incorrect configuration of permissions.
-It is vulnerability is dangerous for several reasons:
- 
+It is vulnerability is dangerous for several reasons: 
 
-- Data leak. Attackers can gain access to sensitive information (exmpl' personal data or financial records). 1
+- Attackers can gain access to sensitive information (e.g. personal data or financial records). 
 - Unauthorized user  can perform destructive actions, such as deleting records or changing data. 
-- this 2 reason also can lead to  legal action.
 
 #### 5 
 Cryptographic failures are vulnerabilities related to inefficient data encryption or storing confidential information in the clear. 
 
 The  reasons for cryptographic errors can be:
 
-Weak or outdated encryption algorithms. 
-Incorrect key management.
-Lack of encryption. 
-Problems with using of certificates. 
-Insecure management of user sessions
+* Weak or outdated encryption algorithms. 
+* Incorrect key management.
+* Lack of encryption. 
+* Problems with using of certificates. 
+* Insecure management of user sessions
 
 
 #### 6 
@@ -52,10 +49,10 @@ Such errors can occur in any part of the IT environment, including networks, sys
 
 Some reasons that cause security misconfigurations:
 
-Using the default settings. 
-Incomplete configuration.
-No updating software. 
-Provision for users more permissions than necessary
+* Using the default settings. 
+* Incomplete configuration.
+* No updating software. 
+* Provision for users more permissions than necessary
 
 #### 9
 Using outdated, unmatched, or vulnerable components, such as library, frameworks, or plugins can increase the risk of violations. These risks can result from unsupported or out-of-date software, including the operating system (OS), web/application server, database management system (DBMS), applications, APIs, and all components, runtime environments, and libraries. These threats are particularly dangerous when organizations do not have timely, risk-based measures in place for fixing or upgrading a system’s underlying platform, frameworks, and dependencies, leaving the system open to days or weeks of unnecessary exposure to known risks. 
@@ -69,10 +66,10 @@ Software and data integrity failures are weakness in software or infrastructure 
 
 To prevent type of attack we can:
 
-implement a verification process for all external plug-ins and libraries used in web applications; 4
-require the use of digital signatures to verify the authenticity and integrity of external code or data; 4
-regularly update and correct software components; 4
-monitor and log any suspicious or unauthorized activity inside the application; 4
+* implement a verification process for all external plug-ins and libraries used in web applications; 4
+* require the use of digital signatures to verify the authenticity and integrity of external code or data; 4
+* regularly update and correct software components; 4
+* monitor and log any suspicious or unauthorized activity inside the application; 4
 
 
 #### 12 
@@ -83,8 +80,8 @@ Server-side request forgery (SSRF) is an attack in which an attacker operate a v
 
 The consequences of attack are
 
-Hacking the internal network. 
-Burglary of important information. 
-Launching additional attacks.
+* Hacking the internal network. 
+* Burglary of important information. 
+* Launching additional attacks.
 #### 14 
 Thank you for wathching my video and keep in mind the importance of security during development.
